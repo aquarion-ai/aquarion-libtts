@@ -7,5 +7,5 @@ def main [] {
 
 # Perform initial setup after a fresh git clone or devbox creation.
 def "main init" [] {
-    uv pip install -e .
+    uv sync
 }
