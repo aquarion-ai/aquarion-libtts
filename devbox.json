@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.14.2/.schema/devbox.schema.json",
+  "packages": {
+    "uv": "0.6.14",
+    "nushell": "0.103.0",
+    "python": {
+      "version": "3.13.2",
+      "disable_plugin": true
+    }
+  },
+  "shell": {
+    "init_hook": [
+      "uv venv --allow-existing --no-python-downloads --quiet",
+      "nu --config config.nu -e 'overlay use .venv/bin/activate.nu'"
+    ]
+  }
+}
