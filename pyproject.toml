@@ -1,0 +1,14 @@
+[project]
+name = "aquarion-tts"
+version = "0.1.0"
+description = "Text To Speech (TTS) beckend components for Aquarion AI"
+readme = "README.md"
+authors = [
+    { name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

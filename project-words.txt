@@ -1,5 +1,6 @@
 analyzer
 Aquarion
+beckend
 celerybeat
 cython
 defenses
@@ -10,6 +11,7 @@ htmlcov
 ionide
 ipynb
 ipython
+Krys
 mkdocs
 mypy
 noncommercially
