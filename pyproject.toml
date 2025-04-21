@@ -1,14 +1,66 @@
-[project]
-name = "aquarion-tts"
-version = "0.1.0"
-description = "Text To Speech (TTS) beckend components for Aquarion AI"
-readme = "README.md"
-authors = [
-    { name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org" }
-]
-requires-python = ">=3.13"
-dependencies = []
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[project]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Framework :: Hatch",
+  "Framework :: Pytest",
+  "License :: OSI Approved :: GNU Affero General Public License v3",
+  "Natural Language :: English",
+  "Operating System :: POSIX :: Linux",
+  "Topic :: Multimedia :: Sound/Audio",
+  "Topic :: Multimedia :: Sound/Audio :: Speech",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Text Processing",
+  "Topic :: Text Processing :: Linguistic",
+  "Typing :: Typed",
+]
+name = "aquarion-tts"
+dynamic = ["version"]
+description = 'Text To Speech (TTS) beckend components for Aquarion AI'
+readme = "README.md"
+requires-python = ">=3.13"
+license = "AGPL-1.0-only"
+keywords = ["aquarion", "ai", "tts", "speech"]
+authors = [
+  { name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org" },
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/aquarion-ai/aquarion-docs"
+Issues = "https://github.com/aquarion-ai/aquarion-tts/issues"
+Source = "https://github.com/aquarion-ai/aquarion-tts"
+
+[tool.hatch.version]
+path = "src/aquarion_tts/__about__.py"
+
+[tool.hatch.envs.default]
+installer = "uv"
+
+[tool.hatch.envs.hatch-uv]
+dependencies = ["uv~=0.6.14"]
+
+[tool.hatch.envs.types]
+extra-dependencies = ["mypy~=1.15.0"]
+
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/aquarion_tts tests}"
+
+[tool.coverage.run]
+source_pkgs = ["aquarion_tts", "tests"]
+branch = true
+parallel = true
+omit = ["src/aquarion_tts/__about__.py"]
+
+[tool.coverage.paths]
+aquarion_tts = ["src/aquarion_tts", "*/aquarion-tts/src/aquarion_tts"]
+tests = ["tests", "*/aquarion-tts/tests"]
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]

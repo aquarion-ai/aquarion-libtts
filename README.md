@@ -2,6 +2,22 @@
 
 Experiment in creating a scalable local AI voice chat bot.
 
+[![PyPI - Version](https://img.shields.io/pypi/v/aquarion-tts.svg)](https://pypi.org/project/aquarion-tts)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/aquarion-tts.svg)](https://pypi.org/project/aquarion-tts)
+
+-----
+
+## Table of Contents
+
+- [About](#about)
+  - [About Aquarion AI](#about-aquarion-ai)
+  - [About this Repository](#about-this-repository)
+  - [Disclaimer](#disclaimer)
+  - [License](#license)
+  - [Development Standards](#development-standards)
+- [Installation](#installation)
+  - [Details](#details)
+
 ## About
 
 ### About Aquarion AI
@@ -23,7 +39,12 @@ While this project is FOSS and you are welcome to use it (if it ever becomes som
 usable), know that I am making this for myself. So do not expect any kind of support or
 updates or maintenance or longevity.  Caveat Emptor.
 
-## Development Standards
+### License
+
+`aquarion-tts` is distributed under the terms of the
+[AGPL](https://spdx.org/licenses/AGPL-3.0-only.html) license.
+
+### Development Standards
 
 This project follows the following standard practices:
 
@@ -31,21 +52,26 @@ This project follows the following standard practices:
   commit messages.
 - [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) for versioning.
 
-## Getting Started
+## Installation
 
 1. Clone this repository.
+
 1. Install [Devbox](https://www.jetify.com/docs/devbox/installing_devbox/)
-1. Run `devbox shell`
-1. Run `aq init`
-1. Run `aq --help` to see what else it can do.
+
+1. Run:
+
+   ```console
+   devbox shell
+   hatch run types:check
+   hatch fmt
+   hatch test
+   ```
 
 ### Details
 
 - Devbox is a tool for creating per-project development environments using Nix.
 - On first run, `devbox shell` will download and install all that is needed for the
   environment.
-- `devbox shell` enters the devbox, starts nuShell as the terminal shell, and then
-  activates the Python virtual environment.
-- `aq` is a custom script to help developers with common tasks.
-- `aq init` is only needed on a fresh clone of if one delete's one's devbox.  It
-  downloads and installs all dependencies.
+- `devbox shell` enters the devbox, starts nuShell as the terminal shell.
+- The `hatch` commands download Python, create the various virtual environments and
+  download all dependencies.

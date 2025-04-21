@@ -19,12 +19,14 @@ nosetests
 nushell
 pipenv
 Pipfile
+pkgs
 pybuilder
 pycache
 pyenv
 pyflow
 pypa
 pypackages
+pyproject
 pyrightconfig
 pytest
 pytype
