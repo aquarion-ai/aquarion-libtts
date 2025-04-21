@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling~=1.27.0"]
 build-backend = "hatchling.build"
 
 [project]
@@ -26,6 +26,7 @@ description = 'Text To Speech (TTS) beckend components for Aquarion AI'
 readme = "README.md"
 requires-python = ">=3.13"
 license = "AGPL-1.0-only"
+license-files = ["LICENSE"]
 keywords = ["aquarion", "ai", "tts", "speech"]
 authors = [
   { name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org" },
@@ -33,9 +34,12 @@ authors = [
 dependencies = []
 
 [project.urls]
+Homepage = "https://github.com/aquarion-ai"
 Documentation = "https://github.com/aquarion-ai/aquarion-docs"
+#Changelog = ""
 Issues = "https://github.com/aquarion-ai/aquarion-tts/issues"
 Source = "https://github.com/aquarion-ai/aquarion-tts"
+#Download = ""
 
 [tool.hatch.version]
 path = "src/aquarion_tts/__about__.py"
