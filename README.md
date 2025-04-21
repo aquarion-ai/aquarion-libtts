@@ -48,5 +48,4 @@ This project follows the following standard practices:
   activates the Python virtual environment.
 - `aq` is a custom script to help developers with common tasks.
 - `aq init` is only needed on a fresh clone of if one delete's one's devbox.  It
-  downloads and installs all dependencies, then installs the local package in editable
-  mode.
+  downloads and installs all dependencies.
