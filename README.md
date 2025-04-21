@@ -2,8 +2,29 @@
 
 Experiment in creating a scalable local AI voice chat bot.
 
-[![PyPI - Version](https://img.shields.io/pypi/v/aquarion-tts.svg)](https://pypi.org/project/aquarion-tts)
+[![Static Badge](https://img.shields.io/badge/Part_of-Aquarion_AI-blue)](https://github.com/aquarion-ai)
+
+<!-- [![PyPI - Version](https://img.shields.io/pypi/v/aquarion-tts.svg)](https://pypi.org/project/aquarion-tts)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/aquarion-tts.svg)](https://pypi.org/project/aquarion-tts)
+[![PyPI - Implementation](https://img.shields.io/pypi/implementation/aquarion-tts)](https://pypi.org/project/aquarion-tts)
+[![PyPI - Types](https://img.shields.io/pypi/types/aquarion-tts)](https://pypi.org/project/aquarion-tts)
+[![PyPI - Wheel](https://img.shields.io/pypi/wheel/aquarion-tts)](https://pypi.org/project/aquarion-tts)
+[![PyPI - Format](https://img.shields.io/pypi/format/aquarion-tts)](https://pypi.org/project/aquarion-tts)
+[![PyPI - Status](https://img.shields.io/pypi/status/aquarion-tts)](https://pypi.org/project/aquarion-tts)
+[![PyPI - License](https://img.shields.io/pypi/l/aquarion-tts)](https://pypi.org/project/aquarion-tts)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/aquarion-tts)](https://pypi.org/project/aquarion-tts) -->
+
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-closed/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
+[![GitHub last commit](https://img.shields.io/github/last-commit/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
+<!-- [![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/aquarion-ai/aquarion-tts/total)](https://github.com/aquarion-ai/aquarion-tts)
+[![GitHub Release Date](https://img.shields.io/github/release-date/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts) -->
+
+[![GitHub Org's stars](https://img.shields.io/github/stars/aquarion-ai)](https://github.com/aquarion-ai)
+[![GitHub Repo stars](https://img.shields.io/github/stars/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
+[![GitHub watchers](https://img.shields.io/github/watchers/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
+[![GitHub forks](https://img.shields.io/github/forks/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
 
 -----
 
