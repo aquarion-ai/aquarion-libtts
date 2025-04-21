@@ -63,7 +63,7 @@ updates or maintenance or longevity.  Caveat Emptor.
 ### License
 
 `aquarion-tts` is distributed under the terms of the
-[AGPL](https://spdx.org/licenses/AGPL-3.0-only.html) license.
+[AGPL-3.0-only](https://spdx.org/licenses/AGPL-3.0-only.html) license.
 
 ### Development Standards
 
