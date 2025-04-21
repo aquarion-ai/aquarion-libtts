@@ -10,7 +10,6 @@
   },
   "shell": {
     "init_hook": [
-      "uv venv --allow-existing --no-python-downloads --quiet",
       "nu --config config.nu -e 'overlay use .venv/bin/activate.nu'"
     ]
   }
