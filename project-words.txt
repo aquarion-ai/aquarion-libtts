@@ -17,7 +17,6 @@ mkdocs
 mypy
 noncommercially
 nosetests
-nushell
 pipenv
 Pipfile
 pkgs

@@ -91,8 +91,7 @@ This project follows the following standard practices:
 ### Details
 
 - Devbox is a tool for creating per-project development environments using Nix.
-- On first run, `devbox shell` will download and install all that is needed for the
-  environment.
-- `devbox shell` enters the devbox, starts nuShell as the terminal shell.
+- On first run, `devbox shell` will download and install all the needed system tools
+  for the environment.
 - The `hatch` commands download Python, create the various virtual environments and
   download all dependencies.
