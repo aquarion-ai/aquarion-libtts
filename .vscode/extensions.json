@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "streetsidesoftware.code-spell-checker",
-        "thenuprojectcontributors.vscode-nushell-lang"
+        "thenuprojectcontributors.vscode-nushell-lang",
+        "charliermarsh.ruff"
     ]
 }

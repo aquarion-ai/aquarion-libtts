@@ -16,4 +16,6 @@
 #
 # SPDX-License-Identifier: AGPL-1.0-only
 
+"""Provides package metadata at runtime."""
+
 __version__ = "0.0.1"

@@ -56,6 +56,10 @@ extra-dependencies = ["mypy~=1.15.0"]
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:src/aquarion_tts tests}"
 
+[tool.hatch.envs.hatch-static-analysis]
+dependencies = ["ruff~=0.11.6"]
+config-path = "none"
+
 [tool.coverage.run]
 source_pkgs = ["aquarion_tts", "tests"]
 branch = true
@@ -68,3 +72,44 @@ tests = ["tests", "*/aquarion-tts/tests"]
 
 [tool.coverage.report]
 exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+[tool.ruff]
+line-length = 88 # Sticking with Black's standard for now instead of ruff's 120.
+
+[tool.ruff.format]
+docstring-code-format = true
+#docstring-code-line-length = 80
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  "D211",
+  "D212",
+  "W191",
+  "E111",
+  "E114",
+  "E117",
+  "D206",
+  "D300",
+  "Q000",
+  "Q001",
+  "Q002",
+  "Q003",
+  "COM812",
+  "COM819",
+  "D203",
+]
+
+[tool.ruff.lint.per-file-ignores]
+#"**/scripts/*" = ["INP001", "T201"]
+"**/tests/**/*" = ["PLC1901", "PLR2004", "PLR6301", "S", "TID252"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.isort]
+known-first-party = ["aquarion_tts"]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false

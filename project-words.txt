@@ -11,6 +11,7 @@ htmlcov
 ionide
 ipynb
 ipython
+isort
 Krys
 mkdocs
 mypy
@@ -22,7 +23,9 @@ Pipfile
 pkgs
 pybuilder
 pycache
+pycodestyle
 pyenv
+Pyflakes
 pyflow
 pypa
 pypackages
@@ -30,6 +33,7 @@ pyproject
 pyrightconfig
 pytest
 pytype
+pyupgrade
 ropeproject
 scrapy
 sdist
