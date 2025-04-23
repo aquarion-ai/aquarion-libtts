@@ -1,3 +1,4 @@
+addopts
 analyzer
 Aquarion
 beckend
@@ -20,6 +21,7 @@ nosetests
 pipenv
 Pipfile
 pkgs
+psutil
 pybuilder
 pycache
 pycodestyle
@@ -34,6 +36,7 @@ pytest
 pytype
 pyupgrade
 reexport
+rerunfailures
 ropeproject
 scrapy
 sdist
@@ -43,3 +46,5 @@ spyproject
 subclassing
 venv
 webassets
+xdist
+xfail

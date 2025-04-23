@@ -60,17 +60,38 @@ check = "mypy --install-types --non-interactive {args:src/aquarion_tts tests}"
 dependencies = ["ruff~=0.11.6"]
 config-path = "none"
 
+[tool.hatch.envs.hatch-test]
+# These are Hatch's default dependencies, just with versions updates and more precisely
+# pinned down.  Use extra-dependencies for any other custom dependencies to keep them
+# separated.
+dependencies = [
+  "coverage-enable-subprocess==1.0",
+  "coverage[toml]~=7.8.0",
+  "pytest~=8.3.5",
+  "pytest-mock~=3.14.0",
+  "pytest-randomly~=3.16.0",
+  "pytest-rerunfailures~=15.0.0",
+  "pytest-xdist[psutil]~=3.6.1",
+]
+randomize = true
+parallel = true
+extra-dependencies = []
+
 [tool.coverage.run]
 source_pkgs = ["aquarion_tts", "tests"]
 branch = true
 parallel = true
 omit = ["src/aquarion_tts/__about__.py"]
+data_file = ".cache/coverage/coverage"
 
 [tool.coverage.paths]
 aquarion_tts = ["src/aquarion_tts", "*/aquarion-tts/src/aquarion_tts"]
 tests = ["tests", "*/aquarion-tts/tests"]
 
 [tool.coverage.report]
+show_missing = true
+fail_under = 100
+#skip_covered = true  # Not sure if I want this.  To try later.
 exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 
 [tool.ruff]
@@ -150,3 +171,9 @@ disallow_any_decorated = true
 disallow_any_explicit = true
 extra_checks = true
 strict_bytes = true
+
+[tool.pytest.ini_options]
+cache_dir = ".cache/pytest"
+empty_parameter_set_mark = "xfail"
+addopts = "--strict-markers"
+xfail_strict = true
