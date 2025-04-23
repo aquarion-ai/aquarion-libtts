@@ -96,6 +96,7 @@ exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 
 [tool.ruff]
 line-length = 88 # Sticking with Black's standard for now instead of ruff's 120.
+cache-dir = ".cache/ruff"
 
 [tool.ruff.format]
 docstring-code-format = true
