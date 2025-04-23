@@ -26,6 +26,12 @@ Experiment in creating a scalable local AI voice chat bot.
 [![GitHub watchers](https://img.shields.io/github/watchers/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
 [![GitHub forks](https://img.shields.io/github/forks/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
 
+[![Built with Devbox](https://www.jetify.com/img/devbox/shield_galaxy.svg)](https://www.jetify.com/devbox/docs/contributor-quickstart/)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+[![Hatch project](https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg)](https://github.com/pypa/hatch)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+
 -----
 
 ## Table of Contents
@@ -83,6 +89,8 @@ This project follows the following standard practices:
 
    ```console
    devbox shell
+   pre-commit install
+   pre-commit run --all-files
    hatch run types:check
    hatch fmt
    hatch test
@@ -92,6 +100,14 @@ This project follows the following standard practices:
 
 - Devbox is a tool for creating per-project development environments using Nix.
 - On first run, `devbox shell` will download and install all the needed system tools
-  for the environment.
+  for the environment
+- pre-commit is a tool for running certain checks and fixes on the code before commits
+  and/or pushes.
+- On the first run, `pre-commit install` will download and install all the needed
+  hooks.
+- **NOTE:** No commit, push or pull request should or will be accepted unless all
+  pre-commit and pre-push hooks pass.  No exceptions!
+- Hatch is a tool for managing dependencies, builds, virtual environments and Python
+  versions, as well as running tests, formatting, linting and typechecking.
 - The `hatch` commands download Python, create the various virtual environments and
   download all dependencies.
