@@ -33,11 +33,13 @@ pyrightconfig
 pytest
 pytype
 pyupgrade
+reexport
 ropeproject
 scrapy
 sdist
 Spyder
 spyderproject
 spyproject
+subclassing
 venv
 webassets
