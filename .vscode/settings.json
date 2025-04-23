@@ -1,31 +1,35 @@
 {
+    "[yaml]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
     "cSpell.customDictionaries": {
+        "custom": true,
+        "internal-terms": false,
         "project-words": {
-            "name": "project-words",
-            "path": "${workspaceRoot}/project-words.txt",
+            "addWords": true,
             "description": "Words used in this project",
-            "addWords": true
-        },
-        "custom": true, // Enable the `custom` dictionary
-        "internal-terms": false // Disable the `internal-terms` dictionary
+            "name": "project-words",
+            "path": "${workspaceRoot}/project-words.txt"
+        }
     },
     "cSpell.dictionaryDefinitions": [
         {
-            "name": "project-words",
-            "path": "${workspaceRoot}/project-words.txt",
+            "addWords": true,
             "description": "Words used in this project",
-            "addWords": true
+            "name": "project-words",
+            "path": "${workspaceRoot}/project-words.txt"
         }
     ],
-    "cSpell.language": "en-GB",
     "cSpell.hideAddToDictionaryCodeActions": false,
+    "cSpell.language": "en-GB",
     "cSpell.validateDirectives": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
     "editor.rulers": [
-        88,
+        88
     ],
+    "files.insertFinalNewline": true,
     "ruff.path": [
         "hatch run hatch-static-analysis:ruff"
-    ],
-    "editor.defaultFormatter": "charliermarsh.ruff",
-    "editor.formatOnSave": true
+    ]
 }
