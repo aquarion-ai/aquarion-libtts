@@ -74,13 +74,14 @@ dependencies = [
   "pytest-xdist[psutil]~=3.6.1",
 ]
 randomize = true
-parallel = true
+# Cannot use parallel and coverage at the same time.
+# https://github.com/pypa/hatch/issues/1635
+#parallel = true
 extra-dependencies = []
 
 [tool.coverage.run]
 source_pkgs = ["aquarion_tts", "tests"]
 branch = true
-parallel = true
 omit = ["src/aquarion_tts/__about__.py"]
 data_file = ".cache/coverage/coverage"
 
