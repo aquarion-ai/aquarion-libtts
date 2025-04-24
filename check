@@ -16,7 +16,25 @@ def main []: nothing -> string {
 #   - Linting
 #   - Unit testing
 def "main commit" []: nothing -> string {
+    common
+    hatch test --parallel
+}
+
+# Run all code checks that should pass before pushing.
+#
+# This performs the following checks in order and stops on the first failure:
+#
+#   - All the checks from `check commit`
+#   - Coverage
+def "main push" []: nothing -> string {
+    common
+    hatch test --cover
+}
+
+## Internal commands
+
+# Common checks for all sub-commands.
+def common []: nothing -> string {
     hatch run types:check
     hatch fmt
-    hatch test
 }
