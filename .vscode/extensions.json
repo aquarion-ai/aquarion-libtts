@@ -1,6 +1,14 @@
 {
     "recommendations": [
         "streetsidesoftware.code-spell-checker",
-        "charliermarsh.ruff"
+        "charliermarsh.ruff",
+        "thenuprojectcontributors.vscode-nushell-lang",
+        "vivaxy.vscode-conventional-commits",
+        "tamasfe.even-better-toml",
+        "bierner.markdown-mermaid",
+        "davidanson.vscode-markdownlint",
+        "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
+        "ms-python.python",
+        "redhat.vscode-yaml"
     ]
 }
