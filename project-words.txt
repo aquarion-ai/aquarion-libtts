@@ -7,6 +7,7 @@ cython
 defenses
 devbox
 dmypy
+docstrings
 favor
 htmlcov
 ionide
