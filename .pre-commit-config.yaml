@@ -36,3 +36,27 @@ repos:
       - id: pretty-format-json
         args: [--autofix, --indent, "4"]
       - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: check_commit
+        name: check commit
+        stages: [pre-commit]
+        entry: devbox
+        args: [run, ./check, commit]
+        language: system
+        require_serial: true
+        always_run: true
+        fail_fast: true
+        pass_filenames: false
+  - repo: local
+    hooks:
+      - id: check_push
+        name: check push
+        stages: [pre-push]
+        entry: devbox
+        args: [run, ./check, push]
+        language: system
+        require_serial: true
+        always_run: true
+        fail_fast: true
+        pass_filenames: false
