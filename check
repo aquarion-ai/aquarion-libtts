@@ -1,0 +1,22 @@
+#!/usr/bin/env nu
+
+# Check code for quality and correctness
+#
+# Running `check` without a sub-command is the same as running `check commit`.
+def main []: nothing -> string {
+    main commit
+}
+
+# Run all code checks that should pass before committing.
+#
+# This performs the following checks in order and stops on the first failure:
+#
+#   - Static type checking
+#   - Formatting
+#   - Linting
+#   - Unit testing
+def "main commit" []: nothing -> string {
+    hatch run types:check
+    hatch fmt
+    hatch test
+}
