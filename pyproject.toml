@@ -79,6 +79,13 @@ randomize = true
 #parallel = true
 extra-dependencies = []
 
+[tool.hatch.envs.accept]
+extra-dependencies = ["radish-bdd[coverage]~=0.18.2"]
+
+[tool.hatch.envs.accept.scripts]
+check = "radish -b steps -t --shuffle features/"
+check-cov = "radish -b steps -t --shuffle --with-coverage features/"
+
 [tool.coverage.run]
 source_pkgs = ["aquarion_tts", "tests"]
 branch = true
@@ -125,7 +132,8 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 #"**/scripts/*" = ["INP001", "T201"]
-"**/tests/**/*" = ["PLC1901", "PLR2004", "PLR6301", "S", "TID252", "D103"]
+"**/tests/**/*" = ["PLC1901", "PLR2004", "PLR6301", "S", "TID252", "INP001", "D103"]
+"**/steps/*" = ["INP001", "D103", "S"]
 
 [tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"

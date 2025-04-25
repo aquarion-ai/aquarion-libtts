@@ -46,6 +46,7 @@ sdist
 Spyder
 spyderproject
 spyproject
+stepmodel
 subclassing
 venv
 webassets

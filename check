@@ -29,6 +29,7 @@ def "main commit" []: nothing -> string {
 def "main push" []: nothing -> string {
     common
     hatch test --cover
+    hatch run accept:check
 }
 
 ## Internal commands
