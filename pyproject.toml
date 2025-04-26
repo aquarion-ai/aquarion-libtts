@@ -1,3 +1,6 @@
+
+### Core ###
+
 [build-system]
 requires = ["hatchling~=1.27.0"]
 build-backend = "hatchling.build"
@@ -41,14 +44,26 @@ Issues = "https://github.com/aquarion-ai/aquarion-tts/issues"
 Source = "https://github.com/aquarion-ai/aquarion-tts"
 #Download = ""
 
+
+### Hatch ###
+
 [tool.hatch.version]
 path = "src/aquarion_tts/__about__.py"
+
+
+# Env: default
 
 [tool.hatch.envs.default]
 installer = "uv"
 
+
+# Env: hatch-uv
+
 [tool.hatch.envs.hatch-uv]
 dependencies = ["uv~=0.6.14"]
+
+
+# Env: types
 
 [tool.hatch.envs.types]
 extra-dependencies = ["mypy~=1.15.0"]
@@ -56,9 +71,15 @@ extra-dependencies = ["mypy~=1.15.0"]
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:src/aquarion_tts tests}"
 
+
+# Env: hatch-static-analysis
+
 [tool.hatch.envs.hatch-static-analysis]
 dependencies = ["ruff~=0.11.6"]
 config-path = "none"
+
+
+# Env: hatch-test
 
 [tool.hatch.envs.hatch-test]
 # These are Hatch's default dependencies, just with versions updates and more precisely
@@ -83,6 +104,7 @@ extra-dependencies = []
 python = ["3.13"]
 
 
+# Env: accept
 
 [tool.hatch.envs.accept]
 extra-dependencies = [
@@ -93,6 +115,9 @@ extra-dependencies = [
 [tool.hatch.envs.accept.scripts]
 check = "./check zzz_hatch accept {args}"
 cover = "./check zzz_hatch accept cover {args}"
+
+
+### Coverage ###
 
 [tool.coverage.run]
 source_pkgs = ["aquarion_tts", "tests"]
@@ -109,6 +134,9 @@ show_missing = true
 fail_under = 100
 #skip_covered = true  # Not sure if I want this.  To try later.
 exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+
+### Ruff ###
 
 [tool.ruff]
 line-length = 88 # Sticking with Black's standard for now instead of ruff's 120.
@@ -153,6 +181,9 @@ known-first-party = ["aquarion_tts"]
 fixture-parentheses = false
 mark-parentheses = false
 
+
+### mypy ###
+
 [tool.mypy]
 python_version = "3.13"
 strict = true
@@ -189,6 +220,9 @@ disallow_any_decorated = true
 disallow_any_explicit = true
 extra_checks = true
 strict_bytes = true
+
+
+### pytest ###
 
 [tool.pytest.ini_options]
 cache_dir = ".cache/pytest"
