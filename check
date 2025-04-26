@@ -59,7 +59,7 @@ def --wrapped "main zzz_hatch accept cover" [...rest:string]: nothing -> string 
         coverage run --rcfile=radish_coverage.toml
         ...(which radish).path -b steps/ -t --shuffle features/ ...$rest
     )
-    coverage report -m
+    coverage report -m --rcfile=radish_coverage.toml
 }
 
 

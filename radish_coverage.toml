@@ -1,5 +1,6 @@
 [tool.coverage.run]
 source_pkgs = ["aquarion_tts"]
+omit = ["src/aquarion_tts/__about__.py"]
 branch = true
 data_file = ".cache/radish/coverage"
 
