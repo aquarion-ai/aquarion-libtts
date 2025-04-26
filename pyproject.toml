@@ -79,6 +79,11 @@ randomize = true
 #parallel = true
 extra-dependencies = []
 
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.13"]
+
+
+
 [tool.hatch.envs.accept]
 extra-dependencies = [
   "coverage[toml]~=7.8.0",
