@@ -32,6 +32,38 @@ def "main push" []: nothing -> string {
     hatch run accept:check
 }
 
+# Run acceptance tests.
+def --wrapped "main accept" [
+    ...rest: string # Extra arguments for radish
+]: nothing -> string {
+    hatch run accept:check ...$rest
+}
+
+# Run coverage on acceptance tests.
+def --wrapped "main accept cover" [
+    ...rest: string # Extra arguments for radish
+]: nothing -> string {
+    hatch run accept:cover ...$rest
+}
+
+## Command run by Hatch scripts. DO NOT RUN DIRECTLY.
+
+# Internal command. Do not use.
+def --wrapped "main zzz_hatch accept" [...rest: string]: nothing -> string {
+    radish -b steps/ -t --shuffle features/ ...$rest
+}
+
+# Internal command. Do not use.
+def --wrapped "main zzz_hatch accept cover" [...rest:string]: nothing -> string  {
+    (
+        coverage run --rcfile=radish_coverage.toml
+        ...(which radish).path -b steps/ -t --shuffle features/ ...$rest
+    )
+    coverage report -m
+}
+
+
+
 ## Internal commands
 
 # Common checks for all sub-commands.

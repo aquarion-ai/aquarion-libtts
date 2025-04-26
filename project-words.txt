@@ -38,6 +38,7 @@ pyrightconfig
 pytest
 pytype
 pyupgrade
+rcfile
 reexport
 rerunfailures
 ropeproject

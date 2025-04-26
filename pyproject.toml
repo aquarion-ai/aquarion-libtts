@@ -80,11 +80,14 @@ randomize = true
 extra-dependencies = []
 
 [tool.hatch.envs.accept]
-extra-dependencies = ["radish-bdd[coverage]~=0.18.2"]
+extra-dependencies = [
+  "coverage[toml]~=7.8.0",
+  "radish-bdd~=0.18.2"
+]
 
 [tool.hatch.envs.accept.scripts]
-check = "radish -b steps -t --shuffle features/"
-check-cov = "radish -b steps -t --shuffle --with-coverage features/"
+check = "./check zzz_hatch accept {args}"
+cover = "./check zzz_hatch accept cover {args}"
 
 [tool.coverage.run]
 source_pkgs = ["aquarion_tts", "tests"]

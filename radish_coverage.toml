@@ -1,0 +1,9 @@
+[tool.coverage.run]
+source_pkgs = ["aquarion_tts"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100
+#skip_covered = true  # Not sure if I want this.  To try later.
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
