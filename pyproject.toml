@@ -47,6 +47,11 @@ Source = "https://github.com/aquarion-ai/aquarion-tts"
 
 ### Hatch ###
 
+[tool.hatch.env]
+requires = [
+    "hatch-pip-compile"
+]
+
 [tool.hatch.version]
 path = "src/aquarion_tts/__about__.py"
 
@@ -54,34 +59,30 @@ path = "src/aquarion_tts/__about__.py"
 # Env: default
 
 [tool.hatch.envs.default]
-installer = "uv"
-
+type = "pip-compile"
+pip-compile-resolver = "uv"
+pip-compile-hashes = true
+pip-compile-constraint = "default"
+pip-compile-installer = "uv"
 
 # Env: hatch-uv
 
 [tool.hatch.envs.hatch-uv]
-dependencies = ["uv~=0.6.14"]
-
-
-# Env: types
-
-[tool.hatch.envs.types]
-extra-dependencies = ["mypy~=1.15.0"]
-
-[tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/aquarion_tts tests}"
+dependencies = ["uv~=0.6.17"]
 
 
 # Env: hatch-static-analysis
 
 [tool.hatch.envs.hatch-static-analysis]
-dependencies = ["ruff~=0.11.6"]
+installer = "uv"
+dependencies = ["ruff~=0.11.7"]
 config-path = "none"
 
 
 # Env: hatch-test
 
 [tool.hatch.envs.hatch-test]
+installer = "uv"
 # These are Hatch's default dependencies, just with versions updates and more precisely
 # pinned down.  Use extra-dependencies for any other custom dependencies to keep them
 # separated.
@@ -104,16 +105,28 @@ extra-dependencies = []
 python = ["3.13"]
 
 
+# Env: types
+
+[tool.hatch.envs.types]
+detached = true
+dependencies = ["mypy~=1.15.0"]
+
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/aquarion_tts tests}"
+
+
 # Env: accept
 
 [tool.hatch.envs.accept]
+type = "virtual"
+installer = "uv"
 extra-dependencies = [
   "coverage[toml]~=7.8.0",
   "radish-bdd~=0.18.2"
 ]
 
 [tool.hatch.envs.accept.scripts]
-check = "./check zzz_hatch accept {args}"
+test = "./check zzz_hatch accept {args}"
 cover = "./check zzz_hatch accept cover {args}"
 
 

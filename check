@@ -7,6 +7,21 @@ def main []: nothing -> string {
     main commit
 }
 
+# Initialize a fresh Devbox
+#
+# This installs Hatch and pre-commit in an isolated environments.
+def "main init" []: nothing -> string {
+    (
+        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
+        $"hatch~=($env.AQ_HATCH_MINIMUM_VERSION)"
+        --with $"pip~=($env.AQ_PIP_MINIMUM_VERSION)"
+    )
+    (
+        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
+        $"pre-commit~=($env.AQ_PRE_COMMIT_MINIMUM_VERSION)"
+    )
+}
+
 # Run all code checks that should pass before committing.
 #
 # This performs the following checks in order and stops on the first failure:
@@ -36,7 +51,7 @@ def "main push" []: nothing -> string {
 def --wrapped "main accept" [
     ...rest: string # Extra arguments for radish
 ]: nothing -> string {
-    hatch run accept:check ...$rest
+    hatch run accept:test ...$rest
 }
 
 # Run coverage on acceptance tests.

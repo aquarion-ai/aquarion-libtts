@@ -1,8 +1,13 @@
 {
     "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.14.2/.schema/devbox.schema.json",
+    "env": {
+        "AQ_HATCH_MINIMUM_VERSION": "1.14.1",
+        "AQ_PIP_MINIMUM_VERSION": "25.1.0",
+        "AQ_PRE_COMMIT_MINIMUM_VERSION": "4.2.0",
+        "AQ_PYTHON_MINIMUM_VERSION": "3.13.3"
+    },
     "packages": {
-        "hatch": "1.14.1",
         "nushell": "0.103.0",
-        "pre-commit": "4.0.1"
+        "uv": "0.6.14"
     }
 }

@@ -6,6 +6,7 @@ celerybeat
 cython
 defenses
 devbox
+Devboxes
 dmypy
 docstrings
 favor
