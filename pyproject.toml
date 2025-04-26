@@ -49,7 +49,8 @@ Source = "https://github.com/aquarion-ai/aquarion-tts"
 
 [tool.hatch.env]
 requires = [
-    "hatch-pip-compile"
+    "hatch-pip-compile~=1.11.3",
+    "hatch-uvenv~=0.3.3",
 ]
 
 [tool.hatch.version]
@@ -59,22 +60,29 @@ path = "src/aquarion_tts/__about__.py"
 # Env: default
 
 [tool.hatch.envs.default]
-type = "pip-compile"
-pip-compile-resolver = "uv"
-pip-compile-hashes = true
-pip-compile-constraint = "default"
-pip-compile-installer = "uv"
+type = "uvenv"
 
 # Env: hatch-uv
 
 [tool.hatch.envs.hatch-uv]
+type = "pip-compile"
+lock-filename = "dev_requirements/requirements-{env_name}.txt"
+#pip-compile-constraint = "default"
+pip-compile-resolver = "uv"
+pip-compile-hashes = true
+pip-compile-installer = "uv"
 dependencies = ["uv~=0.6.17"]
 
 
 # Env: hatch-static-analysis
 
 [tool.hatch.envs.hatch-static-analysis]
-installer = "uv"
+type = "pip-compile"
+lock-filename = "dev_requirements/requirements-{env_name}.txt"
+#pip-compile-constraint = "default"
+pip-compile-resolver = "uv"
+pip-compile-hashes = true
+pip-compile-installer = "uv"
 dependencies = ["ruff~=0.11.7"]
 config-path = "none"
 
@@ -82,7 +90,12 @@ config-path = "none"
 # Env: hatch-test
 
 [tool.hatch.envs.hatch-test]
-installer = "uv"
+type = "pip-compile"
+lock-filename = "dev_requirements/requirements-{env_name}.txt"
+#pip-compile-constraint = "default"
+pip-compile-resolver = "uv"
+pip-compile-hashes = true
+pip-compile-installer = "uv"
 # These are Hatch's default dependencies, just with versions updates and more precisely
 # pinned down.  Use extra-dependencies for any other custom dependencies to keep them
 # separated.
@@ -108,8 +121,13 @@ python = ["3.13"]
 # Env: types
 
 [tool.hatch.envs.types]
-detached = true
-dependencies = ["mypy~=1.15.0"]
+type = "pip-compile"
+lock-filename = "dev_requirements/requirements-{env_name}.txt"
+#pip-compile-constraint = "default"
+pip-compile-resolver = "uv"
+pip-compile-hashes = true
+pip-compile-installer = "uv"
+extra-dependencies = ["mypy~=1.15.0"]
 
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:src/aquarion_tts tests}"
@@ -118,8 +136,12 @@ check = "mypy --install-types --non-interactive {args:src/aquarion_tts tests}"
 # Env: accept
 
 [tool.hatch.envs.accept]
-type = "virtual"
-installer = "uv"
+type = "pip-compile"
+lock-filename = "dev_requirements/requirements-{env_name}.txt"
+#pip-compile-constraint = "default"
+pip-compile-resolver = "uv"
+pip-compile-hashes = true
+pip-compile-installer = "uv"
 extra-dependencies = [
   "coverage[toml]~=7.8.0",
   "radish-bdd~=0.18.2"

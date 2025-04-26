@@ -50,6 +50,7 @@ spyderproject
 spyproject
 stepmodel
 subclassing
+uvenv
 venv
 webassets
 xdist
