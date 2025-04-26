@@ -1,6 +1,7 @@
 [tool.coverage.run]
 source_pkgs = ["aquarion_tts"]
 branch = true
+data_file = ".cache/radish/coverage"
 
 [tool.coverage.report]
 show_missing = true
