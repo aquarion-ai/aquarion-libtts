@@ -29,6 +29,8 @@
         88
     ],
     "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": false,
+    "files.trimTrailingWhitespace": true,
     "ruff.path": [
         "hatch run hatch-static-analysis:ruff"
     ]
