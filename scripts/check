@@ -31,10 +31,12 @@ def "main commit" []: nothing -> string {
 #
 #   - All the checks from `check commit`
 #   - Coverage
+#   - All the checks from `check sec`
 def "main push" []: nothing -> string {
     common
     main test cover
     main accept cover
+    main sec
 }
 
 # Run all security checks.
