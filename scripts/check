@@ -1,5 +1,7 @@
 #!/usr/bin/env nu
 
+### Default commands
+
 # Check code for quality and correctness.
 #
 # Running `check` without a sub-command is the same as running `check commit`.
@@ -35,8 +37,19 @@ def "main push" []: nothing -> string {
     main accept cover
 }
 
+# Run all security checks.
+#
+# This performs the following checks in order and stops on the first failure:
+#
+#   - Vulnerabilities
+#   - Secrets
+def "main sec" []: nothing -> string {
+    main sec vuln
+    main sec secret
+}
 
-### Individual tasks
+
+### Individual checking tasks
 
 # Run static type checking on all source code.
 def --wrapped "main types" [
@@ -51,6 +64,9 @@ def --wrapped "main lint" [
 ]: nothing -> string {
     hatch fmt ...$rest
 }
+
+
+### Individual testing tasks
 
 # Run all unit tests.
 def --wrapped "main test" [
@@ -78,6 +94,23 @@ def --wrapped "main accept cover" [
     ...rest: string # Extra arguments for radish
 ]: nothing -> string {
     hatch run accept:cover ...$rest
+}
+
+
+### Individual security tasks
+
+# Check dependencies for security vulnerabilities.
+def --wrapped "main sec vuln" [
+    ...rest: string # Extra arguments for Trivy
+]: nothing -> string {
+    hatch run trivy fs . --scanners vuln ...$rest
+}
+
+# Check for secrets that should not be shared.
+def --wrapped "main sec secret" [
+    ...rest: string # Extra arguments for Trivy
+]: nothing -> string {
+    hatch run trivy fs . --scanners secret ...$rest
 }
 
 
