@@ -78,6 +78,7 @@ This project follows the following standard practices:
 - [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) for
   commit messages.
 - [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) for versioning.
+- [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## Installation
 
