@@ -5,7 +5,8 @@
         "AQ_PIP_MINIMUM_VERSION": "25.1.0",
         "AQ_PRE_COMMIT_MINIMUM_VERSION": "4.2.0",
         "AQ_PYTHON_MINIMUM_VERSION": "3.13.3",
-        "PATH": "$PWD/scripts/:$PATH"
+        "PATH": "$PWD/scripts/:$PATH",
+        "UV_NO_SYNC": "true"
     },
     "packages": {
         "nushell": "0.103.0",
