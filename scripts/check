@@ -1,11 +1,14 @@
 #!/usr/bin/env nu
 
-# Check code for quality and correctness
+# Check code for quality and correctness.
 #
 # Running `check` without a sub-command is the same as running `check commit`.
 def main []: nothing -> string {
     main commit
 }
+
+
+### Grouped tasks
 
 # Run all code checks that should pass before committing.
 #
@@ -17,7 +20,7 @@ def main []: nothing -> string {
 #   - Unit testing
 def "main commit" []: nothing -> string {
     common
-    hatch test --parallel
+    main test
 }
 
 # Run all code checks that should pass before pushing.
@@ -28,8 +31,39 @@ def "main commit" []: nothing -> string {
 #   - Coverage
 def "main push" []: nothing -> string {
     common
-    hatch test --cover
+    main test cover
     main accept cover
+}
+
+
+### Individual tasks
+
+# Run static type checking on all source code.
+def --wrapped "main types" [
+    ...rest: string # Extra arguments for hatch test
+]: nothing -> string {
+    hatch run types:check ...$rest
+}
+
+# Run formatters and linters on all source code.
+def --wrapped "main lint" [
+    ...rest: string # Extra arguments for hatch test
+]: nothing -> string {
+    hatch fmt ...$rest
+}
+
+# Run all unit tests.
+def --wrapped "main test" [
+    ...rest: string # Extra arguments for hatch test
+]: nothing -> string {
+    hatch test --parallel ...$rest
+}
+
+# Check code coverage for all unit tests.
+def --wrapped "main test cover" [
+    ...rest: string # Extra arguments for hatch test
+]: nothing -> string {
+    hatch test --cover ...$rest
 }
 
 # Run acceptance tests.
@@ -39,7 +73,7 @@ def --wrapped "main accept" [
     hatch run accept:test ...$rest
 }
 
-# Run coverage on acceptance tests.
+# Check code coverage on acceptance tests.
 def --wrapped "main accept cover" [
     ...rest: string # Extra arguments for radish
 ]: nothing -> string {
@@ -51,6 +85,6 @@ def --wrapped "main accept cover" [
 
 # Common checks for all sub-commands.
 def common []: nothing -> string {
-    hatch run types:check
-    hatch fmt
+    main types
+    main lint
 }

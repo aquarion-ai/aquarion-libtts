@@ -17,6 +17,7 @@ ipython
 isort
 Krys
 kwargs
+linters
 mkdocs
 mypy
 noncommercially
