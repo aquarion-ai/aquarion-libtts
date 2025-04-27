@@ -42,7 +42,7 @@ repos:
         name: check commit
         stages: [pre-commit]
         entry: devbox
-        args: [run, ./check, commit]
+        args: [run, check, commit]
         language: system
         require_serial: true
         always_run: true
@@ -54,7 +54,7 @@ repos:
         name: check push
         stages: [pre-push]
         entry: devbox
-        args: [run, ./check, push]
+        args: [run, check, push]
         language: system
         require_serial: true
         always_run: true

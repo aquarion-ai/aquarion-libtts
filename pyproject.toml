@@ -148,8 +148,8 @@ extra-dependencies = [
 ]
 
 [tool.hatch.envs.accept.scripts]
-test = "./check zzz_hatch accept {args}"
-cover = "./check zzz_hatch accept cover {args}"
+test = "check zzz_hatch accept {args}"
+cover = "check zzz_hatch accept cover {args}"
 
 
 ### Coverage ###
