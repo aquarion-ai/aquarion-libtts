@@ -9,6 +9,7 @@
         "davidanson.vscode-markdownlint",
         "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
         "ms-python.python",
-        "redhat.vscode-yaml"
+        "redhat.vscode-yaml",
+        "editorconfig.editorconfig"
     ]
 }
