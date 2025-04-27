@@ -89,25 +89,28 @@ This project follows the following standard practices:
 
    ```console
    devbox shell
-   pre-commit install
+   init
    pre-commit run --all-files
-   hatch run types:check
-   hatch fmt
-   hatch test
+   check push
+   check --help
    ```
 
 ### Details
 
-- Devbox is a tool for creating per-project development environments using Nix.
+- Devbox is a tool for creating per-project development environments using Nix.  It is
+  used in this project for non-Python dev tools and bootstrapping.
 - On first run, `devbox shell` will download and install all the needed system tools
   for the environment
 - pre-commit is a tool for running certain checks and fixes on the code before commits
   and/or pushes.
-- On the first run, `pre-commit install` will download and install all the needed
-  hooks.
+- On the first run, `init` will download and install the base Python version, needed
+  commands, hooks, etc.
 - **NOTE:** No commit, push or pull request should or will be accepted unless all
   pre-commit and pre-push hooks pass.  No exceptions!
 - Hatch is a tool for managing dependencies, builds, virtual environments and Python
   versions, as well as running tests, formatting, linting and typechecking.
-- The `hatch` commands download Python, create the various virtual environments and
-  download all dependencies.
+- The `check` command calls Hatch to perform common tasks, while also making it easier
+  to do so.
+- `check push` runs all common tasks, like type checking, formatting, linting, unit
+   tests, acceptance tests, coverage checks, etc.
+- On first run, `check push` will download and install several files, etc.
