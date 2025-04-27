@@ -66,35 +66,35 @@ type = "uvenv"
 # Env: hatch-uv
 
 [tool.hatch.envs.hatch-uv]
-lock-filename = "dev_requirements/{env_name}/requirements.txt"
-type = "pip-compile"
-#pip-compile-constraint = "default"
 dependencies = ["uv~=0.6.17"]
+lock-filename = "dev_requirements/{env_name}/requirements.txt"
+pip-compile-constraint = "default"
 pip-compile-hashes = true
 pip-compile-installer = "uv"
 pip-compile-resolver = "uv"
+type = "pip-compile"
 
 # Env: hatch-static-analysis
 
 [tool.hatch.envs.hatch-static-analysis]
-lock-filename = "dev_requirements/{env_name}/requirements.txt"
-type = "pip-compile"
-#pip-compile-constraint = "default"
 config-path = "none"
 dependencies = ["ruff~=0.11.7"]
+lock-filename = "dev_requirements/{env_name}/requirements.txt"
+pip-compile-constraint = "default"
 pip-compile-hashes = true
 pip-compile-installer = "uv"
 pip-compile-resolver = "uv"
+type = "pip-compile"
 
 # Env: hatch-test
 
 [tool.hatch.envs.hatch-test]
 lock-filename = "dev_requirements/{env_name}/requirements.txt"
-type = "pip-compile"
-#pip-compile-constraint = "default"
+pip-compile-constraint = "default"
 pip-compile-hashes = true
 pip-compile-installer = "uv"
 pip-compile-resolver = "uv"
+type = "pip-compile"
 # These are Hatch's default dependencies, just with versions updates and more precisely
 # pinned down.  Use extra-dependencies for any other custom dependencies to keep them
 # separated.
@@ -119,13 +119,13 @@ python = ["3.13"]
 # Env: types
 
 [tool.hatch.envs.types]
-lock-filename = "dev_requirements/{env_name}/requirements.txt"
-type = "pip-compile"
-#pip-compile-constraint = "default"
 extra-dependencies = ["mypy~=1.15.0"]
+lock-filename = "dev_requirements/{env_name}/requirements.txt"
+pip-compile-constraint = "default"
 pip-compile-hashes = true
 pip-compile-installer = "uv"
 pip-compile-resolver = "uv"
+type = "pip-compile"
 
 [tool.hatch.envs.types.scripts]
 check = """
@@ -135,16 +135,16 @@ check = """
 # Env: accept
 
 [tool.hatch.envs.accept]
-lock-filename = "dev_requirements/{env_name}/requirements.txt"
-type = "pip-compile"
-#pip-compile-constraint = "default"
 extra-dependencies = [
   "coverage[toml]~=7.8.0",
   "radish-bdd~=0.18.2",
 ]
+lock-filename = "dev_requirements/{env_name}/requirements.txt"
+pip-compile-constraint = "default"
 pip-compile-hashes = true
 pip-compile-installer = "uv"
 pip-compile-resolver = "uv"
+type = "pip-compile"
 
 [tool.hatch.envs.accept.scripts]
 cover = ".hatch_check accept cover {args}"
@@ -202,7 +202,6 @@ ignore = [
 select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
-#"**/scripts/*" = ["INP001", "T201"]
 "**/steps/*" = ["INP001", "D103", "S"]
 "**/tests/**/*" = ["PLC1901", "PLR2004", "PLR6301", "S", "TID252", "D103"]
 
