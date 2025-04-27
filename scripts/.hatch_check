@@ -1,0 +1,20 @@
+#!/usr/bin/env nu
+
+# Command run by Hatch scripts. DO NOT RUN DIRECTLY.
+def main []: nothing -> string {
+    help main
+}
+
+# Internal command. DO NOT RUN DIRECTLY.
+def --wrapped "main accept" [...rest: string]: nothing -> string {
+    radish -b steps/ -t --shuffle features/ ...$rest
+}
+
+# Internal command. DO NOT RUN DIRECTLY.
+def --wrapped "main accept cover" [...rest:string]: nothing -> string  {
+    (
+        coverage run --rcfile=radish_coverage.toml
+        ...(which radish).path -b steps/ -t --shuffle features/ ...$rest
+    )
+    coverage report -m --rcfile=radish_coverage.toml
+}

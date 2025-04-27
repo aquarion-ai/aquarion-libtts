@@ -7,21 +7,6 @@ def main []: nothing -> string {
     main commit
 }
 
-# Initialize a fresh Devbox
-#
-# This installs Hatch and pre-commit in an isolated environments.
-def "main init" []: nothing -> string {
-    (
-        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
-        $"hatch~=($env.AQ_HATCH_MINIMUM_VERSION)"
-        --with $"pip~=($env.AQ_PIP_MINIMUM_VERSION)"
-    )
-    (
-        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
-        $"pre-commit~=($env.AQ_PRE_COMMIT_MINIMUM_VERSION)"
-    )
-}
-
 # Run all code checks that should pass before committing.
 #
 # This performs the following checks in order and stops on the first failure:
@@ -59,23 +44,6 @@ def --wrapped "main accept cover" [
     ...rest: string # Extra arguments for radish
 ]: nothing -> string {
     hatch run accept:cover ...$rest
-}
-
-
-## Command run by Hatch scripts. DO NOT RUN DIRECTLY.
-
-# Internal command. Do not use.
-def --wrapped "main zzz_hatch accept" [...rest: string]: nothing -> string {
-    radish -b steps/ -t --shuffle features/ ...$rest
-}
-
-# Internal command. Do not use.
-def --wrapped "main zzz_hatch accept cover" [...rest:string]: nothing -> string  {
-    (
-        coverage run --rcfile=radish_coverage.toml
-        ...(which radish).path -b steps/ -t --shuffle features/ ...$rest
-    )
-    coverage report -m --rcfile=radish_coverage.toml
 }
 
 
