@@ -66,7 +66,7 @@ type = "uvenv"
 
 [tool.hatch.envs.hatch-uv]
 type = "pip-compile"
-lock-filename = "dev_requirements/requirements-{env_name}.txt"
+lock-filename = "dev_requirements/{env_name}/requirements.txt"
 #pip-compile-constraint = "default"
 pip-compile-resolver = "uv"
 pip-compile-hashes = true
@@ -78,7 +78,7 @@ dependencies = ["uv~=0.6.17"]
 
 [tool.hatch.envs.hatch-static-analysis]
 type = "pip-compile"
-lock-filename = "dev_requirements/requirements-{env_name}.txt"
+lock-filename = "dev_requirements/{env_name}/requirements.txt"
 #pip-compile-constraint = "default"
 pip-compile-resolver = "uv"
 pip-compile-hashes = true
@@ -91,7 +91,7 @@ config-path = "none"
 
 [tool.hatch.envs.hatch-test]
 type = "pip-compile"
-lock-filename = "dev_requirements/requirements-{env_name}.txt"
+lock-filename = "dev_requirements/{env_name}/requirements.txt"
 #pip-compile-constraint = "default"
 pip-compile-resolver = "uv"
 pip-compile-hashes = true
@@ -122,7 +122,7 @@ python = ["3.13"]
 
 [tool.hatch.envs.types]
 type = "pip-compile"
-lock-filename = "dev_requirements/requirements-{env_name}.txt"
+lock-filename = "dev_requirements/{env_name}/requirements.txt"
 #pip-compile-constraint = "default"
 pip-compile-resolver = "uv"
 pip-compile-hashes = true
@@ -137,7 +137,7 @@ check = "mypy --install-types --non-interactive {args:src/aquarion_tts tests}"
 
 [tool.hatch.envs.accept]
 type = "pip-compile"
-lock-filename = "dev_requirements/requirements-{env_name}.txt"
+lock-filename = "dev_requirements/{env_name}/requirements.txt"
 #pip-compile-constraint = "default"
 pip-compile-resolver = "uv"
 pip-compile-hashes = true
@@ -150,7 +150,6 @@ extra-dependencies = [
 [tool.hatch.envs.accept.scripts]
 test = ".hatch_check accept {args}"
 cover = ".hatch_check accept cover {args}"
-
 
 ### Coverage ###
 
