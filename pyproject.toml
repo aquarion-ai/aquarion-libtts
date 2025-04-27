@@ -2,20 +2,12 @@
 ### Core ###
 
 [build-system]
-requires = ["hatchling~=1.27.0"]
 build-backend = "hatchling.build"
+requires = ["hatchling~=1.27.0"]
 
 [project]
-name = "aquarion-tts"
-dynamic = ["version"]
-description = 'Text To Speech (TTS) beckend components for Aquarion AI'
-readme = "README.md"
-requires-python = ">=3.13"
-license = "AGPL-1.0-only"
-license-files = ["LICENSE"]
-keywords = ["aquarion", "ai", "tts", "speech"]
 authors = [
-  { name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org" },
+  {name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org"},
 ]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
@@ -35,27 +27,36 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = []
+description = 'Text To Speech (TTS) beckend components for Aquarion AI'
+dynamic = ["version"]
+keywords = ["aquarion", "ai", "tts", "speech"]
+license = "AGPL-1.0-only"
+license-files = ["LICENSE"]
+name = "aquarion-tts"
+readme = "README.md"
+requires-python = ">=3.13"
 
 [project.urls]
-Homepage = "https://github.com/aquarion-ai"
 Documentation = "https://github.com/aquarion-ai/aquarion-docs"
+Homepage = "https://github.com/aquarion-ai"
 #Changelog = ""
 Issues = "https://github.com/aquarion-ai/aquarion-tts/issues"
 Source = "https://github.com/aquarion-ai/aquarion-tts"
 #Download = ""
 
-
 ### Hatch ###
 
 [tool.hatch.env]
 requires = [
-    "hatch-pip-compile~=1.11.3",
-    "hatch-uvenv~=0.3.3",
+  "hatch-pip-compile~=1.11.3",
+  "hatch-uvenv~=0.3.3",
 ]
 
 [tool.hatch.version]
-path = "src/aquarion_tts/__about__.py"
+path = "src/aquarion_ai/aquarion_tts/__about__.py"
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/aquarion_ai"]
 
 # Env: default
 
@@ -65,37 +66,35 @@ type = "uvenv"
 # Env: hatch-uv
 
 [tool.hatch.envs.hatch-uv]
-type = "pip-compile"
 lock-filename = "dev_requirements/{env_name}/requirements.txt"
+type = "pip-compile"
 #pip-compile-constraint = "default"
-pip-compile-resolver = "uv"
+dependencies = ["uv~=0.6.17"]
 pip-compile-hashes = true
 pip-compile-installer = "uv"
-dependencies = ["uv~=0.6.17"]
-
+pip-compile-resolver = "uv"
 
 # Env: hatch-static-analysis
 
 [tool.hatch.envs.hatch-static-analysis]
-type = "pip-compile"
 lock-filename = "dev_requirements/{env_name}/requirements.txt"
+type = "pip-compile"
 #pip-compile-constraint = "default"
-pip-compile-resolver = "uv"
+config-path = "none"
+dependencies = ["ruff~=0.11.7"]
 pip-compile-hashes = true
 pip-compile-installer = "uv"
-dependencies = ["ruff~=0.11.7"]
-config-path = "none"
-
+pip-compile-resolver = "uv"
 
 # Env: hatch-test
 
 [tool.hatch.envs.hatch-test]
-type = "pip-compile"
 lock-filename = "dev_requirements/{env_name}/requirements.txt"
+type = "pip-compile"
 #pip-compile-constraint = "default"
-pip-compile-resolver = "uv"
 pip-compile-hashes = true
 pip-compile-installer = "uv"
+pip-compile-resolver = "uv"
 # These are Hatch's default dependencies, just with versions updates and more precisely
 # pinned down.  Use extra-dependencies for any other custom dependencies to keep them
 # separated.
@@ -117,71 +116,72 @@ extra-dependencies = []
 [[tool.hatch.envs.hatch-test.matrix]]
 python = ["3.13"]
 
-
 # Env: types
 
 [tool.hatch.envs.types]
-type = "pip-compile"
 lock-filename = "dev_requirements/{env_name}/requirements.txt"
+type = "pip-compile"
 #pip-compile-constraint = "default"
-pip-compile-resolver = "uv"
+extra-dependencies = ["mypy~=1.15.0"]
 pip-compile-hashes = true
 pip-compile-installer = "uv"
-extra-dependencies = ["mypy~=1.15.0"]
+pip-compile-resolver = "uv"
 
 [tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/aquarion_tts tests}"
-
+check = """
+    mypy --install-types --non-interactive {args:src/aquarion_ai/aquarion_tts tests}
+"""
 
 # Env: accept
 
 [tool.hatch.envs.accept]
-type = "pip-compile"
 lock-filename = "dev_requirements/{env_name}/requirements.txt"
+type = "pip-compile"
 #pip-compile-constraint = "default"
-pip-compile-resolver = "uv"
-pip-compile-hashes = true
-pip-compile-installer = "uv"
 extra-dependencies = [
   "coverage[toml]~=7.8.0",
-  "radish-bdd~=0.18.2"
+  "radish-bdd~=0.18.2",
 ]
+pip-compile-hashes = true
+pip-compile-installer = "uv"
+pip-compile-resolver = "uv"
 
 [tool.hatch.envs.accept.scripts]
-test = ".hatch_check accept {args}"
 cover = ".hatch_check accept cover {args}"
+test = ".hatch_check accept {args}"
 
 ### Coverage ###
 
 [tool.coverage.run]
-source_pkgs = ["aquarion_tts", "tests"]
 branch = true
-omit = ["src/aquarion_tts/__about__.py"]
 data_file = ".cache/coverage/coverage"
+omit = ["src/aquarion_ai/aquarion_tts/__about__.py"]
+source_pkgs = ["aquarion_ai.aquarion_tts", "tests"]
 
-[tool.coverage.paths]
-aquarion_tts = ["src/aquarion_tts", "*/aquarion-tts/src/aquarion_tts"]
-tests = ["tests", "*/aquarion-tts/tests"]
+# [tool.coverage.paths]
+# aquarion_tts = [
+#   "src/aquarion_ai/aquarion_tts",
+#   "*/aquarion-tts/src/aquarion_ai/aquarion_tts",
+# ]
+# tests = ["tests", "*/aquarion-tts/tests"]
 
 [tool.coverage.report]
-show_missing = true
 fail_under = 100
+show_missing = true
 #skip_covered = true  # Not sure if I want this.  To try later.
 exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
-
 
 ### Ruff ###
 
 [tool.ruff]
-line-length = 88 # Sticking with Black's standard for now instead of ruff's 120.
 cache-dir = ".cache/ruff"
+line-length = 88 # Sticking with Black's standard for now instead of ruff's 120.
 
 [tool.ruff.format]
 docstring-code-format = true
 #docstring-code-line-length = 80
 
 [tool.ruff.lint]
-select = ["ALL"]
 ignore = [
   "D211",
   "D212",
@@ -199,27 +199,35 @@ ignore = [
   "COM819",
   "D203",
 ]
+select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
 #"**/scripts/*" = ["INP001", "T201"]
-"**/tests/**/*" = ["PLC1901", "PLR2004", "PLR6301", "S", "TID252", "D103"]
 "**/steps/*" = ["INP001", "D103", "S"]
+"**/tests/**/*" = ["PLC1901", "PLR2004", "PLR6301", "S", "TID252", "D103"]
 
 [tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
 
 [tool.ruff.lint.isort]
-known-first-party = ["aquarion_tts"]
+known-first-party = ["aquarion_ai.aquarion_tts"]
 
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
 mark-parentheses = false
 
-
 ### mypy ###
 
 [tool.mypy]
+cache_dir = ".cache/mypy"
+explicit_package_bases = true
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src,$MYPY_CONFIG_FILE_DIR/typings"
+pretty = true
 python_version = "3.13"
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+
 strict = true
 # Strict mode enables the following:
 #   warn_unused_configs
@@ -236,30 +244,25 @@ strict = true
 #   no_implicit_reexport
 #   strict_equality
 #   extra_checks
+
+local_partial_types = true
+warn_incomplete_stub = true
 warn_no_return = true
 warn_unreachable = true
-local_partial_types = true
-show_error_context = true
-show_column_numbers = true
-show_error_codes = true
-pretty = true
-warn_incomplete_stub = true
-mypy_path = "typings"
-cache_dir = ".cache/mypy"
 warn_unused_configs = true
+
 # Going to try these out
-strict_concatenate = true
-disallow_any_expr = true
 disallow_any_decorated = true
 disallow_any_explicit = true
+disallow_any_expr = true
 extra_checks = true
 strict_bytes = true
-
+strict_concatenate = true
 
 ### pytest ###
 
 [tool.pytest.ini_options]
+addopts = "--strict-markers"
 cache_dir = ".cache/pytest"
 empty_parameter_set_mark = "xfail"
-addopts = "--strict-markers"
 xfail_strict = true

@@ -18,7 +18,7 @@
 
 """Placeholder test module."""
 
-from aquarion_tts import placeholder
+from aquarion_ai.aquarion_tts import placeholder
 
 
 def test_placeholder() -> None:

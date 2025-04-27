@@ -21,7 +21,7 @@
 from radish import given, then, when
 from radish.stepmodel import Step
 
-from aquarion_tts import placeholder
+from aquarion_ai.aquarion_tts import placeholder
 
 
 @given("placeholder is imported")
