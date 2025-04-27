@@ -4,6 +4,7 @@
 #
 # This installs Hatch and pre-commit in an isolated environments.
 def "main" []: nothing -> string {
+    pre-commit install
     (
         uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
         $"hatch~=($env.AQ_HATCH_MINIMUM_VERSION)"
