@@ -21,7 +21,6 @@ Experiment in creating a scalable local AI voice chat bot.
 <!-- [![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/aquarion-ai/aquarion-tts/total)](https://github.com/aquarion-ai/aquarion-tts)
 [![GitHub Release Date](https://img.shields.io/github/release-date/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts) -->
 
-[![GitHub Org's stars](https://img.shields.io/github/stars/aquarion-ai)](https://github.com/aquarion-ai)
 [![GitHub Repo stars](https://img.shields.io/github/stars/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
 [![GitHub watchers](https://img.shields.io/github/watchers/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
 [![GitHub forks](https://img.shields.io/github/forks/aquarion-ai/aquarion-tts)](https://github.com/aquarion-ai/aquarion-tts)
