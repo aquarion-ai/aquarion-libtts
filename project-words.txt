@@ -3,14 +3,18 @@ analyzer
 Aquarion
 beckend
 celerybeat
+colorful
 cython
 defenses
 devbox
 Devboxes
 dmypy
+docopt
 docstrings
+execnet
 favor
 htmlcov
+iniconfig
 ionide
 ipynb
 ipython
@@ -26,6 +30,7 @@ nushell
 pipenv
 Pipfile
 pkgs
+pluggy
 psutil
 pybuilder
 pycache
@@ -37,6 +42,7 @@ pypa
 pypackages
 pyproject
 pyrightconfig
+pysingleton
 pytest
 pytype
 pyupgrade
