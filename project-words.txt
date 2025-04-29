@@ -21,6 +21,7 @@ ipython
 isort
 Krys
 kwargs
+libtts
 linters
 mkdocs
 mypy

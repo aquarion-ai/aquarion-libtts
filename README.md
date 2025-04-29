@@ -1,4 +1,4 @@
-# Aquarion AI - Text To Speech (TTS)
+# Aquarion AI - Text To Speech (TTS) Library
 
 Experiment in creating a scalable local AI voice chat bot.
 
@@ -57,7 +57,8 @@ enough to support multiple alternate STT, LLM and TTS models/engines/options.
 
 ### About this Repository
 
-The repository contains the Text To Speech (TTS) backend components for Aquarion AI.
+The repository contains the library of Text To Speech (TTS) backend components for
+Aquarion AI.
 
 ### Disclaimer
 

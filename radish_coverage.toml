@@ -1,8 +1,8 @@
 [tool.coverage.run]
 branch = true
 data_file = ".cache/radish/coverage"
-omit = ["src/aquarion_ai/aquarion_tts/__about__.py"]
-source_pkgs = ["aquarion_ai.aquarion_tts"]
+omit = ["src/aquarion/libs/libtts/__about__.py"]
+source_pkgs = ["aquarion"]
 
 [tool.coverage.report]
 fail_under = 100

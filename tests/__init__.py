@@ -1,1 +1,1 @@
-"""Tests for aquarion_tts."""
+"""Tests for libtts."""

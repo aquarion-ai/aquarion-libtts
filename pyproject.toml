@@ -27,12 +27,12 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = []
-description = 'Text To Speech (TTS) beckend components for Aquarion AI'
+description = 'Text To Speech (TTS) beckend library for Aquarion AI'
 dynamic = ["version"]
 keywords = ["aquarion", "ai", "tts", "speech"]
-license = "AGPL-1.0-only"
+license = "AGPL-3.0-only"
 license-files = ["LICENSE"]
-name = "aquarion-tts"
+name = "aquarion-libtts"
 readme = "README.md"
 requires-python = ">=3.13"
 
@@ -53,10 +53,10 @@ requires = [
 ]
 
 [tool.hatch.version]
-path = "src/aquarion_ai/aquarion_tts/__about__.py"
+path = "src/aquarion/libs/libtts/__about__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/aquarion_ai"]
+packages = ["src/aquarion"]
 
 # Env: default
 
@@ -129,7 +129,7 @@ type = "pip-compile"
 
 [tool.hatch.envs.types.scripts]
 check = """
-    mypy --install-types --non-interactive {args:src/aquarion_ai/aquarion_tts tests}
+    mypy --install-types --non-interactive {args:src tests}
 """
 
 # Env: accept
@@ -155,15 +155,8 @@ test = ".hatch_check accept {args}"
 [tool.coverage.run]
 branch = true
 data_file = ".cache/coverage/coverage"
-omit = ["src/aquarion_ai/aquarion_tts/__about__.py"]
-source_pkgs = ["aquarion_ai.aquarion_tts", "tests"]
-
-# [tool.coverage.paths]
-# aquarion_tts = [
-#   "src/aquarion_ai/aquarion_tts",
-#   "*/aquarion-tts/src/aquarion_ai/aquarion_tts",
-# ]
-# tests = ["tests", "*/aquarion-tts/tests"]
+omit = ["src/aquarion/libs/libtts/__about__.py"]
+source_pkgs = ["aquarion", "tests"]
 
 [tool.coverage.report]
 exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
@@ -209,7 +202,7 @@ select = ["ALL"]
 ban-relative-imports = "all"
 
 [tool.ruff.lint.isort]
-known-first-party = ["aquarion_ai.aquarion_tts"]
+known-first-party = ["aquarion.libs.libtts"]
 
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
