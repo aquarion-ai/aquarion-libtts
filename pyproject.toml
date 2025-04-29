@@ -41,8 +41,8 @@ requires-python = ">=3.13"
 Documentation = "https://github.com/aquarion-ai/aquarion-docs"
 #Download = ""
 Homepage = "https://github.com/aquarion-ai"
-Issues = "https://github.com/aquarion-ai/aquarion-tts/issues"
-Source = "https://github.com/aquarion-ai/aquarion-tts"
+Issues = "https://github.com/aquarion-ai/aquarion-libtts/issues"
+Source = "https://github.com/aquarion-ai/aquarion-libtts"
 
 ### Hatch ###
 

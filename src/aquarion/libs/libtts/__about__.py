@@ -1,4 +1,4 @@
-# Part of the aquarion-tts library of the Aquarion AI project.
+# Part of the aquarion-libtts library of the Aquarion AI project.
 # Copyright (C) 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
 #
 # This program is free software: you can redistribute it and/or modify it under the
