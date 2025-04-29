@@ -5,13 +5,12 @@ name: aquarion-libtts
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
-
   test:
     runs-on: ubuntu-24.04
     strategy:
@@ -27,19 +26,19 @@ jobs:
         uses: jetify-com/devbox-install-action@v0.12.0
 
       - name: Initialize environment
-        run: init --ci
+        run: devbox run init --ci
 
       - name: Check types
-        run: check types
+        run: devbox run check types
 
       - name: Check lint
-        run: check lint
+        run: devbox run check lint
 
       - name: Run tests on ${{ matrix.python-version }}
-        run: check test cover -py ${{ matrix.python-version }}
+        run: devbox run check test cover -py ${{ matrix.python-version }}
 
       - name: Run acceptance tests
-        run: check accept cover
+        run: devbox run check accept cover
 
       - name: Run security checks
-        run: check sec
+        run: devbox run check sec

@@ -10,6 +10,7 @@
         "ms-python.python",
         "redhat.vscode-yaml",
         "editorconfig.editorconfig",
-        "be5invis.toml"
+        "be5invis.toml",
+        "github.vscode-github-actions"
     ]
 }

@@ -19,6 +19,7 @@ ionide
 ipynb
 ipython
 isort
+jetify
 Krys
 kwargs
 libtts
