@@ -34,13 +34,6 @@ jobs:
                   path: |
                       ~/.local/share/uv/python
 
-            - name: Cache Hatch Pythons
-              uses: actions/cache@v4
-              with:
-                  key: hatch-pythons
-                  path: |
-                      ~/.local/share/hatch/pythons
-
             - name: Cache uv dependencies
               uses: actions/cache@v4
               with:
@@ -54,6 +47,13 @@ jobs:
                   key: pip-deps
                   path: |
                       ~/.cache/pip
+
+            # - name: Cache Hatch Pythons
+            #   uses: actions/cache@v4
+            #   with:
+            #       key: hatch-pythons
+            #       path: |
+            #           ~/.local/share/hatch/pythons
 
             - name: Initialize environment
               run: devbox run init --ci
