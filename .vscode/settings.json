@@ -36,5 +36,6 @@
     "files.trimTrailingWhitespace": true,
     "ruff.path": [
         "hatch run hatch-static-analysis:ruff"
-    ]
+    ],
+    "yaml.format.printWidth": 88
 }
