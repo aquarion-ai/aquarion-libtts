@@ -26,32 +26,35 @@ jobs:
 
             - name: Install devbox # Has it's own cache
               uses: jetify-com/devbox-install-action@v0.12.0
+              with:
+                  enable-cache: "true"
+                  devbox-version: "0.14.2"
 
             - name: Cache uv Python
               uses: actions/cache@v4
               with:
-                  key: uv-python-${{ hashFiles('/devbox.json') }}
+                  key: uv-python-${{ hashFiles('devbox.json') }}
                   path: |
                       ~/.local/share/uv/python
 
             - name: Cache uv dependencies
               uses: actions/cache@v4
               with:
-                  key: uv-deps-${{ hashFiles('/dev_requirements/**/requirements.txt', '/uv.lock') }}
+                  key: uv-deps-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
                   path: |
                       ~/.cache/uv
 
             - name: Cache pip dependencies
               uses: actions/cache@v4
               with:
-                  key: pip-deps-${{ hashFiles('/dev_requirements/**/requirements.txt', '/uv.lock') }}
+                  key: pip-deps-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
                   path: |
                       ~/.cache/pip
 
             # - name: Cache Hatch Pythons
             #   uses: actions/cache@v4
             #   with:
-            #       key: hatch-pythons-${{ hashFiles('/dev_requirements/hatch-test.py*/requirements.txt') }}
+            #       key: hatch-pythons-${{ hashFiles('dev_requirements/hatch-test.py*/requirements.txt') }}
             #       path: |
             #           ~/.local/share/hatch/pythons
 
