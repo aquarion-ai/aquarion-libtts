@@ -30,28 +30,28 @@ jobs:
             - name: Cache uv Python
               uses: actions/cache@v4
               with:
-                  key: uv-python
+                  key: uv-python-${{ hashFiles('/devbox.json') }}
                   path: |
                       ~/.local/share/uv/python
 
             - name: Cache uv dependencies
               uses: actions/cache@v4
               with:
-                  key: uv-deps
+                  key: uv-deps-${{ hashFiles('/dev_requirements/**/requirements.txt', '/uv.lock') }}
                   path: |
                       ~/.cache/uv
 
             - name: Cache pip dependencies
               uses: actions/cache@v4
               with:
-                  key: pip-deps
+                  key: pip-deps-${{ hashFiles('/dev_requirements/**/requirements.txt', '/uv.lock') }}
                   path: |
                       ~/.cache/pip
 
             # - name: Cache Hatch Pythons
             #   uses: actions/cache@v4
             #   with:
-            #       key: hatch-pythons
+            #       key: hatch-pythons-${{ hashFiles('/dev_requirements/hatch-test.py*/requirements.txt') }}
             #       path: |
             #           ~/.local/share/hatch/pythons
 
