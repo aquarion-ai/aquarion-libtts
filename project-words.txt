@@ -61,6 +61,7 @@ stepmodel
 subclassing
 uvenv
 venv
+venvs
 webassets
 xdist
 xfail

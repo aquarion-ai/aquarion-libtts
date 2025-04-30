@@ -58,6 +58,20 @@ jobs:
             #       path: |
             #           ~/.local/share/hatch/pythons
 
+            - name: Cache Hatch virtual environments
+              uses: actions/cache@v4
+              with:
+                  key: hatch-venvs-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
+                  path: |
+                      ~/.local/share/hatch/env
+
+            - name: Cache dev tool caches
+              uses: actions/cache@v4
+              with:
+                  key: dev-tool-caches-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
+                  path: |
+                      .cache
+
             - name: Initialize environment
               run: devbox run init --ci
 
