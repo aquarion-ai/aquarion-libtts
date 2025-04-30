@@ -14,6 +14,7 @@ Experiment in creating a scalable local AI voice chat bot.
 [![PyPI - License](https://img.shields.io/pypi/l/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/aquarion-libtts)](https://pypi.org/project/aquarion-libtts) -->
 
+[![build](https://github.com/aquarion-ai/aquarion-libtts/actions/workflows/build.yml/badge.svg)](https://github.com/aquarion-ai/aquarion-libtts/actions/workflows/build.yml)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/aquarion-ai/aquarion-libtts)](https://github.com/aquarion-ai/aquarion-libtts)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-closed/aquarion-ai/aquarion-libtts)](https://github.com/aquarion-ai/aquarion-libtts)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/aquarion-ai/aquarion-libtts)](https://github.com/aquarion-ai/aquarion-libtts)
