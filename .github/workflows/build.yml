@@ -48,12 +48,12 @@ jobs:
                       ~/.cache/pip
                       ~/.local/share/hatch/env
 
-            - name: Cache Hatch Pythons
-              uses: actions/cache@v4
-              with:
-                  key: hatch-pythons-${{ hashFiles('dev_requirements/hatch-test.*/requirements.txt') }}
-                  restore-keys: hatch-pythons
-                  path: ~/.local/share/hatch/pythons
+            # - name: Cache Hatch Pythons
+            #   uses: actions/cache@v4
+            #   with:
+            #       key: hatch-pythons-${{ hashFiles('dev_requirements/hatch-test.*/requirements.txt') }}
+            #       restore-keys: hatch-pythons
+            #       path: ~/.local/share/hatch/pythons
 
             - name: Cache .cache and Trivy DB
               uses: actions/cache@v4
