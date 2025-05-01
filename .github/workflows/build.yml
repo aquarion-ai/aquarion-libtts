@@ -34,43 +34,35 @@ jobs:
               uses: actions/cache@v4
               with:
                   key: uv-python-${{ hashFiles('devbox.json') }}
+                  restore-keys: uv-python
                   path: |
                       ~/.local/share/uv/python
 
-            - name: Cache uv dependencies
+            - name: Cache dependencies and venvs
               uses: actions/cache@v4
               with:
-                  key: uv-deps-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
+                  key: dependencies-venvs-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
+                  restore-keys: dependencies-venvs
                   path: |
                       ~/.cache/uv
-
-            - name: Cache pip dependencies
-              uses: actions/cache@v4
-              with:
-                  key: pip-deps-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
-                  path: |
                       ~/.cache/pip
-
-            # - name: Cache Hatch Pythons
-            #   uses: actions/cache@v4
-            #   with:
-            #       key: hatch-pythons-${{ hashFiles('dev_requirements/hatch-test.py*/requirements.txt') }}
-            #       path: |
-            #           ~/.local/share/hatch/pythons
-
-            - name: Cache Hatch virtual environments
-              uses: actions/cache@v4
-              with:
-                  key: hatch-venvs-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
-                  path: |
                       ~/.local/share/hatch/env
 
-            - name: Cache dev tool caches
+            - name: Cache Hatch Pythons
               uses: actions/cache@v4
               with:
-                  key: dev-tool-caches-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
+                  key: hatch-pythons-${{ hashFiles('dev_requirements/hatch-test.*/requirements.txt') }}
+                  restore-keys: hatch-pythons
+                  path: ~/.local/share/hatch/pythons
+
+            - name: Cache .cache and Trivy DB
+              uses: actions/cache@v4
+              with:
+                  key: .cache-trivy-${{ github.run_id }}
+                  restore-keys: .cache-trivy
                   path: |
                       .cache
+                      ~/.cache/trivy
 
             - name: Initialize environment
               run: devbox run init --ci
