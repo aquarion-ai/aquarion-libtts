@@ -42,9 +42,11 @@ Experiment in creating a scalable local AI voice chat bot.
   - [About this Repository](#about-this-repository)
   - [Disclaimer](#disclaimer)
   - [License](#license)
+- [Developer Information](#developer-information)
   - [Development Standards](#development-standards)
-- [Installation](#installation)
-  - [Details](#details)
+  - [Developer Installation](#developer-installation)
+    - [Developer Installation Details](#developer-installation-details)
+- [User Information](#user-information)
 
 ## About
 
@@ -73,6 +75,8 @@ updates or maintenance or longevity.  Caveat Emptor.
 `aquarion-libtts` is distributed under the terms of the
 [AGPL-3.0-only](https://spdx.org/licenses/AGPL-3.0-only.html) license.
 
+## Developer Information
+
 ### Development Standards
 
 This project follows the following standard practices:
@@ -80,9 +84,9 @@ This project follows the following standard practices:
 - [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) for
   commit messages.
 - [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) for versioning.
-- [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+- [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) for the changelog.
 
-## Installation
+### Developer Installation
 
 1. Clone this repository.
 
@@ -98,7 +102,7 @@ This project follows the following standard practices:
    check --help
    ```
 
-### Details
+#### Developer Installation Details
 
 - Devbox is a tool for creating per-project development environments using Nix.  It is
   used in this project for non-Python dev tools and bootstrapping.
@@ -117,3 +121,7 @@ This project follows the following standard practices:
 - `check push` runs all common tasks, like type checking, formatting, linting, unit
    tests, acceptance tests, coverage checks, etc.
 - On first run, `check push` will download and install several files, etc.
+
+## User Information
+
+TODO
