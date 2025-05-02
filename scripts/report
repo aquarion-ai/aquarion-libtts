@@ -1,0 +1,36 @@
+#!/usr/bin/env nu
+
+# Provide various reporting capabilities.
+def main []: nothing -> string {
+    help main
+}
+
+# Print both the test and acceptance coverage reports.
+def "main coverage" []: nothing -> string {
+    print "\nTest Coverage:\n"
+    main coverage test
+    print "\nAcceptance Coverage:\n"
+    main coverage accept
+}
+
+# Print the most recent test coverage report.
+def "main coverage test" [
+    --total (-t) # Print only to the total.
+]: nothing -> string {
+    mut $extra = []
+    if $total { $extra = ["--format", "total"] }
+    # It is easier to just use the coverage tool from the accept environment than to try
+    # and figure out which matrixed hatch-test coverage tool to run.
+    # This could in principle least to a version mismatch, but the intention is to keep
+    # all versions of a tool the same in all environments, so it should be fine.
+    hatch run accept:coverage report ...$extra
+}
+
+# Print the most recent acceptance test coverage report.
+def "main coverage accept" [
+    --total (-t) # Print only to the total.
+]: nothing -> string {
+    mut $extra = []
+    if $total { $extra = ["--format", "total"] }
+    hatch run accept:coverage report --rcfile=radish_coverage.toml ...$extra
+}
