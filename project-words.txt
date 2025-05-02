@@ -3,6 +3,7 @@ analyzer
 Aquarion
 beckend
 celerybeat
+Color
 colorful
 cython
 defenses
@@ -24,6 +25,7 @@ Krys
 kwargs
 libtts
 linters
+matrixed
 mkdocs
 mypy
 noncommercially
@@ -52,6 +54,7 @@ rcfile
 reexport
 rerunfailures
 ropeproject
+schneegans
 scrapy
 sdist
 Spyder

@@ -81,3 +81,21 @@ jobs:
 
             - name: Run security checks
               run: devbox run check sec
+
+            - name: Get test coverage total
+              run: |
+                  export TOTAL=$(devbox run report coverage test --total)
+                  echo "total=$TOTAL" >> $GITHUB_ENV
+                  echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
+
+            - name: Create Coverage Badge
+              uses: schneegans/dynamic-badges-action@v1.7.0
+              with:
+                  auth: ${{ secrets.GIST_SECRET }}
+                  gistID: 079b402971d82c07d05c74f37c57b088
+                  filename: ${{ env.GITHUB_REPOSITORY }}__${{ env.GITHUB_REF_NAME }}.json
+                  label: Coverage
+                  message: ${{ env.total }}%
+                  minColorRange: 50
+                  maxColorRange: 90
+                  valColorRange: ${{ env.total }}
