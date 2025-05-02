@@ -93,7 +93,7 @@ jobs:
               with:
                   auth: ${{ secrets.GIST_SECRET }}
                   gistID: 079b402971d82c07d05c74f37c57b088
-                  filename: ${{ env.GITHUB_REPOSITORY }}__${{ env.GITHUB_REF_NAME }}.json
+                  filename: ${{ github.repository }}__${{ github.ref_name }}.json
                   label: Coverage
                   message: ${{ env.total }}%
                   minColorRange: 50
