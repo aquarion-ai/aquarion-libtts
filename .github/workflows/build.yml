@@ -100,14 +100,26 @@ jobs:
       - name: Get repo name
         run: echo "repo_name=${{ github.repository }}" | sed "s/\//_/" >> $GITHUB_ENV
 
-      - name: Create Coverage Badge
+      - name: Create Test Coverage Badge
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: 079b402971d82c07d05c74f37c57b088
-          filename: ${{ env.repo_name }}__${{ github.ref_name }}.json
+          filename: ${{ env.repo_name }}__${{ github.ref_name }}__test.json
           label: coverage
           message: ${{ env.test_total }}%
           minColorRange: 50
           maxColorRange: 90
           valColorRange: ${{ env.test_total }}
+
+      - name: Create Acceptance Coverage Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 079b402971d82c07d05c74f37c57b088
+          filename: ${{ env.repo_name }}__${{ github.ref_name }}__accept.json
+          label: coverage
+          message: ${{ env.accept_total }}%
+          minColorRange: 50
+          maxColorRange: 90
+          valColorRange: ${{ env.accept_total }}
