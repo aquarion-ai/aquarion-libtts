@@ -86,10 +86,13 @@ jobs:
         run: |
           export TEST_TOTAL=$(devbox run report coverage test --total)
           export ACCEPT_TOTAL=$(devbox run report coverage accept --total)
+          export TOTAL=$(devbox run report coverage total)
           echo "test_total=$TEST_TOTAL" >> $GITHUB_ENV
           echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_ENV
+          echo "total=$TOTAL" >> $GITHUB_ENV
           echo "### Total test coverage: ${TEST_TOTAL}%" >> $GITHUB_STEP_SUMMARY
           echo "### Total acceptance test coverage: ${ACCEPT_TOTAL}%" >> $GITHUB_STEP_SUMMARY
+          echo "### Combined total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
 
       - name: Get repo name
         run: echo "repo_name=${{ github.repository }}" | sed "s/\//_/" >> $GITHUB_ENV
@@ -101,7 +104,7 @@ jobs:
           gistID: 079b402971d82c07d05c74f37c57b088
           filename: ${{ env.repo_name }}__${{ github.ref_name }}.json
           label: coverage
-          message: ${{ env.test_total }}%
+          message: ${{ env.total }}%
           minColorRange: 50
           maxColorRange: 90
-          valColorRange: ${{ env.test_total }}
+          valColorRange: ${{ env.total }}
