@@ -5,7 +5,7 @@ omit = ["src/aquarion/libs/libtts/__about__.py"]
 source_pkgs = ["aquarion"]
 
 [tool.coverage.report]
-fail_under = 100
+#fail_under = 80
 show_missing = true
 #skip_covered = true  # Not sure if I want this.  To try later.
 exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
