@@ -6,105 +6,102 @@
 name: build
 
 on:
-    push:
-        branches: ["main"]
-    pull_request:
-        branches: ["main"]
-    workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
-    test:
-        runs-on: ubuntu-24.04
-        strategy:
-            fail-fast: false
-            matrix:
-                python-version: ["3.13"]
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.13"]
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Install devbox # Has it's own cache
-              uses: jetify-com/devbox-install-action@v0.12.0
-              with:
-                  enable-cache: "true"
-                  devbox-version: "0.14.2"
+      - name: Install devbox # Has it's own cache
+        uses: jetify-com/devbox-install-action@v0.12.0
+        with:
+          enable-cache: "true"
+          devbox-version: "0.14.2"
 
-            - name: Cache uv Python
-              uses: actions/cache@v4
-              with:
-                  key: uv-python-${{ hashFiles('devbox.json') }}
-                  restore-keys: uv-python
-                  path: |
-                      ~/.local/share/uv/python
+      - name: Cache uv Python
+        uses: actions/cache@v4
+        with:
+          key: uv-python-${{ hashFiles('devbox.json') }}
+          restore-keys: uv-python
+          path: |
+            ~/.local/share/uv/python
 
-            - name: Cache dependencies and venvs
-              uses: actions/cache@v4
-              with:
-                  key: dependencies-venvs-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
-                  restore-keys: dependencies-venvs
-                  path: |
-                      ~/.cache/uv
-                      ~/.cache/pip
-                      ~/.local/share/hatch/env
+      - name: Cache dependencies and venvs
+        uses: actions/cache@v4
+        with:
+          key: dependencies-venvs-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
+          restore-keys: dependencies-venvs
+          path: |
+            ~/.cache/uv
+            ~/.cache/pip
+            ~/.local/share/hatch/env
 
-            # - name: Cache Hatch Pythons
-            #   uses: actions/cache@v4
-            #   with:
-            #       key: hatch-pythons-${{ hashFiles('dev_requirements/hatch-test.*/requirements.txt') }}
-            #       restore-keys: hatch-pythons
-            #       path: ~/.local/share/hatch/pythons
+      # - name: Cache Hatch Pythons
+      #   uses: actions/cache@v4
+      #   with:
+      #       key: hatch-pythons-${{ hashFiles('dev_requirements/hatch-test.*/requirements.txt') }}
+      #       restore-keys: hatch-pythons
+      #       path: ~/.local/share/hatch/pythons
 
-            - name: Cache .cache and Trivy DB
-              uses: actions/cache@v4
-              with:
-                  key: .cache-trivy-${{ github.run_id }}
-                  restore-keys: .cache-trivy
-                  path: |
-                      .cache
-                      ~/.cache/trivy
+      - name: Cache .cache and Trivy DB
+        uses: actions/cache@v4
+        with:
+          key: .cache-trivy-${{ github.run_id }}
+          restore-keys: .cache-trivy
+          path: |
+            .cache
+            ~/.cache/trivy
 
-            - name: Initialize environment
-              run: devbox run init --ci
+      - name: Initialize environment
+        run: devbox run init --ci
 
-            - name: Check types
-              run: devbox run check types
+      - name: Check types
+        run: devbox run check types
 
-            - name: Check lint
-              run: devbox run check lint
+      - name: Check lint
+        run: devbox run check lint
 
-            - name: Run tests on ${{ matrix.python-version }}
-              run: devbox run check test cover -py ${{ matrix.python-version }}
+      - name: Run tests on ${{ matrix.python-version }}
+        run: devbox run check test cover -py ${{ matrix.python-version }}
 
-            - name: Run acceptance tests
-              run: devbox run check accept cover
+      - name: Run acceptance tests
+        run: devbox run check accept cover
 
-            - name: Run security checks
-              run: devbox run check sec
+      - name: Run security checks
+        run: devbox run check sec
 
-            - name: Get test coverage total
-              run: |
-                  export TEST_TOTAL=$(devbox run report coverage test --total)
-                  echo "test_total=$TEST_TOTAL" >> $GITHUB_ENV
-                  echo "### Total test coverage: ${TEST_TOTAL}%" >> $GITHUB_STEP_SUMMARY
+      - name: Get test coverage totals
+        run: |
+          export TEST_TOTAL=$(devbox run report coverage test --total)
+          export ACCEPT_TOTAL=$(devbox run report coverage accept --total)
+          echo "test_total=$TEST_TOTAL" >> $GITHUB_ENV
+          echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_ENV
+          echo "### Total test coverage: ${TEST_TOTAL}%" >> $GITHUB_STEP_SUMMARY
+          echo "### Total acceptance test coverage: ${ACCEPT_TOTAL}%" >> $GITHUB_STEP_SUMMARY
 
-            - name: Get acceptance coverage total
-              run: |
-                  export ACCEPT_TOTAL=$(devbox run report coverage accept --total)
-                  echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_ENV
-                  echo "### Total acceptance test coverage: ${ACCEPT_TOTAL}%" >> $GITHUB_STEP_SUMMARY
+      - name: Get repo name
+        run: echo "repo_name=${{ github.repository }}" | sed "s/\//_/" >> $GITHUB_ENV
 
-            - name: Get repo name
-              run: echo "repo_name=${{ github.repository }}" | sed "s/\//_/" >> $GITHUB_ENV
-
-            - name: Create Coverage Badge
-              uses: schneegans/dynamic-badges-action@v1.7.0
-              with:
-                  auth: ${{ secrets.GIST_SECRET }}
-                  gistID: 079b402971d82c07d05c74f37c57b088
-                  filename: ${{ env.repo_name }}__${{ github.ref_name }}.json
-                  label: coverage
-                  message: ${{ env.test_total }}%
-                  minColorRange: 50
-                  maxColorRange: 90
-                  valColorRange: ${{ env.test_total }}
+      - name: Create Coverage Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 079b402971d82c07d05c74f37c57b088
+          filename: ${{ env.repo_name }}__${{ github.ref_name }}.json
+          label: coverage
+          message: ${{ env.test_total }}%
+          minColorRange: 50
+          maxColorRange: 90
+          valColorRange: ${{ env.test_total }}
