@@ -42,11 +42,11 @@ Experiment in creating a scalable local AI voice chat bot.
   - [About this Repository](#about-this-repository)
   - [Disclaimer](#disclaimer)
   - [License](#license)
+- [User Information](#user-information)
 - [Developer Information](#developer-information)
   - [Development Standards](#development-standards)
   - [Developer Installation](#developer-installation)
     - [Developer Installation Details](#developer-installation-details)
-- [User Information](#user-information)
 
 ## About
 
@@ -74,6 +74,11 @@ updates or maintenance or longevity.  Caveat Emptor.
 
 `aquarion-libtts` is distributed under the terms of the
 [AGPL-3.0-only](https://spdx.org/licenses/AGPL-3.0-only.html) license.
+
+## User Information
+
+For user documentation, see the
+[aquarion-docs](https://github.com/aquarion-ai/aquarion-docs) project.
 
 ## Developer Information
 
@@ -121,7 +126,3 @@ This project follows the following standard practices:
 - `check push` runs all common tasks, like type checking, formatting, linting, unit
    tests, acceptance tests, coverage checks, etc.
 - On first run, `check push` will download and install several files, etc.
-
-## User Information
-
-TODO
