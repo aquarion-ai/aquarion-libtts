@@ -34,13 +34,3 @@ def "main coverage accept" [
     if $total { $extra = ["--format", "total"] }
     hatch run accept:coverage report --rcfile=radish_coverage.toml ...$extra
 }
-
-# Print the combined test and acceptance coverage total percentage.
-#
-# Range is 0% to 100%.
-def "main coverage total" []: nothing -> string {
-    let test_total = (main coverage test -t | into int)
-    let accept_total = (main coverage accept -t | into int)
-    let combined_total = ($test_total + $accept_total) / 2
-    $combined_total
-}
