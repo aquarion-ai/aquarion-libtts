@@ -21,6 +21,7 @@ ipynb
 ipython
 isort
 jetify
+Kokoro
 Krys
 kwargs
 libtts
