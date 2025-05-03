@@ -23,4 +23,7 @@ def --wrapped "main accept cover" [...rest:string]: nothing -> string  {
     coverage report -m ...$coverage_args
 }
 
+# Internal command. DO NOT RUN DIRECTLY.
+def --wrapped "main accept wip" [...rest: string]: nothing -> string {
+    radish ...$radish_common_args --wip --tags wip ...$rest
 }

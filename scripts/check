@@ -98,6 +98,14 @@ def --wrapped "main accept cover" [
     hatch run accept:cover ...$rest
 }
 
+# Run only the work-in-progress acceptance tests.
+#
+# These are not included in regular acceptance test runs.
+def --wrapped "main accept wip" [
+    ...rest: string # Extra arguments for radish
+]: nothing -> string {
+    hatch run accept:wip ...$rest
+}
 
 ### Individual security tasks
 
