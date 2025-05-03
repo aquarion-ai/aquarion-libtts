@@ -1,7 +1,5 @@
 # Aquarion AI - Text To Speech (TTS) Library
 
-foo
-
 Experiment in creating a scalable local AI voice chat bot.
 
 [![Static Badge](https://img.shields.io/badge/Part_of-Aquarion_AI-blue)](https://github.com/aquarion-ai)
