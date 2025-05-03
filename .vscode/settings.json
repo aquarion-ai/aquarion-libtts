@@ -26,6 +26,9 @@
     "cSpell.hideAddToDictionaryCodeActions": false,
     "cSpell.language": "en-GB",
     "cSpell.validateDirectives": true,
+    "conventionalCommits.scopes": [
+        "accept"
+    ],
     "editor.defaultFormatter": null,
     "editor.detectIndentation": false,
     "editor.formatOnSave": true,
