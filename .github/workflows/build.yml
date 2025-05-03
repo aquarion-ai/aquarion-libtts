@@ -118,8 +118,8 @@ jobs:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: 079b402971d82c07d05c74f37c57b088
           filename: ${{ env.repo_name }}__${{ github.ref_name }}__accept.json
-          label: coverage
+          label: acceptance
           message: ${{ env.accept_total }}%
           minColorRange: 50
-          maxColorRange: 90
+          maxColorRange: 80
           valColorRange: ${{ env.accept_total }}
