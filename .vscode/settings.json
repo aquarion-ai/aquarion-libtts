@@ -35,7 +35,6 @@
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": false,
     "files.trimTrailingWhitespace": true,
-    "foo": "bar",
     "ruff.path": [
         "hatch run hatch-static-analysis:ruff"
     ],
