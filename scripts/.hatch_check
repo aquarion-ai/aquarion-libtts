@@ -5,16 +5,22 @@ def main []: nothing -> string {
     help main
 }
 
+let radish_common_args = ["-b", "steps/", "--shuffle", "features/", "-f", "dots"]
+let radish_normal_args = ["--tags", "not wip"]
+let coverage_args = ["--rcfile=radish_coverage.toml"]
+
 # Internal command. DO NOT RUN DIRECTLY.
 def --wrapped "main accept" [...rest: string]: nothing -> string {
-    radish -b steps/ -t --shuffle features/ ...$rest
+    radish ...$radish_common_args ...$radish_normal_args ...$rest
 }
 
 # Internal command. DO NOT RUN DIRECTLY.
 def --wrapped "main accept cover" [...rest:string]: nothing -> string  {
     (
-        coverage run --rcfile=radish_coverage.toml
-        ...(which radish).path -b steps/ -t --shuffle features/ ...$rest
+        coverage run ...$coverage_args ...(which radish).path ...$radish_common_args
+        ...$radish_normal_args ...$rest
     )
-    coverage report -m --rcfile=radish_coverage.toml
+    coverage report -m ...$coverage_args
+}
+
 }
