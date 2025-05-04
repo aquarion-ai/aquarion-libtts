@@ -1,0 +1,10 @@
+command:
+  gitignore_excludes: true
+
+formatter:
+  type: basic
+  line_ending: lf
+  retain_line_breaks_single: true
+  #max_line_length: 88  # Breaks stuff. :(
+  trim_trailing_whitespace: true
+  eof_newline: true
