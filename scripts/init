@@ -14,6 +14,6 @@ def "main" [--ci]: nothing -> string {
             uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
             $"pre-commit~=($env.AQ_PRE_COMMIT_MINIMUM_VERSION)"
         )
-        pre-commit install
+        pre-commit install --install-hooks
     }
 }
