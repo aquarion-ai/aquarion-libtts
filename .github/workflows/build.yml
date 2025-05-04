@@ -71,8 +71,19 @@ jobs:
             .cache
             ~/.cache/trivy
 
+      - name: Cache pre-commit hooks
+        uses: actions/cache@v4
+        with:
+          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: pre-commit
+          path: |
+            ~/.cache/pre-commit
+
       - name: Initialize environment
         run: devbox run init --ci
+
+      - name: Check pre-commit and pre-push hooks
+        run: devbox run check pre all
 
       - name: Check types
         run: devbox run check types
