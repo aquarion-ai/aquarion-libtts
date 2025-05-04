@@ -43,6 +43,7 @@ pycodestyle
 pyenv
 Pyflakes
 pyflow
+pygrep
 pypa
 pypackages
 pyproject

@@ -36,6 +36,13 @@ repos:
       - id: pretty-format-json
         args: [--autofix, --indent, "4"]
       - id: trailing-whitespace
+
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks: # Most hooks from this repo are handled by Ruff instead.
+      - id: python-use-type-annotations
+      - id: text-unicode-replacement-char
+
   - repo: local
     hooks:
       - id: check_commit
@@ -48,6 +55,7 @@ repos:
         always_run: true
         fail_fast: true
         pass_filenames: false
+
   - repo: local
     hooks:
       - id: check_push
