@@ -80,7 +80,7 @@ jobs:
             ~/.cache/pre-commit
 
       - name: Initialize environment
-        run: devbox run init --ci
+        run: devbox run init
 
       - name: Check pre-commit and pre-push hooks
         run: devbox run check pre all
