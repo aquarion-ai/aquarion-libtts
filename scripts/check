@@ -67,28 +67,38 @@ def --wrapped "main lint" [
     hatch fmt ...$rest
 }
 
-# Run all pre-commit hooks on all files.
+# Run almost all pre-commit hooks on all files.
+#
+# The `check_commit` hook is not run.  Run `check commit` separately for that.
 def --wrapped "main pre" [
     ...rest: string # Extra arguments for pre-commit
-]: nothing -> string {
-    pre-commit run --all-files ...$rest
+]: nothing -> any {
+    let $temp_config = (filter_pre_commit_config "check_commit" "check_push")
+    echo $temp_config
+    pre-commit run -c $temp_config --all-files ...$rest
+    rm $temp_config
 }
 
-# Run all pre-push hooks on all files.
+# Run almost all pre-push hooks on all files.
+#
+# The `check_push` hook is not run.  Run `check push` separately for that.
 def --wrapped "main pre push" [
     ...rest: string # Extra arguments for pre-commit
 ]: nothing -> string {
     main pre --hook-stage pre-push ...$rest
 }
 
-# Run both pre-commit and pre-push hooks on all files.
+# Run almost all pre-commit and pre-push hooks on all files.
+#
+# The `check_commit` and `check_push` hooks are not run.  Run `check push` separately
+# for that.
 def --wrapped "main pre all" [
     ...rest: string # Extra arguments for pre-commit
 ]: nothing -> string {
     print Pre-commit...
     main pre ...$rest
     print Pre-push...
-    main pre --hook-stage pre-push ...$rest
+    main pre push
 }
 
 ### Individual testing tasks
@@ -153,4 +163,20 @@ def --wrapped "main sec secret" [
 def common []: nothing -> string {
     main types
     main lint
+}
+
+# Create a temporary copy of .pre-commit-config.yaml but with certain hooks removed.
+#
+# This is desired because pre-commit neither supports excluding certain hooks nor
+# including other config files.
+def filter_pre_commit_config [...filter_hooks: string] {
+    let orig_config = (open .pre-commit-config.yaml)
+    let orig_repos = $orig_config | get repos
+    let filtered_repos = $orig_repos | filter {|item|
+        not ($item.hooks.0.id in $filter_hooks)
+    }
+    let new_config = $orig_config | update repos $filtered_repos
+    let temp_file = (mktemp -t --suffix .yaml)
+    $new_config | to yaml | save -a $temp_file
+    $temp_file
 }
