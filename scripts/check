@@ -67,6 +67,29 @@ def --wrapped "main lint" [
     hatch fmt ...$rest
 }
 
+# Run all pre-commit hooks on all files.
+def --wrapped "main pre" [
+    ...rest: string # Extra arguments for pre-commit
+]: nothing -> string {
+    pre-commit run --all-files ...$rest
+}
+
+# Run all pre-push hooks on all files.
+def --wrapped "main pre push" [
+    ...rest: string # Extra arguments for pre-commit
+]: nothing -> string {
+    main pre --hook-stage pre-push ...$rest
+}
+
+# Run both pre-commit and pre-push hooks on all files.
+def --wrapped "main pre all" [
+    ...rest: string # Extra arguments for pre-commit
+]: nothing -> string {
+    print Pre-commit...
+    main pre ...$rest
+    print Pre-push...
+    main pre --hook-stage pre-push ...$rest
+}
 
 ### Individual testing tasks
 
