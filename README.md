@@ -111,7 +111,7 @@ This project follows the following standard practices:
    ```console
    devbox shell
    init
-   pre-commit run --all-files
+   check dep all
    check push
    check --help
    ```
@@ -122,10 +122,10 @@ This project follows the following standard practices:
   used in this project for non-Python dev tools and bootstrapping.
 - On first run, `devbox shell` will download and install all the needed system tools
   for the environment
-- pre-commit is a tool for running certain checks and fixes on the code before commits
-  and/or pushes.
 - On the first run, `init` will download and install the base Python version, needed
   commands, hooks, etc.
+- pre-commit is a tool for running certain checks and fixes on the code before commits
+  and/or pushes.  `check dep all` runs those hooks on all files.
 - **NOTE:** No commit, push or pull request should or will be accepted unless all
   pre-commit and pre-push hooks pass.  No exceptions!
 - Hatch is a tool for managing dependencies, builds, virtual environments and Python
@@ -134,4 +134,6 @@ This project follows the following standard practices:
   to do so.
 - `check push` runs all common tasks, like type checking, formatting, linting, unit
    tests, acceptance tests, coverage checks, etc.
-- On first run, `check push` will download and install several files, etc.
+- On first run, `check push` will also download and install several files, etc.
+- The `check` command has several sub-commands to help you while developing.  Check it
+  out. :smile_cat:
