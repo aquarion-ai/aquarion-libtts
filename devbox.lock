@@ -5,6 +5,54 @@
       "last_modified": "2025-04-17T05:47:26Z",
       "resolved": "github:NixOS/nixpkgs/ebe4301cbd8f81c4f8d3244b3632338bbeb6d49c?lastModified=1744868846&narHash=sha256-5RJTdUHDmj12Qsv7XOhuospjAjATNiTMElplWnJE9Hs%3D"
     },
+    "markdownlint-cli2@0.17.2": {
+      "last_modified": "2025-04-03T14:08:01Z",
+      "resolved": "github:NixOS/nixpkgs/2bfc080955153be0be56724be6fa5477b4eefabb#markdownlint-cli2",
+      "source": "devbox-search",
+      "version": "0.17.2",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/fijbycs2g9r458vc2jdgdjipp59sx5gm-markdownlint-cli2-0.17.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/fijbycs2g9r458vc2jdgdjipp59sx5gm-markdownlint-cli2-0.17.2"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qi1sc21nvr5564cpidmikc9vj4bh12pn-markdownlint-cli2-0.17.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/qi1sc21nvr5564cpidmikc9vj4bh12pn-markdownlint-cli2-0.17.2"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/l9pa44h2zz2r9gj15r6hgvf4rvz9x67b-markdownlint-cli2-0.17.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/l9pa44h2zz2r9gj15r6hgvf4rvz9x67b-markdownlint-cli2-0.17.2"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/q18k1wfldz6wlrxdyvc1zvlfcsxgzg62-markdownlint-cli2-0.17.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/q18k1wfldz6wlrxdyvc1zvlfcsxgzg62-markdownlint-cli2-0.17.2"
+        }
+      }
+    },
     "nushell@0.103.0": {
       "last_modified": "2025-03-23T05:31:05Z",
       "resolved": "github:NixOS/nixpkgs/dd613136ee91f67e5dba3f3f41ac99ae89c5406b#nushell",

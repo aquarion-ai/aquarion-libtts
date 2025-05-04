@@ -9,6 +9,7 @@
         "UV_NO_SYNC": "true"
     },
     "packages": {
+        "markdownlint-cli2": "0.17.2",
         "nushell": "0.103.0",
         "trivy": "0.61.0",
         "uv": "0.6.14"
