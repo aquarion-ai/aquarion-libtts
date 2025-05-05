@@ -21,4 +21,8 @@ def "main" []: nothing -> string {
         $"commitizen~=($env.AQ_COMMITIZEN_MINIMUM_VERSION)"
         --with $"cz-conventional-gitmoji~=($env.AQ_CZ_CONVENTIONAL_GITMOJI_MINIMUM_VERSION)"
     )
+    (
+        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
+        $"reuse~=($env.AQ_REUSE_MINIMUM_VERSION)"
+    )
 }

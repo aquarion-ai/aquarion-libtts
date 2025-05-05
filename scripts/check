@@ -39,6 +39,7 @@ def "main push" []: nothing -> string {
     main test cover
     main accept cover
     main sec
+    main licences
 }
 
 # Run all security checks.
@@ -101,6 +102,13 @@ def --wrapped "main pre all" [
     main pre ...$rest
     print Pre-push...
     main pre push
+}
+
+# Run licensing checks on all files
+def --wrapped "main licences" [
+    ...rest: string # Extra arguments for pre-commit
+]: nothing -> string {
+    reuse lint
 }
 
 ### Individual testing tasks
