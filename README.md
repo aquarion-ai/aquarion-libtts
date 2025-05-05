@@ -54,7 +54,7 @@ Experiment in creating a scalable local AI voice chat bot.
   - [About Aquarion AI](#about-aquarion-ai)
   - [About this Repository](#about-this-repository)
   - [Disclaimer](#disclaimer)
-  - [License](#copyright-and-license)
+  - [Copyright and Licence](#copyright-and-licence)
 - [User Information](#user-information)
 - [Developer Information](#developer-information)
   - [Development Standards](#development-standards)
@@ -84,15 +84,15 @@ While this project is FOSS and you are welcome to use it (if it ever becomes som
 usable), know that I am making this for myself. So do not expect any kind of support or
 updates or maintenance or longevity.  Caveat Emptor.
 
-### Copyright and License
+### Copyright and Licence
 
 - `aquarion-libtts` is © 2025-present by Krys Lawrence.
 
 - `aquarion-libtts` code is licensed under the terms of the
-  [AGPL-3.0-only](https://spdx.org/licenses/AGPL-3.0-only.html) license.
+  [AGPL-3.0-only](https://spdx.org/licenses/AGPL-3.0-only.html) licence.
 
 - `aquarion-libtts` documentation is licensed under the terms of the
-  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license.
+  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) licence.
 
 ## User Information
 
