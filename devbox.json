@@ -1,6 +1,8 @@
 {
     "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.14.2/.schema/devbox.schema.json",
     "env": {
+        "AQ_COMMITIZEN_MINIMUM_VERSION": "4.6.0",
+        "AQ_CZ_CONVENTIONAL_GITMOJI_MINIMUM_VERSION": "0.7.0",
         "AQ_HATCH_MINIMUM_VERSION": "1.14.1",
         "AQ_PIP_MINIMUM_VERSION": "25.1.0",
         "AQ_PRE_COMMIT_MINIMUM_VERSION": "4.2.0",

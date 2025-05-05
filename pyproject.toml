@@ -268,3 +268,8 @@ ignore-words = ["project-words.txt"]
 quiet-level = 0
 skip = ["__pycache__"]
 write-changes = true
+
+[tool.commitizen]
+major_version_zero = true
+name = "cz_gitmoji"
+update_changelog_on_bump = false

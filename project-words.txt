@@ -6,6 +6,7 @@ celerybeat
 codespell
 Color
 colorful
+commitizen
 cython
 defenses
 devbox
@@ -15,6 +16,7 @@ docopt
 docstrings
 execnet
 favor
+GITMOJI
 htmlcov
 iniconfig
 ionide
