@@ -103,6 +103,9 @@ jobs:
       - name: Run security checks
         run: devbox run check sec
 
+      - name: Run licence checks
+        run: devbox run check licences
+
       - name: Get test coverage totals
         run: |
           export TEST_TOTAL=$(devbox run report coverage test --total)
