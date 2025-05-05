@@ -261,7 +261,7 @@ empty_parameter_set_mark = "xfail"
 xfail_strict = true
 
 [tool.codespell]
-builtin = ["clear", "rare", "informal", "usage", "names"]
+builtin = ["clear", "rare", "usage", "names"]
 check-filenames = true
 check-hidden = false
 ignore-words = ["project-words.txt"]
