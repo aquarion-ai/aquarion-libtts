@@ -56,6 +56,7 @@ Experiment in creating a scalable local AI voice chat bot.
   - [Development Standards](#development-standards)
   - [Developer Installation](#developer-installation)
     - [Developer Installation Details](#developer-installation-details)
+  - [What Tool Does What](#what-tool-does-what)
 
 ## About
 
@@ -97,7 +98,14 @@ This project follows the following standard practices:
 
 - [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) for
   commit messages.
+
+  - If using VS Code, then the
+    [Conventional Commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+    extension is recommended.
+  - _If committing from the terminal, use `cz c` instead of `git commit`._
+
 - [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) for versioning.
+
 - [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) for the changelog.
 
 ### Developer Installation
@@ -137,3 +145,31 @@ This project follows the following standard practices:
 - On first run, `check push` will also download and install several files, etc.
 - The `check` command has several sub-commands to help you while developing.  Check it
   out. :smile_cat:
+
+### What Tool Does What
+
+Several of the development tools used in this project have overlapping capabilities.
+This section is an attempt clarify which tool is used for which common task.
+
+- **Install non-Python dev tools:** Devbox (NIX)
+- **Install Python dev tools:** The `init` script (uv)
+- **Install base/minimum Python version:** The `init` script (uv)
+- **Install additional Python versions for testing:** The `check` script (Hatch)
+- **Install pre-commit hooks:** The `init` script (pre-commit)
+- **Format code:** The `check` script (Hatch, Ruff)
+- **Lint code:** The `check` script (Hatch, Ruff)
+- **Type check code:** The `check` script (Hatch, mypy)
+- **Run tests:** The `check` script (Hatch, pytest)
+- **Run acceptance tests:** The `check` script (Hatch, radish)
+- **Run code coverage checks:** The `check` script (Hatch, coverage)
+- **Run pre-commit hooks manually:** The `check` script (pre-commit)
+- **Commit changes from the terminal:** Commitizen _(use `cz c`)_
+- **Report on last code coverage run:** The `report` script (coverage)
+- **Update version on a release:** Hatch
+- **Pin project dependency versions:** Hatch (using uv)
+- **Pin development dependency versions:** Hatch (using pip-compile)
+- **Format Markdown:** pre-commit (markdownlint-cli2)
+- **Format YAML:** pre-commit (yamlfmt)
+- **Format JSON:** pre-commit (pretty-format-json)
+- **Spell checking:** pre-commit (codespell)
+- **Run CI pipeline:** Github Actions (using the scripts above)
