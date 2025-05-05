@@ -26,8 +26,11 @@
     "cSpell.hideAddToDictionaryCodeActions": false,
     "cSpell.language": "en-GB",
     "cSpell.validateDirectives": true,
+    "conventionalCommits.autoCommit": false,
+    "conventionalCommits.lineBreak": "\\n",
     "conventionalCommits.scopes": [
-        "accept"
+        "accept",
+        "vscode"
     ],
     "editor.defaultFormatter": null,
     "editor.detectIndentation": false,
