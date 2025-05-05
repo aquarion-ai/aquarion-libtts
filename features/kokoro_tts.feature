@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+# SPDX-License-Identifier: CC-BY-SA-4.0
+
 @wip
 Feature: Kokoro TTS Backend
 

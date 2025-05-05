@@ -1,4 +1,6 @@
 #!/usr/bin/env nu
+# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+# SPDX-License-Identifier: AGPL-3.0-only
 
 # Provide various reporting capabilities.
 def main []: nothing -> string {

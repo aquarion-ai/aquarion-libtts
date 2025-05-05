@@ -1,3 +1,9 @@
+<!-- markdownlint-disable-next-line MD013 -->
+<!-- SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org> -->
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
+# SPDX-License-Identifier: CC-BY-SA-4.0
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

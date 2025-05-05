@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+# SPDX-License-Identifier: CC-BY-SA-4.0
+
 Feature: TTS Library Interface
     As a software developer
     I want to access various TTS backend implementations using a common interface

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+# SPDX-License-Identifier: AGPL-3.0-only
+
 # Part of the aquarion-libtts library of the Aquarion AI project.
 # Copyright (C) 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
 #
@@ -12,9 +15,6 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
-#
-# SPDX-License-Identifier: AGPL-3.0-only
 
 """Provides package metadata at runtime."""
 

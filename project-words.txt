@@ -7,6 +7,8 @@ codespell
 Color
 colorful
 commitizen
+compatiblelicenses
+creativecommons
 cython
 defenses
 devbox
@@ -16,6 +18,7 @@ docopt
 docstrings
 execnet
 favor
+Generis
 GITMOJI
 htmlcov
 iniconfig
@@ -27,6 +30,7 @@ jetify
 Kokoro
 Krys
 kwargs
+labeled
 libtts
 linters
 matrixed
@@ -68,10 +72,13 @@ spyderproject
 spyproject
 stepmodel
 subclassing
+sublicensable
+synched
 tomli
 uvenv
 venv
 venvs
+waivable
 webassets
 xdist
 xfail

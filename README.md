@@ -1,3 +1,7 @@
+<!-- markdownlint-disable-next-line MD013 -->
+<!-- SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org> -->
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+
 # Aquarion AI - Text To Speech (TTS) Library
 
 Experiment in creating a scalable local AI voice chat bot.
