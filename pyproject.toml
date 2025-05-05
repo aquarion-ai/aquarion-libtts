@@ -39,7 +39,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 
 [project.urls]
-#Changelog = ""
+Changelog = "https://github.com/aquarion-ai/aquarion-libtts/blob/main/CHANGELOG.md"
 Documentation = "https://github.com/aquarion-ai/aquarion-docs"
 #Download = ""
 Homepage = "https://github.com/aquarion-ai"
