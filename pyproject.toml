@@ -33,7 +33,7 @@ description = 'Text To Speech (TTS) beckend library for Aquarion AI'
 dynamic = ["version"]
 keywords = ["aquarion", "ai", "tts", "speech"]
 license = "AGPL-3.0-only"
-license-files = ["LICENSE"]
+license-files = ["LICENSES/AGPL-3.0-only.txt"]
 name = "aquarion-libtts"
 readme = "README.md"
 requires-python = ">=3.13"
