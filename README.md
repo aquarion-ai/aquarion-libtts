@@ -7,6 +7,12 @@
 Experiment in creating a scalable local AI voice chat bot.
 
 [![Static Badge](https://img.shields.io/badge/Part_of-Aquarion_AI-blue)](https://github.com/aquarion-ai)
+[![Docs Licence](https://img.shields.io/badge/docs_licence-CC_BY_SA_4.0-red)](https://creativecommons.org/licenses/by-sa/4.0/)
+<!-- markdownlint-disable MD013 -->
+<!--
+[![PyPI - License](https://img.shields.io/pypi/l/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
+-->
+<!-- markdownlint-enable MD013 -->
 
 <!-- markdownlint-disable MD013 -->
 <!--
@@ -17,7 +23,6 @@ Experiment in creating a scalable local AI voice chat bot.
 [![PyPI - Wheel](https://img.shields.io/pypi/wheel/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Format](https://img.shields.io/pypi/format/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Status](https://img.shields.io/pypi/status/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
-[![PyPI - License](https://img.shields.io/pypi/l/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 -->
 <!-- markdownlint-enable MD013 -->
