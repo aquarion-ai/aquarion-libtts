@@ -135,7 +135,10 @@ python = ["3.13"]
 # Env: types
 
 [tool.hatch.envs.types]
-extra-dependencies = ["mypy~=1.15.0"]
+extra-dependencies = [
+  "mypy~=1.15.0",
+  "pytest~=8.3.5",
+]
 lock-filename = "dev_requirements/{env_name}/requirements.txt"
 #pip-compile-constraint = "default"
 pip-compile-hashes = true
@@ -184,7 +187,7 @@ show_missing = true
 ### Ruff ###
 
 [tool.ruff]
-cache-dir = ".cache/ruff"
+cache-dir = ".cache/ruff" 
 line-length = 88 # Sticking with Black's standard for now instead of ruff's 120.
 
 [tool.ruff.format]
@@ -193,27 +196,38 @@ docstring-code-format = true
 
 [tool.ruff.lint]
 ignore = [
-  "D211",
-  "D212",
-  "W191",
-  "E111",
-  "E114",
-  "E117",
-  "D206",
-  "D300",
-  "Q000",
-  "Q001",
-  "Q002",
-  "Q003",
-  "COM812",
-  "COM819",
+  #   "D211",
+  #   "D212",
+  #   "W191",
+  #   "E111",
+  #   "E114",
+  #   "E117",
+  #   "D206",
+  #   "D300",
+  #   "Q000",
+  #   "Q001",
+  #   "Q002",
+  #   "Q003",
+  #   "COM819",
   "D203",
+  "D213",
+  "COM812",
 ]
 select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
 "**/steps/*" = ["INP001", "D103", "S"]
-"**/tests/**/*" = ["PLC1901", "PLR2004", "PLR6301", "S", "TID252", "D103"]
+"**/tests/**/*" = [
+  "PLC1901",
+  "PLR2004",
+  "PLR6301",
+  "S",
+  "TID252",
+  "D102",
+  "D103",
+  "D105",
+  "D107",
+]
 
 [tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
