@@ -41,6 +41,10 @@
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": false,
     "files.trimTrailingWhitespace": true,
+    "python.analysis.enablePytestSupport": true,
+    "python.analysis.inlayHints.pytestParameters": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
     "ruff.path": [
         "hatch run hatch-static-analysis:ruff"
     ],
