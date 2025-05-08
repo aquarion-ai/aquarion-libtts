@@ -132,7 +132,7 @@ def --wrapped "main licences" [
 def --wrapped "main test" [
     ...rest: string # Extra arguments for hatch test
 ]: nothing -> string {
-    hatch test --parallel ...$rest
+    hatch test ...$rest
 }
 
 # Check code coverage for all unit tests.
