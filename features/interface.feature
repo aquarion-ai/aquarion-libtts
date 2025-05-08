@@ -78,5 +78,5 @@ Feature: TTS Library Interface
     Scenario: Reset Settings
         Given I have an instantiated TTS backend
         And I have set custom backend-appropriate settings
-        When I call the 'reset_config' method
+        When I call the 'reset_settings' method
         Then the default settings are applied successfully
