@@ -40,8 +40,7 @@ class DummyTTSSettings:
         self.attr1 = attr1
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, DummyTTSSettings):
-            raise NotImplementedError
+        assert isinstance(other, DummyTTSSettings)
         return self.attr1 == other.attr1
 
     def to_dict(self) -> dict[str, Any]:  # type: ignore [explicit-any]
