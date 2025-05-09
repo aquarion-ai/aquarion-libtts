@@ -75,6 +75,7 @@ subclassing
 sublicensable
 synched
 tomli
+ttssettings
 ttsspeechdata
 uvenv
 venv
