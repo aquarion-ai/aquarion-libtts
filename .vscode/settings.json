@@ -30,7 +30,8 @@
     "conventionalCommits.lineBreak": "\\n",
     "conventionalCommits.scopes": [
         "accept",
-        "vscode"
+        "vscode",
+        "api"
     ],
     "editor.defaultFormatter": null,
     "editor.detectIndentation": false,
