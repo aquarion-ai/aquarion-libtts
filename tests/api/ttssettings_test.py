@@ -192,9 +192,6 @@ class DummyTTSSettingsHolder:
         self._settings = new_settings
 
     def __init__(self) -> None:
-        self.reset_settings()
-
-    def reset_settings(self) -> None:
         self.settings = DummyTTSSettings()
 
 
@@ -214,15 +211,6 @@ def test_ittssettingsholder_settings_should_be_settable() -> None:
     new_settings = DummyTTSSettings(attr1="custom")
     holder.settings = new_settings
     assert holder.settings == new_settings
-
-
-def test_ittssettingsholder_reset_settings_should_reset_settings_to_default() -> None:
-    holder = DummyTTSSettingsHolder()
-    custom_settings = DummyTTSSettings(attr1="custom")
-    default_settings = DummyTTSSettings()
-    holder.settings = custom_settings
-    holder.reset_settings()
-    assert holder.settings == default_settings
 
 
 ### ITTSSettingsHolderFactory Tests ###

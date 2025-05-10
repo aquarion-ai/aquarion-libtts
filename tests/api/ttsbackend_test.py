@@ -61,15 +61,6 @@ def test_ittsbackend_settings_should_be_settable() -> None:
     assert backend.settings == new_settings
 
 
-def test_ittsbackend_reset_settings_should_reset_settings_to_default() -> None:
-    backend = DummyTTSBackend()
-    custom_settings = DummyTTSSettings(attr1="custom")
-    default_settings = DummyTTSSettings()
-    backend.settings = custom_settings
-    backend.reset_settings()
-    assert backend.settings == default_settings
-
-
 def test_ttsbackend_convert_should_require_some_text_input() -> None:
     backend = DummyTTSBackend()
     with pytest.raises(TypeError, match="missing .* required positional argument"):

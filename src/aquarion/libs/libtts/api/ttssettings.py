@@ -78,9 +78,6 @@ class ITTSSettingsHolder[T: ITTSSettings](Protocol):
     def settings(self, new_settings: T) -> None:
         """Store and apply the new given settings to the TTS backend."""
 
-    def reset_settings(self) -> None:
-        """Reset the settings to their default values."""
-
 
 @runtime_checkable
 class ITTSSettingsHolderFactory[T: ITTSSettings](Protocol):
