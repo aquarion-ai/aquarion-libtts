@@ -26,6 +26,9 @@ ionide
 ipynb
 ipython
 isort
+ITTS
+ittssettings
+ittssettingsfactory
 jetify
 Kokoro
 Krys
@@ -76,7 +79,6 @@ sublicensable
 synched
 tomli
 ttssettings
-ttssettingsfactory
 ttsspeechdata
 uvenv
 venv

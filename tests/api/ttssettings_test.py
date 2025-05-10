@@ -16,9 +16,9 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-"""Unit tests for the TTSSettings protocol.
+"""Unit tests for the ITTSSettings protocol.
 
-These tests serve mostly to document the expectations of all TTSSettings
+These tests serve mostly to document the expectations of all ITTSSettings
 implementations.
 """
 
@@ -28,19 +28,19 @@ from typing import Any, assert_type, cast
 import pytest
 
 from aquarion.libs.libtts.api.ttssettings import (
+    ITTSSettings,
+    ITTSSettingsFactory,
     JSONSerializableTypes,
-    TTSSettings,
-    TTSSettingsFactory,
 )
 
-### TTSSettings Tests ###
+### ITTSSettings Tests ###
 
 
 class DummyTTSSettings:
-    """Dummy TTSSettings to test the protocol.
+    """Dummy ITTSSettings to test the protocol.
 
     Specific implementations here do not matter, the only important thing is to conform
-    to the TTSSettings protocol.
+    to the ITTSSettings protocol.
     """
 
     def __init__(self, attr1: str = "default") -> None:
@@ -65,24 +65,24 @@ class DummyTTSSettings:
         return True
 
 
-def assert_typecheck_conforms_to_ttssettings_protocol(
-    settings: TTSSettings,
-) -> TTSSettings:
-    """Enable typechecker validation for conformance to the TTSSettings protocol.
+def assert_typecheck_conforms_to_ittssettings_protocol(
+    settings: ITTSSettings,
+) -> ITTSSettings:
+    """Enable typechecker validation of conformance to the ITTSSettings protocol.
 
     Also does a bit of runtime checking.
     """
-    assert_type(settings, TTSSettings)  # Assert at typecheck time
-    assert isinstance(settings, TTSSettings)  # Assert at runtime time
+    assert_type(settings, ITTSSettings)  # Assert at typecheck time
+    assert isinstance(settings, ITTSSettings)  # Assert at runtime time
     return settings
 
 
-def test_ttssettings_should_conform_to_ttssettings_protocol() -> None:
+def test_ittssettings_should_conform_to_ittssettings_protocol() -> None:
     settings = DummyTTSSettings()
-    assert_typecheck_conforms_to_ttssettings_protocol(settings)
+    assert_typecheck_conforms_to_ittssettings_protocol(settings)
 
 
-def test_ttssettings_to_dict_should_return_a_dict_of_all_settings_as_base_types() -> (
+def test_ittssettings_to_dict_should_return_a_dict_of_all_settings_as_base_types() -> (
     None
 ):
     settings = DummyTTSSettings()
@@ -90,12 +90,12 @@ def test_ttssettings_to_dict_should_return_a_dict_of_all_settings_as_base_types(
     assert settings_dict["attr1"] == "default"
 
 
-def test_ttssettings_validate_should_do_nothing_if_all_settings_are_valid() -> None:
+def test_ittssettings_validate_should_do_nothing_if_all_settings_are_valid() -> None:
     settings = DummyTTSSettings()
     settings.validate()
 
 
-def test_ttssettings_validate_should_raise_an_exception_if_any_setting_is_invalid() -> (
+def test_ittssettings_validate_should_raise_an_exception_if_a_setting_is_invalid() -> (
     None
 ):
     settings = DummyTTSSettings()
@@ -104,43 +104,45 @@ def test_ttssettings_validate_should_raise_an_exception_if_any_setting_is_invali
         settings.validate()
 
 
-def test_ttssettings_is_valid_should_return_true_if_all_settings_are_valid() -> None:
+def test_ittssettings_is_valid_should_return_true_if_all_settings_are_valid() -> None:
     settings = DummyTTSSettings()
     assert settings.is_valid()
 
 
-def test_ttssettings_is_valid_should_return_false_if_any_settings_are_invalid() -> None:
+def test_ittssettings_is_valid_should_return_false_if_any_settings_are_invalid() -> (
+    None
+):
     settings = DummyTTSSettings()
     settings.attr1 = 666  # type: ignore [assignment]
     assert not settings.is_valid()
 
 
-def test_ttssettings_should_equate_if_setting_values_are_equal() -> None:
+def test_ittssettings_should_equate_if_setting_values_are_equal() -> None:
     settings1 = DummyTTSSettings()
     settings2 = DummyTTSSettings()
     assert settings1 == settings2
     assert settings1 is not settings2
 
 
-def test_ttssettings_should_not_equate_if_setting_values_are_different() -> None:
+def test_ittssettings_should_not_equate_if_setting_values_are_different() -> None:
     settings1 = DummyTTSSettings()
     settings2 = DummyTTSSettings(attr1="not default")
     assert settings1 != settings2
     assert settings1 is not settings2
 
 
-### TTSSettingsFactory Tests ###
+### ITTSSettingsFactory Tests ###
 
 
-def dummy_make_ttssettings(
+def dummy_make_ittssettings(
     from_dict: Mapping[str, JSONSerializableTypes] | None = None,
 ) -> DummyTTSSettings:
     """Return a DummyTTSSettings.
 
-    Dummy factory function to test the TTSSettingsFactory protocol.
+    Dummy factory function to test the ITTSSettingsFactory protocol.
 
     Specific implementations here do not matter, the only important thing is to conform
-    to the TTSSettings protocol.
+    to the ITTSSettings protocol.
     """
     if from_dict is None:
         settings = DummyTTSSettings()
@@ -149,27 +151,27 @@ def dummy_make_ttssettings(
     return settings
 
 
-def assert_typecheck_conforms_to_ttssettingsfactory_protocol(
-    factory: TTSSettingsFactory,
-) -> TTSSettingsFactory:
-    """Enable typechecker validation for conformance to the TTSSettingsFactory protocol.
+def assert_typecheck_conforms_to_ittssettingsfactory_protocol(
+    factory: ITTSSettingsFactory,
+) -> ITTSSettingsFactory:
+    """Enable typechecker validation of conformance to the ITTSSettingsFactory protocol.
 
     Also does a bit of runtime checking.
     """
-    assert_type(factory, TTSSettingsFactory)  # Assert at typecheck time
-    assert isinstance(factory, TTSSettingsFactory)  # Assert at runtime
+    assert_type(factory, ITTSSettingsFactory)  # Assert at typecheck time
+    assert isinstance(factory, ITTSSettingsFactory)  # Assert at runtime
     return factory
 
 
-def test_ttssettingsfactory_should_conform_to_ttssettingsfactory_protocol() -> None:
-    assert_typecheck_conforms_to_ttssettingsfactory_protocol(dummy_make_ttssettings)
+def test_ittssettingsfactory_should_conform_to_ittssettingsfactory_protocol() -> None:
+    assert_typecheck_conforms_to_ittssettingsfactory_protocol(dummy_make_ittssettings)
 
 
-def test_ttssettingsfactory_should_use_default_values_when_values_are_given() -> None:
-    settings = dummy_make_ttssettings()
+def test_ittssettingsfactory_should_use_default_values_when_values_are_given() -> None:
+    settings = dummy_make_ittssettings()
     assert settings.attr1 == "default"
 
 
-def test_ttssettingsfactory_should_use_given_values_when_values_are_given() -> None:
-    settings = dummy_make_ttssettings(from_dict={"attr1": "custom"})
+def test_ittssettingsfactory_should_use_given_values_when_values_are_given() -> None:
+    settings = dummy_make_ittssettings(from_dict={"attr1": "custom"})
     assert settings.attr1 == "custom"

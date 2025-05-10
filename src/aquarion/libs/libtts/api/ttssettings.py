@@ -33,7 +33,7 @@ type JSONSerializableTypes = (
 
 
 @runtime_checkable
-class TTSSettings(Protocol):
+class ITTSSettings(Protocol):
     """Common interface for all TTS backend settings."""
 
     def __eq__(self, other: object) -> bool:
@@ -50,13 +50,13 @@ class TTSSettings(Protocol):
 
 
 @runtime_checkable
-class TTSSettingsFactory(Protocol):
+class ITTSSettingsFactory(Protocol):
     """Common interface for all TTSSettings factories."""
 
     @staticmethod
     def __call__(
         from_dict: Mapping[str, JSONSerializableTypes] | None = None,
-    ) -> TTSSettings:
+    ) -> ITTSSettings:
         """Return an object that conforms to the TTSSettings protocol.
 
         If `from_dict` is not None, then the given values will be used to initialize the
