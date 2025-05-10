@@ -27,6 +27,7 @@ ipynb
 ipython
 isort
 ITTS
+ittsbackend
 ittssettings
 ittssettingsfactory
 jetify
@@ -78,6 +79,7 @@ subclassing
 sublicensable
 synched
 tomli
+ttsbackend
 ttssettings
 ttsspeechdata
 uvenv
