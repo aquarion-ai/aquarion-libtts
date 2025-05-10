@@ -76,6 +76,7 @@ sublicensable
 synched
 tomli
 ttssettings
+ttssettingsfactory
 ttsspeechdata
 uvenv
 venv

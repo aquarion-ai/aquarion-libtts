@@ -18,7 +18,18 @@
 
 """TTSSettings protocol."""
 
+from collections.abc import Mapping, Sequence
 from typing import Any, Protocol, runtime_checkable
+
+type JSONSerializableTypes = (
+    str
+    | int
+    | float
+    | bool
+    | None
+    | Sequence[JSONSerializableTypes]
+    | Mapping[str, JSONSerializableTypes]
+)
 
 
 @runtime_checkable
@@ -36,3 +47,20 @@ class TTSSettings(Protocol):
 
     def is_valid(self) -> bool:
         """Return True if all settings are valid."""
+
+
+@runtime_checkable
+class TTSSettingsFactory(Protocol):
+    """Common interface for all TTSSettings factories."""
+
+    @staticmethod
+    def __call__(
+        from_dict: Mapping[str, JSONSerializableTypes] | None = None,
+    ) -> TTSSettings:
+        """Return an object that conforms to the TTSSettings protocol.
+
+        If `from_dict` is not None, then the given values will be used to initialize the
+        settings.
+
+        If `from_dict` is None, then default values for all settings will be used.
+        """
