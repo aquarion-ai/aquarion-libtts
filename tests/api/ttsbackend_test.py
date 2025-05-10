@@ -25,9 +25,10 @@ import pytest
 
 from aquarion.libs.libtts.api.ttsbackend import ITTSBackend
 from aquarion.libs.libtts.api.ttsspeechdata import TTSSpeechData
+from tests.api.ttssettings_test import DummyTTSSettings, DummyTTSSettingsHolder
 
 
-class DummyTTSBackend:
+class DummyTTSBackend(DummyTTSSettingsHolder):
     """Dummy TTS Backend to test the protocol.
 
     Specific implementations here do not matter, the only important thing is to conform
@@ -42,8 +43,29 @@ class DummyTTSBackend:
 
 def test_ittsbackend_should_conform_to_its_protocol() -> None:
     backend = DummyTTSBackend()
-    _: ITTSBackend = backend  # Typecheck protocol conformity
+    _: ITTSBackend[DummyTTSSettings] = backend  # Typecheck protocol conformity
     assert isinstance(backend, ITTSBackend)  # Runtime check as well
+
+
+def test_ittsbackend_should_have_a_settings_attribute() -> None:
+    backend = DummyTTSBackend()
+    assert hasattr(backend, "settings")
+
+
+def test_ittsbackend_settings_should_be_settable() -> None:
+    backend = DummyTTSBackend()
+    new_settings = DummyTTSSettings(attr1="custom")
+    backend.settings = new_settings
+    assert backend.settings == new_settings
+
+
+def test_ittsbackend_reset_settings_should_reset_settings_to_default() -> None:
+    backend = DummyTTSBackend()
+    custom_settings = DummyTTSSettings(attr1="custom")
+    default_settings = DummyTTSSettings()
+    backend.settings = custom_settings
+    backend.reset_settings()
+    assert backend.settings == default_settings
 
 
 def test_ttsbackend_convert_should_require_some_text_input() -> None:

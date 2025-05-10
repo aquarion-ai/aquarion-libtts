@@ -20,11 +20,12 @@
 
 from typing import Protocol, runtime_checkable
 
+from aquarion.libs.libtts.api.ttssettings import ITTSSettings, ITTSSettingsHolder
 from aquarion.libs.libtts.api.ttsspeechdata import TTSSpeechData
 
 
 @runtime_checkable
-class ITTSBackend(Protocol):
+class ITTSBackend[T: ITTSSettings](ITTSSettingsHolder[T], Protocol):
     """Common interface for all TTS backends."""
 
     def convert(self, text: str) -> TTSSpeechData:
