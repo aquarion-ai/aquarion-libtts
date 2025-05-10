@@ -21,8 +21,6 @@
 These tests serve mostly to document the expectations of all TTSBackend implementations.
 """
 
-from typing import assert_type
-
 import pytest
 
 from aquarion.libs.libtts.api.ttsbackend import ITTSBackend
@@ -42,21 +40,10 @@ class DummyTTSBackend:
         )
 
 
-def assert_typecheck_conforms_to_ittsbackend_protocol(
-    backend: ITTSBackend,
-) -> ITTSBackend:
-    """Enable typechecker validation of conformance to the ITTSBackend protocol.
-
-    Also does a bit of runtime checking.
-    """
-    assert_type(backend, ITTSBackend)  # Assert at typecheck time
-    assert isinstance(backend, ITTSBackend)  # Assert at runtime time
-    return backend
-
-
-def test_ittsbackend_should_conform_to_ittsbackend_protocol() -> None:
+def test_ittsbackend_should_conform_to_its_protocol() -> None:
     backend = DummyTTSBackend()
-    assert_typecheck_conforms_to_ittsbackend_protocol(backend)
+    _: ITTSBackend = backend  # Typecheck protocol conformity
+    assert isinstance(backend, ITTSBackend)  # Runtime check as well
 
 
 def test_ttsbackend_convert_should_require_some_text_input() -> None:

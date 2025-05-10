@@ -23,7 +23,7 @@ implementations.
 """
 
 from collections.abc import Mapping
-from typing import Any, assert_type, cast
+from typing import Any, cast
 
 import pytest
 
@@ -71,21 +71,10 @@ class DummyTTSSettings:
         return True
 
 
-def assert_typecheck_conforms_to_ittssettings_protocol(
-    settings: ITTSSettings,
-) -> ITTSSettings:
-    """Enable typechecker validation of conformance to the ITTSSettings protocol.
-
-    Also does a bit of runtime checking.
-    """
-    assert_type(settings, ITTSSettings)  # Typecheck protocol conformity
-    assert isinstance(settings, ITTSSettings)  # Runtime check as well
-    return settings
-
-
 def test_ittssettings_should_conform_to_its_protocol() -> None:
     settings = DummyTTSSettings()
-    assert_typecheck_conforms_to_ittssettings_protocol(settings)
+    _: ITTSSettings = settings  # Typecheck protocol conformity
+    assert isinstance(settings, ITTSSettings)  # Runtime check as well
 
 
 def test_ittssettings_to_dict_should_return_a_dict_of_all_settings_as_base_types() -> (
@@ -140,9 +129,6 @@ def test_ittssettings_should_not_equate_if_setting_values_are_different() -> Non
 ### ITTSSettingsFactory Tests ###
 
 
-type DummyTTSSettingsFactoryType = ITTSSettingsFactory[DummyTTSSettings]
-
-
 def dummy_make_ittssettings(
     from_dict: Mapping[str, JSONSerializableTypes] | None = None,
 ) -> DummyTTSSettings:
@@ -160,20 +146,13 @@ def dummy_make_ittssettings(
     return settings
 
 
-def assert_typecheck_conforms_to_ittssettingsfactory_protocol(
-    factory: DummyTTSSettingsFactoryType,
-) -> DummyTTSSettingsFactoryType:
-    """Enable typechecker validation of conformance to the ITTSSettingsFactory protocol.
-
-    Also does a bit of runtime checking.
-    """
-    assert_type(factory, DummyTTSSettingsFactoryType)  # Typecheck protocol conformity
-    assert isinstance(factory, ITTSSettingsFactory)  # Runtime check as well
-    return factory
-
-
 def test_ittssettingsfactory_should_conform_to_its_protocol() -> None:
-    assert_typecheck_conforms_to_ittssettingsfactory_protocol(dummy_make_ittssettings)
+    _: ITTSSettingsFactory[DummyTTSSettings] = (
+        dummy_make_ittssettings  # Typecheck protocol conformity
+    )
+    assert isinstance(
+        dummy_make_ittssettings, ITTSSettingsFactory
+    )  # Runtime check as well
 
 
 def test_ittssettingsfactory_should_use_default_values_when_no_values_are_given() -> (
@@ -190,14 +169,11 @@ def test_ittssettingsfactory_should_use_given_values_when_values_are_given() -> 
 
 def test_ittssettingsfactory_should_return_a_ittssettings_object() -> None:
     settings = dummy_make_ittssettings()
-    assert_type(settings, DummyTTSSettings)
-    assert isinstance(settings, ITTSSettings)
+    _: ITTSSettings = settings  # Typecheck protocol conformity
+    assert isinstance(settings, ITTSSettings)  # Runtime check as well
 
 
 ### ITTSSettingsHolder Tests ###
-
-
-type DummyTTSSettingsHolderType = ITTSSettingsHolder[DummyTTSSettings]
 
 
 class DummyTTSSettingsHolder:
@@ -222,21 +198,10 @@ class DummyTTSSettingsHolder:
         self.settings = DummyTTSSettings()
 
 
-def assert_typecheck_conforms_to_ittssettingsholder_protocol(
-    holder: DummyTTSSettingsHolderType,
-) -> DummyTTSSettingsHolderType:
-    """Enable typechecker validation of conformance to the ITTSSettingsHolder protocol.
-
-    Also does a bit of runtime checking.
-    """
-    assert_type(holder, DummyTTSSettingsHolderType)  # Typecheck protocol conformity
-    assert isinstance(holder, ITTSSettingsHolder)  # Runtime check as well
-    return holder
-
-
 def test_ittssettingsholder_should_conform_to_its_protocol() -> None:
     holder = DummyTTSSettingsHolder()
-    assert_typecheck_conforms_to_ittssettingsholder_protocol(holder)
+    _: ITTSSettingsHolder[DummyTTSSettings] = holder  # Typecheck protocol conformity
+    assert isinstance(holder, ITTSSettingsHolder)  # Runtime check as well
 
 
 def test_ittssettingsholder_should_have_a_settings_attribute() -> None:
@@ -263,33 +228,19 @@ def test_ittssettingsholder_reset_settings_should_reset_settings_to_default() ->
 ### ITTSSettingsHolderFactory Tests ###
 
 
-type DummyTTSSettingsHolderFactoryType = ITTSSettingsHolderFactory[DummyTTSSettings]
-
-
 def dummy_make_ittssettingsholder(settings: DummyTTSSettings) -> DummyTTSSettingsHolder:
     holder = DummyTTSSettingsHolder()
     holder.settings = settings
     return holder
 
 
-def assert_typecheck_conforms_to_ittssettingsholderfactory_protocol(
-    factory: DummyTTSSettingsHolderFactoryType,
-) -> DummyTTSSettingsHolderFactoryType:
-    """Enable typechecker validation of conformance to the ITTSSettingsHolder protocol.
-
-    Also does a bit of runtime checking.
-    """
-    assert_type(
-        factory, DummyTTSSettingsHolderFactoryType
-    )  # Typecheck protocol conformity
-    assert isinstance(factory, ITTSSettingsHolderFactory)  # Runtime check as well
-    return factory
-
-
 def test_ittssettingsholderfactory_should_conform_to_its_protocol() -> None:
-    assert_typecheck_conforms_to_ittssettingsholderfactory_protocol(
-        dummy_make_ittssettingsholder
+    _: ITTSSettingsHolderFactory[DummyTTSSettings] = (
+        dummy_make_ittssettingsholder  # Typecheck protocol conformity
     )
+    assert isinstance(
+        dummy_make_ittssettingsholder, ITTSSettingsHolderFactory
+    )  # Runtime check as well
 
 
 def test_ittssettingsholderfactory_should_require_a_settings_argument() -> None:
@@ -306,5 +257,5 @@ def test_ittssettingsholderfactory_should_use_given_settings() -> None:
 def test_ittssettingsholderfactory_should_return_a_ittssettingsholder_object() -> None:
     settings = DummyTTSSettings()
     holder = dummy_make_ittssettingsholder(settings)
-    assert_type(holder, DummyTTSSettingsHolder)
-    assert isinstance(holder, ITTSSettingsHolder)
+    _: ITTSSettingsHolder[DummyTTSSettings] = holder  # Typecheck protocol conformity
+    assert isinstance(holder, ITTSSettingsHolder)  # Runtime check as well
