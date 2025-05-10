@@ -26,6 +26,12 @@ def main []: nothing -> string {
     main commit
 }
 
+# Run all checks and tests.
+#
+# Currently this is the same as running `check push`
+def "main all" []: nothing -> string {
+    main push
+}
 
 ### Grouped tasks
 
@@ -36,9 +42,11 @@ def main []: nothing -> string {
 #   - Static type checking
 #   - Formatting
 #   - Linting
+#   - Pre-Commit checks
 #   - Unit testing
 def "main commit" []: nothing -> string {
     common
+    main pre
     main test
 }
 
@@ -47,10 +55,14 @@ def "main commit" []: nothing -> string {
 # This performs the following checks in order and stops on the first failure:
 #
 #   - All the checks from `check commit`
-#   - Coverage
+#   - Pre-Push checks
+#   - Unit test coverage checking
+#   - Acceptance test coverage checking
 #   - All the checks from `check sec`
+#   - Licence checking
 def "main push" []: nothing -> string {
     common
+    main pre all
     main test cover
     main accept cover
     main sec
