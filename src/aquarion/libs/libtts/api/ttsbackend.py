@@ -20,7 +20,11 @@
 
 from typing import Protocol, runtime_checkable
 
-from aquarion.libs.libtts.api.ttssettings import ITTSSettings, ITTSSettingsHolder
+from aquarion.libs.libtts.api.ttssettings import (
+    ITTSSettings,
+    ITTSSettingsHolder,
+    ITTSSettingsHolderFactory,
+)
 from aquarion.libs.libtts.api.ttsspeechdata import TTSSpeechData
 
 
@@ -30,3 +34,15 @@ class ITTSBackend[T: ITTSSettings](ITTSSettingsHolder[T], Protocol):
 
     def convert(self, text: str) -> TTSSpeechData:
         """Return speech audio generated from the given text."""
+
+
+@runtime_checkable
+class ITTSBackendFactory[T: ITTSSettings](ITTSSettingsHolderFactory[T], Protocol):
+    """Common interface for all TTSBackend factories."""
+
+    @staticmethod
+    def __call__(settings: T) -> ITTSBackend[T]:
+        """Return an object that conforms to the ITTSBackend protocol.
+
+        Custom or default settings must be provided to configure the TTS backend.
+        """

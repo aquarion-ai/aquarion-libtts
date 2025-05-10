@@ -28,6 +28,7 @@ ipython
 isort
 ITTS
 ittsbackend
+ittsbackendfactory
 ittssettings
 ittssettingsfactory
 ittssettingsholder
