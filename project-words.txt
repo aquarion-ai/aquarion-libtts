@@ -30,6 +30,8 @@ ITTS
 ittsbackend
 ittssettings
 ittssettingsfactory
+ittssettingsholder
+ittssettingsholderfactory
 jetify
 Kokoro
 Krys

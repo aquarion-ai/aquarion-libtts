@@ -50,17 +50,47 @@ class ITTSSettings(Protocol):
 
 
 @runtime_checkable
-class ITTSSettingsFactory(Protocol):
+class ITTSSettingsFactory[T: ITTSSettings](Protocol):
     """Common interface for all TTSSettings factories."""
 
     @staticmethod
     def __call__(
         from_dict: Mapping[str, JSONSerializableTypes] | None = None,
-    ) -> ITTSSettings:
-        """Return an object that conforms to the TTSSettings protocol.
+    ) -> T:
+        """Return an object that conforms to the ITTSSettings protocol.
 
-        If `from_dict` is not None, then the given values will be used to initialize the
-        settings.
+        If `from_dict` is not None, then the given values should be used to initialize
+        the settings.
 
-        If `from_dict` is None, then default values for all settings will be used.
+        If `from_dict` is None, then default values for all settings should be used.
+        """
+
+
+@runtime_checkable
+class ITTSSettingsHolder[T: ITTSSettings](Protocol):
+    """Common interface for objects that accept and contain ITTSSettings."""
+
+    @property
+    def settings(self) -> T:
+        """Return the current settings for the TTS backend."""
+
+    @settings.setter
+    def settings(self, new_settings: T) -> None:
+        """Store and apply the new given settings to the TTS backend."""
+
+    def reset_settings(self) -> None:
+        """Reset the settings to their default values."""
+
+
+@runtime_checkable
+class ITTSSettingsHolderFactory[T: ITTSSettings](Protocol):
+    """Common interface for all ITTSSettingsHolderFactory factories."""
+
+    @staticmethod
+    def __call__(settings: T) -> Any:  # type: ignore [explicit-any,misc] # noqa: ANN401
+        """Return an object that conforms to the ITTSSettingsHolder protocol.
+
+        If `settings` is not None, then the given settings should be stored and used.
+
+        If `settings` is None, then default settings should be used.
         """
