@@ -21,7 +21,7 @@ from typing import Any
 
 import pytest
 
-from aquarion.libs.libtts.api.ttsspeechdata import TTSSpeechData
+from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
 
 DUMMY_AUDIO = b"audio data here"
 DUMMY_MIME_TYPE = "audio/wav"

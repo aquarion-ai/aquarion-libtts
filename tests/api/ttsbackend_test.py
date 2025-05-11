@@ -23,8 +23,8 @@ These tests serve mostly to document the expectations of all TTSBackend implemen
 
 import pytest
 
-from aquarion.libs.libtts.api.ttsbackend import ITTSBackend, ITTSBackendFactory
-from aquarion.libs.libtts.api.ttsspeechdata import TTSSpeechData
+from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, ITTSBackendFactory
+from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
 from tests.api.ttssettings_test import DummyTTSSettings, DummyTTSSettingsHolder
 
 ### ITTSBackend Tests ###

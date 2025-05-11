@@ -27,7 +27,7 @@ from typing import Any, cast
 
 import pytest
 
-from aquarion.libs.libtts.api.ttssettings import (
+from aquarion.libs.libtts.api._ttssettings import (
     ITTSSettings,
     ITTSSettingsFactory,
     ITTSSettingsHolder,

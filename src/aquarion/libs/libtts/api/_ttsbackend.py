@@ -20,12 +20,12 @@
 
 from typing import Protocol, runtime_checkable
 
-from aquarion.libs.libtts.api.ttssettings import (
+from aquarion.libs.libtts.api._ttssettings import (
     ITTSSettings,
     ITTSSettingsHolder,
     ITTSSettingsHolderFactory,
 )
-from aquarion.libs.libtts.api.ttsspeechdata import TTSSpeechData
+from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
 
 
 @runtime_checkable
