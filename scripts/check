@@ -151,7 +151,7 @@ def --wrapped "main test" [
 def --wrapped "main test cover" [
     ...rest: string # Extra arguments for hatch test
 ]: nothing -> string {
-    hatch test --cover ...$rest
+    hatch test --cover --randomize ...$rest
 }
 
 # Run acceptance tests.

@@ -123,11 +123,14 @@ dependencies = [
   "pytest-rerunfailures~=15.0.0",
   "pytest-xdist[psutil]~=3.6.1",
 ]
-randomize = true
+extra-dependencies = []
+
 # Cannot use parallel and coverage at the same time.
 # https://github.com/pypa/hatch/issues/1635
-extra-dependencies = []
-#parallel = true
+# parallel = true
+
+# We do not want to *always* randomize.
+# randomize = true
 
 [[tool.hatch.envs.hatch-test.matrix]]
 python = ["3.13"]
