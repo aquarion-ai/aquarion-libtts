@@ -84,6 +84,7 @@ synched
 tomli
 ttsbackend
 ttssettings
+ttssettingsholder
 ttsspeechdata
 uvenv
 venv

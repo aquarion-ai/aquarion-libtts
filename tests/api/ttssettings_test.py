@@ -129,7 +129,7 @@ def test_ittssettings_should_not_equate_if_setting_values_are_different() -> Non
 ### ITTSSettingsFactory Tests ###
 
 
-def dummy_make_ittssettings(
+def dummy_make_ttssettings(
     from_dict: Mapping[str, JSONSerializableTypes] | None = None,
 ) -> DummyTTSSettings:
     """Return a DummyTTSSettings.
@@ -148,27 +148,27 @@ def dummy_make_ittssettings(
 
 def test_ittssettingsfactory_should_conform_to_its_protocol() -> None:
     _: ITTSSettingsFactory[DummyTTSSettings] = (
-        dummy_make_ittssettings  # Typecheck protocol conformity
+        dummy_make_ttssettings  # Typecheck protocol conformity
     )
     assert isinstance(
-        dummy_make_ittssettings, ITTSSettingsFactory
+        dummy_make_ttssettings, ITTSSettingsFactory
     )  # Runtime check as well
 
 
 def test_ittssettingsfactory_should_use_default_values_when_no_values_are_given() -> (
     None
 ):
-    settings = dummy_make_ittssettings()
+    settings = dummy_make_ttssettings()
     assert settings.attr1 == "default"
 
 
 def test_ittssettingsfactory_should_use_given_values_when_values_are_given() -> None:
-    settings = dummy_make_ittssettings(from_dict={"attr1": "custom"})
+    settings = dummy_make_ttssettings(from_dict={"attr1": "custom"})
     assert settings.attr1 == "custom"
 
 
 def test_ittssettingsfactory_should_return_a_ittssettings_object() -> None:
-    settings = dummy_make_ittssettings()
+    settings = dummy_make_ttssettings()
     _: ITTSSettings = settings  # Typecheck protocol conformity
     assert isinstance(settings, ITTSSettings)  # Runtime check as well
 
@@ -216,7 +216,7 @@ def test_ittssettingsholder_settings_should_be_settable() -> None:
 ### ITTSSettingsHolderFactory Tests ###
 
 
-def dummy_make_ittssettingsholder(settings: DummyTTSSettings) -> DummyTTSSettingsHolder:
+def dummy_make_ttssettingsholder(settings: DummyTTSSettings) -> DummyTTSSettingsHolder:
     holder = DummyTTSSettingsHolder()
     holder.settings = settings
     return holder
@@ -224,26 +224,26 @@ def dummy_make_ittssettingsholder(settings: DummyTTSSettings) -> DummyTTSSetting
 
 def test_ittssettingsholderfactory_should_conform_to_its_protocol() -> None:
     _: ITTSSettingsHolderFactory[DummyTTSSettings] = (
-        dummy_make_ittssettingsholder  # Typecheck protocol conformity
+        dummy_make_ttssettingsholder  # Typecheck protocol conformity
     )
     assert isinstance(
-        dummy_make_ittssettingsholder, ITTSSettingsHolderFactory
+        dummy_make_ttssettingsholder, ITTSSettingsHolderFactory
     )  # Runtime check as well
 
 
 def test_ittssettingsholderfactory_should_require_a_settings_argument() -> None:
     with pytest.raises(TypeError, match="missing *. required positional argument"):
-        dummy_make_ittssettingsholder()  # type: ignore [call-arg]
+        dummy_make_ttssettingsholder()  # type: ignore [call-arg]
 
 
 def test_ittssettingsholderfactory_should_use_given_settings() -> None:
     settings = DummyTTSSettings("custom")
-    holder = dummy_make_ittssettingsholder(settings)
+    holder = dummy_make_ttssettingsholder(settings)
     assert holder.settings.attr1 == "custom"
 
 
 def test_ittssettingsholderfactory_should_return_a_ittssettingsholder_object() -> None:
     settings = DummyTTSSettings()
-    holder = dummy_make_ittssettingsholder(settings)
+    holder = dummy_make_ttssettingsholder(settings)
     _: ITTSSettingsHolder[DummyTTSSettings] = holder  # Typecheck protocol conformity
     assert isinstance(holder, ITTSSettingsHolder)  # Runtime check as well
