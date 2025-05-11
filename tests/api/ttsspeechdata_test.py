@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-"""Unit tests for the TTSSpeechData data type."""
+"""Unit tests for api._ttsspeechdata."""
 
 from typing import Any
 

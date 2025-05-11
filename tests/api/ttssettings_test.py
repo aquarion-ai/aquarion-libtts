@@ -16,7 +16,7 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-"""Unit tests for the ITTSSettings protocol.
+"""Unit tests for api._ttssettings.
 
 These tests serve mostly to document the expectations of all ITTSSettings
 implementations.
