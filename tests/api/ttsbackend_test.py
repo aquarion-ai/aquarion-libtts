@@ -42,16 +42,35 @@ class DummyTTSBackend(DummyTTSSettingsHolder):
     to the TTSSettings protocol.
     """
 
+    def __init__(self) -> None:
+        super().__init__()
+        self._is_started = False
+
     def convert(self, text: str) -> TTSSpeechData:
         return TTSSpeechData(
             audio=f"some audio of {text}".encode(), mime_type="audio/wav"
         )
+
+    @property
+    def is_started(self) -> bool:
+        return self._is_started
+
+    def start(self) -> None:
+        self._is_started = True
+
+    def stop(self) -> None:
+        self._is_started = False
 
 
 def test_ittsbackend_should_conform_to_its_protocol() -> None:
     backend = DummyTTSBackend()
     _: ITTSBackend = backend  # Typecheck protocol conformity
     assert isinstance(backend, ITTSBackend)  # Runtime check as well
+
+
+def test_ittsbackend_should_be_stopped_by_default() -> None:
+    backend = DummyTTSBackend()
+    assert not backend.is_started
 
 
 ## .settings tests
@@ -79,16 +98,76 @@ def test_ittsbackend_settings_should_raise_error_if_given_settings_invalid() -> 
 ## .convert() tests
 
 
-def test_ttsbackend_convert_should_require_some_text_input() -> None:
+def test_ittsbackend_convert_should_require_some_text_input() -> None:
     backend = DummyTTSBackend()
     with pytest.raises(TypeError, match="missing .* required positional argument"):
         backend.convert()  # type: ignore [call-arg]
 
 
-def test_ttsbackend_convert_should_return_a_ttsspeechdata_object() -> None:
+def test_ittsbackend_convert_should_return_a_ttsspeechdata_object() -> None:
     backend = DummyTTSBackend()
     speech_data = backend.convert("some text")
     assert isinstance(speech_data, TTSSpeechData)
+
+
+## .is_started tests
+
+
+def test_ittsbackend_is_started_should_return_true_if_started() -> None:
+    backend = DummyTTSBackend()
+    backend.start()
+    assert backend.is_started
+
+
+def test_ittsbackend_is_started_should_return_false_if_stopped() -> None:
+    backend = DummyTTSBackend()
+    backend.start()
+    backend.stop()
+    assert not backend.is_started
+
+
+def test_ittsbackend_is_started_should_be_read_only() -> None:
+    backend = DummyTTSBackend()
+    with pytest.raises(AttributeError, match="property .* of .* object has no setter"):
+        backend.is_started = True  # type: ignore [misc]
+
+
+## .start() tests
+
+
+def test_ittsbackend_start_should_start_the_backend() -> None:
+    backend = DummyTTSBackend()
+    backend.start()
+    assert backend.is_started
+
+
+def test_ittsbackend_start_should_be_idempotent() -> None:
+    backend = DummyTTSBackend()
+    backend.start()
+    assert backend.is_started
+    backend.start()
+    assert backend.is_started
+
+
+## .stop() tests
+
+
+def test_ittsbackend_stop_should_stop_the_backend() -> None:
+    backend = DummyTTSBackend()
+    backend.start()
+    assert backend.is_started
+    backend.stop()
+    assert not backend.is_started
+
+
+def test_ittsbackend_stop_should_be_idempotent() -> None:
+    backend = DummyTTSBackend()
+    backend.start()
+    assert backend.is_started
+    backend.stop()
+    assert not backend.is_started
+    backend.stop()  # type: ignore [unreachable]  # The type checker is wrong.  Tested.
+    assert not backend.is_started
 
 
 ### ITTSBackendFactory Tests ###

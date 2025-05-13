@@ -35,6 +35,22 @@ class ITTSBackend(ITTSSettingsHolder, Protocol):
     def convert(self, text: str) -> TTSSpeechData:
         """Return speech audio generated from the given text."""
 
+    @property
+    def is_started(self) -> bool:
+        """Return True if TTS backend is started / running, False otherwise."""
+
+    def start(self) -> None:
+        """Start the TTS backend.
+
+        If the backend is already started, this method should be idempotent.
+        """
+
+    def stop(self) -> None:
+        """Stop the TTS backend.
+
+        If the backend is already stopped, this method should be idempotent.
+        """
+
 
 @runtime_checkable
 class ITTSBackendFactory(ITTSSettingsHolderFactory, Protocol):
