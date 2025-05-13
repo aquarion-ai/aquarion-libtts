@@ -19,20 +19,20 @@
 """TTSRegistry is the central registry of all TTS backend and settings factories."""
 
 from dataclasses import dataclass
-from typing import Never, cast
+from typing import Never
 
 from aquarion.libs.libtts.api._ttsbackend import ITTSBackendFactory
-from aquarion.libs.libtts.api._ttssettings import ITTSSettings, ITTSSettingsFactory
+from aquarion.libs.libtts.api._ttssettings import ITTSSettingsFactory
 
 
 @dataclass(frozen=True, kw_only=True)
-class TTSRegistryRecord[T: ITTSSettings]:
+class TTSRegistryRecord:
     """Entry record to register with the TTSRegistry."""
 
     key: str
     display_name: str
-    settings_factory: ITTSSettingsFactory[T]
-    backend_factory: ITTSBackendFactory[T]
+    settings_factory: ITTSSettingsFactory
+    backend_factory: ITTSBackendFactory
 
 
 class TTSRegistry:
@@ -43,10 +43,10 @@ class TTSRegistry:
     """
 
     def __init__(self) -> None:
-        self._records: dict[str, TTSRegistryRecord[ITTSSettings]] = {}
+        self._records: dict[str, TTSRegistryRecord] = {}
         self._enabled_backends: set[str] = set()
 
-    def register[T: ITTSSettings](self, record: TTSRegistryRecord[T]) -> None:
+    def register(self, record: TTSRegistryRecord) -> None:
         """Register a TTS backend for future use.
 
         Registered backends are disabled by default.  It is the library user, not the
@@ -62,9 +62,9 @@ class TTSRegistry:
                 f" [{existing_record.display_name}]"
             )
             raise ValueError(message)
-        self._records[record.key] = cast("TTSRegistryRecord[ITTSSettings]", record)
+        self._records[record.key] = record
 
-    def get_record(self, key: str) -> TTSRegistryRecord[ITTSSettings]:
+    def get_record(self, key: str) -> TTSRegistryRecord:
         """Return the record the for the given key.
 
         Raises ValueError exception if the given key does not match any

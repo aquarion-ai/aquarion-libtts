@@ -26,25 +26,23 @@ import pytest
 
 from aquarion.libs.libtts.api._ttsbackend import ITTSBackendFactory
 from aquarion.libs.libtts.api._ttsregistry import TTSRegistry, TTSRegistryRecord
-from aquarion.libs.libtts.api._ttssettings import ITTSSettings, ITTSSettingsFactory
+from aquarion.libs.libtts.api._ttssettings import ITTSSettingsFactory
 from tests.api.ttsbackend_test import dummy_make_ttsbackend
-from tests.api.ttssettings_test import DummyTTSSettings, dummy_make_ttssettings
+from tests.api.ttssettings_test import dummy_make_ttssettings
 
 ### TTSRegistryRecord Tests ###
 
 
-class RegistryRecordRequiredArgumentsDict[T: ITTSSettings](TypedDict):
+class RegistryRecordRequiredArgumentsDict(TypedDict):
     """Dictionary of required arguments to for TTSRegistryRecord."""
 
     key: str
     display_name: str
-    settings_factory: ITTSSettingsFactory[T]
-    backend_factory: ITTSBackendFactory[T]
+    settings_factory: ITTSSettingsFactory
+    backend_factory: ITTSBackendFactory
 
 
-REGISTRY_RECORD_REQUIRED_ARGUMENTS: Final[
-    RegistryRecordRequiredArgumentsDict[DummyTTSSettings]
-] = {
+REGISTRY_RECORD_REQUIRED_ARGUMENTS: Final[RegistryRecordRequiredArgumentsDict] = {
     "key": "I am a key",
     "display_name": "I am a name",
     "settings_factory": dummy_make_ttssettings,
@@ -52,16 +50,14 @@ REGISTRY_RECORD_REQUIRED_ARGUMENTS: Final[
 }
 REGISTRY_RECORD_REQUIRED_ARGUMENT_NAMES = tuple(REGISTRY_RECORD_REQUIRED_ARGUMENTS)
 REGISTRY_RECORD_ALTERNATE_REQUIRED_ARGUMENTS: Final[
-    RegistryRecordRequiredArgumentsDict[DummyTTSSettings]
+    RegistryRecordRequiredArgumentsDict
 ] = {
     "key": "I am a different key",
     "display_name": "I am a different name",
-    "settings_factory": cast(
-        "ITTSSettingsFactory[DummyTTSSettings]", partial(dummy_make_ttssettings)
-    ),
-    "backend_factory": cast(
-        "ITTSBackendFactory[DummyTTSSettings]", partial(dummy_make_ttsbackend)
-    ),
+    # This is a trick to it seem like they are different factories for the purpose of
+    # equality checking.
+    "settings_factory": cast("ITTSSettingsFactory", partial(dummy_make_ttssettings)),
+    "backend_factory": cast("ITTSBackendFactory", partial(dummy_make_ttsbackend)),
 }
 
 

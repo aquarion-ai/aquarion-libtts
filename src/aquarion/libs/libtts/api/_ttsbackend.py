@@ -29,7 +29,7 @@ from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
 
 
 @runtime_checkable
-class ITTSBackend[T: ITTSSettings](ITTSSettingsHolder[T], Protocol):
+class ITTSBackend(ITTSSettingsHolder, Protocol):
     """Common interface for all TTS backends."""
 
     def convert(self, text: str) -> TTSSpeechData:
@@ -37,12 +37,16 @@ class ITTSBackend[T: ITTSSettings](ITTSSettingsHolder[T], Protocol):
 
 
 @runtime_checkable
-class ITTSBackendFactory[T: ITTSSettings](ITTSSettingsHolderFactory[T], Protocol):
+class ITTSBackendFactory(ITTSSettingsHolderFactory, Protocol):
     """Common interface for all TTSBackend factories."""
 
     @staticmethod
-    def __call__(settings: T) -> ITTSBackend[T]:
+    def __call__(settings: ITTSSettings) -> ITTSBackend:
         """Return an object that conforms to the ITTSBackend protocol.
 
         Custom or default settings must be provided to configure the TTS backend.
+
+        Implementations of this interface should check that they are only getting the
+        correct concrete settings class and raise TypeError if any other kind of
+        concrete ITTSSettings is given.
         """

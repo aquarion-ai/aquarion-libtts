@@ -24,8 +24,13 @@ These tests serve mostly to document the expectations of all TTSBackend implemen
 import pytest
 
 from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, ITTSBackendFactory
+from aquarion.libs.libtts.api._ttssettings import ITTSSettings
 from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
-from tests.api.ttssettings_test import DummyTTSSettings, DummyTTSSettingsHolder
+from tests.api.ttssettings_test import (
+    AnotherTTSSettings,
+    DummyTTSSettings,
+    DummyTTSSettingsHolder,
+)
 
 ### ITTSBackend Tests ###
 
@@ -45,8 +50,11 @@ class DummyTTSBackend(DummyTTSSettingsHolder):
 
 def test_ittsbackend_should_conform_to_its_protocol() -> None:
     backend = DummyTTSBackend()
-    _: ITTSBackend[DummyTTSSettings] = backend  # Typecheck protocol conformity
+    _: ITTSBackend = backend  # Typecheck protocol conformity
     assert isinstance(backend, ITTSBackend)  # Runtime check as well
+
+
+## .settings tests
 
 
 def test_ittsbackend_should_have_a_settings_attribute() -> None:
@@ -59,6 +67,16 @@ def test_ittsbackend_settings_should_be_settable() -> None:
     new_settings = DummyTTSSettings(attr1="custom")
     backend.settings = new_settings
     assert backend.settings == new_settings
+
+
+def test_ittsbackend_settings_should_raise_error_if_given_settings_invalid() -> None:
+    backend = DummyTTSBackend()
+    new_settings = AnotherTTSSettings()
+    with pytest.raises(TypeError, match="Invalid settings"):
+        backend.settings = new_settings
+
+
+## .convert() tests
 
 
 def test_ttsbackend_convert_should_require_some_text_input() -> None:
@@ -76,16 +94,14 @@ def test_ttsbackend_convert_should_return_a_ttsspeechdata_object() -> None:
 ### ITTSBackendFactory Tests ###
 
 
-def dummy_make_ttsbackend(settings: DummyTTSSettings) -> DummyTTSBackend:
+def dummy_make_ttsbackend(settings: ITTSSettings) -> ITTSBackend:
     backend = DummyTTSBackend()
     backend.settings = settings
     return backend
 
 
 def test_ittsbackendfactory_should_conform_to_its_protocol() -> None:
-    _: ITTSBackendFactory[DummyTTSSettings] = (
-        dummy_make_ttsbackend  # Typecheck protocol conformity
-    )
+    _: ITTSBackendFactory = dummy_make_ttsbackend  # Typecheck protocol conformity
     assert isinstance(
         dummy_make_ttsbackend, ITTSBackendFactory
     )  # Runtime check as well
@@ -99,11 +115,18 @@ def test_ittsbackendfactory_should_require_a_settings_argument() -> None:
 def test_ittsbackendfactory_should_use_given_settings() -> None:
     settings = DummyTTSSettings("custom")
     backend = dummy_make_ttsbackend(settings)
+    assert isinstance(backend.settings, DummyTTSSettings)  # For the type checker
     assert backend.settings.attr1 == "custom"
 
 
 def test_ittsbackendfactory_should_return_a_ittsbackend_object() -> None:
     settings = DummyTTSSettings()
     backend = dummy_make_ttsbackend(settings)
-    _: ITTSBackend[DummyTTSSettings] = backend  # Typecheck protocol conformity
+    _: ITTSBackend = backend  # Typecheck protocol conformity
     assert isinstance(backend, ITTSBackend)  # Runtime check as well
+
+
+def test_ittsbackendfactory_should_raise_error_if_incorrect_settings_given() -> None:
+    settings = AnotherTTSSettings()
+    with pytest.raises(TypeError, match="Invalid settings"):
+        dummy_make_ttsbackend(settings)
