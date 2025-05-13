@@ -228,6 +228,9 @@ class DummyTTSSettingsHolder:
     to the TTSSettingsHolder protocol.
     """
 
+    def __init__(self) -> None:
+        self.settings = DummyTTSSettings()
+
     @property
     def settings(self) -> ITTSSettings:
         return self._settings
@@ -238,9 +241,6 @@ class DummyTTSSettingsHolder:
             message = f"Invalid settings: [{new_settings.__class__}]"
             raise TypeError(message)
         self._settings = new_settings
-
-    def __init__(self) -> None:
-        self.settings = DummyTTSSettings()
 
 
 def test_ittssettingsholder_should_conform_to_its_protocol() -> None:
