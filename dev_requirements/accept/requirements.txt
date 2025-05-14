@@ -3,6 +3,7 @@
 #
 # - coverage[toml]~=7.8.0
 # - radish-bdd~=0.18.2
+# - pluggy~=1.5.0
 #
 
 colorful==0.5.6 \
@@ -89,6 +90,10 @@ parse-type==0.6.4 \
     --hash=sha256:5e1ec10440b000c3f818006033372939e693a9ec0176f446d9303e4db88489a6 \
     --hash=sha256:83d41144a82d6b8541127bf212dd76c7f01baff680b498ce8a4d052a7a5bce4c
     # via radish-bdd
+pluggy==1.5.0 \
+    --hash=sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1 \
+    --hash=sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669
+    # via hatch.envs.accept
 pysingleton==0.2.1 \
     --hash=sha256:5776e7a4ba0bab26709da604f4e648c5814385fef34010723db3da0d41b0dbcc
     # via radish-bdd

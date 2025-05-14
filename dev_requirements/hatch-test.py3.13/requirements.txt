@@ -8,6 +8,7 @@
 # - pytest-randomly~=3.16.0
 # - pytest-rerunfailures~=15.0.0
 # - pytest-xdist[psutil]~=3.6.1
+# - pluggy~=1.5.0
 #
 
 coverage==7.8.0 \
@@ -98,7 +99,9 @@ packaging==25.0 \
 pluggy==1.5.0 \
     --hash=sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1 \
     --hash=sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669
-    # via pytest
+    # via
+    #   hatch.envs.hatch-test.py3.13
+    #   pytest
 psutil==7.0.0 \
     --hash=sha256:101d71dc322e3cffd7cea0650b09b3d08b8e7c4109dd6809fe452dfd00e58b25 \
     --hash=sha256:1e744154a6580bc968a0195fd25e80432d3afec619daf145b9e5ba16cc1d688e \
