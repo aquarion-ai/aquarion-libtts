@@ -19,7 +19,7 @@
 
 [build-system]
 build-backend = "hatchling.build"
-requires = ["hatchling~=1.27.0"]
+requires = ["hatchling~=1.27.0", "hatch-semver~=2.0.2"]
 
 [project]
 authors = [
@@ -70,6 +70,8 @@ requires = [
 
 [tool.hatch.version]
 path = "src/aquarion/libs/libtts/__about__.py"
+scheme = "semver"
+validate-bump = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/aquarion"]
