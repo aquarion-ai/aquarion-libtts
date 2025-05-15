@@ -60,12 +60,45 @@ Homepage = "https://github.com/aquarion-ai"
 Issues = "https://github.com/aquarion-ai/aquarion-libtts/issues"
 Source = "https://github.com/aquarion-ai/aquarion-libtts"
 
+## uv
+
+[dependency-groups]
+hatch-static-analysis = [
+  "ruff~=0.11.7",
+]
+hatch-uv = [
+  "uv~=0.6.17",
+]
+# These are Hatch's default dependencies, just with versions updates and more precisely
+# pinned down.  Use extra-dependencies for any other custom dependencies to keep them
+# separated.
+accept = [
+  "coverage[toml]~=7.8.0",
+  "radish-bdd~=0.18.2",
+]
+hatch-test = [
+  "coverage-enable-subprocess==1.0",
+  "coverage[toml]~=7.8.0",
+  "pytest~=8.3.5",
+  "pytest-mock~=3.14.0",
+  "pytest-randomly~=3.16.0",
+  "pytest-rerunfailures~=15.0.0",
+  "pytest-xdist[psutil]~=3.6.1",
+]
+types = [
+  "mypy~=1.15.0",
+  "pytest~=8.3.5",
+  "types-Pygments~=2.19.0", # mypy type stub
+  "types-colorama~=0.4.15", # mypy type stub
+  "types-pexpect~=4.9.0", # mypy type stub
+  "types-setuptools~=80.4.0", # mypy type stub
+]
+
 ### Hatch ###
 
 [tool.hatch.env]
 requires = [
-  "hatch-pip-compile~=1.11.3",
-  "hatch-uvenv~=0.3.3",
+  "hatch-uvenv~=0.3.4",
 ]
 
 [tool.hatch.version]
@@ -84,55 +117,26 @@ type = "uvenv"
 # Env: hatch-uv
 
 [tool.hatch.envs.hatch-uv]
-dependencies = ["uv~=0.6.17"]
-lock-filename = "dev_requirements/{env_name}/requirements.txt"
-#pip-compile-constraint = "default"
-pip-compile-hashes = true
-pip-compile-installer = "uv"
-pip-compile-resolver = "uv"
-type = "pip-compile"
+groups = ["hatch-uv"]
+type = "uvenv"
 
 # Env: hatch-static-analysis
 
 [tool.hatch.envs.hatch-static-analysis]
 config-path = "none"
-dependencies = ["ruff~=0.11.7"]
-lock-filename = "dev_requirements/{env_name}/requirements.txt"
-#pip-compile-constraint = "default"
-pip-compile-hashes = true
-pip-compile-installer = "uv"
-pip-compile-resolver = "uv"
-type = "pip-compile"
+groups = ["hatch-static-analysis"]
+type = "uvenv"
 
 # Env: hatch-test
 
 [tool.hatch.envs.hatch-test]
-lock-filename = "dev_requirements/{env_name}/requirements.txt"
-#pip-compile-constraint = "default"
-pip-compile-hashes = true
-pip-compile-installer = "uv"
-pip-compile-resolver = "uv"
-type = "pip-compile"
-# These are Hatch's default dependencies, just with versions updates and more precisely
-# pinned down.  Use extra-dependencies for any other custom dependencies to keep them
-# separated.
-dependencies = [
-  "coverage-enable-subprocess==1.0",
-  "coverage[toml]~=7.8.0",
-  "pytest~=8.3.5",
-  "pytest-mock~=3.14.0",
-  "pytest-randomly~=3.16.0",
-  "pytest-rerunfailures~=15.0.0",
-  "pytest-xdist[psutil]~=3.6.1",
-]
-extra-dependencies = []
-
+groups = ["hatch-test"]
 # Cannot use parallel and coverage at the same time.
 # https://github.com/pypa/hatch/issues/1635
 # parallel = true
-
 # We do not want to *always* randomize.
 # randomize = true
+type = "uvenv"
 
 [[tool.hatch.envs.hatch-test.matrix]]
 python = ["3.13"]
@@ -140,16 +144,8 @@ python = ["3.13"]
 # Env: types
 
 [tool.hatch.envs.types]
-extra-dependencies = [
-  "mypy~=1.15.0",
-  "pytest~=8.3.5",
-]
-lock-filename = "dev_requirements/{env_name}/requirements.txt"
-#pip-compile-constraint = "default"
-pip-compile-hashes = true
-pip-compile-installer = "uv"
-pip-compile-resolver = "uv"
-type = "pip-compile"
+groups = ["types"]
+type = "uvenv"
 
 [tool.hatch.envs.types.scripts]
 check = """
@@ -159,16 +155,8 @@ check = """
 # Env: accept
 
 [tool.hatch.envs.accept]
-extra-dependencies = [
-  "coverage[toml]~=7.8.0",
-  "radish-bdd~=0.18.2",
-]
-lock-filename = "dev_requirements/{env_name}/requirements.txt"
-#pip-compile-constraint = "default"
-pip-compile-hashes = true
-pip-compile-installer = "uv"
-pip-compile-resolver = "uv"
-type = "pip-compile"
+groups = ["accept"]
+type = "uvenv"
 
 [tool.hatch.envs.accept.scripts]
 cover = ".hatch_check accept cover {args}"

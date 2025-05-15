@@ -65,7 +65,7 @@ jobs:
       - name: Cache dependencies and venvs
         uses: actions/cache@v4
         with:
-          key: dependencies-venvs-${{ hashFiles('dev_requirements/**/requirements.txt', 'uv.lock') }}
+          key: dependencies-venvs-${{ hashFiles('uv.lock') }}
           restore-keys: dependencies-venvs
           path: |
             ~/.cache/uv
@@ -75,7 +75,7 @@ jobs:
       # - name: Cache Hatch Pythons
       #   uses: actions/cache@v4
       #   with:
-      #       key: hatch-pythons-${{ hashFiles('dev_requirements/hatch-test.*/requirements.txt') }}
+      #       key: hatch-pythons-${{ hashFiles('pyproject.toml') }}
       #       restore-keys: hatch-pythons
       #       path: ~/.local/share/hatch/pythons
 

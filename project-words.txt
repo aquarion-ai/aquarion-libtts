@@ -5,6 +5,7 @@ beckend
 celerybeat
 codespell
 Color
+colorama
 colorful
 commitizen
 compatiblelicenses
@@ -48,6 +49,7 @@ mypy
 noncommercially
 nosetests
 nushell
+pexpect
 pipenv
 Pipfile
 pkgs
@@ -59,6 +61,7 @@ pycodestyle
 pyenv
 Pyflakes
 pyflow
+Pygments
 pygrep
 pypa
 pypackages
@@ -75,6 +78,7 @@ ropeproject
 schneegans
 scrapy
 sdist
+setuptools
 Spyder
 spyderproject
 spyproject
