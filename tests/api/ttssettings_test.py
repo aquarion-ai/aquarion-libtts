@@ -229,14 +229,12 @@ class DummyTTSSettingsHolder:
     """
 
     def __init__(self) -> None:
-        self.settings = DummyTTSSettings()
+        self._settings = DummyTTSSettings()
 
-    @property
-    def settings(self) -> ITTSSettings:
+    def get_settings(self) -> DummyTTSSettings:
         return self._settings
 
-    @settings.setter
-    def settings(self, new_settings: ITTSSettings) -> None:
+    def update_settings(self, new_settings: ITTSSettings) -> None:
         if not isinstance(new_settings, DummyTTSSettings):
             message = f"Invalid settings: [{new_settings.__class__}]"
             raise TypeError(message)
@@ -249,25 +247,43 @@ def test_ittssettingsholder_should_conform_to_its_protocol() -> None:
     assert isinstance(holder, ITTSSettingsHolder)  # Runtime check as well
 
 
-def test_ittssettingsholder_should_have_a_settings_attribute() -> None:
+def test_ittssettingsholder_get_settings_should_return_an_ittssettings() -> None:
     holder = DummyTTSSettingsHolder()
-    assert hasattr(holder, "settings")
+    settings = holder.get_settings()
+    _: ITTSSettings = settings  # Typecheck protocol conformity
+    assert isinstance(settings, ITTSSettings)  # Runtime check as well
 
 
-def test_ittssettingsholder_settings_should_be_settable() -> None:
+def test_ittssettingsholder_update_settings_should_accept_a_settings_argument() -> None:
     holder = DummyTTSSettingsHolder()
-    new_settings = DummyTTSSettings(attr1="custom")
-    holder.settings = new_settings
-    assert holder.settings == new_settings
+    holder.update_settings(DummyTTSSettings())
 
 
-def test_ittssettingsholder_settings_should_raise_error_if_given_settings_invalid() -> (
+def test_ittssettingsholder_update_settings_should_require_the_settings_argument() -> (
     None
 ):
     holder = DummyTTSSettingsHolder()
-    new_settings = AnotherTTSSettings()
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        holder.update_settings()  # type: ignore [call-arg]
+
+
+def test_ittssettingsholder_update_settings_should_update_the_settings() -> None:
+    holder = DummyTTSSettingsHolder()
+    orig_settings = holder.get_settings()
+    new_settings = DummyTTSSettings(attr1="new settings")
+    holder.update_settings(new_settings)
+    updated_settings = holder.get_settings()
+    assert updated_settings == new_settings
+    assert updated_settings != orig_settings
+
+
+def test_ittssettingsholder_update_settings_should_raise_error_if__invalid_given() -> (
+    None
+):
+    holder = DummyTTSSettingsHolder()
+    invalid_settings = AnotherTTSSettings()
     with pytest.raises(TypeError, match="Invalid settings"):
-        holder.settings = new_settings
+        holder.update_settings(invalid_settings)
 
 
 ### ITTSSettingsHolderFactory Tests ###
@@ -275,7 +291,7 @@ def test_ittssettingsholder_settings_should_raise_error_if_given_settings_invali
 
 def dummy_make_ttssettingsholder(settings: ITTSSettings) -> ITTSSettingsHolder:
     holder = DummyTTSSettingsHolder()
-    holder.settings = settings
+    holder.update_settings(settings)
     return holder
 
 
@@ -294,10 +310,11 @@ def test_ittssettingsholderfactory_should_require_a_settings_argument() -> None:
 
 
 def test_ittssettingsholderfactory_should_use_given_settings() -> None:
-    settings = DummyTTSSettings("custom")
-    holder = dummy_make_ttssettingsholder(settings)
-    assert isinstance(holder.settings, DummyTTSSettings)  # For the type checker
-    assert holder.settings.attr1 == "custom"
+    expected = "custom"
+    holder = dummy_make_ttssettingsholder(DummyTTSSettings(expected))
+    settings = holder.get_settings()
+    assert isinstance(settings, DummyTTSSettings)  # For the type checker
+    assert settings.attr1 == expected
 
 
 def test_ittssettingsholderfactory_should_return_a_ittssettingsholder_object() -> None:

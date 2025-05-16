@@ -73,26 +73,45 @@ def test_ittsbackend_should_be_stopped_by_default() -> None:
     assert not backend.is_started
 
 
-## .settings tests
+## .get_settings tests
 
 
-def test_ittsbackend_should_have_a_settings_attribute() -> None:
+def test_ittsbackend_get_settings_should_return_an_ittssettings() -> None:
     backend = DummyTTSBackend()
-    assert hasattr(backend, "settings")
+    settings = backend.get_settings()
+    _: ITTSSettings = settings  # Typecheck protocol conformity
+    assert isinstance(settings, ITTSSettings)  # Runtime check as well
 
 
-def test_ittsbackend_settings_should_be_settable() -> None:
+## .update_settings tests
+
+
+def test_ittsbackend_update_settings_should_accept_a_settings_argument() -> None:
     backend = DummyTTSBackend()
-    new_settings = DummyTTSSettings(attr1="custom")
-    backend.settings = new_settings
-    assert backend.settings == new_settings
+    backend.update_settings(DummyTTSSettings())
 
 
-def test_ittsbackend_settings_should_raise_error_if_given_settings_invalid() -> None:
+def test_ittsbackend_update_settings_should_require_the_settings_argument() -> None:
     backend = DummyTTSBackend()
-    new_settings = AnotherTTSSettings()
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        backend.update_settings()  # type: ignore [call-arg]
+
+
+def test_ittsbackend_update_settings_should_update_the_settings() -> None:
+    backend = DummyTTSBackend()
+    orig_settings = backend.get_settings()
+    new_settings = DummyTTSSettings(attr1="new settings")
+    backend.update_settings(new_settings)
+    updated_settings = backend.get_settings()
+    assert updated_settings == new_settings
+    assert updated_settings != orig_settings
+
+
+def test_ittsbackend_update_settings_should_raise_error_if__invalid_given() -> None:
+    backend = DummyTTSBackend()
+    invalid_settings = AnotherTTSSettings()
     with pytest.raises(TypeError, match="Invalid settings"):
-        backend.settings = new_settings
+        backend.update_settings(invalid_settings)
 
 
 ## .convert() tests
@@ -175,7 +194,7 @@ def test_ittsbackend_stop_should_be_idempotent() -> None:
 
 def dummy_make_ttsbackend(settings: ITTSSettings) -> ITTSBackend:
     backend = DummyTTSBackend()
-    backend.settings = settings
+    backend.update_settings(settings)
     return backend
 
 
@@ -192,10 +211,11 @@ def test_ittsbackendfactory_should_require_a_settings_argument() -> None:
 
 
 def test_ittsbackendfactory_should_use_given_settings() -> None:
-    settings = DummyTTSSettings("custom")
-    backend = dummy_make_ttsbackend(settings)
-    assert isinstance(backend.settings, DummyTTSSettings)  # For the type checker
-    assert backend.settings.attr1 == "custom"
+    expected = "custom"
+    backend = dummy_make_ttsbackend(DummyTTSSettings(expected))
+    settings = backend.get_settings()
+    assert isinstance(settings, DummyTTSSettings)  # For the type checker
+    assert settings.attr1 == expected
 
 
 def test_ittsbackendfactory_should_return_a_ittsbackend_object() -> None:

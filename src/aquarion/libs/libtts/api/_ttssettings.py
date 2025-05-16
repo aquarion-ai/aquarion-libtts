@@ -74,13 +74,11 @@ class ITTSSettingsFactory(Protocol):
 class ITTSSettingsHolder(Protocol):
     """Common interface for objects that accept and contain ITTSSettings."""
 
-    @property
-    def settings(self) -> ITTSSettings:
-        """Return the current settings for the TTS backend."""
+    def get_settings(self) -> ITTSSettings:
+        """Return the current setting in use."""
 
-    @settings.setter
-    def settings(self, new_settings: ITTSSettings) -> None:
-        """Store and apply the new given settings to the TTS backend.
+    def update_settings(self, new_settings: ITTSSettings) -> None:
+        """Update to the new given settings.
 
         Implementations of this interface should check that they are only getting the
         correct concrete settings class and raise TypeError if any other kind of
