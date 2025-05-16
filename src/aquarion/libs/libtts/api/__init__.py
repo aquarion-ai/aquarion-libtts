@@ -24,7 +24,11 @@ from aquarion.libs.libtts.api._plugins import (
     tts_hookimpl,
 )
 from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, ITTSBackendFactory
-from aquarion.libs.libtts.api._ttsregistry import TTSRegistry, TTSRegistryRecord
+from aquarion.libs.libtts.api._ttsregistry import (
+    ITTSDisplayNameFactory,
+    TTSRegistry,
+    TTSRegistryRecord,
+)
 from aquarion.libs.libtts.api._ttssettings import (
     ITTSSettings,
     ITTSSettingsFactory,
@@ -37,6 +41,7 @@ from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
 __all__ = [
     "ITTSBackend",
     "ITTSBackendFactory",
+    "ITTSDisplayNameFactory",
     "ITTSSettings",
     "ITTSSettingsFactory",
     "ITTSSettingsHolder",

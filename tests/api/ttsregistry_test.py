@@ -25,10 +25,57 @@ from typing import Final, TypedDict, cast
 import pytest
 
 from aquarion.libs.libtts.api._ttsbackend import ITTSBackendFactory
-from aquarion.libs.libtts.api._ttsregistry import TTSRegistry, TTSRegistryRecord
+from aquarion.libs.libtts.api._ttsregistry import (
+    ITTSDisplayNameFactory,
+    TTSRegistry,
+    TTSRegistryRecord,
+)
 from aquarion.libs.libtts.api._ttssettings import ITTSSettingsFactory
 from tests.api.ttsbackend_test import dummy_make_ttsbackend
 from tests.api.ttssettings_test import dummy_make_ttssettings
+
+### ITTSDisplayNameFactory Tests ###
+
+
+def dummy_make_display_name(locale: str) -> str:
+    if locale == "fr-CA":
+        return "Je suis un nom"
+    return "I am a name"
+
+
+def test_ittsbackend_should_conform_to_its_protocol() -> None:
+    _: ITTSDisplayNameFactory = dummy_make_display_name  # Typecheck protocol conformity
+    assert isinstance(
+        dummy_make_display_name, ITTSDisplayNameFactory
+    )  # Runtime check as well
+
+
+def test_ittsdisplaynamefactory_should_accept_a_locale_argument() -> None:
+    dummy_make_display_name("en")
+
+
+def test_ittsdisplaynamefactory_should_require_the_locale_argument() -> None:
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        dummy_make_display_name()  # type: ignore [call-arg]
+
+
+@pytest.mark.parametrize(
+    ("locale", "expected"), [("en-CA", "I am a name"), ("fr-CA", "Je suis un nom")]
+)
+def test_ittsdisplaynamefactory_should_return_correct_display_name_for_given_locale(
+    locale: str, expected: str
+) -> None:
+    display_name = dummy_make_display_name(locale)
+    assert display_name == expected
+
+
+def test_ittsdisplaynamefactory_should_return_a_fallback_if_locale_is_unsupported() -> (
+    None
+):
+    english_name = "I am a name"
+    display_name = dummy_make_display_name("ja-JP")
+    assert display_name == english_name
+
 
 ### TTSRegistryRecord Tests ###
 
@@ -37,14 +84,14 @@ class RegistryRecordRequiredArgumentsDict(TypedDict):
     """Dictionary of required arguments to for TTSRegistryRecord."""
 
     key: str
-    display_name: str
+    display_name_factory: ITTSDisplayNameFactory
     settings_factory: ITTSSettingsFactory
     backend_factory: ITTSBackendFactory
 
 
 REGISTRY_RECORD_REQUIRED_ARGUMENTS: Final[RegistryRecordRequiredArgumentsDict] = {
     "key": "I am a key",
-    "display_name": "I am a name",
+    "display_name_factory": dummy_make_display_name,
     "settings_factory": dummy_make_ttssettings,
     "backend_factory": dummy_make_ttsbackend,
 }
@@ -53,9 +100,11 @@ REGISTRY_RECORD_ALTERNATE_REQUIRED_ARGUMENTS: Final[
     RegistryRecordRequiredArgumentsDict
 ] = {
     "key": "I am a different key",
-    "display_name": "I am a different name",
     # This is a trick to it seem like they are different factories for the purpose of
     # equality checking.
+    "display_name_factory": cast(
+        "ITTSDisplayNameFactory", partial(dummy_make_display_name)
+    ),
     "settings_factory": cast("ITTSSettingsFactory", partial(dummy_make_ttssettings)),
     "backend_factory": cast("ITTSBackendFactory", partial(dummy_make_ttsbackend)),
 }
@@ -77,7 +126,7 @@ def test_ttsregistryrecord_should_require_required_arguments(arg_name: str) -> N
 def test_ttsregistryrecord_should_require_all_keyword_only_arguments() -> None:
     arg_values = list(REGISTRY_RECORD_REQUIRED_ARGUMENTS.values())
     with pytest.raises(
-        TypeError, match="takes 1 positional argument but .* were given"
+        TypeError, match="takes 1 positional argument.? but .* were given"
     ):
         TTSRegistryRecord(*arg_values)  # type: ignore [call-arg]
 
@@ -200,16 +249,22 @@ def test_ttsregistry_get_record_should_raise_an_error_if_no_record_found() -> No
 ## .get_names() tests
 
 
-def test_ttsregistry_get_names_should_accept_an_include_disabled_argument() -> None:
+def test_ttsregistry_get_names_should_accept_a_locale_argument() -> None:
     registry = TTSRegistry()
-    registry.get_names(include_disabled=True)
+    registry.get_names("en-CA")
 
 
-def test_ttsregistry_get_names_should_not_require_the_include_disabled_argument() -> (
+def test_ttsregistry_get_names_should_require_the_locale_argument() -> None:
+    registry = TTSRegistry()
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        registry.get_names()  # type: ignore [call-arg]
+
+
+def test_ttsregistry_get_names_should_accept_optional_include_disabled_argument() -> (
     None
 ):
     registry = TTSRegistry()
-    registry.get_names()
+    registry.get_names("en-CA", include_disabled=True)
 
 
 def test_ttsregistry_get_names_include_disabled_should_be_a_keyword_only_argument() -> (
@@ -217,14 +272,14 @@ def test_ttsregistry_get_names_include_disabled_should_be_a_keyword_only_argumen
 ):
     registry = TTSRegistry()
     with pytest.raises(
-        TypeError, match="takes 1 positional argument but .* were given"
+        TypeError, match="takes .* positional argument.? but .* were given"
     ):
-        registry.get_names(True)  # type: ignore [misc]  # noqa: FBT003
+        registry.get_names("en-CA", True)  # type: ignore [misc]  # noqa: FBT003
 
 
 def test_ttsregistry_get_names_should_return_an_empty_dict_if_no_records() -> None:
     registry = TTSRegistry()
-    names = registry.get_names()
+    names = registry.get_names("en-CA")
     assert isinstance(names, dict)
     assert not names
 
@@ -237,10 +292,10 @@ def test_ttsregistry_get_names_should_return_a_dict_of_keys_and_display_names() 
     registry.register(record2)
     registry.enable(record1.key)
     registry.enable(record2.key)
-    names = registry.get_names()
+    names = registry.get_names("en-CA")
     assert isinstance(names, dict)
-    assert names[record1.key] == record1.display_name
-    assert names[record2.key] == record2.display_name
+    assert names[record1.key] == record1.display_name_factory("en-CA")
+    assert names[record2.key] == record2.display_name_factory("en-CA")
 
 
 def test_ttsregistry_get_names_should_not_include_disabled_backends_by_default() -> (
@@ -253,7 +308,7 @@ def test_ttsregistry_get_names_should_not_include_disabled_backends_by_default()
     registry.register(record2)
     registry.enable(record1.key)
     # record2 not enabled.  Disabled by default.
-    names = registry.get_names()
+    names = registry.get_names("en-CA")
     assert isinstance(names, dict)
     assert record1.key in names
     assert record2.key not in names
@@ -269,7 +324,7 @@ def test_ttsregistry_get_names_should_include_disabled_backends_when_requested()
     registry.register(record2)
     registry.enable(record1.key)
     # record2 not enabled.  Disabled by default.
-    names = registry.get_names(include_disabled=True)
+    names = registry.get_names("en-CA", include_disabled=True)
     assert isinstance(names, dict)
     assert record1.key in names
     assert record2.key in names
@@ -296,7 +351,7 @@ def test_ttsregistry_enable_should_enable_the_backend() -> None:
     registry = TTSRegistry()
     registry.register(record)
     registry.enable(record.key)
-    assert record.key in registry.get_names()
+    assert record.key in registry.get_names("en-CA")
 
 
 def test_ttsregistry_enable_should_be_idempotent() -> None:
@@ -305,7 +360,7 @@ def test_ttsregistry_enable_should_be_idempotent() -> None:
     registry.register(record)
     registry.enable(record.key)
     registry.enable(record.key)  # Do not go boom.
-    assert record.key in registry.get_names()
+    assert record.key in registry.get_names("en-CA")
 
 
 def test_ttsregistry_enable_should_raise_an_error_if_key_is_not_registered() -> None:
@@ -336,7 +391,7 @@ def test_ttsregistry_disable_should_disable_the_backend() -> None:
     registry.register(record)
     registry.enable(record.key)
     registry.disable(record.key)
-    assert record.key not in registry.get_names()
+    assert record.key not in registry.get_names("en-CA")
 
 
 def test_ttsregistry_disable_should_be_idempotent() -> None:
@@ -346,7 +401,7 @@ def test_ttsregistry_disable_should_be_idempotent() -> None:
     registry.enable(record.key)
     registry.disable(record.key)
     registry.disable(record.key)  # Do not go boom.
-    assert record.key not in registry.get_names()
+    assert record.key not in registry.get_names("en-CA")
 
 
 def test_ttsregistry_disable_should_raise_an_error_if_key_is_not_registered() -> None:

@@ -19,10 +19,23 @@
 """TTSRegistry is the central registry of all TTS backend and settings factories."""
 
 from dataclasses import dataclass
-from typing import Never
+from typing import Never, Protocol, runtime_checkable
 
 from aquarion.libs.libtts.api._ttsbackend import ITTSBackendFactory
 from aquarion.libs.libtts.api._ttssettings import ITTSSettingsFactory
+
+
+@runtime_checkable
+class ITTSDisplayNameFactory(Protocol):
+    """Function to return the TTS Backend display name."""
+
+    @staticmethod
+    def __call__(locale: str) -> str:
+        """Return the locale-appropriate TTS backend display name.
+
+        If the given locale is unsupported, then return a supported fallback display
+        name.
+        """
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -30,7 +43,7 @@ class TTSRegistryRecord:
     """Entry record to register with the TTSRegistry."""
 
     key: str
-    display_name: str
+    display_name_factory: ITTSDisplayNameFactory
     settings_factory: ITTSSettingsFactory
     backend_factory: ITTSBackendFactory
 
@@ -59,7 +72,7 @@ class TTSRegistry:
                 return  # Idempotent operation
             message = (
                 "Key already in use by another TTS backend: "
-                f" [{existing_record.display_name}]"
+                f" [{existing_record.display_name_factory}]"
             )
             raise ValueError(message)
         self._records[record.key] = record
@@ -75,10 +88,12 @@ class TTSRegistry:
         except KeyError:
             self._raise_backend_not_found(key)
 
-    def get_names(self, *, include_disabled: bool = False) -> dict[str, str]:
+    def get_names(
+        self, locale: str, *, include_disabled: bool = False
+    ) -> dict[str, str]:
         """Return the keys and display names of all the registered backends."""
         return {
-            record.key: record.display_name
+            record.key: record.display_name_factory(locale)
             for record in self._records.values()
             if (record.key in self._enabled_backends) or include_disabled
         }
