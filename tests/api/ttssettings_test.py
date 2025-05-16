@@ -47,6 +47,7 @@ class DummyTTSSettings:
 
     def __init__(self, attr1: str = "default") -> None:
         self.attr1 = attr1
+        self.locale = "en-CA"
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, DummyTTSSettings):
@@ -77,6 +78,8 @@ class AnotherTTSSettings:
     # These need to exist to conform to the ITTSSetting protocol, but are not actually
     # used or needed for the tests.
 
+    locale = "fr-CA"
+
     def __eq__(self, other: object) -> bool:
         return False  # pragma: no cover
 
@@ -94,6 +97,11 @@ def test_ittssettings_should_conform_to_its_protocol() -> None:
     settings = DummyTTSSettings()
     _: ITTSSettings = settings  # Typecheck protocol conformity
     assert isinstance(settings, ITTSSettings)  # Runtime check as well
+
+
+def test_ittssettings_should_have_a_locale_attribute() -> None:
+    settings: ITTSSettings = DummyTTSSettings()
+    assert hasattr(settings, "locale")
 
 
 def test_ittssettings_to_dict_should_return_a_dict_of_all_settings_as_base_types() -> (
