@@ -57,7 +57,7 @@ def test_ttsspeechdata_should_require_a_mime_type() -> None:
 
 def test_ttsspeechdata_should_require_all_keyword_arguments() -> None:
     with pytest.raises(
-        TypeError, match="takes .* positional argument but .* were given"
+        TypeError, match="takes .* positional argument.? but .* were given"
     ):
         TTSSpeechData(  # type: ignore [misc]
             DUMMY_AUDIO,

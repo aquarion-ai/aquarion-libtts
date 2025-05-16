@@ -86,7 +86,7 @@ def test_load_plugins_should_accept_an_optional_validate_argument() -> None:
 def test_load_plugins_should_require_validate_to_be_a_keyword_only_argument() -> None:
     registry = TTSRegistry()
     with pytest.raises(
-        TypeError, match="takes .* positional argument but .* were given"
+        TypeError, match="takes .* positional argument.? but .* were given"
     ):
         load_tts_plugins(registry.register, False)  # type: ignore [misc]  # noqa: FBT003
 
