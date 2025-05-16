@@ -36,7 +36,7 @@ type JSONSerializableTypes = (
 class ITTSSettings(Protocol):
     """Common interface for all TTS backend settings."""
 
-    locale: str
+    locale: str  # Locale should be a full locale, E.g. en-CA, not just en.
 
     def __eq__(self, other: object) -> bool:
         """Return True if all settings values match."""
