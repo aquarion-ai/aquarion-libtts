@@ -90,6 +90,7 @@ suis
 synched
 tomli
 ttsbackend
+ttsplugins
 ttsregistry
 ttsregistryrecord
 ttssettings

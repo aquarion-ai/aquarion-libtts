@@ -18,12 +18,12 @@
 
 """Public interfaces for aquarion-libtts."""
 
-from aquarion.libs.libtts.api._plugins import (
+from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, ITTSBackendFactory
+from aquarion.libs.libtts.api._ttsplugins import (
     RegisterTTSBackendFuncType,
     load_tts_plugins,
     tts_hookimpl,
 )
-from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, ITTSBackendFactory
 from aquarion.libs.libtts.api._ttsregistry import (
     ITTSDisplayNameFactory,
     TTSRegistry,

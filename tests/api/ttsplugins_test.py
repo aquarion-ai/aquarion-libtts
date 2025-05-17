@@ -24,7 +24,7 @@ import pytest
 from pluggy import PluginValidationError
 
 from aquarion.libs.libtts.api import RegisterTTSBackendFuncType, tts_hookimpl
-from aquarion.libs.libtts.api._plugins import load_tts_plugins, register_tts_backend
+from aquarion.libs.libtts.api._ttsplugins import load_tts_plugins, register_tts_backend
 from aquarion.libs.libtts.api._ttsregistry import TTSRegistry, TTSRegistryRecord
 from tests.api.ttsregistry_test import REGISTRY_RECORD_REQUIRED_ARGUMENTS
 
