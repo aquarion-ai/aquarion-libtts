@@ -23,7 +23,7 @@ These tests serve mostly to document the expectations of all TTSBackend implemen
 
 import pytest
 
-from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, ITTSBackendFactory
+from aquarion.libs.libtts.api._ttsbackend import ITTSBackend
 from aquarion.libs.libtts.api._ttssettings import ITTSSettings
 from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
 from tests.api.ttssettings_test import (
@@ -187,45 +187,3 @@ def test_ittsbackend_stop_should_be_idempotent() -> None:
     assert not backend.is_started
     backend.stop()  # type: ignore [unreachable]  # The type checker is wrong.  Tested.
     assert not backend.is_started
-
-
-### ITTSBackendFactory Tests ###
-
-
-def dummy_make_ttsbackend(settings: ITTSSettings) -> ITTSBackend:
-    backend = DummyTTSBackend()
-    backend.update_settings(settings)
-    return backend
-
-
-def test_ittsbackendfactory_should_conform_to_its_protocol() -> None:
-    _: ITTSBackendFactory = dummy_make_ttsbackend  # Typecheck protocol conformity
-    assert isinstance(
-        dummy_make_ttsbackend, ITTSBackendFactory
-    )  # Runtime check as well
-
-
-def test_ittsbackendfactory_should_require_a_settings_argument() -> None:
-    with pytest.raises(TypeError, match="missing *. required positional argument"):
-        dummy_make_ttsbackend()  # type: ignore [call-arg]
-
-
-def test_ittsbackendfactory_should_use_given_settings() -> None:
-    expected = "custom"
-    backend = dummy_make_ttsbackend(DummyTTSSettings(expected))
-    settings = backend.get_settings()
-    assert isinstance(settings, DummyTTSSettings)  # For the type checker
-    assert settings.attr1 == expected
-
-
-def test_ittsbackendfactory_should_return_a_ittsbackend_object() -> None:
-    settings = DummyTTSSettings()
-    backend = dummy_make_ttsbackend(settings)
-    _: ITTSBackend = backend  # Typecheck protocol conformity
-    assert isinstance(backend, ITTSBackend)  # Runtime check as well
-
-
-def test_ittsbackendfactory_should_raise_error_if_incorrect_settings_given() -> None:
-    settings = AnotherTTSSettings()
-    with pytest.raises(TypeError, match="Invalid settings"):
-        dummy_make_ttsbackend(settings)

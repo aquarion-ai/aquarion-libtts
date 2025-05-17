@@ -20,11 +20,7 @@
 
 from typing import Protocol, runtime_checkable
 
-from aquarion.libs.libtts.api._ttssettings import (
-    ITTSSettings,
-    ITTSSettingsHolder,
-    ITTSSettingsHolderFactory,
-)
+from aquarion.libs.libtts.api._ttssettings import ITTSSettingsHolder
 from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
 
 
@@ -49,20 +45,4 @@ class ITTSBackend(ITTSSettingsHolder, Protocol):
         """Stop the TTS backend.
 
         If the backend is already stopped, this method should be idempotent.
-        """
-
-
-@runtime_checkable
-class ITTSBackendFactory(ITTSSettingsHolderFactory, Protocol):
-    """Common interface for all TTSBackend factories."""
-
-    @staticmethod
-    def __call__(settings: ITTSSettings) -> ITTSBackend:
-        """Return an object that conforms to the ITTSBackend protocol.
-
-        Custom or default settings must be provided to configure the TTS backend.
-
-        Implementations of this interface should check that they are only getting the
-        correct concrete settings class and raise TypeError if any other kind of
-        concrete ITTSSettings is given.
         """

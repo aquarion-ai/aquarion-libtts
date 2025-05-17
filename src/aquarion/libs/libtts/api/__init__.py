@@ -18,39 +18,26 @@
 
 """Public interfaces for aquarion-libtts."""
 
-from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, ITTSBackendFactory
+from aquarion.libs.libtts.api._ttsbackend import ITTSBackend
 from aquarion.libs.libtts.api._ttsplugins import (
-    RegisterTTSBackendFuncType,
-    load_tts_plugins,
+    ITTSPlugin,
+    TTSPluginRegistry,
     tts_hookimpl,
-)
-from aquarion.libs.libtts.api._ttsregistry import (
-    ITTSDisplayNameFactory,
-    TTSRegistry,
-    TTSRegistryRecord,
 )
 from aquarion.libs.libtts.api._ttssettings import (
     ITTSSettings,
-    ITTSSettingsFactory,
     ITTSSettingsHolder,
-    ITTSSettingsHolderFactory,
     JSONSerializableTypes,
 )
 from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
 
 __all__ = [
     "ITTSBackend",
-    "ITTSBackendFactory",
-    "ITTSDisplayNameFactory",
+    "ITTSPlugin",
     "ITTSSettings",
-    "ITTSSettingsFactory",
     "ITTSSettingsHolder",
-    "ITTSSettingsHolderFactory",
     "JSONSerializableTypes",
-    "RegisterTTSBackendFuncType",
-    "TTSRegistry",
-    "TTSRegistryRecord",
+    "TTSPluginRegistry",
     "TTSSpeechData",
-    "load_tts_plugins",
     "tts_hookimpl",
 ]

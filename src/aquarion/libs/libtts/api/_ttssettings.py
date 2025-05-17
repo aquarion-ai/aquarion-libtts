@@ -52,27 +52,6 @@ class ITTSSettings(Protocol):
 
 
 @runtime_checkable
-class ITTSSettingsFactory(Protocol):
-    """Common interface for all TTSSettings factories."""
-
-    @staticmethod
-    def __call__(
-        from_dict: Mapping[str, JSONSerializableTypes] | None = None,
-    ) -> ITTSSettings:
-        """Return an object that conforms to the ITTSSettings protocol.
-
-        If `from_dict` is not None, then the given values should be used to initialize
-        the settings.
-
-        If `from_dict` is None, then default values for all settings should be used.
-
-        If any key or value in `from_dict` is invalid or missing for the concrete
-        implementation of ITTSSettings that the factory will create, then a KeyError or
-        ValueError should be raised.
-        """
-
-
-@runtime_checkable
 class ITTSSettingsHolder(Protocol):
     """Common interface for objects that accept and contain ITTSSettings."""
 
@@ -81,20 +60,6 @@ class ITTSSettingsHolder(Protocol):
 
     def update_settings(self, new_settings: ITTSSettings) -> None:
         """Update to the new given settings.
-
-        Implementations of this interface should check that they are only getting the
-        correct concrete settings class and raise TypeError if any other kind of
-        concrete ITTSSettings is given.
-        """
-
-
-@runtime_checkable
-class ITTSSettingsHolderFactory(Protocol):
-    """Common interface for all ITTSSettingsHolderFactory factories."""
-
-    @staticmethod
-    def __call__(settings: ITTSSettings) -> ITTSSettingsHolder:
-        """Return an object that conforms to the ITTSSettingsHolder protocol.
 
         Implementations of this interface should check that they are only getting the
         correct concrete settings class and raise TypeError if any other kind of
