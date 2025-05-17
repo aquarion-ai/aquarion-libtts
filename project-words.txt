@@ -31,13 +31,9 @@ ipython
 isort
 ITTS
 ittsbackend
-ittsbackendfactory
-ittsdisplaynamefactory
 ittsplugin
 ittssettings
-ittssettingsfactory
 ittssettingsholder
-ittssettingsholderfactory
 jetify
 Kokoro
 Krys
@@ -95,10 +91,7 @@ tomli
 ttsbackend
 ttspluginregistry
 ttsplugins
-ttsregistry
-ttsregistryrecord
 ttssettings
-ttssettingsholder
 ttsspeechdata
 uvenv
 venv
