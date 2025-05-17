@@ -233,7 +233,7 @@ class DummyTTSSettingsHolder:
     """Dummy TTS Settings Holder to test the protocol.
 
     Specific implementations here do not matter, the only important thing is to conform
-    to the TTSSettingsHolder protocol.
+    to the ITTSSettingsHolder protocol.
     """
 
     def __init__(self) -> None:

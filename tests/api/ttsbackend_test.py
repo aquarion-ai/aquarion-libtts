@@ -39,7 +39,7 @@ class DummyTTSBackend(DummyTTSSettingsHolder):
     """Dummy TTS Backend to test the protocol.
 
     Specific implementations here do not matter, the only important thing is to conform
-    to the TTSSettings protocol.
+    to the ITTSBackend protocol.
     """
 
     def __init__(self) -> None:
