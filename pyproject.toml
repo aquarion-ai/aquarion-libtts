@@ -42,7 +42,10 @@ classifiers = [
   "Topic :: Text Processing :: Linguistic",
   "Typing :: Typed",
 ]
-dependencies = ["pluggy~=1.5.0"]
+dependencies = [
+  "babel~=2.17.0",
+  "pluggy~=1.5.0",
+]
 description = 'Text To Speech (TTS) beckend library for Aquarion AI'
 dynamic = ["version"]
 keywords = ["aquarion", "ai", "tts", "speech"]
