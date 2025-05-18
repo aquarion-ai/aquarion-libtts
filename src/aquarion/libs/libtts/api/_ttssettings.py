@@ -36,7 +36,17 @@ type JSONSerializableTypes = (
 class ITTSSettings(Protocol):
     """Common interface for all TTS backend settings."""
 
-    locale: str  # Locale should be a full locale, E.g. en-CA, not just en.
+    # The locale should be a POSIX-compliant locale string like `en_CA`, `zh-Hant`,
+    # `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be a general as `fr` or as
+    # specific as `language_territory_script_variant@modifier`.
+    #
+    # Settings holders are expected to to do their best to accommodate the given locale,
+    # but can fall back to more a general language variant if required.  E.g. from
+    # `en_CA` to `en`.
+    #
+    # If the given locale is not supported at all, then the settings holder is expected
+    # to use it's default locale instead.
+    locale: str
 
     def __eq__(self, other: object) -> bool:
         """Return True if all settings values match."""
