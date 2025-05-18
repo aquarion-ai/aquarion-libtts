@@ -24,13 +24,14 @@ from typing import Never, Protocol, runtime_checkable
 
 from pluggy import HookimplMarker, HookspecMarker, PluginManager
 
+from aquarion.libs.libtts.__about__ import __name__ as distribution_name
 from aquarion.libs.libtts.api._ttsbackend import ITTSBackend
 from aquarion.libs.libtts.api._ttssettings import (
     ITTSSettings,
     JSONSerializableTypes,
 )
 
-_tts_hookspec = HookspecMarker("aquarion-libtts")
+_tts_hookspec = HookspecMarker(distribution_name)
 tts_hookimpl = HookimplMarker(_tts_hookspec.project_name)
 
 
