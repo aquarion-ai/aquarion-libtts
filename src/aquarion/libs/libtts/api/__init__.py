@@ -18,6 +18,7 @@
 
 """Public interfaces for aquarion-libtts."""
 
+from aquarion.libs.libtts.api._i18n import load_language
 from aquarion.libs.libtts.api._ttsbackend import ITTSBackend
 from aquarion.libs.libtts.api._ttsplugins import (
     ITTSPlugin,
@@ -39,5 +40,6 @@ __all__ = [
     "JSONSerializableTypes",
     "TTSPluginRegistry",
     "TTSSpeechData",
+    "load_language",
     "tts_hookimpl",
 ]

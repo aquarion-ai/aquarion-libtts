@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+# French (Canada) translations for aquarion-libtts.
+# Copyright (C) 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+# This file is distributed under the same license as the aquarion-libtts project.
+# Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: aquarion-libtts 0.0.1\n"
+"Report-Msgid-Bugs-To: aquarion.5.krystopher@spamgourmet.org\n"
+"POT-Creation-Date: 2025-05-18 10:18-0400\n"
+"PO-Revision-Date: 2025-05-18 10:33-0400\n"
+"Last-Translator: Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>\n"
+"Language: fr_CA\n"
+"Language-Team: fr_CA <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: tests/i18n_test.py:66
+msgid "I am translated"
+msgstr "Je suis traduit"

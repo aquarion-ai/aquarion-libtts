@@ -36,3 +36,8 @@ path = "project-words.txt"
 SPDX-FileCopyrightText = "2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>"
 SPDX-License-Identifier = "AGPL-3.0-only"
 path = "uv.lock"
+
+[[annotations]]
+SPDX-FileCopyrightText = "2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>"
+SPDX-License-Identifier = "AGPL-3.0-only"
+path = "**/*.mo"

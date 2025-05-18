@@ -79,7 +79,7 @@ cover/
 
 # Translations
 *.mo
-*.pot
+# This is wrong: *.pot
 
 # Django stuff:
 *.log

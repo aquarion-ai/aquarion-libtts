@@ -4,6 +4,7 @@ analyzer
 Aquarion
 beckend
 celerybeat
+cldr
 codespell
 Color
 colorama
@@ -47,7 +48,9 @@ mktemp
 mypy
 noncommercially
 nosetests
+nplurals
 nushell
+parsable
 pexpect
 pipenv
 Pipfile
@@ -88,6 +91,7 @@ sublicensable
 suis
 synched
 tomli
+traduit
 ttsbackend
 ttspluginregistry
 ttsplugins
