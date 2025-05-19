@@ -28,6 +28,7 @@ def main []: nothing -> string {
 
 # Extract all strings from all relevant source files and generate PO templates.
 def "main extract" []: nothing -> string {
+    main extract src
     main extract tests
 }
 
@@ -36,19 +37,31 @@ def "main extract" []: nothing -> string {
 
 # Update all PO message catalogues based on their appropriate PO templates.
 def "main update" []: nothing -> string {
+    main update src
     main update tests
 }
 
 # Compile all PO message catalogues in to their binary MO formats.
 def "main compile" []: nothing -> string {
+    main compile src
     main compile tests
 }
 
 ### Individual tasks
 
+# Extract strings from relevant source files and generate PO templates.
+def "main extract src" []: nothing -> string {
+    hatch run babel-extract-src
+}
+
 # Extract strings from relevant test files and generate PO templates.
 def "main extract tests" []: nothing -> string {
     hatch run babel-extract-tests
+}
+
+# Initialize a new source locale.
+def "main init src" [locale: string]: nothing -> string {
+    hatch run babel-init-src $locale
 }
 
 # Initialize a new test locale.
@@ -56,11 +69,23 @@ def "main init tests" [locale: string]: nothing -> string {
     hatch run babel-init-tests $locale
 }
 
+# Update source PO message catalogues based on their appropriate PO templates.
+def "main update src" [--headers (-h)]: nothing -> string {
+    mut extra = ""
+    if $headers { $extra = "--headers" }
+    hatch run babel-update-src $extra
+}
+
 # Update test PO message catalogues based on their appropriate PO templates.
 def "main update tests" [--headers (-h)]: nothing -> string {
     mut extra = ""
     if $headers { $extra = "--headers" }
     hatch run babel-update-tests $extra
+}
+
+# Compile source PO message catalogues in to their binary MO formats.
+def "main compile src" []: nothing -> string {
+    hatch run babel-compile-src
 }
 
 # Compile test PO message catalogues in to their binary MO formats.

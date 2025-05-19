@@ -118,9 +118,13 @@ packages = ["src/aquarion"]
 type = "uvenv"
 
 [tool.hatch.envs.default.scripts]
+babel-compile-src = ".hatch_scripts babel compile src"
 babel-compile-tests = ".hatch_scripts babel compile tests"
+babel-extract-src = ".hatch_scripts babel extract src"
 babel-extract-tests = ".hatch_scripts babel extract tests"
+babel-init-src = ".hatch_scripts babel init src {args}"
 babel-init-tests = ".hatch_scripts babel init tests {args}"
+babel-update-src = ".hatch_scripts babel update src {args}"
 babel-update-tests = ".hatch_scripts babel update tests {args}"
 
 # Env: hatch-uv

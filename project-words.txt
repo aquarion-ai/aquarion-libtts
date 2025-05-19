@@ -99,6 +99,7 @@ ttsplugins
 ttssettings
 ttsspeechdata
 uvenv
+vars
 venv
 venvs
 waivable

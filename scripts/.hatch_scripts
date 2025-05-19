@@ -17,7 +17,7 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-# Command run by Hatch scripts. DO NOT RUN DIRECTLY.
+# Command run by Hatch scripts inside their respective venvs. DO NOT RUN DIRECTLY.
 def main []: nothing -> string {
     help main
 }
@@ -46,7 +46,59 @@ def --wrapped "main accept wip" [...rest: string]: nothing -> string {
 }
 
 # Internal command. DO NOT RUN DIRECTLY.
+def "main babel extract src" []: nothing -> string {
+    let domain = (hatch project metadata name)
+    babel_extract src/aquarion/libs/libtts $"src/aquarion/libs/libtts/locale/($domain).pot"
+}
+
+# Internal command. DO NOT RUN DIRECTLY.
 def "main babel extract tests" []: nothing -> string {
+    babel_extract tests/api/ tests/api/locale/test.pot
+}
+
+# Internal command. DO NOT RUN DIRECTLY.
+def "main babel init src" [locale: string]: nothing -> string {
+    let domain = (hatch project metadata name)
+    (
+        babel_init $"src/aquarion/libs/libtts/locale/($domain).pot"
+        src/aquarion/libs/libtts/locale/ $domain $locale
+    )
+}
+
+# Internal command. DO NOT RUN DIRECTLY.
+def "main babel init tests" [locale: string]: nothing -> string {
+    babel_init tests/api/locale/test.pot tests/api/locale/ test $locale
+}
+
+# Internal command. DO NOT RUN DIRECTLY.
+def "main babel update src" [--headers (-h)]: nothing -> string {
+    let domain = (hatch project metadata name)
+    (
+        babel_update $headers $"src/aquarion/libs/libtts/locale/($domain).pot"
+        src/aquarion/libs/libtts/locale/ $domain
+    )
+}
+
+# Internal command. DO NOT RUN DIRECTLY.
+def "main babel update tests" [--headers (-h)]: nothing -> string {
+    babel_update $headers tests/api/locale/test.pot tests/api/locale/ test
+}
+
+# Internal command. DO NOT RUN DIRECTLY.
+def "main babel compile src" []: nothing -> string {
+    let domain = (hatch project metadata name)
+    babel_compile $domain src/aquarion/libs/libtts/locale/
+}
+
+# Internal command. DO NOT RUN DIRECTLY.
+def "main babel compile tests" []: nothing -> string {
+    babel_compile test tests/api/locale
+}
+
+
+### Internal internal commands :)
+
+def babel_extract [input_dir: string, output_file: string]: nothing -> string {
     let project = (hatch project metadata name)
     let version = (hatch version)
     let author_name = (hatch project metadata authors | from json | get 0.name)
@@ -60,32 +112,37 @@ def "main babel extract tests" []: nothing -> string {
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #"
     (
-        pybabel extract -o tests/api/locale/test.pot tests/api/
-        --project $project --version $version --no-wrap --header-comment $header
-        --copyright-holder $"($author_name) <($author_email)>"
-        --msgid-bugs-address $author_email
+        pybabel extract -o $output_file --project $project --version $version --no-wrap
+        --header-comment $header --copyright-holder $"($author_name) <($author_email)>"
+        --msgid-bugs-address $author_email -c "Translator:" $input_dir
     )
 }
 
-# Internal command. DO NOT RUN DIRECTLY.
-def "main babel init tests" [locale: string]: nothing -> string {
+def babel_init [
+    input_file: string,
+    output_dir: string,
+    domain: string,
+    locale: string
+]: nothing -> string {
     (
-        pybabel init -i tests/api/locale/test.pot -d tests/api/locale/ -D test
-        --no-wrap -l $locale
+        pybabel init -i $input_file -d $output_dir -D $domain --no-wrap -l $locale
     )
 }
 
-# Internal command. DO NOT RUN DIRECTLY.
-def "main babel update tests" [--headers (-h)]: nothing -> string {
+def babel_update [
+    headers: bool,
+    input_file: string,
+    output_dir: string,
+    domain: string
+]: nothing -> string {
     mut extra = ""
     if $headers { $extra = "--update-header-comment" }
     (
-        pybabel update -i tests/api/locale/test.pot -d tests/api/locale/ -D test
-        --no-wrap --previous $extra
+        pybabel update -i $input_file -d $output_dir -D $domain --no-wrap --previous
+        $extra
     )
 }
 
-# Internal command. DO NOT RUN DIRECTLY.
-def "main babel compile tests" []: nothing -> string {
-    pybabel compile -D test -d tests/api/locale --statistics
+def babel_compile [domain: string, locale_dir: string]: nothing -> string {
+    pybabel compile -D $domain -d $locale_dir --statistics
 }
