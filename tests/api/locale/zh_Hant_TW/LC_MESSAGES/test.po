@@ -5,12 +5,11 @@
 # Copyright (C) 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
 # This file is distributed under the same license as the aquarion-libtts project.
 # Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>, 2025.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: aquarion-libtts 0.0.1\n"
 "Report-Msgid-Bugs-To: aquarion.5.krystopher@spamgourmet.org\n"
-"POT-Creation-Date: 2025-05-18 10:18-0400\n"
+"POT-Creation-Date: 2025-05-18 20:04-0400\n"
 "PO-Revision-Date: 2025-05-18 11:34-0400\n"
 "Last-Translator: Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>\n"
 "Language: zh_Hant_TW\n"
@@ -21,6 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: tests/i18n_test.py:66
+#: tests/api/i18n_test.py:84 tests/api/i18n_test.py:92
+#: tests/api/i18n_test.py:106 tests/api/i18n_test.py:122
 msgid "I am translated"
 msgstr "I am in zh_Hant_TW"

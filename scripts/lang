@@ -1,0 +1,69 @@
+#!/usr/bin/env nu
+# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Part of the aquarion-libtts library of the Aquarion AI project.
+# Copyright (C) 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+#
+# This program is free software: you can redistribute it and/or modify it under the
+# terms of the GNU Affero General Public License as published by the Free Software
+# Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License along with
+# this program. If not, see <https://www.gnu.org/licenses/>.
+
+
+### Default commands
+
+# Commands to more easily work with I18N / L10N translation.
+def main []: nothing -> string {
+    help main
+}
+
+### Grouped tasks
+
+# Extract all strings from all relevant source files and generate PO templates.
+def "main extract" []: nothing -> string {
+    main extract tests
+}
+
+# NOTE: There is no grouped command for "init".  Those must be run individually for
+# precision.
+
+# Update all PO message catalogues based on their appropriate PO templates.
+def "main update" []: nothing -> string {
+    main update tests
+}
+
+# Compile all PO message catalogues in to their binary MO formats.
+def "main compile" []: nothing -> string {
+    main compile tests
+}
+
+### Individual tasks
+
+# Extract strings from relevant test files and generate PO templates.
+def "main extract tests" []: nothing -> string {
+    hatch run babel-extract-tests
+}
+
+# Initialize a new test locale.
+def "main init tests" [locale: string]: nothing -> string {
+    hatch run babel-init-tests $locale
+}
+
+# Update test PO message catalogues based on their appropriate PO templates.
+def "main update tests" [--headers (-h)]: nothing -> string {
+    mut extra = ""
+    if $headers { $extra = "--headers" }
+    hatch run babel-update-tests $extra
+}
+
+# Compile test PO message catalogues in to their binary MO formats.
+def "main compile tests" []: nothing -> string {
+    hatch run babel-compile-tests
+}

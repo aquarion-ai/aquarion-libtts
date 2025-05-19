@@ -57,6 +57,7 @@ Pipfile
 pkgs
 pluggy
 psutil
+pybabel
 pybuilder
 pycache
 pycodestyle
