@@ -133,9 +133,9 @@ This project follows the following standard practices:
    ```console
    devbox shell
    init
-   check dep all
    check push
    check --help
+   lang --help
    ```
 
 #### Developer Installation Details
@@ -147,18 +147,20 @@ This project follows the following standard practices:
 - On the first run, `init` will download and install the base Python version, needed
   commands, hooks, etc.
 - pre-commit is a tool for running certain checks and fixes on the code before commits
-  and/or pushes.  `check dep all` runs those hooks on all files.
+  and/or pushes.
 - **NOTE:** No commit, push or pull request should or will be accepted unless all
   pre-commit and pre-push hooks pass.  No exceptions!
 - Hatch is a tool for managing dependencies, builds, virtual environments and Python
   versions, as well as running tests, formatting, linting and typechecking.
 - The `check` command calls Hatch to perform common tasks, while also making it easier
   to do so.
-- `check push` runs all common tasks, like type checking, formatting, linting, unit
-   tests, acceptance tests, coverage checks, etc.
+- `check push` runs all common tasks like pre-commit checks, type checks, formatting,
+   linting, unit tests, acceptance tests, coverage checks, security checks, etc.
 - On first run, `check push` will also download and install several files, etc.
 - The `check` command has several sub-commands to help you while developing.  Check it
   out. :smile_cat:
+- The `lang` command is used to manage localization message catalogues, i.e. translation
+  files.  It's good to check it out as well.
 
 ### What Tool Does What
 
@@ -186,4 +188,5 @@ This section is an attempt clarify which tool is used for which common task.
 - **Format YAML:** pre-commit (yamlfmt)
 - **Format JSON:** pre-commit (pretty-format-json)
 - **Spell checking:** pre-commit (codespell)
+- **Manage translations:** The `lang` script (babel)
 - **Run CI pipeline:** Github Actions (using the scripts above)
