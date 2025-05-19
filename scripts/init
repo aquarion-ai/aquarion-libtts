@@ -40,4 +40,6 @@ def "main" []: nothing -> string {
         uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
         $"reuse~=($env.AQ_REUSE_MINIMUM_VERSION)"
     )
+    lang extract
+    lang compile
 }
