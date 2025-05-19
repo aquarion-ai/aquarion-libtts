@@ -167,26 +167,28 @@ This project follows the following standard practices:
 Several of the development tools used in this project have overlapping capabilities.
 This section is an attempt clarify which tool is used for which common task.
 
-- **Install non-Python dev tools:** Devbox (NIX)
-- **Install Python dev tools:** The `init` script (uv)
-- **Install base/minimum Python version:** The `init` script (uv)
-- **Install additional Python versions for testing:** The `check` script (Hatch)
-- **Install pre-commit hooks:** The `init` script (pre-commit)
-- **Format code:** The `check` script (Hatch, Ruff)
-- **Lint code:** The `check` script (Hatch, Ruff)
-- **Type check code:** The `check` script (Hatch, mypy)
-- **Run tests:** The `check` script (Hatch, pytest)
-- **Run acceptance tests:** The `check` script (Hatch, radish)
-- **Run code coverage checks:** The `check` script (Hatch, coverage)
-- **Run pre-commit hooks manually:** The `check` script (pre-commit)
-- **Commit changes from the terminal:** Commitizen _(use `cz c`)_
-- **Report on last code coverage run:** The `report` script (coverage)
-- **Update version on a release:** Hatch
-- **Pin project dependency versions:** Hatch (using uv)
-- **Pin development dependency versions:** Hatch (using pip-compile)
-- **Format Markdown:** pre-commit (markdownlint-cli2)
-- **Format YAML:** pre-commit (yamlfmt)
-- **Format JSON:** pre-commit (pretty-format-json)
-- **Spell checking:** pre-commit (codespell)
-- **Manage translations:** The `lang` script (babel)
-- **Run CI pipeline:** Github Actions (using the scripts above)
+| Task                                      | Tool                                     |
+| ----------------------------------------- | ---------------------------------------- |
+| Install non-Python dev tools              | Devbox (NIX)                             |
+| Install Python dev tools                  | The `init` script (uv)                   |
+| Install base/minimum Python version       | The `init` script (uv)                   |
+| Install extra Python versions for testing | The `check` script (Hatch)               |
+| Install pre-commit hooks                  | The `init` script (pre-commit)           |
+| Format code                               | The `check` script (Hatch, Ruff)         |
+| Lint code                                 | The `check` script (Hatch, Ruff)         |
+| Type check code                           | The `check` script (Hatch, mypy)         |
+| Run tests                                 | The `check` script (Hatch, pytest)       |
+| Run acceptance tests                      | The `check` script (Hatch, radish)       |
+| Run code coverage checks                  | The `check` script (Hatch, coverage)     |
+| Run pre-commit hooks manually             | The `check` script (pre-commit)          |
+| Commit changes from the terminal          | Commitizen _(use `cz c`)_                |
+| Report on last code coverage run          | The `report` script (coverage)           |
+| Update version on a release               | Hatch                                    |
+| Pin project dependency versions           | Hatch (using uv)                         |
+| Pin development dependency versions       | Hatch (using uv)                         |
+| Format Markdown                           | pre-commit (markdownlint-cli2)           |
+| Format YAML                               | pre-commit (yamlfmt)                     |
+| Format JSON                               | pre-commit (pretty-format-json)          |
+| Spell checking                            | pre-commit (codespell)                   |
+| Manage translations                       | The `lang` script (Hatch, Babel)         |
+| Run CI pipeline                           | Github Actions (using the scripts above) |
