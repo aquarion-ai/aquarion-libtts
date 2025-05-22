@@ -44,6 +44,7 @@ classifiers = [
 ]
 dependencies = [
   "babel~=2.17.0",
+  "loguru~=0.7.3",
   "pluggy~=1.5.0",
 ]
 description = 'Text To Speech (TTS) beckend library for Aquarion AI'
@@ -82,6 +83,8 @@ accept = [
 hatch-test = [
   "coverage-enable-subprocess==1.0",
   "coverage[toml]~=7.8.0",
+  "logot~=1.4.0",
+  "loguru~=0.7.3",
   "pytest~=8.3.5",
   "pytest-mock~=3.14.0",
   "pytest-randomly~=3.16.0",
@@ -89,6 +92,8 @@ hatch-test = [
   "pytest-xdist[psutil]~=3.6.1",
 ]
 types = [
+  "logot~=1.4.0",
+  "loguru~=0.7.3",
   "mypy~=1.15.0",
   "pytest~=8.3.5",
   "types-Pygments~=2.19.0", # mypy type stub
@@ -294,6 +299,7 @@ strict_concatenate = true
 addopts = "--strict-markers"
 cache_dir = ".cache/pytest"
 empty_parameter_set_mark = "xfail"
+logot_capturer = "logot.loguru.LoguruCapturer"
 xfail_strict = true
 
 [tool.codespell]

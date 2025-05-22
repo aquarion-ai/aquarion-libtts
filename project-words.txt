@@ -42,6 +42,8 @@ kwargs
 labeled
 libtts
 linters
+logot
+loguru
 matrixed
 mkdocs
 mktemp

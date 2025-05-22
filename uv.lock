@@ -7,6 +7,7 @@ name = "aquarion-libtts"
 source = { editable = "." }
 dependencies = [
     { name = "babel" },
+    { name = "loguru" },
     { name = "pluggy" },
 ]
 
@@ -21,6 +22,8 @@ hatch-static-analysis = [
 hatch-test = [
     { name = "coverage" },
     { name = "coverage-enable-subprocess" },
+    { name = "logot" },
+    { name = "loguru" },
     { name = "pytest" },
     { name = "pytest-mock" },
     { name = "pytest-randomly" },
@@ -31,6 +34,8 @@ hatch-uv = [
     { name = "uv" },
 ]
 types = [
+    { name = "logot" },
+    { name = "loguru" },
     { name = "mypy" },
     { name = "pytest" },
     { name = "types-colorama" },
@@ -42,6 +47,7 @@ types = [
 [package.metadata]
 requires-dist = [
     { name = "babel", specifier = "~=2.17.0" },
+    { name = "loguru", specifier = "~=0.7.3" },
     { name = "pluggy", specifier = "~=1.5.0" },
 ]
 
@@ -54,6 +60,8 @@ hatch-static-analysis = [{ name = "ruff", specifier = "~=0.11.7" }]
 hatch-test = [
     { name = "coverage", extras = ["toml"], specifier = "~=7.8.0" },
     { name = "coverage-enable-subprocess", specifier = "==1.0" },
+    { name = "logot", specifier = "~=1.4.0" },
+    { name = "loguru", specifier = "~=0.7.3" },
     { name = "pytest", specifier = "~=8.3.5" },
     { name = "pytest-mock", specifier = "~=3.14.0" },
     { name = "pytest-randomly", specifier = "~=3.16.0" },
@@ -62,6 +70,8 @@ hatch-test = [
 ]
 hatch-uv = [{ name = "uv", specifier = "~=0.6.17" }]
 types = [
+    { name = "logot", specifier = "~=1.4.0" },
+    { name = "loguru", specifier = "~=0.7.3" },
     { name = "mypy", specifier = "~=1.15.0" },
     { name = "pytest", specifier = "~=8.3.5" },
     { name = "types-colorama", specifier = "~=0.4.15" },
@@ -172,6 +182,28 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/f2/97/ebf4da567aa6827c909642694d71c9fcf53e5b504f2d96afea02718862f3/iniconfig-2.1.0.tar.gz", hash = "sha256:3abbd2e30b36733fee78f9c7f7308f2d0050e88f0087fd25c2645f63c773e1c7", size = 4793 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2c/e1/e6716421ea10d38022b952c159d5161ca1193197fb744506875fbb87ea7b/iniconfig-2.1.0-py3-none-any.whl", hash = "sha256:9deba5723312380e77435581c6bf4935c94cbfab9b1ed33ef8d238ea168eb760", size = 6050 },
+]
+
+[[package]]
+name = "logot"
+version = "1.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/85/e8/696a5b0721f88be2369694fa91c792d910636fa0f6a7a5444d6ecbed645a/logot-1.4.0.tar.gz", hash = "sha256:a42da87594c00c7252d4808ed35e66056dee880a31944bf2b8adb7d24385dd7a", size = 14014 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fb/6d/801c2019448b42fa47b24a77662f9dfcc6e625820e4a86e5dabcfeadc6ca/logot-1.4.0-py3-none-any.whl", hash = "sha256:86f6d5e289cef1241634faa6fc011b33c442fd95446a6434a67493e7d1f24c7a", size = 21742 },
+]
+
+[[package]]
+name = "loguru"
+version = "0.7.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "win32-setctime", marker = "sys_platform == 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3a/05/a1dae3dffd1116099471c643b8924f5aa6524411dc6c63fdae648c4f1aca/loguru-0.7.3.tar.gz", hash = "sha256:19480589e77d47b8d85b2c827ad95d49bf31b0dcde16593892eb51dd18706eb6", size = 63559 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0c/29/0348de65b8cc732daa3e33e67806420b2ae89bdce2b04af740289c5c6c8c/loguru-0.7.3-py3-none-any.whl", hash = "sha256:31a33c10c8e1e10422bfd431aeb5d351c7cf7fa671e3c4df004162264b28220c", size = 61595 },
 ]
 
 [[package]]
@@ -485,4 +517,13 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/4e/b5/542483462ec2ff5b7999df9a0541c83fe7302c126caa91d7f067438aa59d/uv-0.6.17-py3-none-win32.whl", hash = "sha256:d4b95d908a86fdab0302ed15435f2bf600527ba6ffc0611dee4c4892ae0cf948", size = 16502778 },
     { url = "https://files.pythonhosted.org/packages/cd/ca/b780d79df46a775cf7f725084dde2d1c7b299d176467822dce92361f4455/uv-0.6.17-py3-none-win_amd64.whl", hash = "sha256:b815d20ffd1ad6cd872227d1f92a29311ba27c519bb8c541e75125496d129e7d", size = 17978928 },
     { url = "https://files.pythonhosted.org/packages/60/82/103134de796511b1dd33412cc5e6c650ca504116db8890b36f16ac938d06/uv-0.6.17-py3-none-win_arm64.whl", hash = "sha256:a1117c3787f370b751e01625ee373d53058a5794bb627722d24e98e1c674da21", size = 16679202 },
+]
+
+[[package]]
+name = "win32-setctime"
+version = "1.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b3/8f/705086c9d734d3b663af0e9bb3d4de6578d08f46b1b101c2442fd9aecaa2/win32_setctime-1.2.0.tar.gz", hash = "sha256:ae1fdf948f5640aae05c511ade119313fb6a30d7eabe25fef9764dca5873c4c0", size = 4867 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e1/07/c6fe3ad3e685340704d314d765b7912993bcb8dc198f0e7a89382d37974b/win32_setctime-1.2.0-py3-none-any.whl", hash = "sha256:95d644c4e708aba81dc3704a116d8cbc974d70b3bdb8be1d150e36be6e9d1390", size = 4083 },
 ]
