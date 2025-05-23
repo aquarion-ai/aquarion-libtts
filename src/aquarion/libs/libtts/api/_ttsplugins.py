@@ -22,6 +22,7 @@ import sys
 from collections.abc import Mapping
 from typing import Never, Protocol, runtime_checkable
 
+from loguru import logger
 from pluggy import HookimplMarker, HookspecMarker, PluginManager
 
 from aquarion.libs.libtts.__about__ import __name__ as distribution_name
@@ -94,16 +95,28 @@ class TTSPluginRegistry:
     def load_plugins(self, *, validate: bool = False) -> None:
         """Load all aquarion-tts backend plugins.
 
+        All plugins are disabled by default.  Use .enable() to enable a plugin.
+
         If validate is True, raises PluginValidationError if any plugin hook
         implementations do not conform to accepted hook specifications.
         """
+        logger.debug(f"Loading TTS plugins for {_tts_hookspec.project_name}...")
         manager = PluginManager(_tts_hookspec.project_name)
         manager.add_hookspecs(sys.modules[__name__])
         manager.load_setuptools_entrypoints(tts_hookimpl.project_name)
         if validate:
             manager.check_pending()
         plugins: list[ITTSPlugin] = manager.hook.register_tts_plugin()
-        self._plugins = {plugin.id: plugin for plugin in plugins}
+        if not plugins:
+            message = (
+                "No TTS plugins were found.  Please check your aquarion-libtts "
+                "installation as this should not be possible."
+            )
+            raise RuntimeError(message)
+        for plugin in plugins:
+            logger.debug(f"Registered TTS plugin: {plugin.id}")
+            self._plugins[plugin.id] = plugin
+        logger.debug(f"Total TTS plugins registered: {len(self._plugins)}")
 
     def get_plugin(self, id_: str) -> ITTSPlugin:
         """Return the plugin the for the given id.
@@ -135,6 +148,7 @@ class TTSPluginRegistry:
         if id_ not in self._plugins:
             self._raise_plugin_not_found(id_)
         self._enabled_plugins.add(id_)
+        logger.debug(f"Enabled TTS plugin: {id_}")
 
     def disable(self, id_: str) -> None:
         """Disable a TTS plugin from inclusion in .get_display_names().
@@ -145,12 +159,13 @@ class TTSPluginRegistry:
         if id_ not in self._plugins:
             self._raise_plugin_not_found(id_)
         self._enabled_plugins.discard(id_)
+        logger.debug(f"Disabled TTS plugin: {id_}")
 
     ## Internal methods
 
     def _raise_plugin_not_found(self, id_: str) -> Never:
         """Shared method for when a backend is not registered."""
-        message = f"TTS plugin not found: [{id_}]"
+        message = f"TTS plugin not found: {id_}"
         raise ValueError(message)
 
     def _register_test_plugin(self, plugin: ITTSPlugin) -> None:

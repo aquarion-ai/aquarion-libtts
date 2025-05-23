@@ -22,6 +22,7 @@ from collections.abc import Mapping
 from typing import Never, cast
 
 import pytest
+from logot import Logot, logged
 from pluggy import PluginValidationError
 
 from aquarion.libs.libtts.api import tts_hookimpl
@@ -274,9 +275,10 @@ def dummy_distributions() -> tuple[Distribution, ...]:
     return (Distribution(),)
 
 
-def test_ttspluginregistry_load_plugins_should_accept_optional_validate_argument() -> (
-    None
-):
+def test_ttspluginregistry_load_plugins_should_accept_optional_validate_argument(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(importlib.metadata, "distributions", dummy_distributions)
     registry = TTSPluginRegistry()
     registry.load_plugins(validate=False)
 
@@ -307,6 +309,28 @@ def test_ttspluginregistry_load_plugins_should_raise_error_if_invalid_hookimpl(
     registry = TTSPluginRegistry()
     with pytest.raises(PluginValidationError, match="unknown hook .* in plugin"):
         registry.load_plugins(validate=True)
+
+
+def test_ttspluginregistry_load_plugins_should_raise_error_if_no_plugins_found(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(importlib.metadata, "distributions", lambda: ())
+    registry = TTSPluginRegistry()
+    with pytest.raises(RuntimeError, match="No TTS plugins were found"):
+        registry.load_plugins()
+
+
+def test_ttspluginregistry_load_plugins_should_log_the_loading_of_plugins(
+    monkeypatch: pytest.MonkeyPatch, logot: Logot
+) -> None:
+    monkeypatch.setattr(importlib.metadata, "distributions", dummy_distributions)
+    registry = TTSPluginRegistry()
+    registry.load_plugins()
+    logot.assert_logged(
+        logged.debug("Loading TTS plugins for %s...")
+        >> logged.debug("Registered TTS plugin: I am an id")
+        >> logged.debug("Total TTS plugins registered: 1")
+    )
 
 
 ## .get_plugin() tests
@@ -473,6 +497,14 @@ def test_ttspluginregistry_enable_should_raise_an_error_if_id_is_not_registered(
         registry.enable("non existent id")
 
 
+def test_ttspluginregistry_enable_should_log_the_enablement(logot: Logot) -> None:
+    plugin = DummyTTSPlugin()
+    registry = TTSPluginRegistry()
+    registry._register_test_plugin(plugin)  # noqa: SLF001
+    registry.enable(plugin.id)
+    logot.assert_logged(logged.debug(f"Enabled TTS plugin: {plugin.id}"))
+
+
 ## .disable() tests
 
 
@@ -514,6 +546,15 @@ def test_ttspluginregistry_disable_should_raise_an_error_if_id_is_not_registered
     registry = TTSPluginRegistry()
     with pytest.raises(ValueError, match="TTS plugin not found"):
         registry.disable("non existent id")
+
+
+def test_ttspluginregistry_disable_should_log_the_disablement(logot: Logot) -> None:
+    plugin = DummyTTSPlugin()
+    registry = TTSPluginRegistry()
+    registry._register_test_plugin(plugin)  # noqa: SLF001
+    registry.enable(plugin.id)
+    registry.disable(plugin.id)
+    logot.assert_logged(logged.debug(f"Disabled TTS plugin: {plugin.id}"))
 
 
 ### register_tts_plugin spec Tests ###

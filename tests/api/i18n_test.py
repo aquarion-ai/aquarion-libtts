@@ -24,6 +24,8 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
+from babel import UnknownLocaleError
+from logot import Logot, logged
 
 from aquarion.libs.libtts.api._i18n import load_language
 
@@ -74,8 +76,8 @@ def test_load_language_should_return_a_gettext_fn_and_a_translations_instance() 
 
 
 def test_load_language_should_validate_the_locale() -> None:
-    with pytest.raises(ValueError, match="expected only letters"):
-        load_language("invalid locale", "some domain", "some path")
+    with pytest.raises(UnknownLocaleError, match="unknown locale"):
+        load_language("xx_XX", "some domain", "some path")
 
 
 def test_load_language_should_load_the_correct_translation_catalog() -> None:
@@ -121,3 +123,40 @@ def test_load_language_should_enable_falling_back_to_less_precise_translations(
     _, t = load_language(locale, "test", TEST_LOCALE_PATH)
     translated: str = _("I am translated")
     assert translated == expected
+
+
+def test_load_language_should_fall_back_to_the_default_locale() -> None:
+    expected = "I am translated"
+    _, t = load_language("bas_CM", "test", TEST_LOCALE_PATH)
+    translated: str = _("I am translated")
+    assert translated == expected
+
+
+@pytest.mark.parametrize(
+    ("locale", "expected"),
+    [
+        ("fr_CA", "fr_CA"),
+        ("zh_TW", "zh_Hant_TW"),
+        # This is not a legitimate locale, it is just for testing.
+        ("ca_Latn_ES_valencia@euro", "ca_ES"),
+        ("kk_Cyrl_KZ", "kk_Cyrl"),
+        ("sr_Latn_ME", "sr"),
+        ("pt_MZ", "pt"),
+    ],
+)
+def test_load_language_should_log_the_actual_loaded_language(
+    logot: Logot, locale: str, expected: str
+) -> None:
+    _, t = load_language(locale, "test", TEST_LOCALE_PATH)
+    logot.assert_logged(
+        logged.debug(f"Attempting to load translations for locale: {locale}")
+        >> logged.debug(f"Loaded translations for locale: {expected}")
+    )
+
+
+def test_load_language_should_log_when_no_translations_found(logot: Logot) -> None:
+    _, t = load_language("bas_CM", "test", TEST_LOCALE_PATH)
+    logot.assert_logged(
+        logged.debug("Attempting to load translations for locale: bas_CM")
+        >> logged.debug("No translations found for locale bas_CM, using defaults")
+    )

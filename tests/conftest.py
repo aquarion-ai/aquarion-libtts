@@ -15,10 +15,13 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""PyTest Configuration for all tests."""
 
-"""Aquarion AI Text To Speech TTS backend component."""
-
+import pytest
 from loguru import logger
 
-# Silence all libtts logging by default.  We are a library, not an application.
-logger.disable(__name__)
+
+@pytest.fixture(autouse=True)
+def enable_logging() -> None:
+    """Enable logging for all tests."""
+    logger.enable("aquarion.libs.libtts")

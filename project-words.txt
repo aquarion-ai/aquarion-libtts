@@ -2,6 +2,7 @@ addopts
 affiché
 analyzer
 Aquarion
+autouse
 beckend
 celerybeat
 cldr

@@ -25,6 +25,7 @@ from importlib.resources.abc import Traversable
 from os import PathLike
 
 from babel import Locale
+from loguru import logger
 
 type GettextFuncType = Callable[[str], str]
 type LoadLanguageReturnType = tuple[GettextFuncType, NullTranslations]
@@ -52,8 +53,10 @@ def load_language(
     If no matching locale is found, then the gettext methods will just return the hard
     coded strings from the source file.
 
-    Raises ValueError if an invalid locale is given, as determined by the Babel package.
+    Raises various exceptions if an invalid locale is given, as determined by the Babel
+    package's Local.parse() method.
     """
+    logger.debug(f"Attempting to load translations for locale: {locale}")
     loc = Locale.parse(locale, sep="-") if "-" in locale else Locale.parse(locale)
     # 1. Locale will strip out variants and modifiers automatically, so we do not need
     #    to handle those.
@@ -70,4 +73,10 @@ def load_language(
             translations = translation(domain, real_locale_path, locales, fallback=True)
     else:
         translations = translation(domain, locale_path, locales, fallback=True)
+    try:
+        logger.debug(
+            f"Loaded translations for locale: {translations.info()['language']}"
+        )
+    except KeyError:
+        logger.debug(f"No translations found for locale {loc}, using defaults")
     return translations.gettext, translations
