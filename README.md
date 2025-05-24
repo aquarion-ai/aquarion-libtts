@@ -124,9 +124,16 @@ This project follows the following standard practices:
 
 ### Developer Installation
 
-1. Clone this repository.
+1. Update NVIDIA drivers. \
+   _Currently testing against version 570._
 
-1. Install [Devbox](https://www.jetify.com/docs/devbox/installing_devbox/)
+1. Install CUDA Toolkit. \
+   _Currently testing against version 12.8._
+
+1. Install [Devbox](https://www.jetify.com/docs/devbox/installing_devbox/). \
+   _Currently testing against version 0.14.2._
+
+1. Clone this repository.
 
 1. Run:
 
@@ -140,6 +147,8 @@ This project follows the following standard practices:
 
 #### Developer Installation Details
 
+- Currently only CUDA is supported for GPU acceleration of TTS Models.  Also, CPU-only
+  mode is also not currently supported.
 - Devbox is a tool for creating per-project development environments using Nix.  It is
   used in this project for non-Python dev tools and bootstrapping.
 - On first run, `devbox shell` will download and install all the needed system tools

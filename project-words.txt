@@ -13,6 +13,7 @@ colorful
 commitizen
 compatiblelicenses
 creativecommons
+CUDA
 cython
 defenses
 devbox
