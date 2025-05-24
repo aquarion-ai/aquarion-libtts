@@ -1,0 +1,139 @@
+#!/usr/bin/env nu
+# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Part of the aquarion-libtts library of the Aquarion AI project.
+# Copyright (C) 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+#
+# This program is free software: you can redistribute it and/or modify it under the
+# terms of the GNU Affero General Public License as published by the Free Software
+# Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License along with
+# this program. If not, see <https://www.gnu.org/licenses/>.
+
+
+# Uninstall and clean up this development environment.
+#
+# This removes all cashes, builds artifacts, virtual environments, local Python
+# versions, etc.
+#
+# To restore the environment, follow the developer installation instructions in
+# README.md.
+def "main" [
+    --caches (-c)  # Also clean all caches
+    --devbox (-d)  # Also remove the devbox shell
+] : nothing -> nothing {
+    remove_local_builds
+    remove_generated_translation_files
+    remove_hatch_envs
+    remove_hatch_pythons
+    remove_uv_tools
+    remove_uv_pythons
+    if $caches {
+        remove_uv_cache
+        remove_local_cache
+    }
+    if $devbox {
+        remove_devbox_shell
+        if $caches {
+            print "To also clean the devbox (nix) cache, exit the devbox shell and run:"
+            print "  nix-collect-garbage -d"
+        }
+    }
+}
+
+## Internal commands
+
+def "remove_hatch_envs" []: nothing -> nothing {
+    let envs = (
+        hatch env show --json --internal
+        | from json
+        | transpose name record
+        | get name
+    )
+    for environ in ($envs) {
+        print $"Removing hatch environment: ($environ)"
+        hatch env remove $environ
+    }
+}
+
+def "remove_hatch_pythons" []: nothing -> nothing {
+    let pythons = (
+        hatch python show --ascii
+        | split row 'Available'
+        | get 0
+        | lines
+        | find -n '|'
+        | split column '|'
+        | skip 1
+        | each {$in.column2 | str trim}
+    )
+    for python in ($pythons) {
+        print $"Removing hatch python: ($python)"
+        hatch python remove ($python)
+    }
+}
+
+def "remove_uv_tools" []: nothing -> nothing {
+    let tools = (
+        uv tool list
+        | lines
+        | find -n -v -r '^-'
+        | split column ' '
+        | each {$in.column1 | str trim}
+    )
+    for tool in ($tools) {
+        print $"Removing uv tool: ($tool)"
+        uv tool uninstall $tool
+    }
+}
+
+def "remove_uv_pythons" []: nothing -> nothing {
+    let pythons = (
+        uv python list --only-installed
+        | detect columns -n
+        | find '/uv/'
+        | each {$in.column0 | str trim}
+    )
+    for python in ($pythons) {
+        print $"Removing uv python: ($python)"
+        uv python uninstall $python
+    }
+}
+
+def "remove_uv_cache" []: nothing -> nothing {
+    print "Removing uv cache"
+    uv cache clean
+}
+
+def "remove_local_cache" []: nothing -> nothing {
+    print "Removing local cache"
+    rm -rf .cache
+}
+
+def "remove_local_builds" []: nothing -> nothing {
+    print "Removing local builds"
+    rm -rf dist
+}
+
+def "remove_generated_translation_files" []: nothing -> nothing {
+    let files = (
+        ls ...(glob **/*.{mo,pot})
+        | each {$in.name}
+    )
+    for file in ($files) {
+        print $"Removing generated translation file: ($file)"
+        rm $file
+    }
+}
+
+def "remove_devbox_shell" []: nothing -> nothing {
+    print "Removing devbox shell"
+    rm -rf .devbox
+    print $"(ansi red)ATTENTION: YOU MUST EXIT THE DEVBOX SHELL IMMEDIATELY AFTER THIS COMMAND!(ansi reset)"
+}
