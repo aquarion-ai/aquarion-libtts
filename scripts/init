@@ -42,4 +42,6 @@ def "main" []: nothing -> string {
     )
     lang extract
     lang compile
+    nix-store --optimize
+    nix-collect-garbage -d
 }
