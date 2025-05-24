@@ -123,5 +123,5 @@ def test_ttsspeechdata_attributes_should_be_immutable(  # type: ignore [explicit
 def test_ttsspeechdata_should_not_accept_additional_attributes() -> None:
     speech_data = TTSSpeechData(audio=DUMMY_AUDIO, mime_type=DUMMY_MIME_TYPE)
     # This exception message is really cryptic and unhelpful.  But the effect works.
-    with pytest.raises(TypeError, match="is not an instance or subtype of type"):
+    with pytest.raises(TypeError, match="must be an instance or subtype of type"):
         speech_data.new_custom_attribute = "new value"  # type: ignore [attr-defined]
