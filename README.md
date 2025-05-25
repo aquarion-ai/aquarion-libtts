@@ -141,6 +141,7 @@ This project follows the following standard practices:
    devbox shell
    init
    check push
+   hatch build
    check --help
    lang --help
    ```
@@ -166,6 +167,7 @@ This project follows the following standard practices:
 - `check push` runs all common tasks like pre-commit checks, type checks, formatting,
    linting, unit tests, acceptance tests, coverage checks, security checks, etc.
 - On first run, `check push` will also download and install several files, etc.
+- `hatch build` is how the source and wheel distributions are made.
 - The `check` command has several sub-commands to help you while developing.  Check it
   out. :smile_cat:
 - The `lang` command is used to manage localization message catalogues, i.e. translation
