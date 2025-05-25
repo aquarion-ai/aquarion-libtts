@@ -64,6 +64,16 @@ Homepage = "https://github.com/aquarion-ai"
 Issues = "https://github.com/aquarion-ai/aquarion-libtts/issues"
 Source = "https://github.com/aquarion-ai/aquarion-libtts"
 
+[project.optional-dependencies]
+dev = [
+  "aquarion-libtts[kokoro]",
+]
+kokoro = [
+  "en-core-web-sm",
+  "kokoro~=0.9.4",
+  "pip~=25.1.1",
+]
+
 ## uv
 
 [dependency-groups]
@@ -120,6 +130,7 @@ packages = ["src/aquarion"]
 # Env: default
 
 [tool.hatch.envs.default]
+features = ["dev"]
 type = "uvenv"
 
 [tool.hatch.envs.default.scripts]
@@ -308,10 +319,13 @@ check-filenames = true
 check-hidden = false
 ignore-words = ["project-words.txt"]
 quiet-level = 0
-skip = ["__pycache__"]
+skip = ["__pycache__", "uv.lock"]
 write-changes = true
 
 [tool.commitizen]
 major_version_zero = true
 name = "cz_gitmoji"
 update_changelog_on_bump = false
+
+[tool.uv.sources]
+en-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl" }
