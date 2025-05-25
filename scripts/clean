@@ -28,16 +28,17 @@ def "main" [
     --caches (-c)  # Also clean all caches
     --devbox (-d)  # Also remove the devbox shell
 ] : nothing -> nothing {
+    if $caches {
+        remove_uv_cache
+        remove_local_cache
+        remove_pre-commit_tools
+    }
     remove_local_builds
     remove_generated_translation_files
     remove_hatch_envs
     remove_hatch_pythons
     remove_uv_tools
     remove_uv_pythons
-    if $caches {
-        remove_uv_cache
-        remove_local_cache
-    }
     if $devbox {
         remove_devbox_shell
         if $caches {
@@ -136,4 +137,9 @@ def "remove_devbox_shell" []: nothing -> nothing {
     print "Removing devbox shell"
     rm -rf .devbox
     print $"(ansi red)ATTENTION: YOU MUST EXIT THE DEVBOX SHELL IMMEDIATELY AFTER THIS COMMAND!(ansi reset)"
+}
+
+def "remove_pre-commit_tools" []: nothing -> nothing {
+    print "Removing pre-commit tools"
+    pre-commit clean
 }
