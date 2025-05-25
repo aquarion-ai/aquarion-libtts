@@ -14,6 +14,7 @@
     },
     "name": "Aquarion AI - aquarion-libtts dev and CI environment",
     "packages": {
+        "espeak-ng": "1.51",
         "markdownlint-cli2": "0.17.2",
         "nushell": "0.103.0",
         "trivy": "0.61.0",

@@ -21,6 +21,7 @@ Devboxes
 dmypy
 docopt
 docstrings
+espeak
 execnet
 favor
 Generis
