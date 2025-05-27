@@ -166,6 +166,7 @@ groups = ["hatch-test"]
 # parallel = true
 # We do not want to *always* randomize.
 # randomize = true
+features = ["dev"]
 type = "uvenv"
 
 [[tool.hatch.envs.hatch-test.matrix]]
@@ -174,6 +175,7 @@ python = ["3.12"]
 # Env: types
 
 [tool.hatch.envs.types]
+features = ["dev"]
 groups = ["types"]
 type = "uvenv"
 
@@ -185,6 +187,7 @@ check = """
 # Env: accept
 
 [tool.hatch.envs.accept]
+features = ["dev"]
 groups = ["accept"]
 type = "uvenv"
 
