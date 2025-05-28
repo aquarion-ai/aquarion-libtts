@@ -32,13 +32,21 @@ from pydantic import (
 
 
 class KokoroVoices(StrEnum):
-    """Kokoro TTS voices."""
+    """Supported Kokoro TTS voices."""
 
-    af_heart = auto()
-    af_bella = auto()
-    af_nicole = auto()
-    bf_emma = auto()
-    ff_siwis = auto()
+    # Voice grades and details can be found at:
+    # https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
+
+    af_heart = auto()  # Grade A
+    af_bella = auto()  # Grade A-
+    af_nicole = auto()  # Grade B-
+    am_fenrir = auto()  # Grade C+
+    am_michael = auto()  # Grade C+
+    am_puck = auto()  # Grade C+
+    bf_emma = auto()  # Grade B-
+    bm_fable = auto()  # Grade C
+    bm_george = auto()  # Grade C
+    ff_siwis = auto()  # Grade B-
 
 
 def _validate_locale(locale: str) -> str:
