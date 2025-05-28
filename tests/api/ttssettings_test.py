@@ -77,7 +77,7 @@ def test_ittssettings_should_conform_to_its_protocol() -> None:
 
 def test_ittssettings_should_have_a_locale_attribute() -> None:
     settings: ITTSSettings = DummyTTSSettings()
-    assert hasattr(settings, "locale")
+    assert isinstance(settings.locale, str)
 
 
 def test_ittssettings_to_dict_should_return_a_dict_of_all_settings_as_base_types() -> (
