@@ -31,7 +31,8 @@
     "conventionalCommits.scopes": [
         "accept",
         "vscode",
-        "api"
+        "api",
+        "kokoro"
     ],
     "editor.defaultFormatter": null,
     "editor.detectIndentation": false,

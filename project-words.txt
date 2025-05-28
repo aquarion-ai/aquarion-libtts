@@ -40,6 +40,7 @@ ittssettings
 ittssettingsholder
 jetify
 Kokoro
+kokorosettings
 Krys
 kwargs
 labeled
@@ -88,6 +89,7 @@ schneegans
 scrapy
 sdist
 setuptools
+siwis
 specname
 Spyder
 spyderproject
