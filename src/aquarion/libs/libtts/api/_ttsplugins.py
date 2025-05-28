@@ -69,9 +69,9 @@ class ITTSPlugin(Protocol):
 
         If `from_dict` is None, then default values for all settings should be used.
 
-        If any key or value in `from_dict` is invalid or missing for the concrete
-        implementation of ITTSSettings that the factory will create, then a KeyError or
-        ValueError should be raised.
+        This function is expected to validate it's inputs.  If any setting is invalid
+        for the concrete implementation of ITTSSettings that the factory will create,
+        then a KeyError, ValueError or TypeError (or subclass thereof) should be raised.
         """
 
     def make_backend(self, settings: ITTSSettings) -> ITTSBackend:

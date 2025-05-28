@@ -53,17 +53,6 @@ class DummyTTSSettings:
     def to_dict(self) -> dict[str, Any]:  # type: ignore [explicit-any]
         return {"attr1": self.attr1}  # type: ignore [misc]
 
-    def validate(self) -> None:
-        if not isinstance(self.attr1, str):
-            raise TypeError
-
-    def is_valid(self) -> bool:
-        try:
-            self.validate()
-        except TypeError:
-            return False
-        return True
-
 
 class AnotherTTSSettings:
     """NOT the DummyTTSSettings class."""
@@ -78,12 +67,6 @@ class AnotherTTSSettings:
 
     def to_dict(self) -> dict[str, Any]:  # type: ignore [explicit-any]
         return {}  # type: ignore [misc]  # pragma: no cover
-
-    def validate(self) -> None:
-        pass  # pragma: no cover
-
-    def is_valid(self) -> bool:
-        return False  # pragma: no cover
 
 
 def test_ittssettings_should_conform_to_its_protocol() -> None:
@@ -103,33 +86,6 @@ def test_ittssettings_to_dict_should_return_a_dict_of_all_settings_as_base_types
     settings = DummyTTSSettings()
     settings_dict: dict[str, str] = settings.to_dict()
     assert settings_dict["attr1"] == "default"
-
-
-def test_ittssettings_validate_should_do_nothing_if_all_settings_are_valid() -> None:
-    settings = DummyTTSSettings()
-    settings.validate()
-
-
-def test_ittssettings_validate_should_raise_an_exception_if_a_setting_is_invalid() -> (
-    None
-):
-    settings = DummyTTSSettings()
-    settings.attr1 = 666  # type: ignore [assignment]
-    with pytest.raises(TypeError):
-        settings.validate()
-
-
-def test_ittssettings_is_valid_should_return_true_if_all_settings_are_valid() -> None:
-    settings = DummyTTSSettings()
-    assert settings.is_valid()
-
-
-def test_ittssettings_is_valid_should_return_false_if_any_settings_are_invalid() -> (
-    None
-):
-    settings = DummyTTSSettings()
-    settings.attr1 = 666  # type: ignore [assignment]
-    assert not settings.is_valid()
 
 
 def test_ittssettings_should_equate_if_setting_values_are_equal() -> None:

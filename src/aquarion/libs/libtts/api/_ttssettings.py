@@ -54,12 +54,6 @@ class ITTSSettings(Protocol):
     def to_dict(self) -> dict[str, Any]:  # type: ignore [explicit-any]
         """Export all settings as a dictionary of only built-in Python types."""
 
-    def validate(self) -> None:
-        """Validate all settings."""
-
-    def is_valid(self) -> bool:
-        """Return True if all settings are valid."""
-
 
 @runtime_checkable
 class ITTSSettingsHolder(Protocol):
