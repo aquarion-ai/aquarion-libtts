@@ -24,48 +24,6 @@ from aquarion.libs.libtts.api._ttssettings import ITTSSettings
 
 ### KokoroSettings Tests ###
 
-## ITTSSettings Protocol Conformity ##
-
-
-def test_kokorosettings_should_conform_to_the_ittssettings_protocol() -> None:
-    settings = KokoroSettings()
-    _: ITTSSettings = settings  # Typecheck protocol conformity
-    assert isinstance(settings, ITTSSettings)  # Runtime check as well
-
-
-def test_kokorosettings_should_have_a_locale_attribute() -> None:
-    settings: ITTSSettings = KokoroSettings()
-    assert isinstance(settings.locale, str)
-
-
-@pytest.mark.parametrize(
-    ("attr", "value"),
-    [("locale", "en-US"), ("voice", "af_heart"), ("speed", 1.0)],
-)
-def test_kokorosettings_to_dict_should_return_a_dict_of_all_settings_as_base_types(
-    attr: str, value: str | float
-) -> None:
-    settings = KokoroSettings(**{attr: value})  # type: ignore[arg-type]
-    settings_dict: dict[str, str | float] = settings.to_dict()
-    assert settings_dict[attr] == value
-
-
-def test_kokorosettings_should_equate_if_setting_values_are_equal() -> None:
-    settings1 = KokoroSettings()
-    settings2 = KokoroSettings()
-    assert settings1 == settings2
-    assert settings1 is not settings2
-
-
-def test_kokorosettings_should_not_equate_if_setting_values_are_different() -> None:
-    settings1 = KokoroSettings()
-    settings2 = KokoroSettings(locale="en-GB", voice=KokoroVoices.bf_emma)
-    assert settings1 != settings2
-    assert settings1 is not settings2
-
-
-## Additional Tests ##
-
 
 @pytest.mark.parametrize(
     ("locale", "voice", "speed"),
@@ -155,3 +113,43 @@ def test_kokorosettings_should_coerce_voice_strings_to_enum_on_instantiation() -
     settings = KokoroSettings(voice="af_heart")  # type: ignore[arg-type]
     assert settings.voice == KokoroVoices.af_heart
     assert isinstance(settings.voice, KokoroVoices)
+
+
+## ITTSSettings Protocol Conformity ##
+
+
+def test_kokorosettings_should_conform_to_the_ittssettings_protocol() -> None:
+    settings = KokoroSettings()
+    _: ITTSSettings = settings  # Typecheck protocol conformity
+    assert isinstance(settings, ITTSSettings)  # Runtime check as well
+
+
+def test_kokorosettings_should_have_a_locale_attribute() -> None:
+    settings: ITTSSettings = KokoroSettings()
+    assert isinstance(settings.locale, str)
+
+
+@pytest.mark.parametrize(
+    ("attr", "value"),
+    [("locale", "en-US"), ("voice", "af_heart"), ("speed", 1.0)],
+)
+def test_kokorosettings_to_dict_should_return_a_dict_of_all_settings_as_base_types(
+    attr: str, value: str | float
+) -> None:
+    settings = KokoroSettings(**{attr: value})  # type: ignore[arg-type]
+    settings_dict: dict[str, str | float] = settings.to_dict()
+    assert settings_dict[attr] == value
+
+
+def test_kokorosettings_should_equate_if_setting_values_are_equal() -> None:
+    settings1 = KokoroSettings()
+    settings2 = KokoroSettings()
+    assert settings1 == settings2
+    assert settings1 is not settings2
+
+
+def test_kokorosettings_should_not_equate_if_setting_values_are_different() -> None:
+    settings1 = KokoroSettings()
+    settings2 = KokoroSettings(locale="en-GB", voice=KokoroVoices.bf_emma)
+    assert settings1 != settings2
+    assert settings1 is not settings2
