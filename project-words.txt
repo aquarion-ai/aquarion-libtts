@@ -25,6 +25,7 @@ espeak
 execnet
 favor
 fenrir
+filterwarnings
 Generis
 GITMOJI
 hookspecs
@@ -80,6 +81,7 @@ pyproject
 pyrightconfig
 pysingleton
 pytest
+pytorch
 pytype
 pyupgrade
 rcfile
@@ -91,6 +93,7 @@ scrapy
 sdist
 setuptools
 siwis
+spacy
 specname
 Spyder
 spyderproject
@@ -101,6 +104,7 @@ sublicensable
 suis
 synched
 tomli
+torchvision
 traduit
 ttsbackend
 ttspluginregistry

@@ -66,15 +66,19 @@ Issues = "https://github.com/aquarion-ai/aquarion-libtts/issues"
 Source = "https://github.com/aquarion-ai/aquarion-libtts"
 
 [project.optional-dependencies]
-dev = [
-  "aquarion-libtts[kokoro]",
+cpu = [
+  "torch>=2.7.0",
+  "torchvision>=0.22.0",
+]
+cu128 = [
+  "torch>=2.7.0",
+  "torchvision>=0.22.0",
 ]
 kokoro = [
   "en-core-web-sm",
   "kokoro~=0.9.4",
   "pip~=25.1.1",
 ]
-
 ## uv
 
 [dependency-groups]
@@ -113,6 +117,36 @@ types = [
   "types-setuptools~=80.4.0", # mypy type stub
 ]
 
+[tool.uv]
+conflicts = [
+  [
+    {extra = "cpu"},
+    {extra = "cu128"},
+  ],
+]
+
+[tool.uv.sources]
+aquarion-libtts = {workspace = true}
+en-core-web-sm = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl"}
+torch = [
+  {index = "pytorch-cpu", extra = "cpu"},
+  {index = "pytorch-cu128", extra = "cu128"},
+]
+torchvision = [
+  {index = "pytorch-cpu", extra = "cpu"},
+  {index = "pytorch-cu128", extra = "cu128"},
+]
+
+[[tool.uv.index]]
+explicit = true
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+
+[[tool.uv.index]]
+explicit = true
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+
 ### Hatch ###
 
 [tool.hatch.env]
@@ -131,7 +165,7 @@ packages = ["src/aquarion"]
 # Env: default
 
 [tool.hatch.envs.default]
-features = ["dev"]
+features = ["kokoro", "cu128"]
 type = "uvenv"
 
 [tool.hatch.envs.default.scripts]
@@ -166,7 +200,7 @@ groups = ["hatch-test"]
 # parallel = true
 # We do not want to *always* randomize.
 # randomize = true
-features = ["dev"]
+features = ["kokoro", "cu128"]
 type = "uvenv"
 
 [[tool.hatch.envs.hatch-test.matrix]]
@@ -175,7 +209,7 @@ python = ["3.12"]
 # Env: types
 
 [tool.hatch.envs.types]
-features = ["dev"]
+features = ["kokoro", "cu128"]
 groups = ["types"]
 type = "uvenv"
 
@@ -187,7 +221,7 @@ check = """
 # Env: accept
 
 [tool.hatch.envs.accept]
-features = ["dev"]
+features = ["kokoro", "cu128"]
 groups = ["accept"]
 type = "uvenv"
 
@@ -314,6 +348,10 @@ strict_concatenate = true
 addopts = "--strict-markers"
 cache_dir = ".cache/pytest"
 empty_parameter_set_mark = "xfail"
+filterwarnings = [
+  "ignore::DeprecationWarning:spacy.*",
+  "ignore::DeprecationWarning:weasel.*",
+]
 logot_capturer = "logot.loguru.LoguruCapturer"
 xfail_strict = true
 
@@ -330,6 +368,3 @@ write-changes = true
 major_version_zero = true
 name = "cz_gitmoji"
 update_changelog_on_bump = false
-
-[tool.uv.sources]
-en-core-web-sm = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl"}
