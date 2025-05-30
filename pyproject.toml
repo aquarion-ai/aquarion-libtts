@@ -82,7 +82,7 @@ hatch-static-analysis = [
   "ruff~=0.11.7",
 ]
 hatch-uv = [
-  "uv~=0.6.17",
+  "uv~=0.7.8",
 ]
 # These are Hatch's default dependencies, just with versions updates and more precisely
 # pinned down.  Use extra-dependencies for any other custom dependencies to keep them
