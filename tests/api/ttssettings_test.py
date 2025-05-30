@@ -120,7 +120,7 @@ class DummyTTSSettingsHolder:
 
     def update_settings(self, new_settings: ITTSSettings) -> None:
         if not isinstance(new_settings, DummyTTSSettings):
-            message = f"Invalid settings: [{new_settings.__class__}]"
+            message = f"Incorrect settings type: [{type(new_settings)}]."
             raise TypeError(message)
         self._settings = new_settings
 
@@ -151,6 +151,13 @@ def test_ittssettingsholder_update_settings_should_require_the_settings_argument
         holder.update_settings()  # type: ignore [call-arg]
 
 
+def test_ittssettingsholder_update_settings_should_not_return_anything() -> None:
+    # CQS principle: Commands should not return anything.
+    holder = DummyTTSSettingsHolder()
+    result: None = holder.update_settings(DummyTTSSettings())  # type: ignore [func-returns-value]
+    assert result is None
+
+
 def test_ittssettingsholder_update_settings_should_update_the_settings() -> None:
     holder = DummyTTSSettingsHolder()
     orig_settings = holder.get_settings()
@@ -161,10 +168,10 @@ def test_ittssettingsholder_update_settings_should_update_the_settings() -> None
     assert updated_settings != orig_settings
 
 
-def test_ittssettingsholder_update_settings_should_raise_error_if__invalid_given() -> (
+def test_ittssettingsholder_update_settings_should_raise_error_if_incorrect_type() -> (
     None
 ):
     holder = DummyTTSSettingsHolder()
-    invalid_settings = AnotherTTSSettings()
-    with pytest.raises(TypeError, match="Invalid settings"):
-        holder.update_settings(invalid_settings)
+    incorrect_settings = AnotherTTSSettings()
+    with pytest.raises(TypeError, match="Incorrect settings type"):
+        holder.update_settings(incorrect_settings)

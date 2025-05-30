@@ -97,6 +97,13 @@ def test_ittsbackend_update_settings_should_require_the_settings_argument() -> N
         backend.update_settings()  # type: ignore [call-arg]
 
 
+def test_ittsbackend_update_settings_should_not_return_anything() -> None:
+    # CQS principle: Commands should not return anything.
+    backend = DummyTTSBackend()
+    result: None = backend.update_settings(DummyTTSSettings())  # type: ignore [func-returns-value]
+    assert result is None
+
+
 def test_ittsbackend_update_settings_should_update_the_settings() -> None:
     backend = DummyTTSBackend()
     orig_settings = backend.get_settings()
@@ -107,11 +114,11 @@ def test_ittsbackend_update_settings_should_update_the_settings() -> None:
     assert updated_settings != orig_settings
 
 
-def test_ittsbackend_update_settings_should_raise_error_if__invalid_given() -> None:
+def test_ittsbackend_update_settings_should_raise_error_if_incorrect_kind() -> None:
     backend = DummyTTSBackend()
-    invalid_settings = AnotherTTSSettings()
-    with pytest.raises(TypeError, match="Invalid settings"):
-        backend.update_settings(invalid_settings)
+    incorrect_settings = AnotherTTSSettings()
+    with pytest.raises(TypeError, match="Incorrect settings type"):
+        backend.update_settings(incorrect_settings)
 
 
 ## .convert() tests
@@ -168,6 +175,13 @@ def test_ittsbackend_start_should_be_idempotent() -> None:
     assert backend.is_started
 
 
+def test_ittsbackend_start_should_not_return_anything() -> None:
+    # CQS principle: Commands should not return anything.
+    backend = DummyTTSBackend()
+    result: None = backend.start()  # type: ignore [func-returns-value]
+    assert result is None
+
+
 ## .stop() tests
 
 
@@ -187,3 +201,10 @@ def test_ittsbackend_stop_should_be_idempotent() -> None:
     assert not backend.is_started
     backend.stop()  # type: ignore [unreachable]  # The type checker is wrong.  Tested.
     assert not backend.is_started
+
+
+def test_ittsbackend_stop_should_not_return_anything() -> None:
+    # CQS principle: Commands should not return anything.
+    backend = DummyTTSBackend()
+    result: None = backend.stop()  # type: ignore [func-returns-value]
+    assert result is None

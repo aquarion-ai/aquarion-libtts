@@ -230,7 +230,7 @@ def test_ittsplugin_make_backend_should_raise_error_if_incorrect_settings_given(
 ):
     plugin = DummyTTSPlugin()
     settings = AnotherTTSSettings()
-    with pytest.raises(TypeError, match="Invalid settings"):
+    with pytest.raises(TypeError, match="Incorrect settings type"):
         plugin.make_backend(settings)
 
 
