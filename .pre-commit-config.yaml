@@ -81,6 +81,11 @@ repos:
         additional_dependencies:
           - tomli
 
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.6.4
+    hooks:
+      - id: uv-lock
+
   - repo: local
     hooks:
       - id: markdownlint-cli2
