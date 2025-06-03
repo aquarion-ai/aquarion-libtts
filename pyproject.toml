@@ -111,10 +111,29 @@ types = [
   "loguru~=0.7.3",
   "mypy~=1.15.0",
   "pytest~=8.3.5",
+  "pytest-mock~=3.14.0",
   "types-Pygments~=2.19.0", # mypy type stub
   "types-colorama~=0.4.15", # mypy type stub
   "types-pexpect~=4.9.0", # mypy type stub
   "types-setuptools~=80.4.0", # mypy type stub
+  "pandas_stubs~=2.2.3", # PyTorch & Kokoro TTS stub
+  "types_pyyaml~=6.0.12", # PyTorch & Kokoro TTS stub
+  "types_beautifulsoup4~=4.12.0", # PyTorch & Kokoro TTS stub
+  "types_defusedxml~=0.7.0", # PyTorch & Kokoro TTS stub
+  "types_networkx~=3.5.0", # PyTorch & Kokoro TTS stub
+  "types_protobuf~=6.30.2", # PyTorch & Kokoro TTS stub
+  "types_psutil~=7.0.0", # PyTorch & Kokoro TTS stub
+  "types_pywin32~=310.0.0", # PyTorch & Kokoro TTS stub
+  "types_regex~=2024.11.6", # PyTorch & Kokoro TTS stub
+  "types_requests~=2.32.0", # PyTorch & Kokoro TTS stub
+  "types_simplejson~=3.20.0", # PyTorch & Kokoro TTS stub
+  "types_tabulate~=0.9.0", # PyTorch & Kokoro TTS stub
+  "types_tensorflow~=2.18.0", # PyTorch & Kokoro TTS stub
+  "types_tqdm~=4.67.0", # PyTorch & Kokoro TTS stub
+  "types_pytz~=2025.2.0", # PyTorch & Kokoro TTS stub
+  "types_html5lib~=1.1.11", # PyTorch & Kokoro TTS stub
+  "types_openpyxl~=3.1.5", # numpy mypy plugin stub
+  "types_python_dateutil~=2.9.0", # numpy mypy plugin stub
 ]
 
 [tool.uv]
@@ -305,6 +324,7 @@ mark-parentheses = false
 cache_dir = ".cache/mypy"
 explicit_package_bases = true
 mypy_path = "$MYPY_CONFIG_FILE_DIR/src,$MYPY_CONFIG_FILE_DIR/typings"
+plugins = ["numpy.typing.mypy_plugin"]
 pretty = true
 python_version = "3.12"
 show_column_numbers = true
@@ -349,8 +369,11 @@ addopts = "--strict-markers"
 cache_dir = ".cache/pytest"
 empty_parameter_set_mark = "xfail"
 filterwarnings = [
+  # Kokoro TTS warnings 0.9.4
   "ignore::DeprecationWarning:spacy.*",
   "ignore::DeprecationWarning:weasel.*",
+  "ignore::UserWarning:torch.*",
+  "ignore::FutureWarning:torch.*",
 ]
 logot_capturer = "logot.loguru.LoguruCapturer"
 xfail_strict = true
