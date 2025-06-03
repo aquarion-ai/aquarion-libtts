@@ -21,6 +21,7 @@ Devboxes
 dmypy
 docopt
 docstrings
+Efmt
 espeak
 execnet
 favor
@@ -28,6 +29,7 @@ fenrir
 filterwarnings
 Generis
 GITMOJI
+hexgrad
 hookspecs
 htmlcov
 iniconfig
@@ -42,7 +44,9 @@ ittssettings
 ittssettingsholder
 jetify
 Kokoro
+kokorobackend
 kokorosettings
+kpipeline
 Krys
 kwargs
 labeled
@@ -57,6 +61,7 @@ mypy
 noncommercially
 nosetests
 nplurals
+numpy
 nushell
 parsable
 pexpect
@@ -103,6 +108,7 @@ subclassing
 sublicensable
 suis
 synched
+tobytes
 tomli
 torchvision
 traduit

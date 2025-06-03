@@ -15,39 +15,19 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-from collections.abc import Callable, Generator
 from dataclasses import dataclass
-from typing import Final
 
 import torch
-from kokoro.model import KModel
 
-ALIASES: Final[dict[str, str]]
-
-class KPipeline:
-    model: KModel | None
-    def __init__(
-        self,
-        lang_code: str,
-        repo_id: str | None = None,
-        model: KModel | bool = True,
-        trf: bool = False,
-        en_callable: Callable[[str], str] | None = None,
-        device: str | None = None,
-    ) -> None: ...
-    def load_voice(
-        self, voice: str | torch.FloatTensor, delimiter: str = ","
-    ) -> torch.FloatTensor: ...
+class KModel(torch.nn.Module):
     @dataclass
-    class Result:
-        @property
-        def audio(self) -> torch.FloatTensor | None: ...
+    class Output:
+        audio: torch.FloatTensor
 
-    def __call__(
+    def forward(
         self,
-        text: str | list[str],
-        voice: str | None = None,
-        speed: float | Callable[[int], float] = 1,
-        split_pattern: str | None = r"\n+",
-        model: KModel | None = None,
-    ) -> Generator[KPipeline.Result, None, None]: ...
+        phonemes: str,
+        ref_s: torch.FloatTensor,
+        speed: float = 1,
+        return_output: bool = False,
+    ) -> KModel.Output | torch.FloatTensor: ...
