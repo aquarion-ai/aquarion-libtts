@@ -47,6 +47,9 @@ class DummyTTSBackend(DummyTTSSettingsHolder):
         self._is_started = False
 
     def convert(self, text: str) -> TTSSpeechData:
+        if not self.is_started:
+            message = "Backend is not started"
+            raise RuntimeError(message)
         return TTSSpeechData(
             audio=f"some audio of {text}".encode(), mime_type="audio/wav"
         )
@@ -132,8 +135,15 @@ def test_ittsbackend_convert_should_require_some_text_input() -> None:
 
 def test_ittsbackend_convert_should_return_a_ttsspeechdata_object() -> None:
     backend = DummyTTSBackend()
+    backend.start()
     speech_data = backend.convert("some text")
     assert isinstance(speech_data, TTSSpeechData)
+
+
+def test_ittsbackend_convert_should_raise_an_error_if_backend_not_started() -> None:
+    backend = DummyTTSBackend()
+    with pytest.raises(RuntimeError, match="Backend is not started"):
+        backend.convert("some text")
 
 
 ## .is_started tests
