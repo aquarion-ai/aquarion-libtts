@@ -26,6 +26,8 @@ class TTSSpeechData:
     """A blob of speech audio along with some related metadata."""
 
     audio: bytes
-    mime_type: str
-    codec: str | None = None
-    bps: int | None = None
+    format: str  # E.g. "Linear PCM", "WAV", "MP3", etc.
+    sample_rate: int  # E.g 8000, 24000, 48000, etc.
+    sample_width: int  # E.g. 8 for 8-bit, 12 for 12-bit, 16 for 16-bit, etc.
+    byte_order: str  # E.g. "Little-Endian", "LE", "big-endian", "be", etc.
+    num_channels: int  # E.g. 1 for mono, 2 for stereo, etc.

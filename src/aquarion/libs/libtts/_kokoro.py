@@ -164,7 +164,14 @@ class KokoroBackend:
                 audio_array: NDArray[float32] = result.audio.numpy()
                 audio_int_array: NDArray[int16] = (audio_array * 32767).astype("int16")
                 wav_file.writeframes(audio_int_array.tobytes())
-        return TTSSpeechData(audio=audio_buffer.getvalue(), mime_type="audio/wav")
+        return TTSSpeechData(
+            audio=audio_buffer.getvalue(),
+            format="WAV",
+            sample_rate=24000,
+            sample_width=16,
+            byte_order="LE",
+            num_channels=1,
+        )
 
     @property
     def is_started(self) -> bool:

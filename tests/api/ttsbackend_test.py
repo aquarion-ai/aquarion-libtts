@@ -51,7 +51,12 @@ class DummyTTSBackend(DummyTTSSettingsHolder):
             message = "Backend is not started"
             raise RuntimeError(message)
         return TTSSpeechData(
-            audio=f"some audio of {text}".encode(), mime_type="audio/wav"
+            audio=f"some audio of {text}".encode(),
+            format="Linear PCM",
+            sample_rate=24000,
+            sample_width=16,
+            byte_order="little-endian",
+            num_channels=1,
         )
 
     @property
