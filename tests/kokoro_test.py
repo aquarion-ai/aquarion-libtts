@@ -18,7 +18,7 @@
 """Unit tests for _kokoro module."""
 
 from os import environ
-from typing import cast
+from typing import Any, Final, cast
 
 import pytest
 import torch
@@ -35,28 +35,34 @@ from tests.api.ttssettings_test import AnotherTTSSettings
 ### KokoroSettings Tests ###
 
 
-@pytest.mark.parametrize(
-    ("locale", "voice", "speed"),
-    [
-        ("en-US", KokoroVoices.af_heart, 1.0),
-        ("en-GB", KokoroVoices.bf_emma, 0.5),
-        ("fr-FR", KokoroVoices.ff_siwis, 0.75),
-    ],
-)
-def test_kokorosettings_should_accept_attributes_as_kwargs(
-    locale: str, voice: KokoroVoices, speed: float
-) -> None:
-    settings = KokoroSettings(locale=locale, voice=voice, speed=speed)
-    assert settings.locale == locale
-    assert settings.voice == voice
-    assert settings.speed == speed
+SETTINGS_ARGS: Final = {
+    "locale": "en-GB",
+    "voice": KokoroVoices.bf_emma,
+    "speed": 0.8,
+}
+SETTINGS_ATTRS: Final = [*list(SETTINGS_ARGS), "lang_code"]
+
+
+def test_kokorosettings_should_accept_attributes_as_kwargs() -> None:
+    KokoroSettings(**SETTINGS_ARGS)  # type:ignore[arg-type]
 
 
 def test_kokorosettings_should_only_accept_keyword_arguments() -> None:
     with pytest.raises(
         TypeError, match="takes 1 positional argument but .* were given"
     ):
-        KokoroSettings("en-GB")  # type: ignore [misc]
+        KokoroSettings(*SETTINGS_ARGS.values())
+
+
+@pytest.mark.parametrize(  # type:ignore[misc]
+    ("attribute", "expected"), SETTINGS_ARGS.items()
+)
+def test_kokorosettings_should_store_given_settings_values(  # type:ignore[explicit-any,misc]
+    attribute: str,
+    expected: Any,  # noqa: ANN401
+) -> None:
+    settings = KokoroSettings(**SETTINGS_ARGS)  # type:ignore[arg-type]
+    assert getattr(settings, attribute) == expected  # type:ignore[misc]
 
 
 @pytest.mark.parametrize(
@@ -78,10 +84,8 @@ def test_kokorosettings_should_raise_an_exception_if_a_setting_is_invalid(
         KokoroSettings(**{attr: value})  # type: ignore [arg-type]
 
 
-@pytest.mark.parametrize(("attr"), ["locale", "voice", "speed", "lang_code"])
-def test_kokorosettings_should_have_expected_attribute(
-    attr: str,
-) -> None:
+@pytest.mark.parametrize(("attr"), SETTINGS_ATTRS)
+def test_kokorosettings_should_have_expected_attribute(attr: str) -> None:
     settings = KokoroSettings()
     assert hasattr(settings, attr)
 
