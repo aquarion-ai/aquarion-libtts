@@ -191,9 +191,14 @@ def mock_kpipeline(mocker: MockerFixture) -> None:
         return
     mocker.patch("aquarion.libs.libtts._kokoro.KPipeline.__init__", return_value=None)
     mocker.patch("aquarion.libs.libtts._kokoro.KPipeline.load_voice", return_value=None)
-    mock_result: KPipeline.Result = mocker.MagicMock(spec_set=KPipeline.Result)
-    mock_result.audio = fake_audio  # type: ignore [misc]
-    call_return_value: list[KPipeline.Result] = [mock_result]
+    mock_audio_result: KPipeline.Result = mocker.MagicMock(spec_set=KPipeline.Result)
+    mock_audio_result.audio = fake_audio  # type: ignore [misc]
+    mock_no_audio_result: KPipeline.Result = mocker.MagicMock(spec_set=KPipeline.Result)
+    mock_no_audio_result.audio = None  # type: ignore [misc]
+    call_return_value: list[KPipeline.Result] = [
+        mock_no_audio_result,
+        mock_audio_result,
+    ]
     mocker.patch(
         "aquarion.libs.libtts._kokoro.KPipeline.__call__",
         return_value=call_return_value,
@@ -272,10 +277,26 @@ def test_kokorobackend_update_settings_should_not_return_anything() -> None:
     assert result is None
 
 
-def test_kokorobackend_update_settings_should_update_the_settings() -> None:
+def test_kokorobackend_update_settings_should_update_settings_when_not_started() -> (
+    None
+):
     backend = KokoroBackend(KokoroSettings())
     orig_settings = backend.get_settings()
     new_settings = KokoroSettings(locale="en-GB", voice=KokoroVoices.bf_emma)
+    backend.stop()  # Default is stopped, this is just to make sure.
+    backend.update_settings(new_settings)
+    updated_settings = backend.get_settings()
+    assert updated_settings == new_settings
+    assert updated_settings != orig_settings
+
+
+def test_kokorobackend_update_settings_should_update_settings_when_already_started(
+    # This is here to force Ruff to wrap line.
+) -> None:
+    backend = KokoroBackend(KokoroSettings())
+    orig_settings = backend.get_settings()
+    new_settings = KokoroSettings(locale="en-GB", voice=KokoroVoices.bf_emma)
+    backend.start()
     backend.update_settings(new_settings)
     updated_settings = backend.get_settings()
     assert updated_settings == new_settings
