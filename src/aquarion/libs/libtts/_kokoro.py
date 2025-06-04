@@ -85,6 +85,7 @@ class KokoroSettings(  # type: ignore [explicit-any, misc]
     locale: Annotated[str, AfterValidator(_validate_locale)] = "en-US"
     voice: KokoroVoices = KokoroVoices.af_heart
     speed: Annotated[float, Field(gt=0, le=1.0)] = 1.0
+    repo_id: str = "hexgrad/Kokoro-82M"
 
     @property
     def lang_code(self) -> str:
@@ -187,7 +188,7 @@ class KokoroBackend:
         if self.is_started:
             return
         self._pipeline = KPipeline(
-            repo_id="hexgrad/Kokoro-82M", lang_code=self._settings.lang_code
+            repo_id=self._settings.repo_id, lang_code=self._settings.lang_code
         )
         self._pipeline.load_voice(self._settings.voice)
 

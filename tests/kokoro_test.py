@@ -39,6 +39,7 @@ SETTINGS_ARGS: Final = {
     "locale": "en-GB",
     "voice": KokoroVoices.bf_emma,
     "speed": 0.8,
+    "repo_id": "hexgrad/Kokoro-82M",
 }
 SETTINGS_ATTRS: Final = [*list(SETTINGS_ARGS), "lang_code"]
 
