@@ -117,6 +117,7 @@ ttspluginregistry
 ttsplugins
 ttssettings
 ttsspeechdata
+usefixtures
 uvenv
 vars
 venv

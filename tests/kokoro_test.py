@@ -18,7 +18,8 @@
 """Unit tests for _kokoro module."""
 
 from os import environ
-from typing import Any, Final, cast
+from pathlib import Path
+from typing import Final, cast
 
 import pytest
 import torch
@@ -40,30 +41,55 @@ SETTINGS_ARGS: Final = {
     "voice": KokoroVoices.bf_emma,
     "speed": 0.8,
     "repo_id": "hexgrad/Kokoro-82M",
+    "model_path": Path("kokoro-v1_0.pth"),
+    "config_path": Path("config.json"),
+    "voice_path": Path("af_heart.pt"),
 }
 SETTINGS_ATTRS: Final = [*list(SETTINGS_ARGS), "lang_code"]
 
 
-def test_kokorosettings_should_accept_attributes_as_kwargs() -> None:
-    KokoroSettings(**SETTINGS_ARGS)  # type:ignore[arg-type]
+@pytest.fixture(scope="session")
+def real_settings_path_args(
+    tmp_path_factory: pytest.TempPathFactory,
+) -> dict[str, Path]:
+    tmp_dir_path = tmp_path_factory.mktemp("kokoro_data")
+    path_args = {}
+    for argument, file_name in SETTINGS_ARGS.items():
+        if not argument.endswith("_path"):
+            continue
+        file_path = tmp_dir_path / cast("str", file_name)
+        file_path.touch()
+        path_args[argument] = file_path
+    return path_args
 
 
-def test_kokorosettings_should_only_accept_keyword_arguments() -> None:
+def test_kokorosettings_should_accept_attributes_as_kwargs(
+    real_settings_path_args: dict[str, Path],
+) -> None:
+    arguments = SETTINGS_ARGS.copy()
+    arguments.update(real_settings_path_args)
+    KokoroSettings(**arguments)  # type:ignore[arg-type]
+
+
+def test_kokorosettings_should_only_accept_keyword_arguments(
+    real_settings_path_args: dict[str, Path],
+) -> None:
+    arguments = SETTINGS_ARGS.copy()
+    arguments.update(real_settings_path_args)
     with pytest.raises(
         TypeError, match="takes 1 positional argument but .* were given"
     ):
-        KokoroSettings(*SETTINGS_ARGS.values())
+        KokoroSettings(*arguments.values())
 
 
-@pytest.mark.parametrize(  # type:ignore[misc]
-    ("attribute", "expected"), SETTINGS_ARGS.items()
-)
-def test_kokorosettings_should_store_given_settings_values(  # type:ignore[explicit-any,misc]
-    attribute: str,
-    expected: Any,  # noqa: ANN401
+@pytest.mark.parametrize("attribute", SETTINGS_ARGS)
+def test_kokorosettings_should_store_given_settings_values(
+    real_settings_path_args: dict[str, Path], attribute: str
 ) -> None:
-    settings = KokoroSettings(**SETTINGS_ARGS)  # type:ignore[arg-type]
-    assert getattr(settings, attribute) == expected  # type:ignore[misc]
+    arguments = SETTINGS_ARGS.copy()
+    arguments.update(real_settings_path_args)
+    settings = KokoroSettings(**arguments)  # type:ignore[arg-type]
+    assert getattr(settings, attribute) == arguments[attribute]  # type:ignore[misc]
 
 
 @pytest.mark.parametrize(
@@ -128,6 +154,16 @@ def test_kokorosettings_should_coerce_voice_strings_to_enum_on_instantiation() -
     settings = KokoroSettings(voice="af_heart")  # type: ignore[arg-type]
     assert settings.voice == KokoroVoices.af_heart
     assert isinstance(settings.voice, KokoroVoices)
+
+
+@pytest.mark.parametrize(
+    "attribute", [attr for attr in SETTINGS_ARGS if attr.endswith("_path")]
+)
+def test_kokorosettings_should_raise_an_error_if_file_path_does_not_exist(
+    attribute: str,
+) -> None:
+    with pytest.raises(ValueError, match="Path does not point to a file"):
+        KokoroSettings(**{attribute: Path("non-existant-path")})  # type:ignore[arg-type]
 
 
 ## ITTSSettings Protocol Conformity ##

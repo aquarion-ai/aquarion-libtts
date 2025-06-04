@@ -30,6 +30,7 @@ from pydantic import (
     AfterValidator,
     BaseModel,
     Field,
+    FilePath,
     model_validator,
 )
 
@@ -86,6 +87,9 @@ class KokoroSettings(  # type: ignore [explicit-any, misc]
     voice: KokoroVoices = KokoroVoices.af_heart
     speed: Annotated[float, Field(gt=0, le=1.0)] = 1.0
     repo_id: str = "hexgrad/Kokoro-82M"
+    model_path: FilePath | None = None
+    config_path: FilePath | None = None
+    voice_path: FilePath | None = None
 
     @property
     def lang_code(self) -> str:
