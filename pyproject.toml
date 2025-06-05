@@ -75,7 +75,7 @@ cu128 = [
   "torchvision>=0.22.0",
 ]
 kokoro = [
-  "en-core-web-sm",
+  "en-core-web-sm~=3.8.0",
   "kokoro~=0.9.4",
   "pip~=25.1.1",
 ]
