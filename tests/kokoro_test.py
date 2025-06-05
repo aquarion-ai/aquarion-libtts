@@ -23,7 +23,6 @@ from typing import Final, cast
 
 import pytest
 import torch
-from kokoro.model import KModel
 from kokoro.pipeline import KPipeline
 from pytest_mock import MockerFixture
 
@@ -237,28 +236,21 @@ EXPECTED_AUDIO = (
 
 @pytest.fixture(autouse=True)
 def mock_kpipeline(mocker: MockerFixture) -> None:
-    fake_audio = cast("torch.FloatTensor", torch.zeros(1, 2))
+    # If this environment variable is set, do not mock anything.  This is only for
+    # debugging tests.  Use acceptance tests to test the actual Kokoro backend.
     if environ.get("KOKORO_TEST_SKIP_MOCK", "0") == "1":  # pragma: no cover
-        # If the environment variable is set, only mock the audio for consistency but
-        # not anything else.  This is only for debugging tests.  Use acceptance tests
-        # to test the actual Kokoro backend.
-        fake_output = KModel.Output(audio=fake_audio)
-        mocker.patch("kokoro.model.KModel.forward", return_value=fake_output)
         return
-    mocker.patch("aquarion.libs.libtts._kokoro.KPipeline.__init__", return_value=None)
-    mocker.patch("aquarion.libs.libtts._kokoro.KPipeline.load_voice", return_value=None)
     mock_audio_result: KPipeline.Result = mocker.MagicMock(spec_set=KPipeline.Result)
-    mock_audio_result.audio = fake_audio  # type: ignore [misc]
+    mock_audio_result.audio = cast("torch.FloatTensor", torch.zeros(1, 2))  # type: ignore [misc]
     mock_no_audio_result: KPipeline.Result = mocker.MagicMock(spec_set=KPipeline.Result)
     mock_no_audio_result.audio = None  # type: ignore [misc]
     call_return_value: list[KPipeline.Result] = [
         mock_no_audio_result,
         mock_audio_result,
     ]
-    mocker.patch(
-        "aquarion.libs.libtts._kokoro.KPipeline.__call__",
-        return_value=call_return_value,
-    )
+    mocker.patch.object(KPipeline, "__init__", return_value=None)
+    mocker.patch.object(KPipeline, "load_voice", return_value=None)
+    mocker.patch.object(KPipeline, "__call__", return_value=call_return_value)
 
 
 def test_kokorobackend_should_accept_a_settings_argument() -> None:
@@ -281,6 +273,10 @@ def test_kokorobackend_should_require_settings_to_be_instance_of_kokorosettings(
         KokoroBackend(settings=AnotherTTSSettings)  # type: ignore[arg-type]
 
 
+@pytest.mark.skipif(
+    environ.get("KOKORO_TEST_SKIP_MOCK", "0") == "1",
+    reason="Exact audio output cannot be guaranteed",
+)
 def test_kokorobackend_convert_should_return_expected_speech_audio() -> None:
     backend = KokoroBackend(KokoroSettings())
     backend.start()
