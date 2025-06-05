@@ -91,7 +91,33 @@ def _validate_locale(locale: str) -> str:
 class KokoroSettings(  # type: ignore [explicit-any, misc]
     BaseModel, revalidate_instances="always", extra="forbid", validate_default=True
 ):
-    """Kokoro TTS backend settings."""
+    """Kokoro TTS backend settings.
+
+    `locale` must be one of he locales supported by Kokoro TTS.  Namely:
+
+      - en-US
+      - en-GB
+      - es
+      - fr-FR
+      - hi
+      - it
+      - pt-BR
+      - ja
+      - zh
+
+    `voice` must be one from KokoroVoices.
+
+    `speed` is must be between 0.1 and 1.0.
+
+    `device` does not support integer GPU numbers.  The only valid values are in
+    `KokoroDeviceNames`.
+
+    If `voice_path` is not `None`, then the voice attribute is ignored.
+
+    To work in an offline or air-gapped environment, you must provides local paths for
+    `model_path`, `config_path` and `voice_path`.
+
+    """
 
     locale: Annotated[str, AfterValidator(_validate_locale)] = "en-US"
     voice: KokoroVoices = KokoroVoices.af_heart
