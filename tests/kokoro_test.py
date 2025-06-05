@@ -27,7 +27,12 @@ from kokoro.model import KModel
 from kokoro.pipeline import KPipeline
 from pytest_mock import MockerFixture
 
-from aquarion.libs.libtts._kokoro import KokoroBackend, KokoroSettings, KokoroVoices
+from aquarion.libs.libtts._kokoro import (
+    KokoroBackend,
+    KokoroDeviceNames,
+    KokoroSettings,
+    KokoroVoices,
+)
 from aquarion.libs.libtts.api._ttsbackend import ITTSBackend
 from aquarion.libs.libtts.api._ttssettings import ITTSSettings
 from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
@@ -40,6 +45,7 @@ SETTINGS_ARGS: Final = {
     "locale": "en-GB",
     "voice": KokoroVoices.bf_emma,
     "speed": 0.8,
+    "device": "cuda",
     "repo_id": "hexgrad/Kokoro-82M",
     "model_path": Path("kokoro-v1_0.pth"),
     "config_path": Path("config.json"),
@@ -97,11 +103,12 @@ def test_kokorosettings_should_store_given_settings_values(
     [
         ("locale", "xx-XX", "Invalid locale"),
         ("locale", "en-CA", "Unsupported locale"),
-        ("voice", "xf_not_exist", "Input should be 'af_heart', "),
+        ("voice", "xf_not_exist", "Input should be 'af_heart'"),
         ("voice", KokoroVoices.ff_siwis, "Invalid voice for the locale: en-US"),
         ("speed", -1, "greater than 0"),
         ("speed", 0, "greater than 0"),
         ("speed", 1.1, "less than or equal to 1"),
+        ("device", "bad_device", "Input should be 'cpu'"),
     ],
 )
 def test_kokorosettings_should_raise_an_exception_if_a_setting_is_invalid(
@@ -112,7 +119,7 @@ def test_kokorosettings_should_raise_an_exception_if_a_setting_is_invalid(
 
 
 @pytest.mark.parametrize(("attr"), SETTINGS_ATTRS)
-def test_kokorosettings_should_have_expected_attribute(attr: str) -> None:
+def test_kokorosettings_should_have_expected_attributes(attr: str) -> None:
     settings = KokoroSettings()
     assert hasattr(settings, attr)
 
@@ -143,17 +150,30 @@ def test_kokorosettings_lang_code_should_return_the_correct_language_code(
     assert settings.lang_code == expected
 
 
-def test_kokorosettings_to_dict_should_return_voices_as_strings() -> None:
+def test_kokorosettings_to_dict_should_return_voice_as_a_string() -> None:
     settings = KokoroSettings()
     settings_dict: dict[str, str | float] = settings.to_dict()
     assert isinstance(settings_dict["voice"], str)
     assert settings_dict["voice"] == "af_heart"  # Default voice as string
 
 
+def test_kokorosettings_to_dict_should_return_device_as_a_string() -> None:
+    settings = KokoroSettings()
+    settings_dict: dict[str, str | float] = settings.to_dict()
+    assert isinstance(settings_dict["device"], str)
+    assert settings_dict["device"] == "cuda"  # Default device as string
+
+
 def test_kokorosettings_should_coerce_voice_strings_to_enum_on_instantiation() -> None:
     settings = KokoroSettings(voice="af_heart")  # type: ignore[arg-type]
     assert settings.voice == KokoroVoices.af_heart
     assert isinstance(settings.voice, KokoroVoices)
+
+
+def test_kokorosettings_should_coerce_device_strings_to_enum_on_instantiation() -> None:
+    settings = KokoroSettings(device="cpu")  # type: ignore[arg-type]
+    assert settings.device == KokoroDeviceNames.cpu
+    assert isinstance(settings.device, KokoroDeviceNames)
 
 
 @pytest.mark.parametrize(
@@ -164,6 +184,13 @@ def test_kokorosettings_should_raise_an_error_if_file_path_does_not_exist(
 ) -> None:
     with pytest.raises(ValueError, match="Path does not point to a file"):
         KokoroSettings(**{attribute: Path("non-existant-path")})  # type:ignore[arg-type]
+
+
+def test_kokorosettings_should_accept_integer_devices_in_case_of_multiple_gpus() -> (
+    None
+):
+    settings = KokoroSettings(device=1)
+    assert settings.device == 1
 
 
 ## ITTSSettings Protocol Conformity ##

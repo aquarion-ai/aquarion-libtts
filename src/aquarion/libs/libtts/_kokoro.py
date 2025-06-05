@@ -43,7 +43,7 @@ if TYPE_CHECKING:
 
 
 class KokoroVoices(StrEnum):
-    """Supported Kokoro TTS voices."""
+    """Kokoro TTS voices supported by this backend."""
 
     # Voice grades and details can be found at:
     # https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md
@@ -58,6 +58,16 @@ class KokoroVoices(StrEnum):
     bm_fable = auto()  # Grade C
     bm_george = auto()  # Grade C
     ff_siwis = auto()  # Grade B-
+
+
+class KokoroDeviceNames(StrEnum):
+    """Kokoro TTS device names supported by this backend.
+
+    I.e. PyTorch device names.
+    """
+
+    cpu = auto()
+    cuda = auto()
 
 
 def _validate_locale(locale: str) -> str:
@@ -86,6 +96,7 @@ class KokoroSettings(  # type: ignore [explicit-any, misc]
     locale: Annotated[str, AfterValidator(_validate_locale)] = "en-US"
     voice: KokoroVoices = KokoroVoices.af_heart
     speed: Annotated[float, Field(gt=0, le=1.0)] = 1.0
+    device: KokoroDeviceNames | int = KokoroDeviceNames.cuda
     repo_id: str = "hexgrad/Kokoro-82M"
     model_path: FilePath | None = None
     config_path: FilePath | None = None
