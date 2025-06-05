@@ -96,7 +96,7 @@ class KokoroSettings(  # type: ignore [explicit-any, misc]
     locale: Annotated[str, AfterValidator(_validate_locale)] = "en-US"
     voice: KokoroVoices = KokoroVoices.af_heart
     speed: Annotated[float, Field(gt=0, le=1.0)] = 1.0
-    device: KokoroDeviceNames | int | None = None
+    device: KokoroDeviceNames | None = None
     repo_id: str = "hexgrad/Kokoro-82M"
     model_path: FilePath | None = None
     config_path: FilePath | None = None

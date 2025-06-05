@@ -186,13 +186,6 @@ def test_kokorosettings_should_raise_an_error_if_file_path_does_not_exist(
         KokoroSettings(**{attribute: Path("non-existant-path")})  # type:ignore[arg-type]
 
 
-def test_kokorosettings_should_accept_integer_devices_in_case_of_multiple_gpus() -> (
-    None
-):
-    settings = KokoroSettings(device=1)
-    assert settings.device == 1
-
-
 ## ITTSSettings Protocol Conformity ##
 
 
