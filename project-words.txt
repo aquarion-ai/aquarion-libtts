@@ -43,6 +43,7 @@ ittsplugin
 ittssettings
 ittssettingsholder
 jetify
+kmodel
 Kokoro
 kokorobackend
 kokorosettings

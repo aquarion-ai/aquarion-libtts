@@ -24,7 +24,7 @@ from io import BytesIO
 from typing import TYPE_CHECKING, Annotated, Any, Self
 
 from babel import Locale, UnknownLocaleError
-from kokoro import KPipeline
+from kokoro import KModel, KPipeline
 from kokoro.pipeline import ALIASES
 from pydantic import (
     AfterValidator,
@@ -202,10 +202,29 @@ class KokoroBackend:
         """Start the TTS backend."""
         if self.is_started:
             return
+        model: KModel | bool = False
+        if self._settings.model_path or self._settings.config_path:
+            model = (
+                KModel(
+                    repo_id=self._settings.repo_id,
+                    config=self._settings.config_path,
+                    model=self._settings.model_path,
+                )
+                .to(self._settings.device)
+                .eval()
+            )
         self._pipeline = KPipeline(
-            repo_id=self._settings.repo_id, lang_code=self._settings.lang_code
+            repo_id=self._settings.repo_id,
+            lang_code=self._settings.lang_code,
+            device=self._settings.device,
+            model=model,
         )
-        self._pipeline.load_voice(self._settings.voice)
+        voice = (
+            self._settings.voice
+            if self._settings.voice_path is None
+            else self._settings.voice_path
+        )
+        self._pipeline.load_voice(str(voice))
 
     def stop(self) -> None:
         """Stop the TTS backend."""

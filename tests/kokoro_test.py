@@ -284,6 +284,39 @@ def test_kokorobackend_convert_should_return_expected_speech_audio() -> None:
     assert speech_data.audio == EXPECTED_AUDIO
 
 
+def test_kokorobackend_should_use_local_model_path_when_given(
+    real_settings_path_args: dict[str, Path], mocker: MockerFixture
+) -> None:
+    expected = real_settings_path_args["model_path"]
+    mock_kmodel = mocker.patch("aquarion.libs.libtts._kokoro.KModel")
+    backend = KokoroBackend(KokoroSettings(model_path=expected))
+    backend.start()
+    assert mock_kmodel.call_count == 1
+    assert mock_kmodel.call_args.kwargs["model"] == expected  # type:ignore[misc]
+
+
+def test_kokorobackend_should_use_local_config_path_when_given(
+    real_settings_path_args: dict[str, Path], mocker: MockerFixture
+) -> None:
+    expected = real_settings_path_args["config_path"]
+    mock_kmodel = mocker.patch("aquarion.libs.libtts._kokoro.KModel")
+    backend = KokoroBackend(KokoroSettings(config_path=expected))
+    backend.start()
+    assert mock_kmodel.call_count == 1
+    assert mock_kmodel.call_args.kwargs["config"] == expected  # type:ignore[misc]
+
+
+def test_kokorobackend_should_use_local_voice_path_when_given(
+    real_settings_path_args: dict[str, Path], mocker: MockerFixture
+) -> None:
+    expected = real_settings_path_args["voice_path"]
+    mock_kpipeline = mocker.patch("aquarion.libs.libtts._kokoro.KPipeline")
+    backend = KokoroBackend(KokoroSettings(voice_path=expected))
+    backend.start()
+    assert mock_kpipeline.return_value.load_voice.call_count == 1  # type:ignore[misc]
+    assert mock_kpipeline.return_value.load_voice.call_args.args[0] == str(expected)  # type:ignore[misc]
+
+
 ## ITTBackend Protocol Conformity ##
 
 
