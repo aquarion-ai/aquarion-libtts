@@ -151,17 +151,17 @@ def test_kokorosettings_lang_code_should_return_the_correct_language_code(
 
 
 def test_kokorosettings_to_dict_should_return_voice_as_a_string() -> None:
-    settings = KokoroSettings()
+    settings = KokoroSettings(voice=KokoroVoices.af_heart)
     settings_dict: dict[str, str | float] = settings.to_dict()
     assert isinstance(settings_dict["voice"], str)
-    assert settings_dict["voice"] == "af_heart"  # Default voice as string
+    assert settings_dict["voice"] == "af_heart"
 
 
 def test_kokorosettings_to_dict_should_return_device_as_a_string() -> None:
-    settings = KokoroSettings()
+    settings = KokoroSettings(device=KokoroDeviceNames.cuda)
     settings_dict: dict[str, str | float] = settings.to_dict()
     assert isinstance(settings_dict["device"], str)
-    assert settings_dict["device"] == "cuda"  # Default device as string
+    assert settings_dict["device"] == "cuda"
 
 
 def test_kokorosettings_should_coerce_voice_strings_to_enum_on_instantiation() -> None:
