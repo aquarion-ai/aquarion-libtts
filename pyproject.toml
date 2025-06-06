@@ -67,12 +67,12 @@ Source = "https://github.com/aquarion-ai/aquarion-libtts"
 
 [project.optional-dependencies]
 cpu = [
-  "torch>=2.7.0",
-  "torchvision>=0.22.0",
+  "torch>=2.7.1",
+  "torchvision>=0.22.1",
 ]
 cu128 = [
-  "torch>=2.7.0",
-  "torchvision>=0.22.0",
+  "torch>=2.7.1",
+  "torchvision>=0.22.1",
 ]
 kokoro = [
   "en-core-web-sm~=3.8.0",

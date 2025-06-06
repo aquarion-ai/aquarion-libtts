@@ -3,6 +3,7 @@ affiché
 analyzer
 Aquarion
 autouse
+beautifulsoup
 beckend
 celerybeat
 cldr
@@ -15,7 +16,9 @@ compatiblelicenses
 creativecommons
 CUDA
 cython
+dateutil
 defenses
+defusedxml
 devbox
 Devboxes
 dmypy
@@ -59,11 +62,13 @@ matrixed
 mkdocs
 mktemp
 mypy
+networkx
 noncommercially
 nosetests
 nplurals
 numpy
 nushell
+openpyxl
 parsable
 pexpect
 pipenv
@@ -89,7 +94,10 @@ pysingleton
 pytest
 pytorch
 pytype
+pytz
 pyupgrade
+pywin
+pyyaml
 rcfile
 reexport
 rerunfailures
@@ -98,6 +106,7 @@ schneegans
 scrapy
 sdist
 setuptools
+simplejson
 siwis
 spacy
 specname
@@ -109,9 +118,11 @@ subclassing
 sublicensable
 suis
 synched
+tensorflow
 tobytes
 tomli
 torchvision
+tqdm
 traduit
 ttsbackend
 ttspluginregistry
