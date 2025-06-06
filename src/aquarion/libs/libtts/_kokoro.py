@@ -88,7 +88,7 @@ def _validate_locale(locale: str) -> str:
     return locale
 
 
-class KokoroSettings(  # type: ignore [explicit-any, misc]
+class KokoroSettings(  # type: ignore [explicit-any]
     BaseModel, revalidate_instances="always", extra="forbid", validate_default=True
 ):
     """Kokoro TTS backend settings.

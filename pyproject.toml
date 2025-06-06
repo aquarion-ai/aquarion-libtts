@@ -45,7 +45,7 @@ classifiers = [
 dependencies = [
   "babel~=2.17.0",
   "loguru~=0.7.3",
-  "pluggy~=1.5.0",
+  "pluggy~=1.6.0",
   "pydantic~=2.11.5",
 ]
 description = 'Text To Speech (TTS) beckend library for Aquarion AI'
@@ -79,43 +79,44 @@ kokoro = [
   "kokoro~=0.9.4",
   "pip~=25.1.1",
 ]
-## uv
+
+### UV ###
 
 [dependency-groups]
 hatch-static-analysis = [
-  "ruff~=0.11.7",
+  "ruff~=0.11.13",
 ]
 hatch-uv = [
-  "uv~=0.7.8",
+  "uv~=0.7.11",
 ]
 # These are Hatch's default dependencies, just with versions updates and more precisely
 # pinned down.  Use extra-dependencies for any other custom dependencies to keep them
 # separated.
 accept = [
-  "coverage[toml]~=7.8.0",
+  "coverage[toml]~=7.8.2",
   "radish-bdd~=0.18.2",
 ]
 hatch-test = [
   "coverage-enable-subprocess==1.0",
-  "coverage[toml]~=7.8.0",
+  "coverage[toml]~=7.8.2",
   "logot~=1.4.0",
   "loguru~=0.7.3",
-  "pytest~=8.3.5",
-  "pytest-mock~=3.14.0",
+  "pytest~=8.4.0",
+  "pytest-mock~=3.14.1",
   "pytest-randomly~=3.16.0",
-  "pytest-rerunfailures~=15.0.0",
-  "pytest-xdist[psutil]~=3.6.1",
+  "pytest-rerunfailures~=15.1.0",
+  "pytest-xdist[psutil]~=3.7.0",
 ]
 types = [
   "logot~=1.4.0",
   "loguru~=0.7.3",
-  "mypy~=1.15.0",
-  "pytest~=8.3.5",
+  "mypy~=1.16.0",
+  "pytest~=8.4.0",
   "pytest-mock~=3.14.0",
   "types-Pygments~=2.19.0", # mypy type stub
   "types-colorama~=0.4.15", # mypy type stub
   "types-pexpect~=4.9.0", # mypy type stub
-  "types-setuptools~=80.4.0", # mypy type stub
+  "types-setuptools~=80.9.0", # mypy type stub
   "pandas_stubs~=2.2.3", # PyTorch & Kokoro TTS stub
   "types_pyyaml~=6.0.12", # PyTorch & Kokoro TTS stub
   "types_beautifulsoup4~=4.12.0", # PyTorch & Kokoro TTS stub
@@ -134,6 +135,7 @@ types = [
   "types_html5lib~=1.1.11", # PyTorch & Kokoro TTS stub
   "types_openpyxl~=3.1.5", # numpy mypy plugin stub
   "types_python_dateutil~=2.9.0", # numpy mypy plugin stub
+  "scipy-stubs~=1.15.3", # PyTorch & Kokoro TTS stub, I think
 ]
 
 [tool.uv]

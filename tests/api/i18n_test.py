@@ -70,6 +70,7 @@ def test_load_language_should_require_the_locale_path_argument() -> None:
 
 def test_load_language_should_return_a_gettext_fn_and_a_translations_instance() -> None:
     _, t = load_language("en_CA", "some domain", "some path")
+    assert hasattr(_, "__func__")
     # Had to do it this way because id(t.gettext) != id(t.gettext). O_o
     assert _.__func__.__name__ == "gettext"  # type: ignore [misc]
     assert isinstance(t, NullTranslations)

@@ -111,7 +111,7 @@ def test_ittsplugin_should_had_an_id_attribute() -> None:
 
 def test_ittsplugin_id_should_be_immutable() -> None:
     plugin = DummyTTSPlugin()
-    with pytest.raises(AttributeError, match=""):
+    with pytest.raises(AttributeError, match="object has no setter"):
         plugin.id = "new_id"  # type: ignore [misc]
 
 

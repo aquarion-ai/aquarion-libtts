@@ -103,6 +103,7 @@ reexport
 rerunfailures
 ropeproject
 schneegans
+scipy
 scrapy
 sdist
 setuptools

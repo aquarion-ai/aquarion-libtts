@@ -39,6 +39,7 @@ def test_load_internal_language_should_return_gettext_and_translations_instance(
     None
 ):
     _, t = load_internal_language("en_CA")
+    assert hasattr(_, "__func__")
     # Had to do it this way because id(t.gettext) != id(t.gettext). O_o
     assert _.__func__.__name__ == "gettext"  # type: ignore [misc]
     assert isinstance(t, NullTranslations)
