@@ -183,14 +183,14 @@ def --wrapped "main accept wip" [
 def --wrapped "main sec vuln" [
     ...rest: string # Extra arguments for Trivy
 ]: nothing -> string {
-    hatch run trivy fs . --scanners vuln ...$rest
+    hatch run trivy fs . --scanners vuln --include-dev-deps ...$rest
 }
 
 # Check for secrets that should not be shared.
 def --wrapped "main sec secret" [
     ...rest: string # Extra arguments for Trivy
 ]: nothing -> string {
-    hatch run trivy fs . --scanners secret ...$rest
+    hatch run trivy fs . --scanners secret --include-dev-deps ...$rest
 }
 
 
