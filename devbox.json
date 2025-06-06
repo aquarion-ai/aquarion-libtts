@@ -16,8 +16,8 @@
     "packages": {
         "espeak-ng": "1.51",
         "markdownlint-cli2": "0.17.2",
-        "nushell": "0.103.0",
-        "trivy": "0.61.0",
+        "nushell": "0.104.0",
+        "trivy": "0.61.1",
         "uv": "0.7.8"
     }
 }

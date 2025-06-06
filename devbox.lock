@@ -59,99 +59,99 @@
         }
       }
     },
-    "nushell@0.103.0": {
-      "last_modified": "2025-03-23T05:31:05Z",
-      "resolved": "github:NixOS/nixpkgs/dd613136ee91f67e5dba3f3f41ac99ae89c5406b#nushell",
+    "nushell@0.104.0": {
+      "last_modified": "2025-05-16T20:19:48Z",
+      "resolved": "github:NixOS/nixpkgs/12a55407652e04dcf2309436eb06fef0d3713ef3#nushell",
       "source": "devbox-search",
-      "version": "0.103.0",
+      "version": "0.104.0",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/7dcvklmwwvfjzqgak8ziv104lsff0cfv-nushell-0.103.0",
+              "path": "/nix/store/4n5adksh17xrf5p4knpslv9004njzxgh-nushell-0.104.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/7dcvklmwwvfjzqgak8ziv104lsff0cfv-nushell-0.103.0"
+          "store_path": "/nix/store/4n5adksh17xrf5p4knpslv9004njzxgh-nushell-0.104.0"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/5apwqfpy0nkblh6bqvnyg40yhhvvx1y1-nushell-0.103.0",
+              "path": "/nix/store/f1q5bvlgv5si530fpz9mky4sdmmcm9vl-nushell-0.104.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/5apwqfpy0nkblh6bqvnyg40yhhvvx1y1-nushell-0.103.0"
+          "store_path": "/nix/store/f1q5bvlgv5si530fpz9mky4sdmmcm9vl-nushell-0.104.0"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/i4w79bzcxqcjv8qjb91s24sa7xwvalq8-nushell-0.103.0",
+              "path": "/nix/store/29sngawmfygz9vvgbmrch8kfiip753yx-nushell-0.104.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/i4w79bzcxqcjv8qjb91s24sa7xwvalq8-nushell-0.103.0"
+          "store_path": "/nix/store/29sngawmfygz9vvgbmrch8kfiip753yx-nushell-0.104.0"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/wp7rmayh32cy2ypr6ya21b7g2dqpcqw2-nushell-0.103.0",
+              "path": "/nix/store/ywp33ksgp2v32g0dwril2ds1rlri1kp8-nushell-0.104.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/wp7rmayh32cy2ypr6ya21b7g2dqpcqw2-nushell-0.103.0"
+          "store_path": "/nix/store/ywp33ksgp2v32g0dwril2ds1rlri1kp8-nushell-0.104.0"
         }
       }
     },
-    "trivy@0.61.0": {
-      "last_modified": "2025-04-12T23:59:46Z",
-      "resolved": "github:NixOS/nixpkgs/f6db44a8daa59c40ae41ba6e5823ec77fe0d2124#trivy",
+    "trivy@0.61.1": {
+      "last_modified": "2025-05-16T20:19:48Z",
+      "resolved": "github:NixOS/nixpkgs/12a55407652e04dcf2309436eb06fef0d3713ef3#trivy",
       "source": "devbox-search",
-      "version": "0.61.0",
+      "version": "0.61.1",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/rwz564pk5yrr0afignkbc39dfh7wnlzn-trivy-0.61.0",
+              "path": "/nix/store/jnksnah3bban0fj37h7f60hp52ssgabc-trivy-0.61.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/rwz564pk5yrr0afignkbc39dfh7wnlzn-trivy-0.61.0"
+          "store_path": "/nix/store/jnksnah3bban0fj37h7f60hp52ssgabc-trivy-0.61.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/75i57mf7cf7xhc4x59lc28cri1p1jg72-trivy-0.61.0",
+              "path": "/nix/store/rdq1kj1x6jxkppgd9bzjrhrgprfzvps3-trivy-0.61.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/75i57mf7cf7xhc4x59lc28cri1p1jg72-trivy-0.61.0"
+          "store_path": "/nix/store/rdq1kj1x6jxkppgd9bzjrhrgprfzvps3-trivy-0.61.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/z94928ibavpn6vnj1zd6gri2kclqvfak-trivy-0.61.0",
+              "path": "/nix/store/kscicwbny3rvb9b5zm1q21810b6m5yf6-trivy-0.61.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/z94928ibavpn6vnj1zd6gri2kclqvfak-trivy-0.61.0"
+          "store_path": "/nix/store/kscicwbny3rvb9b5zm1q21810b6m5yf6-trivy-0.61.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/disbh1bpwks8c7y8p08q3swn172gi9nw-trivy-0.61.0",
+              "path": "/nix/store/kfaxxnwi5pc5rn89r6jz07m0xba25v7s-trivy-0.61.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/disbh1bpwks8c7y8p08q3swn172gi9nw-trivy-0.61.0"
+          "store_path": "/nix/store/kfaxxnwi5pc5rn89r6jz07m0xba25v7s-trivy-0.61.1"
         }
       }
     },
