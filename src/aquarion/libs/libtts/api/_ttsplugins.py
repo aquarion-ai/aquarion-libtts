@@ -109,6 +109,7 @@ class TTSPluginRegistry:
         manager.load_setuptools_entrypoints(tts_hookimpl.project_name)
         if validate:
             manager.check_pending()
+        # Hooks that return None are filtered out automatically by Pluggy.
         plugins: list[ITTSPlugin] = manager.hook.register_tts_plugin()
         if not plugins:
             message = (
@@ -177,8 +178,11 @@ class TTSPluginRegistry:
 
 
 @_tts_hookspec
-def register_tts_plugin() -> ITTSPlugin:  # type: ignore [empty-body]
+def register_tts_plugin() -> ITTSPlugin | None:
     """Plugin hook to register a TTS backend plugin.
 
     Implementations must return an instance of ITTSPlugin.
+
+    Returning None skips plugin registration.  This can be useful if required conditions
+    are not met at runtime.  (E.g. Missing extras or dependencies, etc.)
     """

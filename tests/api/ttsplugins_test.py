@@ -243,13 +243,17 @@ class DummyNamespace:
     """Dummy namespace (fake module) for our dummy hook implementation."""
 
     @tts_hookimpl
-    def register_tts_plugin(self) -> ITTSPlugin:
+    def register_tts_plugin(self) -> ITTSPlugin | None:
         return DummyTTSPlugin()
 
     @tts_hookimpl
     def invalid_hook(self) -> Never:
         message = "This should never run"  # pragma: no cover
         raise NotImplementedError(message)  # pragma: no cover
+
+    @tts_hookimpl(specname="register_tts_plugin")  # type:ignore[misc]
+    def skip_me(self) -> ITTSPlugin | None:
+        return None
 
 
 class DummyEntryPoint:
@@ -329,6 +333,16 @@ def test_ttspluginregistry_load_plugins_should_log_the_loading_of_plugins(
         >> logged.debug("Registered TTS plugin: I am an id")
         >> logged.debug("Total TTS plugins registered: 1")
     )
+
+
+def test_ttspluginregistry_load_plugins_should_let_hooks_be_skipped_by_returning_none(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(importlib.metadata, "distributions", dummy_distributions)
+    registry = TTSPluginRegistry()
+    registry.load_plugins()
+    with pytest.raises(ValueError, match="TTS plugin not found"):
+        registry.get_plugin("I should be skipped")
 
 
 ## .get_plugin() tests
