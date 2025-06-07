@@ -42,14 +42,17 @@ class ITTSPlugin(Protocol):
 
     @property
     def id(self) -> str:
-        """Unique identifier for the plugin."""
+        """Unique identifier for the plugin.
+
+        The id must be unique across all Aquarion libtts plugins.
+        """
 
     def get_display_name(self, locale: str) -> str:
         """Return a display name for the plugin appropriate for the given locale.
 
         The locale should be a POSIX-compliant locale string like `en_CA`, `zh-Hant`,
-        `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be a general as `fr` or as
-        specific as `language_territory_script_variant@modifier`.
+        `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be as general as `fr` or
+        as specific as `language_territory_script_variant@modifier`.
 
         Plugins are expected to to do their best to accommodate the given locale, but
         can fall back to more a general language variant.  E.g. from `en_CA` to `en`.
