@@ -38,7 +38,9 @@ class DummyTTSSettings:
     to the ITTSSettings protocol.
     """
 
-    def __init__(self, attr1: str = "default") -> None:
+    def __init__(self, attr1: str | None = None) -> None:
+        if attr1 is None:
+            attr1 = "default"
         self.attr1 = attr1
         self.locale = "en-CA"
 

@@ -19,7 +19,7 @@
 
 import importlib
 from collections.abc import Mapping
-from typing import Never, cast
+from typing import Final, Never, cast
 
 import pytest
 from logot import Logot, logged
@@ -45,9 +45,10 @@ from tests.api.ttssettings_test import AnotherTTSSettings, DummyTTSSettings
 # implementations.
 
 
-DUMMY_DISPLAY_NAME_EN_CA = "I am a display name"
-DUMMY_DISPLAY_NAME_FR_CA = "Je suis un nom affiché"
-DUMMY_DISPLAY_NAME_DEFAULT = "I am a default display name"
+DUMMY_ID: Final = "I am an id"
+DUMMY_DISPLAY_NAME_EN_CA: Final = "I am a display name"
+DUMMY_DISPLAY_NAME_FR_CA: Final = "Je suis un nom affiché"
+DUMMY_DISPLAY_NAME_DEFAULT: Final = "I am a default display name"
 
 
 class DummyTTSPlugin:
@@ -57,7 +58,7 @@ class DummyTTSPlugin:
     to the ITTSPlugin protocol.
     """
 
-    def __init__(self, id_: str = "I am an id") -> None:
+    def __init__(self, id_: str = DUMMY_ID) -> None:
         self._id = id_
 
     @property
@@ -83,13 +84,11 @@ class DummyTTSPlugin:
             if "attr2" in from_dict:
                 message = "Invalid setting key: [attr2]"
                 raise KeyError(message)
-            if "attr1" not in from_dict:
-                message = "Missing setting key: [attr1]"
-                raise KeyError(message)
             if from_dict["attr1"] == "invalid":
                 message = f"Invalid setting value: attr1=[{from_dict['attr1']}]"
                 raise ValueError(message)
-            settings = DummyTTSSettings(attr1=cast("str", from_dict["attr1"]))
+            attr1 = cast("str | None", from_dict.get("attr1", None))
+            settings = DummyTTSSettings(attr1=attr1)
         return settings
 
     def make_backend(self, settings: ITTSSettings) -> ITTSBackend:
@@ -104,7 +103,7 @@ def test_ittsplugin_should_conform_to_its_protocol() -> None:
     assert isinstance(plugin, ITTSPlugin)  # Runtime check as well
 
 
-def test_ittsplugin_should_had_an_id_attribute() -> None:
+def test_ittsplugin_should_have_an_id_attribute() -> None:
     plugin = DummyTTSPlugin()
     assert hasattr(plugin, "id")
 
@@ -113,6 +112,11 @@ def test_ittsplugin_id_should_be_immutable() -> None:
     plugin = DummyTTSPlugin()
     with pytest.raises(AttributeError, match="object has no setter"):
         plugin.id = "new_id"  # type: ignore [misc]
+
+
+def test_ittsplugin_id_should_have_the_correct_value() -> None:
+    plugin = DummyTTSPlugin()
+    assert plugin.id == DUMMY_ID
 
 
 ## .get_display_name test
@@ -133,7 +137,7 @@ def test_ittsplugin_get_display_name_should_require_the_locale_argument() -> Non
     ("locale", "expected"),
     [("en_CA", DUMMY_DISPLAY_NAME_EN_CA), ("fr_CA", DUMMY_DISPLAY_NAME_FR_CA)],
 )
-def test_ittsplugin_get_display_name_should_return_a_display_name_for_a_given_locale(
+def test_ittsplugin_get_display_name_should_return_correct_display_name_for_locale(
     locale: str, expected: str
 ) -> None:
     plugin = DummyTTSPlugin()
@@ -145,7 +149,7 @@ def test_ittsplugin_get_display_name_should_return_a_fallback_if_locale_unknown(
     None
 ):
     plugin = DummyTTSPlugin()
-    display_name = plugin.get_display_name("jp")
+    display_name = plugin.get_display_name("ja")
     assert display_name == DUMMY_DISPLAY_NAME_DEFAULT
 
 
@@ -183,12 +187,6 @@ def test_ittsplugin_make_settings_should_raise_an_error_if_an_invalid_key_given(
     plugin = DummyTTSPlugin()
     with pytest.raises(KeyError, match="Invalid setting key"):
         plugin.make_settings(from_dict={"attr2": "invalid"})
-
-
-def test_ittsplugin_make_settings_should_raise_an_error_if_a_key_is_missing() -> None:
-    plugin = DummyTTSPlugin()
-    with pytest.raises(KeyError, match="Missing setting key"):
-        plugin.make_settings(from_dict={})
 
 
 def test_ittsplugin_make_settings_should_raise_an_error_if_an_invalid_value_given() -> (
