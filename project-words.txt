@@ -50,6 +50,7 @@ jlumbroso
 kmodel
 Kokoro
 kokorobackend
+kokoroplugin
 kokorosettings
 kpipeline
 Krys

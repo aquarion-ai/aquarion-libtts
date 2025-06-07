@@ -19,7 +19,7 @@
 
 from os import environ
 from pathlib import Path
-from typing import Final, cast
+from typing import TYPE_CHECKING, Any, Final, TypedDict, cast
 
 import pytest
 import torch
@@ -29,18 +29,39 @@ from pytest_mock import MockerFixture
 from aquarion.libs.libtts._kokoro import (
     KokoroBackend,
     KokoroDeviceNames,
+    KokoroPlugin,
     KokoroSettings,
     KokoroVoices,
 )
-from aquarion.libs.libtts.api._ttsbackend import ITTSBackend
-from aquarion.libs.libtts.api._ttssettings import ITTSSettings
-from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
+from aquarion.libs.libtts.api import (
+    ITTSBackend,
+    ITTSPlugin,
+    ITTSSettings,
+    JSONSerializableTypes,
+    TTSSpeechData,
+)
 from tests.api.ttssettings_test import AnotherTTSSettings
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 ### KokoroSettings Tests ###
 
 
-SETTINGS_ARGS: Final = {
+class SettingsDict(TypedDict, total=False):
+    """Types for KokoroSettings dicts and arguments."""
+
+    locale: str
+    voice: KokoroVoices
+    speed: float
+    device: str | None
+    repo_id: str
+    model_path: Path | None
+    config_path: Path | None
+    voice_path: Path
+
+
+SETTINGS_ARGS: Final[SettingsDict] = {
     "locale": "en-GB",
     "voice": KokoroVoices.bf_emma,
     "speed": 0.8,
@@ -51,12 +72,25 @@ SETTINGS_ARGS: Final = {
     "voice_path": Path("af_heart.pt"),
 }
 SETTINGS_ATTRS: Final = [*list(SETTINGS_ARGS), "lang_code"]
+INVALID_SETTINGS_CASES: Final = [
+    ("locale", "xx-XX", "Invalid locale"),
+    ("locale", "en-CA", "Unsupported locale"),
+    ("voice", "xf_not_exist", "Input should be 'af_heart'"),
+    ("voice", KokoroVoices.ff_siwis, "Invalid voice for the locale: en-US"),
+    ("speed", -1, "greater than 0"),
+    ("speed", 0, "greater than 0"),
+    ("speed", 1.1, "less than or equal to 1"),
+    ("device", "bad_device", "Input should be 'cpu'"),
+    ("model_path", Path("bad/exist"), "Path does not point to a file"),
+    ("config_path", Path("bad/exist"), "Path does not point to a file"),
+    ("voice_path", Path("bad/exist"), "Path does not point to a file"),
+]
 
 
 @pytest.fixture(scope="session")
 def real_settings_path_args(
     tmp_path_factory: pytest.TempPathFactory,
-) -> dict[str, Path]:
+) -> SettingsDict:
     tmp_dir_path = tmp_path_factory.mktemp("kokoro_data")
     path_args = {}
     for argument, file_name in SETTINGS_ARGS.items():
@@ -65,11 +99,11 @@ def real_settings_path_args(
         file_path = tmp_dir_path / cast("str", file_name)
         file_path.touch()
         path_args[argument] = file_path
-    return path_args
+    return cast("SettingsDict", path_args)
 
 
 def test_kokorosettings_should_accept_attributes_as_kwargs(
-    real_settings_path_args: dict[str, Path],
+    real_settings_path_args: SettingsDict,
 ) -> None:
     arguments = SETTINGS_ARGS.copy()
     arguments.update(real_settings_path_args)
@@ -77,7 +111,7 @@ def test_kokorosettings_should_accept_attributes_as_kwargs(
 
 
 def test_kokorosettings_should_only_accept_keyword_arguments(
-    real_settings_path_args: dict[str, Path],
+    real_settings_path_args: SettingsDict,
 ) -> None:
     arguments = SETTINGS_ARGS.copy()
     arguments.update(real_settings_path_args)
@@ -89,32 +123,22 @@ def test_kokorosettings_should_only_accept_keyword_arguments(
 
 @pytest.mark.parametrize("attribute", SETTINGS_ARGS)
 def test_kokorosettings_should_store_given_settings_values(
-    real_settings_path_args: dict[str, Path], attribute: str
+    real_settings_path_args: SettingsDict, attribute: str
 ) -> None:
     arguments = SETTINGS_ARGS.copy()
     arguments.update(real_settings_path_args)
     settings = KokoroSettings(**arguments)  # type:ignore[arg-type]
-    assert getattr(settings, attribute) == arguments[attribute]  # type:ignore[misc]
+    assert getattr(settings, attribute) == arguments.get(attribute)  # type:ignore[misc]
 
 
-@pytest.mark.parametrize(
-    ("attr", "value", "err_msg"),
-    [
-        ("locale", "xx-XX", "Invalid locale"),
-        ("locale", "en-CA", "Unsupported locale"),
-        ("voice", "xf_not_exist", "Input should be 'af_heart'"),
-        ("voice", KokoroVoices.ff_siwis, "Invalid voice for the locale: en-US"),
-        ("speed", -1, "greater than 0"),
-        ("speed", 0, "greater than 0"),
-        ("speed", 1.1, "less than or equal to 1"),
-        ("device", "bad_device", "Input should be 'cpu'"),
-    ],
-)
-def test_kokorosettings_should_raise_an_exception_if_a_setting_is_invalid(
-    attr: str, value: str | float, err_msg: str
+@pytest.mark.parametrize(("attr", "value", "err_msg"), INVALID_SETTINGS_CASES)  # type:ignore[misc]
+def test_kokorosettings_should_raise_an_exception_if_a_setting_is_invalid(  # type:ignore[explicit-any,misc]
+    attr: str,
+    value: Any,  # noqa: ANN401
+    err_msg: str,
 ) -> None:
     with pytest.raises(ValueError, match=err_msg):
-        KokoroSettings(**{attr: value})  # type: ignore [arg-type]
+        KokoroSettings(**{attr: value})  # type:ignore[misc]
 
 
 @pytest.mark.parametrize(("attr"), SETTINGS_ATTRS)
@@ -317,7 +341,7 @@ def test_kokorobackend_should_use_local_voice_path_when_given(
     assert mock_kpipeline.return_value.load_voice.call_args.args[0] == str(expected)  # type:ignore[misc]
 
 
-## ITTBackend Protocol Conformity ##
+## ITTSBackend Protocol Conformity ##
 
 
 def test_kokorobackend_should_conform_to_the_ittsbackend_protocol() -> None:
@@ -489,3 +513,161 @@ def test_kokorobackend_stop_should_not_return_anything() -> None:
     backend = KokoroBackend(KokoroSettings())
     result: None = backend.stop()  # type: ignore [func-returns-value]
     assert result is None
+
+
+### KokoroPlugin Tests ###
+
+
+## ITTSPlugin Protocol Conformity ##
+
+
+def test_kokoroplugin_should_conform_to_its_protocol() -> None:
+    plugin = KokoroPlugin()
+    _: ITTSPlugin = plugin  # Typecheck protocol conformity
+    assert isinstance(plugin, ITTSPlugin)  # Runtime check as well
+
+
+def test_kokoroplugin_should_have_an_id_attribute() -> None:
+    plugin = KokoroPlugin()
+    assert hasattr(plugin, "id")
+
+
+def test_kokoroplugin_id_should_be_immutable() -> None:
+    plugin = KokoroPlugin()
+    with pytest.raises(AttributeError, match="object has no setter"):
+        plugin.id = "new_id"  # type: ignore [misc]
+
+
+def test_kokoroplugin_id_should_have_the_correct_value() -> None:
+    plugin = KokoroPlugin()
+    assert plugin.id == "kokoro_v1"
+
+
+## .get_display_name test
+
+
+def test_kokoroplugin_get_display_name_should_accept_a_locale_argument() -> None:
+    plugin = KokoroPlugin()
+    plugin.get_display_name("en_CA")
+
+
+def test_kokoroplugin_get_display_name_should_require_the_locale_argument() -> None:
+    plugin = KokoroPlugin()
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        plugin.get_display_name()  # type: ignore [call-arg]
+
+
+@pytest.mark.parametrize(
+    ("locale", "expected"),
+    [
+        ("en_CA", "Kokoro"),
+        ("en_US", "Kokoro"),
+        ("en_GB", "Kokoro"),
+        ("fr_CA", "Kokoro"),
+        ("fr_FR", "Kokoro"),
+    ],
+)
+def test_kokoroplugin_get_display_name_should_return_correct_display_name_for_locale(
+    locale: str, expected: str
+) -> None:
+    plugin = KokoroPlugin()
+    display_name = plugin.get_display_name(locale)
+    assert display_name == expected
+
+
+def test_kokoroplugin_get_display_name_should_return_a_fallback_if_locale_unknown() -> (
+    None
+):
+    plugin = KokoroPlugin()
+    display_name = plugin.get_display_name("ja")
+    assert display_name == "Kokoro"
+
+
+## .make_settings tests
+
+
+@pytest.mark.parametrize(("attribute"), SETTINGS_ARGS)
+def test_kokoroplugin_make_settings_should_use_default_values_when_no_values_given(
+    attribute: str,
+) -> None:
+    plugin = KokoroPlugin()
+    settings = plugin.make_settings()
+    assert isinstance(settings, KokoroSettings)  # For the type checker
+    assert (
+        getattr(settings, attribute) == KokoroSettings.model_fields[attribute].default  # type: ignore[misc]
+    )
+
+
+@pytest.mark.parametrize(("attribute"), SETTINGS_ARGS)
+def test_kokoroplugin_make_settings_should_use_given_values_when_values_are_given(
+    real_settings_path_args: SettingsDict, attribute: str
+) -> None:
+    settings_dict = SETTINGS_ARGS.copy()
+    settings_dict.update(real_settings_path_args)
+    plugin = KokoroPlugin()
+    settings = plugin.make_settings(
+        from_dict=cast("Mapping[str, JSONSerializableTypes]", settings_dict)
+    )
+    assert isinstance(settings, KokoroSettings)  # For the type checker
+    assert getattr(settings, attribute) == settings_dict.get(attribute)  # type:ignore[misc]
+
+
+def test_kokoroplugin_make_settings_should_return_a_ittssettings_object() -> None:
+    plugin = KokoroPlugin()
+    settings = plugin.make_settings()
+    _: ITTSSettings = settings  # Typecheck protocol conformity
+    assert isinstance(settings, ITTSSettings)  # Runtime check as well
+
+
+def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_key_given() -> (
+    None
+):
+    plugin = KokoroPlugin()
+    with pytest.raises(ValueError, match="Extra inputs are not permitted"):
+        plugin.make_settings(from_dict={"invalid": None})
+
+
+@pytest.mark.parametrize(("attr", "value", "err_msg"), INVALID_SETTINGS_CASES)  # type:ignore[misc]
+def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_value_given(  # type:ignore[explicit-any,misc]
+    attr: str,
+    value: Any,  # noqa: ANN401
+    err_msg: str,
+) -> None:
+    plugin = KokoroPlugin()
+    with pytest.raises(ValueError, match=err_msg):
+        plugin.make_settings(from_dict={attr: value})  # type:ignore[misc]
+
+
+## .make_backend tests
+
+
+def test_kokoroplugin_make_backend_should_require_a_settings_argument() -> None:
+    plugin = KokoroPlugin()
+    with pytest.raises(TypeError, match="missing *. required positional argument"):
+        plugin.make_backend()  # type: ignore [call-arg]
+
+
+def test_kokoroplugin_make_backend_should_use_the_given_settings() -> None:
+    plugin = KokoroPlugin()
+    expected_settings = plugin.make_settings()
+    backend = plugin.make_backend(expected_settings)
+    settings = backend.get_settings()
+    assert isinstance(settings, KokoroSettings)  # For the type checker
+    assert settings == expected_settings
+
+
+def test_kokoroplugin_make_backend_should_return_a_ittsbackend_object() -> None:
+    plugin = KokoroPlugin()
+    settings = plugin.make_settings()
+    backend = plugin.make_backend(settings)
+    _: ITTSBackend = backend  # Typecheck protocol conformity
+    assert isinstance(backend, ITTSBackend)  # Runtime check as well
+
+
+def test_kokoroplugin_make_backend_should_raise_error_if_incorrect_settings_given() -> (
+    None
+):
+    plugin = KokoroPlugin()
+    settings = AnotherTTSSettings()
+    with pytest.raises(TypeError, match="Incorrect settings type"):
+        plugin.make_backend(settings)
