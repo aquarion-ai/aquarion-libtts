@@ -111,7 +111,7 @@ def test_ittsplugin_should_have_an_id_attribute() -> None:
 def test_ittsplugin_id_should_be_immutable() -> None:
     plugin = DummyTTSPlugin()
     with pytest.raises(AttributeError, match="object has no setter"):
-        plugin.id = "new_id"  # type: ignore [misc]
+        plugin.id = "new_id"  # type:ignore[misc]
 
 
 def test_ittsplugin_id_should_have_the_correct_value() -> None:
@@ -130,7 +130,7 @@ def test_ittsplugin_get_display_name_should_accept_a_locale_argument() -> None:
 def test_ittsplugin_get_display_name_should_require_the_locale_argument() -> None:
     plugin = DummyTTSPlugin()
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        plugin.get_display_name()  # type: ignore [call-arg]
+        plugin.get_display_name()  # type:ignore[call-arg]
 
 
 @pytest.mark.parametrize(
@@ -203,7 +203,7 @@ def test_ittsplugin_make_settings_should_raise_an_error_if_an_invalid_value_give
 def test_ittsplugin_make_backend_should_require_a_settings_argument() -> None:
     plugin = DummyTTSPlugin()
     with pytest.raises(TypeError, match="missing *. required positional argument"):
-        plugin.make_backend()  # type: ignore [call-arg]
+        plugin.make_backend()  # type:ignore[call-arg]
 
 
 def test_ittsplugin_make_backend_should_use_the_given_settings() -> None:
@@ -292,7 +292,7 @@ def test_ttspluginregistry_load_plugins_should_require_validate_to_be_keyword_on
     with pytest.raises(
         TypeError, match="takes .* positional argument.? but .* were given"
     ):
-        registry.load_plugins(False)  # type: ignore [misc]  # noqa: FBT003
+        registry.load_plugins(False)  # type:ignore[misc]  # noqa: FBT003
 
 
 def test_ttspluginregistry_load_plugins_should_load_plugins(
@@ -358,7 +358,7 @@ def test_ttspluginregistry_get_plugin_should_accept_an_id_argument() -> None:
 def test_ttspluginregistry_get_plugin_should_require_the_id_argument() -> None:
     registry = TTSPluginRegistry()
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        registry.get_plugin()  # type: ignore [call-arg]
+        registry.get_plugin()  # type:ignore[call-arg]
 
 
 def test_ttspluginregistry_get_plugin_should_return_the_plugin_for_the_given_id() -> (
@@ -391,7 +391,7 @@ def test_ttspluginregistry_get_display_names_should_require_the_locale_argument(
 ):
     registry = TTSPluginRegistry()
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        registry.get_display_names()  # type: ignore [call-arg]
+        registry.get_display_names()  # type:ignore[call-arg]
 
 
 def test_ttspluginregistry_get_display_names_should_accept_an_opt_include_disabled_arg(
@@ -408,7 +408,7 @@ def test_ttspluginregistry_get_display_names_include_disabled_should_be_keyword_
     with pytest.raises(
         TypeError, match="takes .* positional argument.? but .* were given"
     ):
-        registry.get_display_names("en-CA", True)  # type: ignore [misc]  # noqa: FBT003
+        registry.get_display_names("en-CA", True)  # type:ignore[misc]  # noqa: FBT003
 
 
 def test_ttspluginregistry_get_display_names_should_return_an_empty_dict_if_no_plugins(
@@ -481,7 +481,7 @@ def test_ttspluginregistry_enable_should_accept_an_id_argument() -> None:
 def test_ttspluginregistry_enable_should_require_the_id_argument() -> None:
     registry = TTSPluginRegistry()
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        registry.enable()  # type: ignore [call-arg]
+        registry.enable()  # type:ignore[call-arg]
 
 
 def test_ttspluginregistry_enable_should_enable_the_plugin() -> None:
@@ -530,7 +530,7 @@ def test_ttspluginregistry_disable_should_accept_an_id_argument() -> None:
 def test_ttspluginregistry_disable_should_require_the_id_argument() -> None:
     registry = TTSPluginRegistry()
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        registry.disable()  # type: ignore [call-arg]
+        registry.disable()  # type:ignore[call-arg]
 
 
 def test_ttspluginregistry_disable_should_disable_the_plugin() -> None:
@@ -575,7 +575,7 @@ def test_ttspluginregistry_disable_should_log_the_disablement(logot: Logot) -> N
 # implementations.
 
 
-@tts_hookimpl(specname="register_tts_plugin")  # type: ignore [misc]
+@tts_hookimpl(specname="register_tts_plugin")  # type:ignore[misc]
 def dummy_register_tts_plugin() -> ITTSPlugin:
     return DummyTTSPlugin()
 

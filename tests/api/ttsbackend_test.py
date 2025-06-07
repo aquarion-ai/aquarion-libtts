@@ -102,13 +102,13 @@ def test_ittsbackend_update_settings_should_accept_a_settings_argument() -> None
 def test_ittsbackend_update_settings_should_require_the_settings_argument() -> None:
     backend = DummyTTSBackend()
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        backend.update_settings()  # type: ignore [call-arg]
+        backend.update_settings()  # type:ignore[call-arg]
 
 
 def test_ittsbackend_update_settings_should_not_return_anything() -> None:
     # CQS principle: Commands should not return anything.
     backend = DummyTTSBackend()
-    result: None = backend.update_settings(DummyTTSSettings())  # type: ignore [func-returns-value]
+    result: None = backend.update_settings(DummyTTSSettings())  # type:ignore[func-returns-value]
     assert result is None
 
 
@@ -135,7 +135,7 @@ def test_ittsbackend_update_settings_should_raise_error_if_incorrect_kind() -> N
 def test_ittsbackend_convert_should_require_some_text_input() -> None:
     backend = DummyTTSBackend()
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        backend.convert()  # type: ignore [call-arg]
+        backend.convert()  # type:ignore[call-arg]
 
 
 def test_ittsbackend_convert_should_return_a_ttsspeechdata_object() -> None:
@@ -170,7 +170,7 @@ def test_ittsbackend_is_started_should_return_false_if_stopped() -> None:
 def test_ittsbackend_is_started_should_be_read_only() -> None:
     backend = DummyTTSBackend()
     with pytest.raises(AttributeError, match="property .* of .* object has no setter"):
-        backend.is_started = True  # type: ignore [misc]
+        backend.is_started = True  # type:ignore[misc]
 
 
 ## .start() tests
@@ -193,7 +193,7 @@ def test_ittsbackend_start_should_be_idempotent() -> None:
 def test_ittsbackend_start_should_not_return_anything() -> None:
     # CQS principle: Commands should not return anything.
     backend = DummyTTSBackend()
-    result: None = backend.start()  # type: ignore [func-returns-value]
+    result: None = backend.start()  # type:ignore[func-returns-value]
     assert result is None
 
 
@@ -214,12 +214,12 @@ def test_ittsbackend_stop_should_be_idempotent() -> None:
     assert backend.is_started
     backend.stop()
     assert not backend.is_started
-    backend.stop()  # type: ignore [unreachable]  # The type checker is wrong.  Tested.
+    backend.stop()  # type:ignore[unreachable]  # The type checker is wrong.  Tested.
     assert not backend.is_started
 
 
 def test_ittsbackend_stop_should_not_return_anything() -> None:
     # CQS principle: Commands should not return anything.
     backend = DummyTTSBackend()
-    result: None = backend.stop()  # type: ignore [func-returns-value]
+    result: None = backend.stop()  # type:ignore[func-returns-value]
     assert result is None

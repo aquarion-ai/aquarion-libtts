@@ -94,7 +94,7 @@ def _validate_locale(locale: str) -> str:
     return locale
 
 
-class KokoroSettings(  # type: ignore [explicit-any]
+class KokoroSettings(  # type:ignore[explicit-any]
     BaseModel, revalidate_instances="always", extra="forbid", validate_default=True
 ):
     """Kokoro TTS backend settings.
@@ -139,9 +139,9 @@ class KokoroSettings(  # type: ignore [explicit-any]
         """Return the language code for the current locale."""
         return ALIASES[self.locale.lower()]
 
-    def to_dict(self) -> dict[str, Any]:  # type: ignore [explicit-any]
+    def to_dict(self) -> dict[str, Any]:  # type:ignore[explicit-any]
         """Export all settings as a dictionary of only built-in Python types."""
-        return self.model_dump()  # type: ignore [misc]
+        return self.model_dump()  # type:ignore[misc]
 
     @model_validator(mode="after")
     def _validate_voice(self) -> Self:

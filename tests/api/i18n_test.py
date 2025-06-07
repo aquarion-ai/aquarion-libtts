@@ -55,24 +55,24 @@ def test_load_language_should_accept_a_local_path_of_type_traversable() -> None:
 
 def test_load_language_should_require_the_locale_argument() -> None:
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        load_language(domain="some domain", locale_path="some path")  # type: ignore [call-arg]
+        load_language(domain="some domain", locale_path="some path")  # type:ignore[call-arg]
 
 
 def test_load_language_should_require_the_domain_argument() -> None:
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        load_language(locale="en_CA", locale_path="some path")  # type: ignore [call-arg]
+        load_language(locale="en_CA", locale_path="some path")  # type:ignore[call-arg]
 
 
 def test_load_language_should_require_the_locale_path_argument() -> None:
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        load_language(locale="en_CA", domain="some domain")  # type: ignore [call-arg]
+        load_language(locale="en_CA", domain="some domain")  # type:ignore[call-arg]
 
 
 def test_load_language_should_return_a_gettext_fn_and_a_translations_instance() -> None:
     _, t = load_language("en_CA", "some domain", "some path")
     assert hasattr(_, "__func__")
     # Had to do it this way because id(t.gettext) != id(t.gettext). O_o
-    assert _.__func__.__name__ == "gettext"  # type: ignore [misc]
+    assert _.__func__.__name__ == "gettext"  # type:ignore[misc]
     assert isinstance(t, NullTranslations)
 
 

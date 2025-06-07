@@ -32,7 +32,7 @@ def test_load_internal_language_should_accept_a_locale_argument() -> None:
 
 def test_load_internal_language_should_require_the_locale_argument() -> None:
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        load_internal_language()  # type: ignore [call-arg]
+        load_internal_language()  # type:ignore[call-arg]
 
 
 def test_load_internal_language_should_return_gettext_and_translations_instance() -> (
@@ -41,7 +41,7 @@ def test_load_internal_language_should_return_gettext_and_translations_instance(
     _, t = load_internal_language("en_CA")
     assert hasattr(_, "__func__")
     # Had to do it this way because id(t.gettext) != id(t.gettext). O_o
-    assert _.__func__.__name__ == "gettext"  # type: ignore [misc]
+    assert _.__func__.__name__ == "gettext"  # type:ignore[misc]
     assert isinstance(t, NullTranslations)
 
 

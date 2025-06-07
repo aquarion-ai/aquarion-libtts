@@ -51,7 +51,7 @@ class ITTSSettings(Protocol):
     def __eq__(self, other: object) -> bool:
         """Return True if all settings values match."""
 
-    def to_dict(self) -> dict[str, Any]:  # type: ignore [explicit-any]
+    def to_dict(self) -> dict[str, Any]:  # type:ignore[explicit-any]
         """Export all settings as a dictionary of only built-in Python types."""
 
 

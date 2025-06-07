@@ -149,13 +149,13 @@ def test_kokorosettings_should_have_expected_attributes(attr: str) -> None:
 
 def test_kokorosettings_should_not_allow_extra_arguments() -> None:
     with pytest.raises(ValueError, match="Extra inputs are not permitted"):
-        KokoroSettings(extra_argument="value")  # type: ignore[call-arg]
+        KokoroSettings(extra_argument="value")  # type:ignore[call-arg]
 
 
 def test_kokorosettings_should_not_allow_extra_attributes() -> None:
     settings = KokoroSettings()
     with pytest.raises(ValueError, match='object has no field "extra_attribute"'):
-        settings.extra_attribute = "value"  # type: ignore[attr-defined]
+        settings.extra_attribute = "value"  # type:ignore[attr-defined]
 
 
 @pytest.mark.parametrize(
@@ -188,13 +188,13 @@ def test_kokorosettings_to_dict_should_return_device_as_a_string() -> None:
 
 
 def test_kokorosettings_should_coerce_voice_strings_to_enum_on_instantiation() -> None:
-    settings = KokoroSettings(voice="af_heart")  # type: ignore[arg-type]
+    settings = KokoroSettings(voice="af_heart")  # type:ignore[arg-type]
     assert settings.voice == KokoroVoices.af_heart
     assert isinstance(settings.voice, KokoroVoices)
 
 
 def test_kokorosettings_should_coerce_device_strings_to_enum_on_instantiation() -> None:
-    settings = KokoroSettings(device="cpu")  # type: ignore[arg-type]
+    settings = KokoroSettings(device="cpu")  # type:ignore[arg-type]
     assert settings.device == KokoroDeviceNames.cpu
     assert isinstance(settings.device, KokoroDeviceNames)
 
@@ -230,7 +230,7 @@ def test_kokorosettings_should_have_a_locale_attribute() -> None:
 def test_kokorosettings_to_dict_should_return_a_dict_of_all_settings_as_base_types(
     attr: str, value: str | float
 ) -> None:
-    settings = KokoroSettings(**{attr: value})  # type: ignore[arg-type]
+    settings = KokoroSettings(**{attr: value})  # type:ignore[arg-type]
     settings_dict: dict[str, str | float] = settings.to_dict()
     assert settings_dict[attr] == value
 
@@ -265,9 +265,9 @@ def mock_kpipeline(mocker: MockerFixture) -> None:
     if environ.get("KOKORO_TEST_SKIP_MOCK", "0") == "1":  # pragma: no cover
         return
     mock_audio_result: KPipeline.Result = mocker.MagicMock(spec_set=KPipeline.Result)
-    mock_audio_result.audio = cast("torch.FloatTensor", torch.zeros(1, 2))  # type: ignore [misc]
+    mock_audio_result.audio = cast("torch.FloatTensor", torch.zeros(1, 2))  # type:ignore[misc]
     mock_no_audio_result: KPipeline.Result = mocker.MagicMock(spec_set=KPipeline.Result)
-    mock_no_audio_result.audio = None  # type: ignore [misc]
+    mock_no_audio_result.audio = None  # type:ignore[misc]
     call_return_value: list[KPipeline.Result] = [
         mock_no_audio_result,
         mock_audio_result,
@@ -287,14 +287,14 @@ def test_kokorobackend_should_accept_settings_as_a_positional_argument() -> None
 
 def test_kokorobackend_should_require_the_settings_argument() -> None:
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        KokoroBackend()  # type: ignore [call-arg]
+        KokoroBackend()  # type:ignore[call-arg]
 
 
 def test_kokorobackend_should_require_settings_to_be_instance_of_kokorosettings() -> (
     None
 ):
     with pytest.raises(TypeError, match="Incorrect settings type"):
-        KokoroBackend(settings=AnotherTTSSettings)  # type: ignore[arg-type]
+        KokoroBackend(settings=AnotherTTSSettings)  # type:ignore[arg-type]
 
 
 @pytest.mark.skipif(
@@ -376,13 +376,13 @@ def test_kokorobackend_update_settings_should_accept_a_settings_argument() -> No
 def test_kokorobackend_update_settings_should_require_the_settings_argument() -> None:
     backend = KokoroBackend(KokoroSettings())
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        backend.update_settings()  # type: ignore [call-arg]
+        backend.update_settings()  # type:ignore[call-arg]
 
 
 def test_kokorobackend_update_settings_should_not_return_anything() -> None:
     # CQS principle: Commands should not return anything.
     backend = KokoroBackend(KokoroSettings())
-    result: None = backend.update_settings(KokoroSettings())  # type: ignore [func-returns-value]
+    result: None = backend.update_settings(KokoroSettings())  # type:ignore[func-returns-value]
     assert result is None
 
 
@@ -425,7 +425,7 @@ def test_kokorobackend_update_settings_should_raise_error_if_incorrect_kind() ->
 def test_kokorobackend_convert_should_require_some_text_input() -> None:
     backend = KokoroBackend(KokoroSettings())
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        backend.convert()  # type: ignore [call-arg]
+        backend.convert()  # type:ignore[call-arg]
 
 
 def test_kokorobackend_convert_should_return_a_ttsspeechdata_object() -> None:
@@ -460,7 +460,7 @@ def test_kokorobackend_is_started_should_return_false_if_stopped() -> None:
 def test_kokorobackend_is_started_should_be_read_only() -> None:
     backend = KokoroBackend(KokoroSettings())
     with pytest.raises(AttributeError, match="property .* of .* object has no setter"):
-        backend.is_started = True  # type: ignore [misc]
+        backend.is_started = True  # type:ignore[misc]
 
 
 ## .start() tests
@@ -483,7 +483,7 @@ def test_kokorobackend_start_should_be_idempotent() -> None:
 def test_kokorobackend_start_should_not_return_anything() -> None:
     # CQS principle: Commands should not return anything.
     backend = KokoroBackend(KokoroSettings())
-    result: None = backend.start()  # type: ignore [func-returns-value]
+    result: None = backend.start()  # type:ignore[func-returns-value]
     assert result is None
 
 
@@ -504,14 +504,14 @@ def test_kokorobackend_stop_should_be_idempotent() -> None:
     assert backend.is_started
     backend.stop()
     assert not backend.is_started
-    backend.stop()  # type: ignore [unreachable]  # The type checker is wrong.  Tested.
+    backend.stop()  # type:ignore[unreachable]  # The type checker is wrong.  Tested.
     assert not backend.is_started
 
 
 def test_kokorobackend_stop_should_not_return_anything() -> None:
     # CQS principle: Commands should not return anything.
     backend = KokoroBackend(KokoroSettings())
-    result: None = backend.stop()  # type: ignore [func-returns-value]
+    result: None = backend.stop()  # type:ignore[func-returns-value]
     assert result is None
 
 
@@ -535,7 +535,7 @@ def test_kokoroplugin_should_have_an_id_attribute() -> None:
 def test_kokoroplugin_id_should_be_immutable() -> None:
     plugin = KokoroPlugin()
     with pytest.raises(AttributeError, match="object has no setter"):
-        plugin.id = "new_id"  # type: ignore [misc]
+        plugin.id = "new_id"  # type:ignore[misc]
 
 
 def test_kokoroplugin_id_should_have_the_correct_value() -> None:
@@ -554,7 +554,7 @@ def test_kokoroplugin_get_display_name_should_accept_a_locale_argument() -> None
 def test_kokoroplugin_get_display_name_should_require_the_locale_argument() -> None:
     plugin = KokoroPlugin()
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        plugin.get_display_name()  # type: ignore [call-arg]
+        plugin.get_display_name()  # type:ignore[call-arg]
 
 
 @pytest.mark.parametrize(
@@ -594,7 +594,7 @@ def test_kokoroplugin_make_settings_should_use_default_values_when_no_values_giv
     settings = plugin.make_settings()
     assert isinstance(settings, KokoroSettings)  # For the type checker
     assert (
-        getattr(settings, attribute) == KokoroSettings.model_fields[attribute].default  # type: ignore[misc]
+        getattr(settings, attribute) == KokoroSettings.model_fields[attribute].default  # type:ignore[misc]
     )
 
 
@@ -644,7 +644,7 @@ def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_value_gi
 def test_kokoroplugin_make_backend_should_require_a_settings_argument() -> None:
     plugin = KokoroPlugin()
     with pytest.raises(TypeError, match="missing *. required positional argument"):
-        plugin.make_backend()  # type: ignore [call-arg]
+        plugin.make_backend()  # type:ignore[call-arg]
 
 
 def test_kokoroplugin_make_backend_should_use_the_given_settings() -> None:

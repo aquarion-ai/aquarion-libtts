@@ -52,8 +52,8 @@ class DummyTTSSettings:
             return NotImplemented  # pragma: no cover
         return self.attr1 == other.attr1
 
-    def to_dict(self) -> dict[str, Any]:  # type: ignore [explicit-any]
-        return {"attr1": self.attr1}  # type: ignore [misc]
+    def to_dict(self) -> dict[str, Any]:  # type:ignore[explicit-any]
+        return {"attr1": self.attr1}  # type:ignore[misc]
 
 
 class AnotherTTSSettings:
@@ -67,8 +67,8 @@ class AnotherTTSSettings:
     def __eq__(self, other: object) -> bool:
         return False  # pragma: no cover
 
-    def to_dict(self) -> dict[str, Any]:  # type: ignore [explicit-any]
-        return {}  # type: ignore [misc]  # pragma: no cover
+    def to_dict(self) -> dict[str, Any]:  # type:ignore[explicit-any]
+        return {}  # type:ignore[misc]  # pragma: no cover
 
 
 def test_ittssettings_should_conform_to_its_protocol() -> None:
@@ -150,13 +150,13 @@ def test_ittssettingsholder_update_settings_should_require_the_settings_argument
 ):
     holder = DummyTTSSettingsHolder()
     with pytest.raises(TypeError, match="missing .* required positional argument"):
-        holder.update_settings()  # type: ignore [call-arg]
+        holder.update_settings()  # type:ignore[call-arg]
 
 
 def test_ittssettingsholder_update_settings_should_not_return_anything() -> None:
     # CQS principle: Commands should not return anything.
     holder = DummyTTSSettingsHolder()
-    result: None = holder.update_settings(DummyTTSSettings())  # type: ignore [func-returns-value]
+    result: None = holder.update_settings(DummyTTSSettings())  # type:ignore[func-returns-value]
     assert result is None
 
 
