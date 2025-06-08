@@ -27,12 +27,11 @@ from aquarion.libs.libtts._kokoro._settings import (
     KokoroSettings,
     KokoroVoices,
 )
-from aquarion.libs.libtts.api import ITTSSettings
+from aquarion.libs.libtts.api import ITTSSettings, JSONSerializableTypes
 from tests.kokoro.conftest import (
     INVALID_SETTINGS_CASES,
     SETTINGS_ARGS,
     SettingsDict,
-    SettingsDictTypes,
 )
 
 SETTINGS_ATTRS: Final = [*list(SETTINGS_ARGS), "lang_code"]
@@ -73,7 +72,7 @@ def test_kokorosettings_should_store_given_settings_values(
 
 @pytest.mark.parametrize(("attr", "value", "err_msg"), INVALID_SETTINGS_CASES)
 def test_kokorosettings_should_raise_an_exception_if_a_setting_is_invalid(
-    attr: str, value: SettingsDictTypes, err_msg: str
+    attr: str, value: JSONSerializableTypes, err_msg: str
 ) -> None:
     with pytest.raises(ValueError, match=err_msg):
         KokoroSettings(**{attr: value})  # type:ignore[arg-type]
@@ -166,7 +165,7 @@ def test_kokorosettings_should_have_a_locale_attribute() -> None:
     [("locale", "en-US"), ("voice", "af_heart"), ("speed", 1.0)],
 )
 def test_kokorosettings_to_dict_should_return_a_dict_of_all_settings_as_base_types(
-    attr: str, value: SettingsDictTypes
+    attr: str, value: JSONSerializableTypes
 ) -> None:
     settings = KokoroSettings(**{attr: value})  # type:ignore[arg-type]
     settings_dict = cast("SettingsDict", settings.to_dict())

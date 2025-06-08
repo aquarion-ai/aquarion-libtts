@@ -21,8 +21,6 @@ from typing import Final, TypedDict, cast
 
 import pytest
 
-type SettingsDictTypes = str | float | None
-
 
 class SettingsDict(TypedDict, total=False):
     """Types for KokoroSettings dicts and arguments."""

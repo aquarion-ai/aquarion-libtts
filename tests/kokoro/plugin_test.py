@@ -34,7 +34,6 @@ from tests.kokoro.conftest import (
     INVALID_SETTINGS_CASES,
     SETTINGS_ARGS,
     SettingsDict,
-    SettingsDictTypes,
 )
 
 if TYPE_CHECKING:
@@ -157,7 +156,7 @@ def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_key_give
 @pytest.mark.parametrize(("attr", "value", "err_msg"), INVALID_SETTINGS_CASES)
 def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_value_given(
     attr: str,
-    value: SettingsDictTypes,
+    value: JSONSerializableTypes,
     err_msg: str,
 ) -> None:
     plugin = KokoroPlugin()
