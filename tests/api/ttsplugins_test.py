@@ -345,6 +345,16 @@ def test_ttspluginregistry_load_plugins_should_let_hooks_be_skipped_by_returning
         registry.get_plugin("I should be skipped")
 
 
+@pytest.mark.parametrize("plugin_id", ["kokoro_v1"])
+def test_ttspluginregistry_load_plugins_should_load_builtin_plugins(
+    plugin_id: str,
+) -> None:
+    registry = TTSPluginRegistry()
+    registry.load_plugins(validate=True)
+    plugin = registry.get_plugin(plugin_id)
+    assert isinstance(plugin, ITTSPlugin)
+
+
 ## .get_plugin() tests
 
 

@@ -80,6 +80,9 @@ kokoro = [
   "pip~=25.1.1",
 ]
 
+[project.entry-points.'aquarion-libtts']
+kokoro_v1 = "aquarion.libs.libtts._kokoro"
+
 ### UV ###
 
 [dependency-groups]
