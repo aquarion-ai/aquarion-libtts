@@ -112,7 +112,10 @@ class KokoroBackend:
         if self.is_started:
             return
         model: KModel | bool = False
-        if self._settings.model_path or self._settings.config_path:
+        if (
+            self._settings.model_path is not None
+            or self._settings.config_path is not None
+        ):
             model = (
                 KModel(
                     repo_id=self._settings.repo_id,
