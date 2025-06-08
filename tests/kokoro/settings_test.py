@@ -18,7 +18,7 @@
 """Unit tests for _kokoro._settings module."""
 
 from pathlib import Path
-from typing import Any, Final
+from typing import Final, cast
 
 import pytest
 
@@ -28,7 +28,12 @@ from aquarion.libs.libtts._kokoro._settings import (
     KokoroVoices,
 )
 from aquarion.libs.libtts.api import ITTSSettings
-from tests.kokoro.conftest import INVALID_SETTINGS_CASES, SETTINGS_ARGS, SettingsDict
+from tests.kokoro.conftest import (
+    INVALID_SETTINGS_CASES,
+    SETTINGS_ARGS,
+    SettingsDict,
+    SettingsDictTypes,
+)
 
 SETTINGS_ATTRS: Final = [*list(SETTINGS_ARGS), "lang_code"]
 
@@ -62,17 +67,16 @@ def test_kokorosettings_should_store_given_settings_values(
     arguments = SETTINGS_ARGS.copy()
     arguments.update(real_settings_path_args)
     settings = KokoroSettings(**arguments)  # type:ignore[arg-type]
-    assert getattr(settings, attribute) == arguments.get(attribute)  # type:ignore[misc]
+    settings_dict = cast("SettingsDict", settings.to_dict())
+    assert settings_dict.get(attribute) == arguments.get(attribute)
 
 
-@pytest.mark.parametrize(("attr", "value", "err_msg"), INVALID_SETTINGS_CASES)  # type:ignore[misc]
-def test_kokorosettings_should_raise_an_exception_if_a_setting_is_invalid(  # type:ignore[explicit-any,misc]
-    attr: str,
-    value: Any,  # noqa: ANN401
-    err_msg: str,
+@pytest.mark.parametrize(("attr", "value", "err_msg"), INVALID_SETTINGS_CASES)
+def test_kokorosettings_should_raise_an_exception_if_a_setting_is_invalid(
+    attr: str, value: SettingsDictTypes, err_msg: str
 ) -> None:
     with pytest.raises(ValueError, match=err_msg):
-        KokoroSettings(**{attr: value})  # type:ignore[misc]
+        KokoroSettings(**{attr: value})  # type:ignore[arg-type]
 
 
 @pytest.mark.parametrize(("attr"), SETTINGS_ATTRS)
@@ -109,14 +113,14 @@ def test_kokorosettings_lang_code_should_return_the_correct_language_code(
 
 def test_kokorosettings_to_dict_should_return_voice_as_a_string() -> None:
     settings = KokoroSettings(voice=KokoroVoices.af_heart)
-    settings_dict: dict[str, str | float] = settings.to_dict()
+    settings_dict = cast("SettingsDict", settings.to_dict())
     assert isinstance(settings_dict["voice"], str)
     assert settings_dict["voice"] == "af_heart"
 
 
 def test_kokorosettings_to_dict_should_return_device_as_a_string() -> None:
     settings = KokoroSettings(device=KokoroDeviceNames.cuda)
-    settings_dict: dict[str, str | float] = settings.to_dict()
+    settings_dict = cast("SettingsDict", settings.to_dict())
     assert isinstance(settings_dict["device"], str)
     assert settings_dict["device"] == "cuda"
 
@@ -162,11 +166,11 @@ def test_kokorosettings_should_have_a_locale_attribute() -> None:
     [("locale", "en-US"), ("voice", "af_heart"), ("speed", 1.0)],
 )
 def test_kokorosettings_to_dict_should_return_a_dict_of_all_settings_as_base_types(
-    attr: str, value: str | float
+    attr: str, value: SettingsDictTypes
 ) -> None:
     settings = KokoroSettings(**{attr: value})  # type:ignore[arg-type]
-    settings_dict: dict[str, str | float] = settings.to_dict()
-    assert settings_dict[attr] == value
+    settings_dict = cast("SettingsDict", settings.to_dict())
+    assert settings_dict.get(attr) == value
 
 
 def test_kokorosettings_should_equate_if_setting_values_are_equal() -> None:

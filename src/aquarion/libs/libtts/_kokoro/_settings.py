@@ -125,7 +125,7 @@ class KokoroSettings(  # type:ignore[explicit-any]
 
     def to_dict(self) -> dict[str, Any]:  # type:ignore[explicit-any]
         """Export all settings as a dictionary of only built-in Python types."""
-        return self.model_dump()  # type:ignore[misc]
+        return self.model_dump(mode="json")  # type:ignore[misc]
 
     @model_validator(mode="after")
     def _validate_voice(self) -> Self:

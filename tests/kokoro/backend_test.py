@@ -30,6 +30,7 @@ from aquarion.libs.libtts._kokoro._backend import KokoroBackend
 from aquarion.libs.libtts._kokoro._settings import KokoroSettings, KokoroVoices
 from aquarion.libs.libtts.api import ITTSBackend, ITTSSettings, TTSSpeechData
 from tests.api.ttssettings_test import AnotherTTSSettings
+from tests.kokoro.conftest import SettingsDict
 
 EXPECTED_AUDIO = (
     b"RIFF(\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00\x01\x00\xc0]\x00\x00\x80\xbb"
@@ -91,9 +92,9 @@ def test_kokorobackend_convert_should_return_expected_speech_audio() -> None:
 
 
 def test_kokorobackend_should_use_local_model_path_when_given(
-    real_settings_path_args: dict[str, Path], mocker: MockerFixture
+    real_settings_path_args: SettingsDict, mocker: MockerFixture
 ) -> None:
-    expected = real_settings_path_args["model_path"]
+    expected = Path(cast("str", real_settings_path_args["model_path"]))
     mock_kmodel = mocker.patch("aquarion.libs.libtts._kokoro._backend.KModel")
     backend = KokoroBackend(KokoroSettings(model_path=expected))
     backend.start()
@@ -102,9 +103,9 @@ def test_kokorobackend_should_use_local_model_path_when_given(
 
 
 def test_kokorobackend_should_use_local_config_path_when_given(
-    real_settings_path_args: dict[str, Path], mocker: MockerFixture
+    real_settings_path_args: SettingsDict, mocker: MockerFixture
 ) -> None:
-    expected = real_settings_path_args["config_path"]
+    expected = Path(cast("str", real_settings_path_args["config_path"]))
     mock_kmodel = mocker.patch("aquarion.libs.libtts._kokoro._backend.KModel")
     backend = KokoroBackend(KokoroSettings(config_path=expected))
     backend.start()
@@ -113,9 +114,9 @@ def test_kokorobackend_should_use_local_config_path_when_given(
 
 
 def test_kokorobackend_should_use_local_voice_path_when_given(
-    real_settings_path_args: dict[str, Path], mocker: MockerFixture
+    real_settings_path_args: SettingsDict, mocker: MockerFixture
 ) -> None:
-    expected = real_settings_path_args["voice_path"]
+    expected = Path(cast("str", real_settings_path_args["voice_path"]))
     mock_kpipeline = mocker.patch("aquarion.libs.libtts._kokoro._backend.KPipeline")
     backend = KokoroBackend(KokoroSettings(voice_path=expected))
     backend.start()

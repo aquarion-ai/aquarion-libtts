@@ -123,14 +123,15 @@ def test_kokoroplugin_make_settings_should_use_default_values_when_no_values_giv
 def test_kokoroplugin_make_settings_should_use_given_values_when_values_are_given(
     real_settings_path_args: SettingsDict, attribute: str
 ) -> None:
-    settings_dict = SETTINGS_ARGS.copy()
-    settings_dict.update(real_settings_path_args)
+    expected_dict = SETTINGS_ARGS.copy()
+    expected_dict.update(real_settings_path_args)
     plugin = KokoroPlugin()
     settings = plugin.make_settings(
-        from_dict=cast("Mapping[str, JSONSerializableTypes]", settings_dict)
+        from_dict=cast("Mapping[str, JSONSerializableTypes]", expected_dict)
     )
     assert isinstance(settings, KokoroSettings)  # For the type checker
-    assert getattr(settings, attribute) == settings_dict.get(attribute)  # type:ignore[misc]
+    settings_dict = cast("SettingsDict", settings.to_dict())
+    assert settings_dict.get(attribute) == expected_dict.get(attribute)
 
 
 def test_kokoroplugin_make_settings_should_return_a_ittssettings_object() -> None:
