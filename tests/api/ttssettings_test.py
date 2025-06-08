@@ -22,11 +22,13 @@ These tests serve mostly to document the expectations of all ITTSSettings
 implementations.
 """
 
-from typing import Any
-
 import pytest
 
-from aquarion.libs.libtts.api._ttssettings import ITTSSettings, ITTSSettingsHolder
+from aquarion.libs.libtts.api import (
+    ITTSSettings,
+    ITTSSettingsHolder,
+    JSONSerializableTypes,
+)
 
 ### ITTSSettings Tests ###
 
@@ -52,8 +54,8 @@ class DummyTTSSettings:
             return NotImplemented  # pragma: no cover
         return self.attr1 == other.attr1
 
-    def to_dict(self) -> dict[str, Any]:  # type:ignore[explicit-any]
-        return {"attr1": self.attr1}  # type:ignore[misc]
+    def to_dict(self) -> dict[str, JSONSerializableTypes]:
+        return {"attr1": self.attr1}
 
 
 class AnotherTTSSettings:
@@ -67,8 +69,8 @@ class AnotherTTSSettings:
     def __eq__(self, other: object) -> bool:
         return False  # pragma: no cover
 
-    def to_dict(self) -> dict[str, Any]:  # type:ignore[explicit-any]
-        return {}  # type:ignore[misc]  # pragma: no cover
+    def to_dict(self) -> dict[str, JSONSerializableTypes]:
+        return {}  # pragma: no cover
 
 
 def test_ittssettings_should_conform_to_its_protocol() -> None:
@@ -86,7 +88,7 @@ def test_ittssettings_to_dict_should_return_a_dict_of_all_settings_as_base_types
     None
 ):
     settings = DummyTTSSettings()
-    settings_dict: dict[str, str] = settings.to_dict()
+    settings_dict: dict[str, JSONSerializableTypes] = settings.to_dict()
     assert settings_dict["attr1"] == "default"
 
 

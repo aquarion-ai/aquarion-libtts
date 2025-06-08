@@ -19,7 +19,7 @@
 """Kokoro TTS settings implementation."""
 
 from enum import StrEnum, auto
-from typing import Annotated, Any, Self
+from typing import Annotated, Self, cast
 
 from babel import Locale, UnknownLocaleError
 from kokoro.pipeline import ALIASES
@@ -30,6 +30,8 @@ from pydantic import (
     FilePath,
     model_validator,
 )
+
+from aquarion.libs.libtts.api import JSONSerializableTypes
 
 
 class KokoroVoices(StrEnum):
@@ -123,9 +125,9 @@ class KokoroSettings(  # type:ignore[explicit-any]
         """Return the language code for the current locale."""
         return ALIASES[self.locale.lower()]
 
-    def to_dict(self) -> dict[str, Any]:  # type:ignore[explicit-any]
+    def to_dict(self) -> dict[str, JSONSerializableTypes]:
         """Export all settings as a dictionary of only built-in Python types."""
-        return self.model_dump(mode="json")  # type:ignore[misc]
+        return cast("dict[str, JSONSerializableTypes]", self.model_dump(mode="json"))
 
     @model_validator(mode="after")
     def _validate_voice(self) -> Self:
