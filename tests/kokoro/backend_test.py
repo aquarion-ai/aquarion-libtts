@@ -1,0 +1,297 @@
+# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# Part of the aquarion-libtts library of the Aquarion AI project.
+# Copyright (C) 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+#
+# This program is free software: you can redistribute it and/or modify it under the
+# terms of the GNU Affero General Public License as published by the Free Software
+# Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License along with
+# this program. If not, see <https://www.gnu.org/licenses/>.
+
+"""Unit tests for _kokoro._backend module."""
+
+from os import environ
+from pathlib import Path
+from typing import cast
+
+import pytest
+import torch
+from kokoro.pipeline import KPipeline
+from pytest_mock import MockerFixture
+
+from aquarion.libs.libtts._kokoro._backend import KokoroBackend
+from aquarion.libs.libtts._kokoro._settings import KokoroSettings, KokoroVoices
+from aquarion.libs.libtts.api import ITTSBackend, ITTSSettings, TTSSpeechData
+from tests.api.ttssettings_test import AnotherTTSSettings
+
+EXPECTED_AUDIO = (
+    b"RIFF(\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00\x01\x00\xc0]\x00\x00\x80\xbb"
+    b"\x00\x00\x02\x00\x10\x00data\x04\x00\x00\x00\x00\x00\x00\x00"
+)
+
+
+@pytest.fixture(autouse=True)
+def mock_kpipeline(mocker: MockerFixture) -> None:
+    # If this environment variable is set, do not mock anything.  This is only for
+    # debugging tests.  Use acceptance tests to test the actual Kokoro backend.
+    if environ.get("KOKORO_TEST_SKIP_MOCK", "0") == "1":  # pragma: no cover
+        return
+    mock_audio_result: KPipeline.Result = mocker.MagicMock(spec_set=KPipeline.Result)
+    mock_audio_result.audio = cast("torch.FloatTensor", torch.zeros(1, 2))  # type:ignore[misc]
+    mock_no_audio_result: KPipeline.Result = mocker.MagicMock(spec_set=KPipeline.Result)
+    mock_no_audio_result.audio = None  # type:ignore[misc]
+    call_return_value: list[KPipeline.Result] = [
+        mock_no_audio_result,
+        mock_audio_result,
+    ]
+    mocker.patch.object(KPipeline, "__init__", return_value=None)
+    mocker.patch.object(KPipeline, "load_voice", return_value=None)
+    mocker.patch.object(KPipeline, "__call__", return_value=call_return_value)
+
+
+### KokoroBackend Tests ###
+
+
+def test_kokorobackend_should_accept_a_settings_argument() -> None:
+    KokoroBackend(settings=KokoroSettings())
+
+
+def test_kokorobackend_should_accept_settings_as_a_positional_argument() -> None:
+    KokoroBackend(KokoroSettings())
+
+
+def test_kokorobackend_should_require_the_settings_argument() -> None:
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        KokoroBackend()  # type:ignore[call-arg]
+
+
+def test_kokorobackend_should_require_settings_to_be_instance_of_kokorosettings() -> (
+    None
+):
+    with pytest.raises(TypeError, match="Incorrect settings type"):
+        KokoroBackend(settings=AnotherTTSSettings)  # type:ignore[arg-type]
+
+
+@pytest.mark.skipif(
+    environ.get("KOKORO_TEST_SKIP_MOCK", "0") == "1",
+    reason="Exact audio output cannot be guaranteed",
+)
+def test_kokorobackend_convert_should_return_expected_speech_audio() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    speech_data = backend.convert("some text")
+    assert speech_data.audio == EXPECTED_AUDIO
+
+
+def test_kokorobackend_should_use_local_model_path_when_given(
+    real_settings_path_args: dict[str, Path], mocker: MockerFixture
+) -> None:
+    expected = real_settings_path_args["model_path"]
+    mock_kmodel = mocker.patch("aquarion.libs.libtts._kokoro._backend.KModel")
+    backend = KokoroBackend(KokoroSettings(model_path=expected))
+    backend.start()
+    assert mock_kmodel.call_count == 1
+    assert mock_kmodel.call_args.kwargs["model"] == expected  # type:ignore[misc]
+
+
+def test_kokorobackend_should_use_local_config_path_when_given(
+    real_settings_path_args: dict[str, Path], mocker: MockerFixture
+) -> None:
+    expected = real_settings_path_args["config_path"]
+    mock_kmodel = mocker.patch("aquarion.libs.libtts._kokoro._backend.KModel")
+    backend = KokoroBackend(KokoroSettings(config_path=expected))
+    backend.start()
+    assert mock_kmodel.call_count == 1
+    assert mock_kmodel.call_args.kwargs["config"] == expected  # type:ignore[misc]
+
+
+def test_kokorobackend_should_use_local_voice_path_when_given(
+    real_settings_path_args: dict[str, Path], mocker: MockerFixture
+) -> None:
+    expected = real_settings_path_args["voice_path"]
+    mock_kpipeline = mocker.patch("aquarion.libs.libtts._kokoro._backend.KPipeline")
+    backend = KokoroBackend(KokoroSettings(voice_path=expected))
+    backend.start()
+    assert mock_kpipeline.return_value.load_voice.call_count == 1  # type:ignore[misc]
+    assert mock_kpipeline.return_value.load_voice.call_args.args[0] == str(expected)  # type:ignore[misc]
+
+
+## ITTSBackend Protocol Conformity ##
+
+
+def test_kokorobackend_should_conform_to_the_ittsbackend_protocol() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    _: ITTSBackend = backend  # Typecheck protocol conformity
+    assert isinstance(backend, ITTSBackend)  # Runtime check as well
+
+
+def test_kokorobackend_should_be_stopped_by_default() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    assert not backend.is_started
+
+
+## .get_settings tests
+
+
+def test_kokorobackend_get_settings_should_return_an_ittssettings() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    settings = backend.get_settings()
+    _: ITTSSettings = settings  # Typecheck protocol conformity
+    assert isinstance(settings, ITTSSettings)  # Runtime check as well
+
+
+## .update_settings tests
+
+
+def test_kokorobackend_update_settings_should_accept_a_settings_argument() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.update_settings(KokoroSettings())
+
+
+def test_kokorobackend_update_settings_should_require_the_settings_argument() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        backend.update_settings()  # type:ignore[call-arg]
+
+
+def test_kokorobackend_update_settings_should_not_return_anything() -> None:
+    # CQS principle: Commands should not return anything.
+    backend = KokoroBackend(KokoroSettings())
+    result: None = backend.update_settings(KokoroSettings())  # type:ignore[func-returns-value]
+    assert result is None
+
+
+def test_kokorobackend_update_settings_should_update_settings_when_not_started() -> (
+    None
+):
+    backend = KokoroBackend(KokoroSettings())
+    orig_settings = backend.get_settings()
+    new_settings = KokoroSettings(locale="en-GB", voice=KokoroVoices.bf_emma)
+    backend.stop()  # Default is stopped, this is just to make sure.
+    backend.update_settings(new_settings)
+    updated_settings = backend.get_settings()
+    assert updated_settings == new_settings
+    assert updated_settings != orig_settings
+
+
+def test_kokorobackend_update_settings_should_update_settings_when_already_started(
+    # This is here to force Ruff to wrap line.
+) -> None:
+    backend = KokoroBackend(KokoroSettings())
+    orig_settings = backend.get_settings()
+    new_settings = KokoroSettings(locale="en-GB", voice=KokoroVoices.bf_emma)
+    backend.start()
+    backend.update_settings(new_settings)
+    updated_settings = backend.get_settings()
+    assert updated_settings == new_settings
+    assert updated_settings != orig_settings
+
+
+def test_kokorobackend_update_settings_should_raise_error_if_incorrect_kind() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    incorrect_settings = AnotherTTSSettings()
+    with pytest.raises(TypeError, match="Incorrect settings type"):
+        backend.update_settings(incorrect_settings)
+
+
+## .convert() tests
+
+
+def test_kokorobackend_convert_should_require_some_text_input() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        backend.convert()  # type:ignore[call-arg]
+
+
+def test_kokorobackend_convert_should_return_a_ttsspeechdata_object() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    speech_data = backend.convert("some text")
+    assert isinstance(speech_data, TTSSpeechData)
+
+
+def test_ittsbackend_convert_should_raise_an_error_if_backend_not_started() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    with pytest.raises(RuntimeError, match="Backend is not started"):
+        backend.convert("some text")
+
+
+## .is_started tests
+
+
+def test_kokorobackend_is_started_should_return_true_if_started() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    assert backend.is_started
+
+
+def test_kokorobackend_is_started_should_return_false_if_stopped() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    backend.stop()
+    assert not backend.is_started
+
+
+def test_kokorobackend_is_started_should_be_read_only() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    with pytest.raises(AttributeError, match="property .* of .* object has no setter"):
+        backend.is_started = True  # type:ignore[misc]
+
+
+## .start() tests
+
+
+def test_kokorobackend_start_should_start_the_backend() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    assert backend.is_started
+
+
+def test_kokorobackend_start_should_be_idempotent() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    assert backend.is_started
+    backend.start()
+    assert backend.is_started
+
+
+def test_kokorobackend_start_should_not_return_anything() -> None:
+    # CQS principle: Commands should not return anything.
+    backend = KokoroBackend(KokoroSettings())
+    result: None = backend.start()  # type:ignore[func-returns-value]
+    assert result is None
+
+
+## .stop() tests
+
+
+def test_kokorobackend_stop_should_stop_the_backend() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    assert backend.is_started
+    backend.stop()
+    assert not backend.is_started
+
+
+def test_kokorobackend_stop_should_be_idempotent() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    assert backend.is_started
+    backend.stop()
+    assert not backend.is_started
+    backend.stop()  # type:ignore[unreachable]  # The type checker is wrong.  Tested.
+    assert not backend.is_started
+
+
+def test_kokorobackend_stop_should_not_return_anything() -> None:
+    # CQS principle: Commands should not return anything.
+    backend = KokoroBackend(KokoroSettings())
+    result: None = backend.stop()  # type:ignore[func-returns-value]
+    assert result is None
