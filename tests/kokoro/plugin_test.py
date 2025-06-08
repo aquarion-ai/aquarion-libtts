@@ -17,7 +17,7 @@
 
 """Unit tests for _kokoro._plugin module."""
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, cast
 
 import pytest
 
@@ -30,7 +30,12 @@ from aquarion.libs.libtts.api import (
     JSONSerializableTypes,
 )
 from tests.api.ttssettings_test import AnotherTTSSettings
-from tests.kokoro.conftest import INVALID_SETTINGS_CASES, SETTINGS_ARGS, SettingsDict
+from tests.kokoro.conftest import (
+    INVALID_SETTINGS_CASES,
+    SETTINGS_ARGS,
+    SettingsDict,
+    SettingsDictTypes,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -149,15 +154,15 @@ def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_key_give
         plugin.make_settings(from_dict={"invalid": None})
 
 
-@pytest.mark.parametrize(("attr", "value", "err_msg"), INVALID_SETTINGS_CASES)  # type:ignore[misc]
-def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_value_given(  # type:ignore[explicit-any,misc]
+@pytest.mark.parametrize(("attr", "value", "err_msg"), INVALID_SETTINGS_CASES)
+def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_value_given(
     attr: str,
-    value: Any,  # noqa: ANN401
+    value: SettingsDictTypes,
     err_msg: str,
 ) -> None:
     plugin = KokoroPlugin()
     with pytest.raises(ValueError, match=err_msg):
-        plugin.make_settings(from_dict={attr: value})  # type:ignore[misc]
+        plugin.make_settings(from_dict={attr: value})
 
 
 ## .make_backend tests

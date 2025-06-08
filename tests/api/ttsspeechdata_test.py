@@ -17,11 +17,13 @@
 
 """Unit tests for api._ttsspeechdata."""
 
-from typing import Any, Final
+from typing import Final
 
 import pytest
 
 from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
+
+type TTSSpeechDataTypes = bytes | str | int
 
 REQUIRED_ARGS: Final = {
     "audio": b"audio data here",
@@ -31,6 +33,9 @@ REQUIRED_ARGS: Final = {
     "byte_order": "little-endian",
     "num_channels": 1,
 }
+
+
+### TTSSpeechData Tests ###
 
 
 def test_ttsspeechdata_should_accept_required_arguments_as_keyword_arguments() -> None:
@@ -52,23 +57,23 @@ def test_ttsspeechdata_should_require_all_keyword_arguments() -> None:
         TTSSpeechData(*REQUIRED_ARGS.values())  # type:ignore[call-arg]
 
 
-@pytest.mark.parametrize(("attribute", "expected"), REQUIRED_ARGS.items())  # type:ignore[misc]
-def test_ttsspeechdata_should_store_all_given_values(  # type:ignore[explicit-any,misc]
+@pytest.mark.parametrize(("attribute", "expected"), REQUIRED_ARGS.items())
+def test_ttsspeechdata_should_store_all_given_values(
     attribute: str,
-    expected: Any,  # noqa: ANN401
+    expected: TTSSpeechDataTypes,
 ) -> None:
     speech_data = TTSSpeechData(**REQUIRED_ARGS)  # type:ignore[arg-type]
     assert getattr(speech_data, attribute) == expected  # type:ignore[misc]
 
 
-@pytest.mark.parametrize(("attribute", "new_value"), REQUIRED_ARGS.items())  # type:ignore[misc]
-def test_ttsspeechdata_attributes_should_be_immutable(  # type:ignore[explicit-any,misc]
+@pytest.mark.parametrize(("attribute", "new_value"), REQUIRED_ARGS.items())
+def test_ttsspeechdata_attributes_should_be_immutable(
     attribute: str,
-    new_value: Any,  # noqa: ANN401
+    new_value: TTSSpeechDataTypes,
 ) -> None:
     speech_data = TTSSpeechData(**REQUIRED_ARGS)  # type:ignore [arg-type]
     with pytest.raises(AttributeError, match="cannot assign to field"):
-        setattr(speech_data, attribute, new_value)  # type:ignore[misc]
+        setattr(speech_data, attribute, new_value)
 
 
 def test_ttsspeechdata_should_not_accept_additional_attributes() -> None:
