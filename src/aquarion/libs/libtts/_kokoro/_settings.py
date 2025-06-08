@@ -24,14 +24,29 @@ from typing import Annotated, Self, cast
 from babel import Locale, UnknownLocaleError
 from kokoro.pipeline import ALIASES
 from pydantic import (
-    AfterValidator,
     BaseModel,
+    BeforeValidator,
     Field,
     FilePath,
     model_validator,
 )
 
 from aquarion.libs.libtts.api import JSONSerializableTypes
+
+
+class KokoroLocales(StrEnum):
+    """Voice locales supported by this backend.
+
+    The locales also have to be supported by Kokoro in some way too, of course.
+    """
+
+    # NOTE: Cannot use auto() here since that makes all values lower case.
+
+    en_CA = "en_CA"  # noqa: N815
+    en_US = "en_US"  # noqa: N815
+    en_GB = "en_GB"  # noqa: N815
+    fr_CA = "fr_CA"  # noqa: N815
+    fr_FR = "fr_FR"  # noqa: N815
 
 
 class KokoroVoices(StrEnum):
@@ -66,18 +81,19 @@ def _validate_locale(locale: str) -> str:
     """Validate the locale value."""
     separator = "_" if "_" in locale else "-"
     try:
-        loc = Locale.parse(locale, sep=separator)
+        valid_locale = Locale.parse(locale, sep=separator)
     except (ValueError, UnknownLocaleError, TypeError) as e:
         message = f"Invalid locale: {locale}"
         raise ValueError(message) from e
     # Locale will strip out variants and modifiers automatically, so we do not need
     # to handle those.
-    loc.script = None  # Kokoro does not support scripts either.
-    locale = str(loc).replace("_", "-")  # Normalize to CLDR format.
-    if locale.lower() not in ALIASES:
+    valid_locale.script = None  # Kokoro does not support scripts either.
+    try:
+        supported_locale = KokoroLocales[str(valid_locale)]
+    except KeyError as e:
         message = f"Unsupported locale: {locale}"
-        raise ValueError(message)
-    return locale
+        raise ValueError(message) from e
+    return str(supported_locale)
 
 
 class KokoroSettings(  # type:ignore[explicit-any]
@@ -85,17 +101,15 @@ class KokoroSettings(  # type:ignore[explicit-any]
 ):
     """Kokoro TTS backend settings.
 
-    `locale` must be one of he locales supported by Kokoro TTS.  Namely:
+    `locale` must be one of the locales supported by this backend.  Namely:
 
-      - en-US
-      - en-GB
-      - es
-      - fr-FR
-      - hi
-      - it
-      - pt-BR
-      - ja
-      - zh
+      - en_CA
+      - en_US
+      - en_GB
+      - fr_CA
+      - fr_FR
+
+      Of course, it will be also supported by Kokoro TTS in some way or other as well.
 
     `voice` must be one from KokoroVoices.
 
@@ -111,7 +125,7 @@ class KokoroSettings(  # type:ignore[explicit-any]
 
     """
 
-    locale: Annotated[str, AfterValidator(_validate_locale)] = "en-US"
+    locale: Annotated[str, BeforeValidator(_validate_locale)] = "en_CA"
     voice: KokoroVoices = KokoroVoices.af_heart
     speed: Annotated[float, Field(gt=0, le=1.0)] = 1.0
     device: KokoroDeviceNames | None = None
@@ -121,9 +135,19 @@ class KokoroSettings(  # type:ignore[explicit-any]
     voice_path: FilePath | None = None
 
     @property
+    def _voice_locale(self) -> str:
+        """Return a locale string compatible with Kokoro TTS."""
+        voice_locale = self.locale.lower().replace("_", "-")
+        if voice_locale == "en-ca":
+            voice_locale = "en-us"
+        elif voice_locale == "fr-ca":
+            voice_locale = "fr-fr"
+        return voice_locale
+
+    @property
     def lang_code(self) -> str:
         """Return the language code for the current locale."""
-        return ALIASES[self.locale.lower()]
+        return ALIASES[self._voice_locale]
 
     def to_dict(self) -> dict[str, JSONSerializableTypes]:
         """Export all settings as a dictionary of only built-in Python types."""

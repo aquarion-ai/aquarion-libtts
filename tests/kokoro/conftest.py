@@ -36,7 +36,7 @@ class SettingsDict(TypedDict, total=False):
 
 
 SETTINGS_ARGS: Final[SettingsDict] = {
-    "locale": "en-GB",
+    "locale": "en_GB",
     "voice": "bf_emma",
     "speed": 0.8,
     "device": "cuda",
@@ -49,9 +49,14 @@ SETTINGS_ARGS: Final[SettingsDict] = {
 
 INVALID_SETTINGS_CASES: Final = [
     ("locale", "xx-XX", "Invalid locale"),
-    ("locale", "en-CA", "Unsupported locale"),
+    ("locale", "es", "Unsupported locale"),
+    ("locale", "hi", "Unsupported locale"),
+    ("locale", "it", "Unsupported locale"),
+    ("locale", "pt-br", "Unsupported locale"),
+    ("locale", "ja", "Unsupported locale"),
+    ("locale", "zh", "Unsupported locale"),
     ("voice", "xf_not_exist", "Input should be 'af_heart'"),
-    ("voice", "ff_siwis", "Invalid voice for the locale: en-US"),
+    ("voice", "ff_siwis", "Invalid voice for the locale: en_CA"),
     ("speed", -1, "greater than 0"),
     ("speed", 0, "greater than 0"),
     ("speed", 1.1, "less than or equal to 1"),

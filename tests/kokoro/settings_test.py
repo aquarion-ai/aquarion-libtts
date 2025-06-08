@@ -24,6 +24,7 @@ import pytest
 
 from aquarion.libs.libtts._kokoro._settings import (
     KokoroDeviceNames,
+    KokoroLocales,
     KokoroSettings,
     KokoroVoices,
 )
@@ -96,6 +97,27 @@ def test_kokorosettings_should_not_allow_extra_attributes() -> None:
 
 
 @pytest.mark.parametrize(
+    ("locale", "voice"),
+    zip(
+        KokoroLocales,
+        [
+            "af_heart",  # en_CA
+            "af_heart",  # en_US
+            "bf_emma",  # en_GB,
+            "ff_siwis",  # fr_CA,
+            "ff_siwis",  # fr_FR,
+        ],
+        strict=True,
+    ),
+)
+def test_kokorosettings_should_accept_supported_locales(
+    locale: str, voice: str
+) -> None:
+    settings = KokoroSettings(locale=locale, voice=voice)  # type:ignore[arg-type]
+    assert str(settings.locale) == locale
+
+
+@pytest.mark.parametrize(
     ("locale", "voice", "expected"),
     [
         ("en-US", KokoroVoices.af_heart, "a"),
@@ -162,7 +184,7 @@ def test_kokorosettings_should_have_a_locale_attribute() -> None:
 
 @pytest.mark.parametrize(
     ("attr", "value"),
-    [("locale", "en-US"), ("voice", "af_heart"), ("speed", 1.0)],
+    [("locale", "en_US"), ("voice", "af_heart"), ("speed", 1.0)],
 )
 def test_kokorosettings_to_dict_should_return_a_dict_of_all_settings_as_base_types(
     attr: str, value: JSONSerializableTypes
