@@ -19,7 +19,7 @@
 """Kokoro TTS settings implementation."""
 
 from enum import StrEnum, auto
-from typing import Annotated, Self, cast
+from typing import Annotated, Final, Self, cast
 
 from babel import Locale, UnknownLocaleError
 from kokoro.pipeline import ALIASES
@@ -32,6 +32,11 @@ from pydantic import (
 )
 
 from aquarion.libs.libtts.api import JSONSerializableTypes
+
+_VOICE_LOCALE_ALIASES: Final = {
+    "en_CA": "en_US",
+    "fr_CA": "fr_FR",
+}
 
 
 class KokoroLocales(StrEnum):
@@ -103,10 +108,10 @@ class KokoroSettings(  # type:ignore[explicit-any]
 
     `locale` must be one of the locales supported by this backend.  Namely:
 
-      - en_CA
+      - en_CA (Alias for en_US)
       - en_US
       - en_GB
-      - fr_CA
+      - fr_CA (Alias for fr_FR)
       - fr_FR
 
       Of course, it will be also supported by Kokoro TTS in some way or other as well.
@@ -135,19 +140,14 @@ class KokoroSettings(  # type:ignore[explicit-any]
     voice_path: FilePath | None = None
 
     @property
-    def _voice_locale(self) -> str:
-        """Return a locale string compatible with Kokoro TTS."""
-        voice_locale = self.locale.lower().replace("_", "-")
-        if voice_locale == "en-ca":
-            voice_locale = "en-us"
-        elif voice_locale == "fr-ca":
-            voice_locale = "fr-fr"
-        return voice_locale
-
-    @property
     def lang_code(self) -> str:
         """Return the language code for the current locale."""
-        return ALIASES[self._voice_locale]
+        voice_locale = (
+            _VOICE_LOCALE_ALIASES.get(self.locale, self.locale)
+            .lower()
+            .replace("_", "-")
+        )
+        return ALIASES[voice_locale]
 
     def to_dict(self) -> dict[str, JSONSerializableTypes]:
         """Export all settings as a dictionary of only built-in Python types."""
