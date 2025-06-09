@@ -234,10 +234,6 @@ def test_ittsplugin_make_backend_should_raise_error_if_incorrect_settings_given(
 
 ### TTSPluginRegistry Tests ###
 
-## .load_plugins tests
-
-# Based on: https://github.com/pytest-dev/pluggy/blob/main/testing/test_pluginmanager.py
-
 
 class DummyNamespace:
     """Dummy namespace (fake module) for our dummy hook implementation."""
@@ -275,6 +271,11 @@ class Distribution:
 
 def dummy_distributions() -> tuple[Distribution, ...]:
     return (Distribution(),)
+
+
+## .load_plugins tests
+
+# Based on: https://github.com/pytest-dev/pluggy/blob/main/testing/test_pluginmanager.py
 
 
 def test_ttspluginregistry_load_plugins_should_accept_optional_validate_argument(
@@ -355,6 +356,25 @@ def test_ttspluginregistry_load_plugins_should_load_builtin_plugins(
     assert isinstance(plugin, ITTSPlugin)
 
 
+## .plugin_ids tests
+
+
+def test_ttspluginregistry_plugin_ids_should_return_the_list_of_all_plugin_ids() -> (
+    None
+):
+    registry = TTSPluginRegistry()
+    plugin1 = DummyTTSPlugin("plugin1")  # Default disabled
+    plugin2 = DummyTTSPlugin("plugin2")
+    plugin3 = DummyTTSPlugin("plugin3")
+    registry._register_test_plugin(plugin1)  # noqa: SLF001
+    registry._register_test_plugin(plugin2)  # noqa: SLF001
+    registry._register_test_plugin(plugin3)  # noqa: SLF001
+    registry.enable(plugin2.id)  # Explicitly enabled
+    registry.enable(plugin3.id)
+    registry.disable(plugin3.id)  # Explicitly disabled
+    assert registry.plugin_ids == [plugin1.id, plugin2.id, plugin3.id]
+
+
 ## .get_plugin() tests
 
 
@@ -388,94 +408,26 @@ def test_ttspluginregistry_get_plugin_should_raise_an_error_if_no_record_found()
         registry.get_plugin("non existent if")
 
 
-## .get_display_names() tests
+## .is_enabled() tests
 
 
-def test_ttspluginregistry_get_display_names_should_accept_a_locale_argument() -> None:
+def test_ttspluginregistry_is_enabled_should_return_true_if_plugin_is_enabled() -> None:
+    plugin = DummyTTSPlugin()
     registry = TTSPluginRegistry()
-    registry.get_display_names("en-CA")
+    registry._register_test_plugin(plugin)  # noqa: SLF001
+    registry.enable(plugin.id)
+    assert registry.is_enabled(plugin.id)
 
 
-def test_ttspluginregistry_get_display_names_should_require_the_locale_argument() -> (
+def test_ttspluginregistry_is_enabled_should_return_false_if_plugin_is_disabled() -> (
     None
 ):
+    plugin = DummyTTSPlugin()
     registry = TTSPluginRegistry()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
-        registry.get_display_names()  # type:ignore[call-arg]
-
-
-def test_ttspluginregistry_get_display_names_should_accept_an_opt_include_disabled_arg(
-    # Force line wrap in Ruff.
-) -> None:
-    registry = TTSPluginRegistry()
-    registry.get_display_names("en-CA", include_disabled=True)
-
-
-def test_ttspluginregistry_get_display_names_include_disabled_should_be_keyword_only(
-    # Force line wrap in Ruff.
-) -> None:
-    registry = TTSPluginRegistry()
-    with pytest.raises(
-        TypeError, match="takes .* positional argument.? but .* were given"
-    ):
-        registry.get_display_names("en-CA", True)  # type:ignore[misc]  # noqa: FBT003
-
-
-def test_ttspluginregistry_get_display_names_should_return_an_empty_dict_if_no_plugins(
-    # Force line wrap in Ruff.
-) -> None:
-    registry = TTSPluginRegistry()
-    display_names = registry.get_display_names("en_CA")
-    assert isinstance(display_names, dict)
-    assert not display_names
-
-
-def test_ttspluginregistry_get_display_names_should_return_ids_and_display_names() -> (
-    None
-):
-    plugin1 = DummyTTSPlugin()
-    plugin2 = DummyTTSPlugin("plugin 2")
-    registry = TTSPluginRegistry()
-    registry._register_test_plugin(plugin1)  # noqa: SLF001
-    registry._register_test_plugin(plugin2)  # noqa: SLF001
-    registry.enable(plugin1.id)
-    registry.enable(plugin2.id)
-    display_names = registry.get_display_names("en_CA")
-    assert isinstance(display_names, dict)
-    assert display_names[plugin1.id] == plugin1.get_display_name("en_CA")
-    assert display_names[plugin1.id] == plugin1.get_display_name("en_CA")
-
-
-def test_ttspluginregistry_get_display_names_should_not_include_disabled_by_default(
-    # Force line wrap in Ruff.
-) -> None:
-    plugin1 = DummyTTSPlugin()
-    plugin2 = DummyTTSPlugin("plugin 2")
-    registry = TTSPluginRegistry()
-    registry._register_test_plugin(plugin1)  # noqa: SLF001
-    registry._register_test_plugin(plugin2)  # noqa: SLF001
-    registry.enable(plugin1.id)
-    # plugin2 not enabled.  Disabled by default.
-    display_names = registry.get_display_names("en_CA")
-    assert isinstance(display_names, dict)
-    assert plugin1.id in display_names
-    assert plugin2.id not in display_names
-
-
-def test_ttspluginregistry_get_display_names_should_include_disabled_when_requested(
-    # Force line wrap in Ruff.
-) -> None:
-    plugin1 = DummyTTSPlugin()
-    plugin2 = DummyTTSPlugin("plugin 2")
-    registry = TTSPluginRegistry()
-    registry._register_test_plugin(plugin1)  # noqa: SLF001
-    registry._register_test_plugin(plugin2)  # noqa: SLF001
-    registry.enable(plugin1.id)
-    # plugin2 not enabled.  Disabled by default.
-    display_names = registry.get_display_names("en_CA", include_disabled=True)
-    assert isinstance(display_names, dict)
-    assert plugin1.id in display_names
-    assert plugin2.id in display_names
+    registry._register_test_plugin(plugin)  # noqa: SLF001
+    registry.enable(plugin.id)
+    registry.disable(plugin.id)
+    assert not registry.is_enabled(plugin.id)
 
 
 ## .enable() tests
@@ -495,20 +447,20 @@ def test_ttspluginregistry_enable_should_require_the_id_argument() -> None:
 
 
 def test_ttspluginregistry_enable_should_enable_the_plugin() -> None:
-    plugin = DummyTTSPlugin()
     registry = TTSPluginRegistry()
+    plugin = DummyTTSPlugin()
     registry._register_test_plugin(plugin)  # noqa: SLF001
     registry.enable(plugin.id)
-    assert plugin.id in registry.get_display_names("en_CA")
+    assert registry.is_enabled(plugin.id)
 
 
 def test_ttspluginregistry_enable_should_be_idempotent() -> None:
-    plugin = DummyTTSPlugin()
     registry = TTSPluginRegistry()
+    plugin = DummyTTSPlugin()
     registry._register_test_plugin(plugin)  # noqa: SLF001
     registry.enable(plugin.id)
     registry.enable(plugin.id)  # Do not go boom.
-    assert plugin.id in registry.get_display_names("en_CA")
+    assert registry.is_enabled(plugin.id)
 
 
 def test_ttspluginregistry_enable_should_raise_an_error_if_id_is_not_registered() -> (
@@ -544,22 +496,22 @@ def test_ttspluginregistry_disable_should_require_the_id_argument() -> None:
 
 
 def test_ttspluginregistry_disable_should_disable_the_plugin() -> None:
-    plugin = DummyTTSPlugin()
     registry = TTSPluginRegistry()
+    plugin = DummyTTSPlugin()
     registry._register_test_plugin(plugin)  # noqa: SLF001
     registry.enable(plugin.id)
     registry.disable(plugin.id)
-    assert plugin.id not in registry.get_display_names("en_CA")
+    assert not registry.is_enabled(plugin.id)
 
 
 def test_ttspluginregistry_disable_should_be_idempotent() -> None:
-    plugin = DummyTTSPlugin()
     registry = TTSPluginRegistry()
+    plugin = DummyTTSPlugin()
     registry._register_test_plugin(plugin)  # noqa: SLF001
     registry.enable(plugin.id)
     registry.disable(plugin.id)
     registry.disable(plugin.id)  # Do not go boom.
-    assert plugin.id not in registry.get_display_names("en_CA")
+    assert not registry.is_enabled(plugin.id)
 
 
 def test_ttspluginregistry_disable_should_raise_an_error_if_id_is_not_registered() -> (

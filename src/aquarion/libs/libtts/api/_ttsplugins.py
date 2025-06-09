@@ -95,6 +95,14 @@ class TTSPluginRegistry:
         self._plugins: dict[str, ITTSPlugin] = {}
         self._enabled_plugins: set[str] = set()
 
+    @property
+    def plugin_ids(self) -> list[str]:
+        """Return the list of all plugin IDs.
+
+        This includes both enabled and disabled plugins.
+        """
+        return list(self._plugins)
+
     def load_plugins(self, *, validate: bool = False) -> None:
         """Load all aquarion-tts backend plugins.
 
@@ -133,43 +141,37 @@ class TTSPluginRegistry:
         except KeyError:
             self._raise_plugin_not_found(id_)
 
-    def get_display_names(
-        self, locale: str, *, include_disabled: bool = False
-    ) -> dict[str, str]:
-        """Return the ids and display names of all the registered TTS plugins."""
-        return {
-            plugin.id: plugin.get_display_name(locale)
-            for plugin in self._plugins.values()
-            if (plugin.id in self._enabled_plugins) or include_disabled
-        }
+    def is_enabled(self, plugin_id: str) -> bool:
+        """Return True if the plugin of the given ID is enabled, False otherwise."""
+        return plugin_id in self._enabled_plugins
 
-    def enable(self, id_: str) -> None:
+    def enable(self, plugin_id: str) -> None:
         """Enable a TTS plugin for inclusion in .get_display_names().
 
         Raises ValueError exception if the given id does not match any registered
         plugin.
         """
-        if id_ not in self._plugins:
-            self._raise_plugin_not_found(id_)
-        self._enabled_plugins.add(id_)
-        logger.debug(f"Enabled TTS plugin: {id_}")
+        if plugin_id not in self._plugins:
+            self._raise_plugin_not_found(plugin_id)
+        self._enabled_plugins.add(plugin_id)
+        logger.debug(f"Enabled TTS plugin: {plugin_id}")
 
-    def disable(self, id_: str) -> None:
+    def disable(self, plugin_id: str) -> None:
         """Disable a TTS plugin from inclusion in .get_display_names().
 
         Raises ValueError exception if the given id does not match any registered
         plugins.
         """
-        if id_ not in self._plugins:
-            self._raise_plugin_not_found(id_)
-        self._enabled_plugins.discard(id_)
-        logger.debug(f"Disabled TTS plugin: {id_}")
+        if plugin_id not in self._plugins:
+            self._raise_plugin_not_found(plugin_id)
+        self._enabled_plugins.discard(plugin_id)
+        logger.debug(f"Disabled TTS plugin: {plugin_id}")
 
     ## Internal methods
 
-    def _raise_plugin_not_found(self, id_: str) -> Never:
+    def _raise_plugin_not_found(self, plugin_id: str) -> Never:
         """Shared method for when a backend is not registered."""
-        message = f"TTS plugin not found: {id_}"
+        message = f"TTS plugin not found: {plugin_id}"
         raise ValueError(message)
 
     def _register_test_plugin(self, plugin: ITTSPlugin) -> None:
