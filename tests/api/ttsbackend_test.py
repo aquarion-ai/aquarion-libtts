@@ -21,16 +21,77 @@
 These tests serve mostly to document the expectations of all TTSBackend implementations.
 """
 
+from collections.abc import Iterator
+from typing import Final
+
 import pytest
 
-from aquarion.libs.libtts.api._ttsbackend import ITTSBackend
+from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, TTSAudioSpec
 from aquarion.libs.libtts.api._ttssettings import ITTSSettings
-from aquarion.libs.libtts.api._ttsspeechdata import TTSSpeechData
 from tests.api.ttssettings_test import (
     AnotherTTSSettings,
     DummyTTSSettings,
     DummyTTSSettingsHolder,
 )
+
+type TTSAudioSpecTypes = bytes | str | int
+
+AUDIO_SPEC_REQUIRED_ARGS: Final = {
+    "format": "WAV",
+    "sample_rate": 24000,
+    "sample_width": 16,
+    "byte_order": "little-endian",
+    "num_channels": 1,
+}
+
+
+### TTSAudioSpec Tests ###
+
+
+def test_ttsaudiospec_should_accept_required_arguments_as_keyword_arguments() -> None:
+    TTSAudioSpec(**AUDIO_SPEC_REQUIRED_ARGS)  # type:ignore[arg-type]
+
+
+@pytest.mark.parametrize("argument", AUDIO_SPEC_REQUIRED_ARGS)
+def test_ttsaudiospec_should_require_required_arguments(argument: str) -> None:
+    arguments = AUDIO_SPEC_REQUIRED_ARGS.copy()
+    del arguments[argument]
+    with pytest.raises(TypeError, match="missing .* required keyword-only argument"):
+        TTSAudioSpec(**arguments)  # type:ignore[arg-type]
+
+
+def test_ttsaudiospec_should_require_all_keyword_arguments() -> None:
+    with pytest.raises(
+        TypeError, match="takes .* positional argument.? but .* were given"
+    ):
+        TTSAudioSpec(*AUDIO_SPEC_REQUIRED_ARGS.values())  # type:ignore[call-arg]
+
+
+@pytest.mark.parametrize(("attribute", "expected"), AUDIO_SPEC_REQUIRED_ARGS.items())
+def test_ttsaudiospec_should_store_all_given_values(
+    attribute: str,
+    expected: TTSAudioSpecTypes,
+) -> None:
+    speech_data = TTSAudioSpec(**AUDIO_SPEC_REQUIRED_ARGS)  # type:ignore[arg-type]
+    assert getattr(speech_data, attribute) == expected  # type:ignore[misc]
+
+
+@pytest.mark.parametrize(("attribute", "new_value"), AUDIO_SPEC_REQUIRED_ARGS.items())
+def test_ttsaudiospec_attributes_should_be_immutable(
+    attribute: str,
+    new_value: TTSAudioSpecTypes,
+) -> None:
+    speech_data = TTSAudioSpec(**AUDIO_SPEC_REQUIRED_ARGS)  # type:ignore [arg-type]
+    with pytest.raises(AttributeError, match="cannot assign to field"):
+        setattr(speech_data, attribute, new_value)
+
+
+def test_ttsaudiospec_should_not_accept_additional_attributes() -> None:
+    speech_data = TTSAudioSpec(**AUDIO_SPEC_REQUIRED_ARGS)  # type:ignore[arg-type]
+    # This exception message is really cryptic and unhelpful.  But the effect works.
+    with pytest.raises(TypeError, match="must be an instance or subtype of type"):
+        speech_data.new_custom_attribute = "new value"  # type:ignore[attr-defined]
+
 
 ### ITTSBackend Tests ###
 
@@ -46,12 +107,9 @@ class DummyTTSBackend(DummyTTSSettingsHolder):
         super().__init__()
         self._is_started = False
 
-    def convert(self, text: str) -> TTSSpeechData:
-        if not self.is_started:
-            message = "Backend is not started"
-            raise RuntimeError(message)
-        return TTSSpeechData(
-            audio=f"some audio of {text}".encode(),
+    @property
+    def audio_spec(self) -> TTSAudioSpec:
+        return TTSAudioSpec(
             format="Linear PCM",
             sample_rate=24000,
             sample_width=16,
@@ -62,6 +120,12 @@ class DummyTTSBackend(DummyTTSSettingsHolder):
     @property
     def is_started(self) -> bool:
         return self._is_started
+
+    def convert(self, text: str) -> Iterator[bytes]:
+        if not self.is_started:
+            message = "Backend is not started"
+            raise RuntimeError(message)
+        yield f"some audio of {text}".encode()
 
     def start(self) -> None:
         self._is_started = True
@@ -129,6 +193,19 @@ def test_ittsbackend_update_settings_should_raise_error_if_incorrect_kind() -> N
         backend.update_settings(incorrect_settings)
 
 
+## .audio_spec tests
+
+
+def test_ittsbackend_should_have_an_audio_spec_property() -> None:
+    backend = DummyTTSBackend()
+    assert hasattr(backend, "audio_spec")
+
+
+def test_ittsbackend_audio_spec_should_return_a_ttsaudiospec_instance() -> None:
+    backend = DummyTTSBackend()
+    assert isinstance(backend.audio_spec, TTSAudioSpec)
+
+
 ## .convert() tests
 
 
@@ -138,17 +215,21 @@ def test_ittsbackend_convert_should_require_some_text_input() -> None:
         backend.convert()  # type:ignore[call-arg]
 
 
-def test_ittsbackend_convert_should_return_a_ttsspeechdata_object() -> None:
+def test_ittsbackend_convert_should_return_a_generator_of_chunks_of_audio_bytes() -> (
+    None
+):
+    text = "some text"
+    expected_audio = f"some audio of {text}".encode()
     backend = DummyTTSBackend()
     backend.start()
-    speech_data = backend.convert("some text")
-    assert isinstance(speech_data, TTSSpeechData)
+    audio_bytes = b"".join(list(backend.convert(text)))
+    assert audio_bytes == expected_audio
 
 
 def test_ittsbackend_convert_should_raise_an_error_if_backend_not_started() -> None:
     backend = DummyTTSBackend()
     with pytest.raises(RuntimeError, match="Backend is not started"):
-        backend.convert("some text")
+        list(backend.convert("some text"))
 
 
 ## .is_started tests

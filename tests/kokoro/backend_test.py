@@ -28,14 +28,13 @@ from pytest_mock import MockerFixture
 
 from aquarion.libs.libtts._kokoro._backend import KokoroBackend
 from aquarion.libs.libtts._kokoro._settings import KokoroSettings, KokoroVoices
-from aquarion.libs.libtts.api import ITTSBackend, ITTSSettings, TTSSpeechData
+from aquarion.libs.libtts.api import (
+    ITTSBackend,
+    ITTSSettings,
+    TTSAudioSpec,
+)
 from tests.api.ttssettings_test import AnotherTTSSettings
 from tests.kokoro.conftest import SettingsDict
-
-EXPECTED_AUDIO = (
-    b"RIFF(\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00\x01\x00\xc0]\x00\x00\x80\xbb"
-    b"\x00\x00\x02\x00\x10\x00data\x04\x00\x00\x00\x00\x00\x00\x00"
-)
 
 
 @pytest.fixture(autouse=True)
@@ -78,17 +77,6 @@ def test_kokorobackend_should_require_settings_to_be_instance_of_kokorosettings(
 ):
     with pytest.raises(TypeError, match="Incorrect settings type"):
         KokoroBackend(settings=AnotherTTSSettings)  # type:ignore[arg-type]
-
-
-@pytest.mark.skipif(
-    environ.get("KOKORO_TEST_SKIP_MOCK", "0") == "1",
-    reason="Exact audio output cannot be guaranteed",
-)
-def test_kokorobackend_convert_should_return_expected_speech_audio() -> None:
-    backend = KokoroBackend(KokoroSettings())
-    backend.start()
-    speech_data = backend.convert("some text")
-    assert speech_data.audio == EXPECTED_AUDIO
 
 
 def test_kokorobackend_should_use_local_model_path_when_given(
@@ -202,6 +190,19 @@ def test_kokorobackend_update_settings_should_raise_error_if_incorrect_kind() ->
         backend.update_settings(incorrect_settings)
 
 
+## .audio_spec tests
+
+
+def test_kokorobackend_should_have_an_audio_spec_property() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    assert hasattr(backend, "audio_spec")
+
+
+def test_kokorobackend_audio_spec_should_return_a_ttsaudiospec_instance() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    assert isinstance(backend.audio_spec, TTSAudioSpec)
+
+
 ## .convert() tests
 
 
@@ -211,17 +212,23 @@ def test_kokorobackend_convert_should_require_some_text_input() -> None:
         backend.convert()  # type:ignore[call-arg]
 
 
-def test_kokorobackend_convert_should_return_a_ttsspeechdata_object() -> None:
+@pytest.mark.skipif(
+    environ.get("KOKORO_TEST_SKIP_MOCK", "0") == "1",
+    reason="Exact audio output cannot be guaranteed",
+)
+def test_kokorobackend_convert_should_return_a_generator_of_chunks_of_audio_bytes() -> (
+    None
+):
     backend = KokoroBackend(KokoroSettings())
     backend.start()
-    speech_data = backend.convert("some text")
-    assert isinstance(speech_data, TTSSpeechData)
+    audio_bytes = b"".join(list(backend.convert("some text")))
+    assert audio_bytes == b"\x00\x00\x00\x00"
 
 
-def test_ittsbackend_convert_should_raise_an_error_if_backend_not_started() -> None:
+def test_kokorobackend_convert_should_raise_an_error_if_backend_not_started() -> None:
     backend = KokoroBackend(KokoroSettings())
     with pytest.raises(RuntimeError, match="Backend is not started"):
-        backend.convert("some text")
+        list(backend.convert("some text"))
 
 
 ## .is_started tests

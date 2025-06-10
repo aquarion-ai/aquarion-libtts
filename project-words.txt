@@ -127,11 +127,11 @@ tomli
 torchvision
 tqdm
 traduit
+ttsaudiospec
 ttsbackend
 ttspluginregistry
 ttsplugins
 ttssettings
-ttsspeechdata
 usefixtures
 uvenv
 vars

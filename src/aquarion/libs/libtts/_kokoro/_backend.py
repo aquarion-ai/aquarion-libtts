@@ -18,14 +18,13 @@
 
 """Kokoro TTS backend implementation."""
 
-import wave
-from io import BytesIO
+from collections.abc import Iterator
 from typing import TYPE_CHECKING
 
 from kokoro import KModel, KPipeline
 
 from aquarion.libs.libtts._kokoro._settings import KokoroSettings
-from aquarion.libs.libtts.api import ITTSSettings, TTSSpeechData
+from aquarion.libs.libtts.api import ITTSSettings, TTSAudioSpec
 
 if TYPE_CHECKING:
     from numpy import float32, int16
@@ -42,6 +41,29 @@ class KokoroBackend:
             raise TypeError(message)
         self._settings = settings
         self._pipeline: KPipeline | None = None
+
+    @property
+    def audio_spec(self) -> TTSAudioSpec:
+        """Return metadata about the speech audio format.
+
+        E.g. Mono 16-bit little-endian linear PCM audio at 24KHz.
+        """
+        return TTSAudioSpec(
+            format="Linear PCM",
+            sample_rate=24000,
+            sample_width=16,
+            byte_order="little-endian",
+            num_channels=1,
+        )
+
+    @property
+    def is_started(self) -> bool:
+        """Return True if TTS backend is started / running, False otherwise.
+
+        The reason this is a property and not just an attribute is because it should be
+        read-only.
+        """
+        return self._pipeline is not None
 
     def get_settings(self) -> KokoroSettings:
         """Return the current settings in use.
@@ -65,47 +87,22 @@ class KokoroBackend:
         if started_state:
             self.start()
 
-    def convert(self, text: str) -> TTSSpeechData:
-        """Return speech audio generated from the given text.
+    def convert(self, text: str) -> Iterator[bytes]:
+        """Return speech audio for the given text as one or more chunks of bytes.
 
-        The audio is in Mono WAV format with 16-bit samples and a sample rate of 24kHz.
-
-        ATTENTION: The audio format is likely to change in the future.
+        The audio data must be in the same format as specified in .audio_spec.
         """
         if not self.is_started:
             message = "Backend is not started"
             raise RuntimeError(message)
-        audio_buffer = BytesIO()
-        with wave.open(audio_buffer, "wb") as wav_file:
-            wav_file.setnchannels(1)  # Mono audio
-            wav_file.setsampwidth(2)  # 16-bit samples
-            wav_file.setframerate(24000)  # 24kHz sample rate
-            assert isinstance(self._pipeline, KPipeline)  # noqa: S101
-            for result in self._pipeline(
-                text, self._settings.voice, self._settings.speed
-            ):
-                if result.audio is None:
-                    continue
-                audio_array: NDArray[float32] = result.audio.numpy()
-                audio_int_array: NDArray[int16] = (audio_array * 32767).astype("int16")
-                wav_file.writeframes(audio_int_array.tobytes())
-        return TTSSpeechData(
-            audio=audio_buffer.getvalue(),
-            format="WAV",
-            sample_rate=24000,
-            sample_width=16,
-            byte_order="LE",
-            num_channels=1,
-        )
-
-    @property
-    def is_started(self) -> bool:
-        """Return True if TTS backend is started / running, False otherwise.
-
-        The reason this is a property and not just an attribute is because it should be
-        read-only.
-        """
-        return self._pipeline is not None
+        # Type narrowing for the type checker.
+        assert isinstance(self._pipeline, KPipeline)  # noqa: S101
+        for result in self._pipeline(text, self._settings.voice, self._settings.speed):
+            if result.audio is None:
+                continue
+            audio_array: NDArray[float32] = result.audio.numpy()
+            audio_int_array: NDArray[int16] = (audio_array * 32767).astype("int16")
+            yield audio_int_array.tobytes()
 
     def start(self) -> None:
         """Start the TTS backend."""
