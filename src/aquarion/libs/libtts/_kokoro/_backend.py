@@ -108,7 +108,7 @@ class KokoroBackend:
         """Start the TTS backend."""
         if self.is_started:
             return
-        model: KModel | bool = False
+        model: KModel | bool = True
         if (
             self._settings.model_path is not None
             or self._settings.config_path is not None
