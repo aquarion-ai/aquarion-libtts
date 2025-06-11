@@ -219,9 +219,10 @@ def test_kokorobackend_convert_should_return_a_generator_of_chunks_of_audio_byte
     backend.start()
     audio_bytes = b"".join(list(backend.convert("some text")))
     assert len(audio_bytes) > 0
-    if environ.get("KOKORO_TEST_SKIP_MOCK", "0") != "1":
+    if environ.get("KOKORO_TEST_SKIP_MOCK", "0") == "1":
         # Cannot guarantee exact same output every time when really running Kokoro.
-        assert audio_bytes == b"\x00\x00\x00\x00"
+        return  # pragma: no cover
+    assert audio_bytes == b"\x00\x00\x00\x00"
 
 
 def test_kokorobackend_convert_should_raise_an_error_if_backend_not_started() -> None:
