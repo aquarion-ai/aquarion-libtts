@@ -118,6 +118,30 @@ def test_kokorosettings_should_accept_supported_locales(
 
 
 @pytest.mark.parametrize(
+    ("locale", "voice"),
+    zip(
+        [
+            "en_CA",  # af_heart
+            "en_US",  # af_bella
+            "en_CA",  # af_nicole
+            "en_US",  # am_fenrir
+            "en_CA",  # am_michael
+            "en_US",  # am_puck
+            "en_GB",  # bf_emma
+            "en_GB",  # bm_fable
+            "en_GB",  # bm_george
+            "fr_CA",  # ff_siwis
+        ],
+        KokoroVoices,
+        strict=True,
+    ),
+)
+def test_kokorosettings_should_accept_supported_voices(locale: str, voice: str) -> None:
+    settings = KokoroSettings(locale=locale, voice=voice)  # type:ignore[arg-type]
+    assert str(settings.locale) == locale
+
+
+@pytest.mark.parametrize(
     ("locale", "voice", "expected"),
     [
         ("en-US", KokoroVoices.af_heart, "a"),
