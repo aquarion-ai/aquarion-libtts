@@ -23,19 +23,24 @@ def main []: nothing -> string {
 }
 
 let radish_common_args = ["-b", "steps/", "features/"]
-let radish_normal_args = ["--tags", "not wip", "-f", "dots", "--shuffle"]
+let radish_default_args = ["--tags", "not wip", "-f", "dots", "--shuffle"]
 let coverage_args = ["--rcfile=radish_coverage.toml"]
 
 # Internal command. DO NOT RUN DIRECTLY.
 def --wrapped "main accept" [...rest: string]: nothing -> string {
-    radish ...$radish_common_args ...$radish_normal_args ...$rest
+    if ($rest | length) > 0 {
+        radish ...$radish_common_args ...$rest
+
+    } else {
+        radish ...$radish_common_args ...$radish_default_args
+    }
 }
 
 # Internal command. DO NOT RUN DIRECTLY.
-def --wrapped "main accept cover" [...rest:string]: nothing -> string  {
+def --wrapped "main accept cover" [...rest: string]: nothing -> string  {
     (
         coverage run ...$coverage_args ...(which radish).path ...$radish_common_args
-        ...$radish_normal_args ...$rest
+        ...$radish_default_args ...$rest
     )
     coverage report -m ...$coverage_args
 }
