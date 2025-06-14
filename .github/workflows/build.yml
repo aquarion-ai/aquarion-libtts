@@ -101,7 +101,7 @@ jobs:
       - name: Cache Hugging Face
         uses: actions/cache@v4
         with:
-          key: hugging-face-${{ hashFiles('~/.cache/huggingface') }}
+          key: hugging-face-${{ hashFiles('~/.cache/huggingface/hub/refs/main') }}
           restore-keys: hugging-face
           path: |
             ~/.cache/huggingface
