@@ -29,7 +29,6 @@ on:
       - ".vscode/**"
       - ".*"
       - "*.md"
-      - "LICENSE"
       - "*.txt"
       - "*.feature"
   pull_request:
@@ -98,6 +97,14 @@ jobs:
           restore-keys: pre-commit
           path: |
             ~/.cache/pre-commit
+
+      - name: Cache Hugging Face
+        uses: actions/cache@v4
+        with:
+          key: hugging-face-${{ hashFiles('~/.cache/huggingface') }}
+          restore-keys: hugging-face
+          path: |
+            ~/.cache/huggingface
 
       - name: Initialize environment
         run: devbox run init
