@@ -22,6 +22,7 @@ Feature: Kokoro TTS
             | fr_CA  | Kokoro   |
             | fr_FR  | Kokoro   |
 
+    @gpu
     Scenario: Using an NVIDIA GPU
         When I create settings with 'device' set to 'cuda'
         And I create the Kokoro backend using the settings
@@ -34,7 +35,6 @@ Feature: Kokoro TTS
         And I start the backend
         Then the model should be loaded in the CPU
 
-    @todo: Refine me later
     Scenario Outline: Changing the Locale and/or Voice
         When I create default settings
         And I create the Kokoro backend using the settings
@@ -48,7 +48,6 @@ Feature: Kokoro TTS
             | en_GB  | bf_emma  |
             | fr_CA  | ff_siwis |
 
-    @todo: Refine me later
     Scenario: Changing the Speed
         When I create settings with 'speed' set to '1.0'
         And I create the Kokoro backend using the settings
@@ -62,8 +61,9 @@ Feature: Kokoro TTS
         And I start the backend
         Then converting text to speech should work as expected
 
+    @gpu
     Scenario: Checking for GPU Memory Leaks
-        When I create default settings
+        When I create settings with 'device' set to 'cuda'
         And I create the Kokoro backend using the settings
         And I start the backend
         And I convert text to speech '30' times in a row

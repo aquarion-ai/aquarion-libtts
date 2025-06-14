@@ -122,7 +122,7 @@ jobs:
         run: devbox run check test cover -py ${{ matrix.python-version }}
 
       - name: Run acceptance tests
-        run: devbox run check accept cover
+        run: devbox run check accept cover --ci
 
       - name: Run security checks
         run: devbox run check sec
