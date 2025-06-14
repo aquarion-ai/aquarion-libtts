@@ -5,6 +5,7 @@ Aquarion
 autouse
 beautifulsoup
 beckend
+bsdiff
 celerybeat
 cldr
 codespell
@@ -35,6 +36,7 @@ GITMOJI
 hexgrad
 hookspecs
 htmlcov
+huggingface
 iniconfig
 ionide
 ipynb
@@ -117,6 +119,7 @@ Spyder
 spyderproject
 spyproject
 stepmodel
+stopall
 subclassing
 sublicensable
 suis
