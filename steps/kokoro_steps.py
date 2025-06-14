@@ -251,7 +251,11 @@ def _(step: Step) -> None:
 def _(step: Step) -> None:
     expected = ((Path(__file__).parent) / "kokoro_expected.pcm").read_bytes()
     speech = b"".join(list(step.context.backend.convert("Hi there!")))
-    assert len(diff(speech, expected)) < MAX_SPEECH_DIFF_LEN
+    diff_len = len(diff(speech, expected))
+    assert diff_len < MAX_SPEECH_DIFF_LEN, (
+        "Generated speech audio is more different than expected.  "
+        f"({diff_len} > {MAX_SPEECH_DIFF_LEN})"
+    )
 
 
 @then("GPU memory usage remain consistent")
