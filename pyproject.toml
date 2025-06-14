@@ -68,16 +68,15 @@ Source = "https://github.com/aquarion-ai/aquarion-libtts"
 [project.optional-dependencies]
 cpu = [
   "torch>=2.7.1",
-  "torchvision>=0.22.1",
 ]
 cu128 = [
   "torch>=2.7.1",
-  "torchvision>=0.22.1",
 ]
 kokoro = [
   "en-core-web-sm~=3.8.0",
   "kokoro~=0.9.4",
   "pip~=25.1.1",
+  "torch>=2.7.1",
 ]
 
 [project.entry-points.'aquarion-libtts']
@@ -157,10 +156,6 @@ torch = [
   {index = "pytorch-cpu", extra = "cpu"},
   {index = "pytorch-cu128", extra = "cu128"},
 ]
-torchvision = [
-  {index = "pytorch-cpu", extra = "cpu"},
-  {index = "pytorch-cu128", extra = "cu128"},
-]
 
 [[tool.uv.index]]
 explicit = true
@@ -225,7 +220,7 @@ groups = ["hatch-test"]
 # parallel = true
 # We do not want to *always* randomize.
 # randomize = true
-features = ["kokoro", "cu128"]
+features = ["kokoro", "cpu"]
 type = "uvenv"
 
 [[tool.hatch.envs.hatch-test.matrix]]
@@ -234,7 +229,7 @@ python = ["3.12"]
 # Env: types
 
 [tool.hatch.envs.types]
-features = ["kokoro", "cu128"]
+features = ["kokoro", "cpu"]
 groups = ["types"]
 type = "uvenv"
 
@@ -254,6 +249,16 @@ type = "uvenv"
 cover = ".hatch_scripts accept cover {args}"
 test = ".hatch_scripts accept {args}"
 wip = ".hatch_scripts accept wip {args}"
+
+# Env: accept-ci
+
+[tool.hatch.envs.accept-ci]
+features = ["kokoro", "cpu"]
+groups = ["accept"]
+type = "uvenv"
+
+[tool.hatch.envs.accept-ci.scripts]
+cover = ".hatch_scripts accept cover --ci {args}"
 
 ### Coverage ###
 
