@@ -99,6 +99,9 @@ accept = [
   "coverage[toml]~=7.8.2",
   "radish-bdd~=0.18.2",
 ]
+babel = [
+  "babel~=2.17.0",
+]
 hatch-test = [
   "coverage-enable-subprocess==1.0",
   "coverage[toml]~=7.8.2",
@@ -188,16 +191,6 @@ packages = ["src/aquarion"]
 features = ["kokoro", "cu128"]
 type = "uvenv"
 
-[tool.hatch.envs.default.scripts]
-babel-compile-src = ".hatch_scripts babel compile src"
-babel-compile-tests = ".hatch_scripts babel compile tests"
-babel-extract-src = ".hatch_scripts babel extract src"
-babel-extract-tests = ".hatch_scripts babel extract tests"
-babel-init-src = ".hatch_scripts babel init src {args}"
-babel-init-tests = ".hatch_scripts babel init tests {args}"
-babel-update-src = ".hatch_scripts babel update src {args}"
-babel-update-tests = ".hatch_scripts babel update tests {args}"
-
 # Env: hatch-uv
 
 [tool.hatch.envs.hatch-uv]
@@ -259,6 +252,23 @@ type = "uvenv"
 
 [tool.hatch.envs.accept-ci.scripts]
 cover = ".hatch_scripts accept cover --ci {args}"
+
+# Env: babel
+
+[tool.hatch.envs.babel]
+features = [] # Prevent inheriting from default
+groups = ["babel"]
+type = "uvenv"
+
+[tool.hatch.envs.babel.scripts]
+compile-src = ".hatch_scripts babel compile src"
+compile-tests = ".hatch_scripts babel compile tests"
+extract-src = ".hatch_scripts babel extract src"
+extract-tests = ".hatch_scripts babel extract tests"
+init-src = ".hatch_scripts babel init src {args}"
+init-tests = ".hatch_scripts babel init tests {args}"
+update-src = ".hatch_scripts babel update src {args}"
+update-tests = ".hatch_scripts babel update tests {args}"
 
 ### Coverage ###
 

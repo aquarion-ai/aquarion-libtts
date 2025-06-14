@@ -64,6 +64,9 @@ accept = [
     { name = "coverage" },
     { name = "radish-bdd" },
 ]
+babel = [
+    { name = "babel" },
+]
 hatch-static-analysis = [
     { name = "ruff" },
 ]
@@ -133,6 +136,7 @@ accept = [
     { name = "coverage", extras = ["toml"], specifier = "~=7.8.2" },
     { name = "radish-bdd", specifier = "~=0.18.2" },
 ]
+babel = [{ name = "babel", specifier = "~=2.17.0" }]
 hatch-static-analysis = [{ name = "ruff", specifier = "~=0.11.13" }]
 hatch-test = [
     { name = "coverage", extras = ["toml"], specifier = "~=7.8.2" },
