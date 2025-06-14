@@ -34,6 +34,8 @@
         "api",
         "kokoro"
     ],
+    "cucumberautocomplete.strictGherkinCompletion": true,
+    "cucumberautocomplete.strictGherkinValidation": true,
     "editor.defaultFormatter": null,
     "editor.detectIndentation": false,
     "editor.formatOnSave": true,
