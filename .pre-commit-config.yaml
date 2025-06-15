@@ -113,6 +113,7 @@ repos:
         always_run: true
         fail_fast: true
         pass_filenames: false
+        verbose: true
 
   - repo: local
     hooks:
@@ -126,3 +127,4 @@ repos:
         always_run: true
         fail_fast: true
         pass_filenames: false
+        verbose: true
