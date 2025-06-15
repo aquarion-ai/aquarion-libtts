@@ -343,6 +343,7 @@ mark-parentheses = false
 
 [tool.mypy]
 cache_dir = ".cache/mypy"
+exclude = ["tests/acceptance"]
 explicit_package_bases = true
 mypy_path = "$MYPY_CONFIG_FILE_DIR/src,$MYPY_CONFIG_FILE_DIR/typings"
 plugins = []

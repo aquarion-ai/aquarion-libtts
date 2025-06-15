@@ -22,7 +22,7 @@ def main []: nothing -> string {
     help main
 }
 
-let radish_common_args = ["-b", "steps/", "features/"]
+let radish_common_args = ["-b", "tests/acceptance/steps/", "tests/acceptance/features/"]
 let radish_default_args = ["--tags", "not wip", "-f", "dots", "--shuffle"]
 let radish_ci_args = ["--tags", "not wip and not gpu", "-f", "dots", "--shuffle"]
 let coverage_args = ["--rcfile=radish_coverage.toml"]
