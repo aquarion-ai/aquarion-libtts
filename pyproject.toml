@@ -188,7 +188,7 @@ packages = ["src/aquarion"]
 # Env: default
 
 [tool.hatch.envs.default]
-features = ["kokoro", "cpu"]
+features = ["kokoro", "cu128"]
 type = "uvenv"
 
 # Env: hatch-uv
@@ -234,7 +234,7 @@ check = """
 # Env: accept
 
 [tool.hatch.envs.accept]
-features = ["kokoro", "cpu"]
+features = ["kokoro", "cu128"]
 groups = ["accept"]
 type = "uvenv"
 

@@ -163,7 +163,7 @@ def --wrapped "main accept" [
 
 # Check code coverage on acceptance tests.
 def --wrapped "main accept cover" [
-    --ci,
+    --ci, # Used in CI pipeline to avoid GPU dependence.
     ...rest: string # Extra arguments for radish
 ]: nothing -> string {
     mut environ = "accept"

@@ -32,22 +32,32 @@ def "main coverage" []: nothing -> string {
 
 # Print the most recent test coverage report.
 def "main coverage test" [
+    --ci, # Used in CI pipeline to avoid GPU dependence.
     --total (-t) # Print only to the total.
 ]: nothing -> string {
+    mut environ = "accept"
+    if $ci {
+        $environ = "accept-ci"
+    }
     mut $extra = []
     if $total { $extra = ["--format", "total"] }
     # It is easier to just use the coverage tool from the accept environment than to try
     # and figure out which matrixed hatch-test coverage tool to run.
     # This could in principle least to a version mismatch, but the intention is to keep
     # all versions of a tool the same in all environments, so it should be fine.
-    hatch run accept:coverage report ...$extra
+    hatch run $"($environ):coverage" report ...$extra
 }
 
 # Print the most recent acceptance test coverage report.
 def "main coverage accept" [
+    --ci, # Used in CI pipeline to avoid GPU dependence.
     --total (-t) # Print only to the total.
 ]: nothing -> string {
+    mut environ = "accept"
+    if $ci {
+        $environ = "accept-ci"
+    }
     mut $extra = []
     if $total { $extra = ["--format", "total"] }
-    hatch run accept:coverage report --rcfile=radish_coverage.toml ...$extra
+    hatch run $"($environ):coverage" report --rcfile=radish_coverage.toml ...$extra
 }
