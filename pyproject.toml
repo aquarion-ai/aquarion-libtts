@@ -85,15 +85,6 @@ kokoro_v1 = "aquarion.libs.libtts._kokoro"
 ### UV ###
 
 [dependency-groups]
-hatch-static-analysis = [
-  "ruff~=0.11.13",
-]
-hatch-uv = [
-  "uv~=0.7.11",
-]
-# These are Hatch's default dependencies, just with versions updates and more precisely
-# pinned down.  Use extra-dependencies for any other custom dependencies to keep them
-# separated.
 accept = [
   "bsdiff4>=1.2.6",
   "coverage[toml]~=7.8.2",
@@ -102,16 +93,23 @@ accept = [
 babel = [
   "babel~=2.17.0",
 ]
+hatch-static-analysis = [
+  "ruff~=0.11.13",
+]
 hatch-test = [
-  "coverage-enable-subprocess==1.0",
-  "coverage[toml]~=7.8.2",
+  "coverage-enable-subprocess==1.0", # Hatch test default inclusion
+  "coverage[toml]~=7.8.2", # Hatch test default inclusion
   "logot~=1.4.0",
   "loguru~=0.7.3",
-  "pytest-mock~=3.14.1",
-  "pytest-randomly~=3.16.0",
-  "pytest-rerunfailures~=15.1.0",
-  "pytest-xdist[psutil]~=3.7.0",
-  "pytest~=8.4.0",
+  "pytest-mock~=3.14.1", # Hatch test default inclusion
+  "pytest-randomly~=3.16.0", # Hatch test default inclusion
+  "pytest-rerunfailures~=15.1.0", # Hatch test default inclusion
+  "pytest-socket~=0.7.0",
+  "pytest-xdist[psutil]~=3.7.0", # Hatch test default inclusion
+  "pytest~=8.4.0", # Hatch test default inclusion
+]
+hatch-uv = [
+  "uv~=0.7.11",
 ]
 types = [
   "logot~=1.4.0",
@@ -387,7 +385,7 @@ strict_concatenate = true
 ### pytest ###
 
 [tool.pytest.ini_options]
-addopts = "--strict-markers"
+addopts = "--strict-markers --disable-socket"
 cache_dir = ".cache/pytest"
 empty_parameter_set_mark = "xfail"
 filterwarnings = [
