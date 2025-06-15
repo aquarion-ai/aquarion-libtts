@@ -22,6 +22,8 @@ def main []: nothing -> string {
     help main
 }
 
+## Acceptance tests
+
 let radish_common_args = ["-b", "tests/acceptance/steps/", "tests/acceptance/features/"]
 let radish_default_args = ["--tags", "not wip", "-f", "dots", "--shuffle"]
 let radish_ci_args = ["--tags", "not wip and not gpu", "-f", "dots", "--shuffle"]
@@ -56,54 +58,65 @@ def --wrapped "main accept wip" [...rest: string]: nothing -> string {
     radish ...$radish_common_args --wip --tags wip --write-ids ...$rest
 }
 
+
+### Babel Language Tooling
+
+let babel_src_code_path = "src/aquarion/libs/libtts"
+let babel_src_locale_base = $"($babel_src_code_path)/locale"
+let babel_test_code_path = "tests/unit/api"
+let babel_test_locale_base = $"($babel_test_code_path)/locale"
+
 # Internal command. DO NOT RUN DIRECTLY.
 def "main babel extract src" []: nothing -> string {
     let domain = (hatch project metadata name)
-    babel_extract src/aquarion/libs/libtts $"src/aquarion/libs/libtts/locale/($domain).pot"
+    babel_extract $babel_src_code_path $"($babel_src_locale_base)/($domain).pot"
 }
 
 # Internal command. DO NOT RUN DIRECTLY.
 def "main babel extract tests" []: nothing -> string {
-    babel_extract tests/api/ tests/api/locale/test.pot
+    babel_extract $babel_test_code_path $"($babel_test_locale_base)/test.pot"
 }
 
 # Internal command. DO NOT RUN DIRECTLY.
 def "main babel init src" [locale: string]: nothing -> string {
     let domain = (hatch project metadata name)
     (
-        babel_init $"src/aquarion/libs/libtts/locale/($domain).pot"
-        src/aquarion/libs/libtts/locale/ $domain $locale
+        babel_init $"($babel_src_locale_base)/($domain).pot"
+        $babel_src_locale_base $domain $locale
     )
 }
 
 # Internal command. DO NOT RUN DIRECTLY.
 def "main babel init tests" [locale: string]: nothing -> string {
-    babel_init tests/api/locale/test.pot tests/api/locale/ test $locale
+    babel_init $"($babel_test_locale_base)/test.pot" $babel_test_locale_base test $locale
 }
 
 # Internal command. DO NOT RUN DIRECTLY.
 def "main babel update src" [--headers (-h)]: nothing -> string {
     let domain = (hatch project metadata name)
     (
-        babel_update $headers $"src/aquarion/libs/libtts/locale/($domain).pot"
-        src/aquarion/libs/libtts/locale/ $domain
+        babel_update $headers $"($babel_src_locale_base)/($domain).pot"
+        $babel_src_locale_base $domain
     )
 }
 
 # Internal command. DO NOT RUN DIRECTLY.
 def "main babel update tests" [--headers (-h)]: nothing -> string {
-    babel_update $headers tests/api/locale/test.pot tests/api/locale/ test
+    (
+        babel_update $headers $"($babel_test_locale_base)/test.pot"
+        $babel_test_locale_base test
+    )
 }
 
 # Internal command. DO NOT RUN DIRECTLY.
 def "main babel compile src" []: nothing -> string {
     let domain = (hatch project metadata name)
-    babel_compile $domain src/aquarion/libs/libtts/locale/
+    babel_compile $domain $babel_src_locale_base
 }
 
 # Internal command. DO NOT RUN DIRECTLY.
 def "main babel compile tests" []: nothing -> string {
-    babel_compile test tests/api/locale
+    babel_compile test $babel_test_locale_base
 }
 
 
