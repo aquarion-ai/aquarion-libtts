@@ -22,12 +22,12 @@ Feature: Kokoro TTS
             | fr_CA  | Kokoro   |
             | fr_FR  | Kokoro   |
 
-    @gpu
-    Scenario: Using an NVIDIA GPU
-        When I create settings with 'device' set to 'cuda'
-        And I create the Kokoro backend using the settings
-        And I start the backend
-        Then the model should be loaded in the GPU
+    # @gpu
+    # Scenario: Using an NVIDIA GPU
+    #     When I create settings with 'device' set to 'cuda'
+    #     And I create the Kokoro backend using the settings
+    #     And I start the backend
+    #     Then the model should be loaded in the GPU
 
     Scenario: Using the CPU
         When I create settings with 'device' set to 'cpu'
@@ -61,13 +61,13 @@ Feature: Kokoro TTS
         And I start the backend
         Then converting text to speech should work as expected
 
-    @gpu
-    Scenario: Checking for GPU Memory Leaks
-        When I create settings with 'device' set to 'cuda'
-        And I create the Kokoro backend using the settings
-        And I start the backend
-        And I convert text to speech '30' times in a row
-        Then GPU memory usage remain consistent
+    # @gpu
+    # Scenario: Checking for GPU Memory Leaks
+    #     When I create settings with 'device' set to 'cuda'
+    #     And I create the Kokoro backend using the settings
+    #     And I start the backend
+    #     And I convert text to speech '30' times in a row
+    #     Then GPU memory usage remain consistent
 
     Scenario: Working Offline with No Network
         When I create settings with paths to pre-existing local files
