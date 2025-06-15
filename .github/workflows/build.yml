@@ -64,15 +64,16 @@ jobs:
           path: |
             ~/.local/share/uv/python
 
-      - name: Cache dependencies and venvs
+      - name: Cache dependencies, venvs and Hugging Face data
         uses: actions/cache@v4
         with:
-          key: dependencies-venvs-${{ hashFiles('uv.lock') }}
-          restore-keys: dependencies-venvs
+          key: dependencies-venvs-hf_data-${{ hashFiles('uv.lock') }}
+          restore-keys: dependencies-venvs-hf_data
           path: |
             ~/.cache/uv
             ~/.cache/pip
             ~/.local/share/hatch/env
+            ~/.cache/huggingface
 
       # - name: Cache Hatch Pythons
       #   uses: actions/cache@v4
@@ -97,14 +98,6 @@ jobs:
           restore-keys: pre-commit
           path: |
             ~/.cache/pre-commit
-
-      - name: Cache Hugging Face
-        uses: actions/cache@v4
-        with:
-          key: hugging-face-${{ hashFiles('uv.lock', '~/.cache/huggingface/hub/refs/main') }}
-          restore-keys: hugging-face
-          path: |
-            ~/.cache/huggingface
 
       - name: Initialize environment
         run: devbox run init
