@@ -28,7 +28,7 @@ import pytest
 
 from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, TTSAudioSpec
 from aquarion.libs.libtts.api._ttssettings import ITTSSettings
-from tests.api.ttssettings_test import (
+from tests.unit.api.ttssettings_test import (
     AnotherTTSSettings,
     DummyTTSSettings,
     DummyTTSSettingsHolder,

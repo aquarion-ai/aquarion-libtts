@@ -29,8 +29,8 @@ from aquarion.libs.libtts.api import (
     ITTSSettings,
     JSONSerializableTypes,
 )
-from tests.api.ttssettings_test import AnotherTTSSettings
-from tests.kokoro.conftest import (
+from tests.unit.api.ttssettings_test import AnotherTTSSettings
+from tests.unit.kokoro.conftest import (
     INVALID_SETTINGS_CASES,
     SETTINGS_ARGS,
     SettingsDict,

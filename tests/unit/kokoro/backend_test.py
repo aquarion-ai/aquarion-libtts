@@ -33,8 +33,8 @@ from aquarion.libs.libtts.api import (
     ITTSSettings,
     TTSAudioSpec,
 )
-from tests.api.ttssettings_test import AnotherTTSSettings
-from tests.kokoro.conftest import SettingsDict
+from tests.unit.api.ttssettings_test import AnotherTTSSettings
+from tests.unit.kokoro.conftest import SettingsDict
 
 
 @pytest.fixture(autouse=True)

@@ -36,8 +36,8 @@ from aquarion.libs.libtts.api._ttssettings import (
     ITTSSettings,
     JSONSerializableTypes,
 )
-from tests.api.ttsbackend_test import DummyTTSBackend
-from tests.api.ttssettings_test import AnotherTTSSettings, DummyTTSSettings
+from tests.unit.api.ttsbackend_test import DummyTTSBackend
+from tests.unit.api.ttssettings_test import AnotherTTSSettings, DummyTTSSettings
 
 ### ITTSPlugin Tests ###
 
