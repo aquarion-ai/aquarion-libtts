@@ -34,7 +34,7 @@ from aquarion.libs.libtts.api import TTSPluginRegistry
 PLUGIN_ID: Final = "kokoro_v1"
 MIN_GPU_MEMORY_ALLOCATION: Final = 300_000_000  # bytes
 MAX_GPU_RESIDUAL_MEMORY: Final = 10_000_000  # bytes
-MAX_SPEECH_DIFF_LEN: Final = 27_000  # NDIFF4 bytes
+MAX_SPEECH_DIFF_LEN: Final = 28_000  # NDIFF4 bytes
 MAX_GPU_LOOP_RESIDUAL_MEMORY: Final = 12_000_000  # bytes
 
 
