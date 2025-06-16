@@ -1,6 +1,7 @@
 addopts
 affiché
 analyzer
+aplay
 Aquarion
 autouse
 beautifulsoup
