@@ -55,19 +55,24 @@ Experiment in creating a scalable local AI voice chat bot.
 
 ## Table of Contents
 
-- [About](#about)
+- [Description](#description)
   - [About Aquarion AI](#about-aquarion-ai)
-  - [About this Repository](#about-this-repository)
+  - [About aquarion-libtts](#about-aquarion-libtts)
+- [Documentation](#documentation)
+- [Installation](#installation)
+  - [Installation Details](#installation-details)
+- [Usage](#usage)
+  - [Example](#example)
+- [Support and Contributing](#support-and-contributing)
   - [Disclaimer](#disclaimer)
-  - [Copyright and Licence](#copyright-and-licence)
-- [User Information](#user-information)
-- [Developer Information](#developer-information)
   - [Development Standards](#development-standards)
-  - [Developer Installation](#developer-installation)
-    - [Developer Installation Details](#developer-installation-details)
   - [What Tool Does What](#what-tool-does-what)
+- [Roadmap](#roadmap)
+- [Authors and Acknowledgements](#authors-and-acknowledgements)
+- [Copyright and Licence](#copyright-and-licence)
+- [Project Status](#project-status)
 
-## About
+## Description
 
 ### About Aquarion AI
 
@@ -78,57 +83,20 @@ taking head / avatar who's mouth moves with the speech.  Lastly, it should all r
 locally / offline, even in an air gapped environment.  Oh, and it should be modular
 enough to support multiple alternate STT, LLM and TTS models/engines/options.
 
-### About this Repository
+### About aquarion-libtts
 
-The repository contains the library of Text To Speech (TTS) backend components for
+The project contains the library of Text To Speech (TTS) backend components for
 Aquarion AI.
 
-### Disclaimer
+## Documentation
 
-While this project is FOSS and you are welcome to use it (if it ever becomes something
-usable), know that I am making this for myself. So do not expect any kind of support or
-updates or maintenance or longevity.  Caveat Emptor.
-
-### Copyright and Licence
-
-- `aquarion-libtts` is © 2025-present by Krys Lawrence.
-
-- `aquarion-libtts` code is licensed under the terms of the
-  [AGPL-3.0-only](https://spdx.org/licenses/AGPL-3.0-only.html) licence.
-
-- `aquarion-libtts` documentation is licensed under the terms of the
-  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) licence.
-
-## User Information
-
-For user documentation, see the
+For documentation, see the
 [aquarion-docs](https://github.com/aquarion-ai/aquarion-docs) project.
 
-## Developer Information
-
-### Development Standards
-
-This project follows the following standard practices:
-
-- [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) for
-  commit messages.
-
-  - If using VS Code, then the
-    [Conventional Commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
-    extension is recommended.
-  - _If committing from the terminal, use `cz c` instead of `git commit`._
-
-- [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) for versioning.
-
-- [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) for the changelog.
-
-### Developer Installation
+## Installation
 
 1. Update NVIDIA drivers. \
    _Currently testing against version 570._
-
-1. Install CUDA Toolkit. \
-   _Currently testing against version 12.8._
 
 1. Install [Devbox](https://www.jetify.com/docs/devbox/installing_devbox/). \
    _Currently testing against version 0.14.2._
@@ -146,32 +114,89 @@ This project follows the following standard practices:
    lang --help
    ```
 
-#### Developer Installation Details
+### Installation Details
 
-- Currently only CUDA is supported for GPU acceleration of TTS Models.  Also, CPU-only
-  mode is also not currently supported.
-- Devbox is a tool for creating per-project development environments using Nix.  It is
-  used in this project for non-Python dev tools and bootstrapping.
+- Currently only CUDA is supported for GPU acceleration of TTS Models.  Though, CPU-only
+  mode is also supported.
+
+- [Devbox](https://www.jetify.com/devbox) is a tool for creating per-project development
+  environments using [Nix](https://github.com/NixOS/nix) (not to be confused with
+  NixOS).  It is used in this project for non-Python dev tools and bootstrapping.
+
 - On first run, `devbox shell` will download and install all the needed system tools
   for the environment
+
 - On the first run, `init` will download and install the base Python version, needed
   commands, hooks, etc.
+
 - pre-commit is a tool for running certain checks and fixes on the code before commits
   and/or pushes.
+
 - **NOTE:** No commit, push or pull request should or will be accepted unless all
   pre-commit and pre-push hooks pass.  No exceptions!
+
 - Hatch is a tool for managing dependencies, builds, virtual environments and Python
   versions, as well as running tests, formatting, linting and typechecking.
+
 - The `check` command calls Hatch to perform common tasks, while also making it easier
   to do so.
+
 - `check push` runs all common tasks like pre-commit checks, type checks, formatting,
    linting, unit tests, acceptance tests, coverage checks, security checks, etc.
+
 - On first run, `check push` will also download and install several files, etc.
+
 - `hatch build` is how the source and wheel distributions are made.
+
 - The `check` command has several sub-commands to help you while developing.  Check it
   out. :smile_cat:
+
 - The `lang` command is used to manage localization message catalogues, i.e. translation
   files.  It's good to check it out as well.
+
+- You can run the Python REPL with `hatch run python`.
+
+- You can enter the default virtual environment with `hatch shell`.
+
+## Usage
+
+See the `examples` sub-directory for examples of how to use this project.
+
+### Example
+
+```console
+hatch shell
+cd examples
+python kokoro_example.py
+aplay play_me.wav
+exit
+```
+
+## Support and Contributing
+
+### Disclaimer
+
+While this project is FOSS and you are welcome to use it (if it ever becomes something
+usable), know that I am making this for myself. So do not expect any kind of support or
+updates or maintenance or longevity.  Caveat Emptor.
+
+### Development Standards
+
+This project follows the following standard practices:
+
+- [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) for
+  commit messages.
+
+  - If using VS Code, then the
+    [Conventional Commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+    extension is recommended.
+  - _If committing from the terminal, use `cz c` instead of `git commit`._
+
+- [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) for versioning.
+
+- [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) for the changelog.
+
+- [Make a README](https://www.makeareadme.com/) for the README.
 
 ### What Tool Does What
 
@@ -192,6 +217,7 @@ This section is an attempt clarify which tool is used for which common task.
 | Run acceptance tests                      | The `check` script (Hatch, radish)       |
 | Run code coverage checks                  | The `check` script (Hatch, coverage)     |
 | Run pre-commit hooks manually             | The `check` script (pre-commit)          |
+| Enter the default virtual environment     | Hatch                                    |
 | Commit changes from the terminal          | Commitizen _(use `cz c`)_                |
 | Report on last code coverage run          | The `report` script (coverage)           |
 | Update version on a release               | Hatch                                    |
@@ -202,4 +228,29 @@ This section is an attempt clarify which tool is used for which common task.
 | Format JSON                               | pre-commit (pretty-format-json)          |
 | Spell checking                            | pre-commit (codespell)                   |
 | Manage translations                       | The `lang` script (Hatch, Babel)         |
+| Remove all venvs, tools, caches, etc.     | The `clean` script                       |
 | Run CI pipeline                           | Github Actions (using the scripts above) |
+
+## Roadmap
+
+- More documentation.
+- Integrate in to the larger Aquarion AI project.
+- Add more TTS backends.
+
+## Authors and Acknowledgements
+
+Aquarion AI and aquarion-libtts was created by Krys Lawrence.
+
+## Copyright and Licence
+
+- `aquarion-libtts` is © 2025-present by Krys Lawrence.
+
+- `aquarion-libtts` code is licensed under the terms of the
+  [AGPL-3.0-only](https://spdx.org/licenses/AGPL-3.0-only.html) licence.
+
+- `aquarion-libtts` documentation is licensed under the terms of the
+  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) licence.
+
+## Project Status
+
+Very early alpha.  Still in development.
