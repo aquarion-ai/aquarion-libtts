@@ -51,8 +51,6 @@ Experiment in creating a scalable local AI voice chat bot.
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 
------
-
 ## Table of Contents
 
 - [Description](#description)
@@ -196,7 +194,7 @@ This project follows the following standard practices:
 
 - [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) for the changelog.
 
-- [Make a README](https://www.makeareadme.com/) for the README.
+- [Make a README](https://www.makeareadme.com/) for the README
 
 ### What Tool Does What
 
