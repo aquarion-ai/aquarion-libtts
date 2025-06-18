@@ -103,13 +103,13 @@ class TTSPluginRegistry:
         """
         return list(self._plugins)
 
-    def load_plugins(self, *, validate: bool = False) -> None:
+    def load_plugins(self, *, validate: bool = True) -> None:
         """Load all aquarion-tts backend plugins.
 
         All plugins are disabled by default.  Use .enable() to enable a plugin.
 
-        If validate is True, raises PluginValidationError if any plugin hook
-        implementations do not conform to accepted hook specifications.
+        If validate is True (the default), raises PluginValidationError if any plugin
+        hook implementations do not conform to accepted hook specifications.
         """
         logger.debug(f"Loading TTS plugins for {_tts_hookspec.project_name}...")
         manager = PluginManager(_tts_hookspec.project_name)

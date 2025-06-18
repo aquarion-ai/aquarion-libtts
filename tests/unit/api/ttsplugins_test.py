@@ -301,7 +301,7 @@ def test_ttspluginregistry_load_plugins_should_load_plugins(
 ) -> None:
     monkeypatch.setattr(importlib.metadata, "distributions", dummy_distributions)
     registry = TTSPluginRegistry()
-    registry.load_plugins()
+    registry.load_plugins(validate=False)
     assert registry.get_plugin("I am an id")
 
 
@@ -311,7 +311,15 @@ def test_ttspluginregistry_load_plugins_should_raise_error_if_invalid_hookimpl(
     monkeypatch.setattr(importlib.metadata, "distributions", dummy_distributions)
     registry = TTSPluginRegistry()
     with pytest.raises(PluginValidationError, match="unknown hook .* in plugin"):
-        registry.load_plugins(validate=True)
+        registry.load_plugins()
+
+
+def test_ttspluginregistry_load_plugins_should_not_raise_error_if_validate_is_false(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(importlib.metadata, "distributions", dummy_distributions)
+    registry = TTSPluginRegistry()
+    registry.load_plugins(validate=False)
 
 
 def test_ttspluginregistry_load_plugins_should_raise_error_if_no_plugins_found(
@@ -328,7 +336,7 @@ def test_ttspluginregistry_load_plugins_should_log_the_loading_of_plugins(
 ) -> None:
     monkeypatch.setattr(importlib.metadata, "distributions", dummy_distributions)
     registry = TTSPluginRegistry()
-    registry.load_plugins()
+    registry.load_plugins(validate=False)
     logot.assert_logged(
         logged.debug("Loading TTS plugins for %s...")
         >> logged.debug("Registered TTS plugin: I am an id")
@@ -341,7 +349,7 @@ def test_ttspluginregistry_load_plugins_should_let_hooks_be_skipped_by_returning
 ) -> None:
     monkeypatch.setattr(importlib.metadata, "distributions", dummy_distributions)
     registry = TTSPluginRegistry()
-    registry.load_plugins()
+    registry.load_plugins(validate=False)
     with pytest.raises(ValueError, match="TTS plugin not found"):
         registry.get_plugin("I should be skipped")
 
