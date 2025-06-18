@@ -24,7 +24,7 @@
 #
 # To restore the environment, follow the developer installation instructions in
 # README.md.
-def "main" [
+def main [
     --caches (-c)  # Also clean all caches
     --devbox (-d)  # Also remove the devbox shell
 ] : nothing -> nothing {
@@ -35,6 +35,7 @@ def "main" [
     }
     remove_local_builds
     remove_generated_translation_files
+    remove_example_outputs
     remove_hatch_envs
     remove_hatch_pythons
     remove_uv_tools
@@ -50,7 +51,7 @@ def "main" [
 
 ## Internal commands
 
-def "remove_hatch_envs" []: nothing -> nothing {
+def remove_hatch_envs []: nothing -> nothing {
     let envs = (
         hatch env show --json --internal
         | from json
@@ -63,7 +64,7 @@ def "remove_hatch_envs" []: nothing -> nothing {
     }
 }
 
-def "remove_hatch_pythons" []: nothing -> nothing {
+def remove_hatch_pythons []: nothing -> nothing {
     let pythons = (
         hatch python show --ascii
         | split row 'Available'
@@ -80,7 +81,7 @@ def "remove_hatch_pythons" []: nothing -> nothing {
     }
 }
 
-def "remove_uv_tools" []: nothing -> nothing {
+def remove_uv_tools []: nothing -> nothing {
     let tools = (
         uv tool list
         | lines
@@ -94,7 +95,7 @@ def "remove_uv_tools" []: nothing -> nothing {
     }
 }
 
-def "remove_uv_pythons" []: nothing -> nothing {
+def remove_uv_pythons []: nothing -> nothing {
     let pythons = (
         uv python list --only-installed
         | detect columns -n
@@ -107,39 +108,45 @@ def "remove_uv_pythons" []: nothing -> nothing {
     }
 }
 
-def "remove_uv_cache" []: nothing -> nothing {
+def remove_uv_cache []: nothing -> nothing {
     print "Removing uv cache"
     uv cache clean
 }
 
-def "remove_local_cache" []: nothing -> nothing {
+def remove_local_cache []: nothing -> nothing {
     print "Removing local cache"
     rm -rf .cache
 }
 
-def "remove_local_builds" []: nothing -> nothing {
+def remove_local_builds []: nothing -> nothing {
     print "Removing local builds"
     rm -rf dist
 }
 
-def "remove_generated_translation_files" []: nothing -> nothing {
-    let files = (
-        ls ...(glob **/*.{mo,pot})
-        | each {$in.name}
-    )
+def remove_generated_translation_files []: nothing -> nothing {
+    let files = (ls ...(glob **/*.{mo,pot}) | each {$in.name})
     for file in ($files) {
         print $"Removing generated translation file: ($file)"
         rm $file
     }
 }
 
-def "remove_devbox_shell" []: nothing -> nothing {
+def remove_devbox_shell []: nothing -> nothing {
     print "Removing devbox shell"
     rm -rf .devbox
     print $"(ansi red)ATTENTION: YOU MUST EXIT THE DEVBOX SHELL IMMEDIATELY AFTER THIS COMMAND!(ansi reset)"
 }
 
-def "remove_pre-commit_tools" []: nothing -> nothing {
+def remove_pre-commit_tools []: nothing -> nothing {
     print "Removing pre-commit tools"
     pre-commit clean
+}
+
+
+def remove_example_outputs []: nothing -> nothing {
+    let files = (ls ...(glob examples/*.wav) | each {$in.name})
+    for file in ($files) {
+        print $"Removing example output: ($file)"
+        rm $file
+    }
 }
