@@ -273,6 +273,22 @@ def dummy_distributions() -> tuple[Distribution, ...]:
     return (Distribution(),)
 
 
+@pytest.fixture  # type:ignore[misc]
+def configured_registry() -> tuple[TTSPluginRegistry, list[str]]:
+    """Return a TTSPluginRegistry and ids for some pre-configured dummy plugins."""
+    registry = TTSPluginRegistry()
+    plugin1 = DummyTTSPlugin("plugin1")  # Default disabled
+    plugin2 = DummyTTSPlugin("plugin2")
+    plugin3 = DummyTTSPlugin("plugin3")
+    registry._register_test_plugin(plugin1)  # noqa: SLF001
+    registry._register_test_plugin(plugin2)  # noqa: SLF001
+    registry._register_test_plugin(plugin3)  # noqa: SLF001
+    registry.enable(plugin2.id)  # Explicitly enabled
+    registry.enable(plugin3.id)
+    registry.disable(plugin3.id)  # Explicitly disabled
+    return registry, [plugin1.id, plugin2.id, plugin3.id]
+
+
 ## .load_plugins tests
 
 # Based on: https://github.com/pytest-dev/pluggy/blob/main/testing/test_pluginmanager.py
@@ -364,23 +380,61 @@ def test_ttspluginregistry_load_plugins_should_load_builtin_plugins(
     assert isinstance(plugin, ITTSPlugin)
 
 
-## .plugin_ids tests
+## .list_plugin_ids() tests
 
 
-def test_ttspluginregistry_plugin_ids_should_return_the_list_of_all_plugin_ids() -> (
+def test_ttspluginregistry_list_plugin_ids_should_accept_only_disabled_argument() -> (
     None
 ):
     registry = TTSPluginRegistry()
-    plugin1 = DummyTTSPlugin("plugin1")  # Default disabled
-    plugin2 = DummyTTSPlugin("plugin2")
-    plugin3 = DummyTTSPlugin("plugin3")
-    registry._register_test_plugin(plugin1)  # noqa: SLF001
-    registry._register_test_plugin(plugin2)  # noqa: SLF001
-    registry._register_test_plugin(plugin3)  # noqa: SLF001
-    registry.enable(plugin2.id)  # Explicitly enabled
-    registry.enable(plugin3.id)
-    registry.disable(plugin3.id)  # Explicitly disabled
-    assert registry.plugin_ids == [plugin1.id, plugin2.id, plugin3.id]
+    registry.list_plugin_ids(only_disabled=True)
+
+
+def test_ttspluginregistry_list_plugin_ids_should_accept_a_list_all_argument() -> None:
+    registry = TTSPluginRegistry()
+    registry.list_plugin_ids(list_all=True)
+
+
+def test_ttspluginregistry_list_plugin_ids_should_only_accept_keyword_arguments() -> (
+    None
+):
+    registry = TTSPluginRegistry()
+    with pytest.raises(
+        TypeError, match="takes 1 positional argument but .* were given"
+    ):
+        registry.list_plugin_ids(False, False)  # type:ignore[misc]  # noqa: FBT003
+
+
+def test_ttspluginregistry_list_plugin_ids_should_return_enabled_plugin_ids_by_default(
+    configured_registry: tuple[TTSPluginRegistry, list[str]],
+) -> None:
+    registry, ids = configured_registry
+    plugin_ids = registry.list_plugin_ids()
+    assert plugin_ids == {ids[1]}
+
+
+def test_ttspluginregistry_list_plugin_ids_should_return_disabled_plugin_ids(
+    configured_registry: tuple[TTSPluginRegistry, list[str]],
+) -> None:
+    registry, ids = configured_registry
+    plugin_ids = registry.list_plugin_ids(only_disabled=True)
+    assert plugin_ids == {ids[0], ids[2]}
+
+
+def test_ttspluginregistry_list_plugin_ids_should_return_all_plugin_ids(
+    configured_registry: tuple[TTSPluginRegistry, list[str]],
+) -> None:
+    registry, ids = configured_registry
+    plugin_ids = registry.list_plugin_ids(list_all=True)
+    assert plugin_ids == set(ids)
+
+
+def test_ttspluginregistry_list_plugin_ids_should_raise_error_if_invalid_args_combo(
+    # Force line wrap in Ruff.
+) -> None:
+    registry = TTSPluginRegistry()
+    with pytest.raises(ValueError, match="Invalid argument combination"):
+        registry.list_plugin_ids(only_disabled=True, list_all=True)
 
 
 ## .get_plugin() tests

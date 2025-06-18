@@ -39,7 +39,7 @@ registry = TTSPluginRegistry()
 registry.load_plugins(validate=True)
 
 print("loaded plugins:")  # noqa: T201
-for plugin_id in registry.plugin_ids:
+for plugin_id in registry.list_plugin_ids(list_all=True):
     print("  -", plugin_id, "| Enabled:", registry.is_enabled(plugin_id))  # noqa: T201
 
 registry.enable("kokoro_v1")

@@ -95,14 +95,6 @@ class TTSPluginRegistry:
         self._plugins: dict[str, ITTSPlugin] = {}
         self._enabled_plugins: set[str] = set()
 
-    @property
-    def plugin_ids(self) -> list[str]:
-        """Return the list of all plugin IDs.
-
-        This includes both enabled and disabled plugins.
-        """
-        return list(self._plugins)
-
     def load_plugins(self, *, validate: bool = True) -> None:
         """Load all aquarion-tts backend plugins.
 
@@ -129,6 +121,29 @@ class TTSPluginRegistry:
             logger.debug(f"Registered TTS plugin: {plugin.id}")
             self._plugins[plugin.id] = plugin
         logger.debug(f"Total TTS plugins registered: {len(self._plugins)}")
+
+    def list_plugin_ids(
+        self, *, only_disabled: bool = False, list_all: bool = False
+    ) -> set[str]:
+        """Return the list of plugin IDs.
+
+        By default, only enabled plugins are listed.
+        If disabled_only_is True, then only the disabled plugins are listed.
+        If all True, then all plugins are listed regardless of their enabled/disabled
+        status.
+        If both arguments are True, then a ValueError is raised.
+        """
+        if only_disabled and list_all:
+            message = (
+                "Invalid argument combination. disabled_only and all cannot both be "
+                "True."
+            )
+            raise ValueError(message)
+        if only_disabled:
+            return {id_ for id_ in self._plugins if not self.is_enabled(id_)}
+        if list_all:
+            return set(self._plugins)
+        return {id_ for id_ in self._plugins if self.is_enabled(id_)}
 
     def get_plugin(self, id_: str) -> ITTSPlugin:
         """Return the plugin the for the given id.
