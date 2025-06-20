@@ -20,12 +20,14 @@
 
 from functools import partial
 from importlib.resources import files
-from typing import Final
+from typing import Final, cast
 
 from aquarion.libs.libtts.__about__ import __name__ as project_name
-from aquarion.libs.libtts.api import load_language
+from aquarion.libs.libtts.api import HashableTraversable, load_language
 
-LOCALE_PATH: Final = files(__name__) / "locale"
+LOCALE_PATH: Final[HashableTraversable] = cast(
+    "HashableTraversable", files(__name__) / "locale"
+)
 
 
 load_internal_language = partial(

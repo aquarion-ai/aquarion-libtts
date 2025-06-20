@@ -131,6 +131,7 @@ tomli
 torchvision
 tqdm
 traduit
+Traversables
 ttsaudiospec
 ttsbackend
 ttspluginregistry

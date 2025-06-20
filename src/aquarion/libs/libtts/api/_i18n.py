@@ -18,7 +18,8 @@
 
 """Utilities to help with internationalization and localization."""
 
-from collections.abc import Callable
+from collections.abc import Callable, Hashable
+from functools import cache
 from gettext import NullTranslations, translation
 from importlib.resources import as_file
 from importlib.resources.abc import Traversable
@@ -31,8 +32,17 @@ type GettextFuncType = Callable[[str], str]
 type LoadLanguageReturnType = tuple[GettextFuncType, NullTranslations]
 
 
+class HashablePathLike(Hashable, PathLike[str]):
+    """PathLikes are hashable, but his makes it explicit for the type checker."""
+
+
+class HashableTraversable(Hashable, Traversable):
+    """Traversables are hashable, but this makes it explicit for the type checker."""
+
+
+@cache  # type:ignore[misc]
 def load_language(
-    locale: str, domain: str, locale_path: PathLike[str] | Traversable | str
+    locale: str, domain: str, locale_path: HashablePathLike | HashableTraversable | str
 ) -> LoadLanguageReturnType:
     """Return a gettext _() function and a *Translations instance.
 
@@ -55,6 +65,9 @@ def load_language(
 
     Raises various exceptions if an invalid locale is given, as determined by the Babel
     package's Local.parse() method.
+
+    Note: Once loaded, the language translations are cached for the duration of the
+    process.
     """
     logger.debug(f"Attempting to load translations for locale: {locale}")
     loc = Locale.parse(locale, sep="-") if "-" in locale else Locale.parse(locale)
