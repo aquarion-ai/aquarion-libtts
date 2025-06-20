@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import Final, cast
 
 import pytest
+from logot import Logot, logged
 
 from aquarion.libs.libtts._kokoro._settings import (
     KokoroDeviceNames,
@@ -168,6 +169,14 @@ def test_kokorosettings_to_dict_should_return_device_as_a_string() -> None:
     settings_dict = cast("SettingsDict", settings.to_dict())
     assert isinstance(settings_dict["device"], str)
     assert settings_dict["device"] == "cuda"
+
+
+def test_kokorosettings_to_dict_should_log_dictionary_creation(logot: Logot) -> None:
+    settings = KokoroSettings(device=KokoroDeviceNames.cuda)
+    settings_dict = cast("SettingsDict", settings.to_dict())
+    logot.assert_logged(
+        logged.debug(f"KokoroSettings dictionary created: {settings_dict!s}")
+    )
 
 
 def test_kokorosettings_should_coerce_voice_strings_to_enum_on_instantiation() -> None:

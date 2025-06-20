@@ -19,9 +19,10 @@
 """Kokoro TTS backend implementation."""
 
 from collections.abc import Iterator
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
 from kokoro import KModel, KPipeline
+from loguru import logger
 
 from aquarion.libs.libtts._kokoro._settings import KokoroSettings
 from aquarion.libs.libtts.api import ITTSSettings, TTSAudioSpec
@@ -29,6 +30,9 @@ from aquarion.libs.libtts.api import ITTSSettings, TTSAudioSpec
 if TYPE_CHECKING:
     from numpy import float32, int16
     from numpy.typing import NDArray
+
+
+_TEXT_IN_LOG_MAX_LEN: Final = 100
 
 
 class KokoroBackend:
@@ -41,6 +45,7 @@ class KokoroBackend:
             raise TypeError(message)
         self._settings = settings
         self._pipeline: KPipeline | None = None
+        logger.debug("Kokoro TTS Backend initialized.")
 
     @property
     def audio_spec(self) -> TTSAudioSpec:
@@ -86,6 +91,7 @@ class KokoroBackend:
         self._settings = new_settings
         if started_state:
             self.start()
+        logger.debug("Kokoro TTS backend settings updated.")
 
     def convert(self, text: str) -> Iterator[bytes]:
         """Return speech audio for the given text as one or more chunks of bytes.
@@ -97,6 +103,8 @@ class KokoroBackend:
             raise RuntimeError(message)
         # Type narrowing for the type checker.
         assert isinstance(self._pipeline, KPipeline)  # noqa: S101
+        log_text = text if len(text) < _TEXT_IN_LOG_MAX_LEN else f"{text[:100]}..."
+        logger.debug("Kokoro TTS backend converting text: {}", log_text)
         for result in self._pipeline(text, self._settings.voice, self._settings.speed):
             if result.audio is None:
                 continue
@@ -108,6 +116,7 @@ class KokoroBackend:
         """Start the TTS backend."""
         if self.is_started:
             return
+        logger.debug("Starting Kokoro TTS backend...")
         model: KModel | bool = True
         if (
             self._settings.model_path is not None
@@ -128,13 +137,17 @@ class KokoroBackend:
             device=self._settings.device,
             model=model,
         )
+        logger.debug("Kokoro TTS model loaded.")
         voice = (
             self._settings.voice
             if self._settings.voice_path is None
             else self._settings.voice_path
         )
         self._pipeline.load_voice(str(voice))
+        logger.debug(f"Kokoro TTS voice loaded: {voice}")
+        logger.debug("Kokoro TTS backend started.")
 
     def stop(self) -> None:
         """Stop the TTS backend."""
         self._pipeline = None
+        logger.debug("Kokoro TTS backend stopped.")

@@ -20,6 +20,7 @@
 from typing import TYPE_CHECKING, cast
 
 import pytest
+from logot import Logot, logged
 
 from aquarion.libs.libtts._kokoro._plugin import KokoroPlugin
 from aquarion.libs.libtts._kokoro._settings import KokoroSettings
@@ -41,6 +42,18 @@ if TYPE_CHECKING:
 
 
 ### KokoroPlugin Tests ###
+
+
+def test_kokoroplugin_make_settings_should_log_settings_creation(logot: Logot) -> None:
+    plugin = KokoroPlugin()
+    settings = plugin.make_settings()
+    logot.assert_logged(logged.debug(f"Created new KokoroSettings: {settings!s}"))
+
+
+def test_kokoroplugin_make_backend_should_log_backend_creation(logot: Logot) -> None:
+    plugin = KokoroPlugin()
+    plugin.make_backend(plugin.make_settings())
+    logot.assert_logged(logged.debug("Created new KokoroBackend."))
 
 
 ## ITTSPlugin Protocol Conformity ##

@@ -23,6 +23,7 @@ from typing import Annotated, Final, Self, cast
 
 from babel import Locale, UnknownLocaleError
 from kokoro.pipeline import ALIASES
+from loguru import logger
 from pydantic import (
     BaseModel,
     BeforeValidator,
@@ -151,7 +152,11 @@ class KokoroSettings(  # type:ignore[explicit-any]
 
     def to_dict(self) -> dict[str, JSONSerializableTypes]:
         """Export all settings as a dictionary of only built-in Python types."""
-        return cast("dict[str, JSONSerializableTypes]", self.model_dump(mode="json"))
+        settings_dict = cast(
+            "dict[str, JSONSerializableTypes]", self.model_dump(mode="json")
+        )
+        logger.debug(f"KokoroSettings dictionary created: {settings_dict!s}")
+        return settings_dict
 
     @model_validator(mode="after")
     def _validate_voice(self) -> Self:

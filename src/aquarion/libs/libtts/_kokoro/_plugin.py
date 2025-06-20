@@ -20,6 +20,8 @@
 
 from collections.abc import Mapping
 
+from loguru import logger
+
 from aquarion.libs.libtts._kokoro._backend import KokoroBackend
 from aquarion.libs.libtts._kokoro._settings import KokoroSettings
 from aquarion.libs.libtts._utils import load_internal_language
@@ -69,8 +71,10 @@ class KokoroPlugin:
         """
         if from_dict is None:
             from_dict = {}
-        # Pydantic handles the type coercion and errors.
-        return KokoroSettings(**from_dict)  # type:ignore[arg-type]
+        # Pydantic handles the type coercion and validation.
+        settings = KokoroSettings(**from_dict)  # type:ignore[arg-type]
+        logger.debug(f"Created new KokoroSettings: {settings!s}")
+        return settings
 
     def make_backend(self, settings: ITTSSettings) -> ITTSBackend:
         """Return an object that conforms to the ITTSBackend protocol.
@@ -81,4 +85,6 @@ class KokoroPlugin:
         correct concrete settings class and raise TypeError if any other kind of
         concrete ITTSSettings is given.
         """
-        return KokoroBackend(settings)
+        backend = KokoroBackend(settings)
+        logger.debug("Created new KokoroBackend.")
+        return backend

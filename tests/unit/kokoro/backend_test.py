@@ -24,9 +24,10 @@ from typing import cast
 import pytest
 import torch
 from kokoro.pipeline import KPipeline
+from logot import Logot, logged
 from pytest_mock import MockerFixture
 
-from aquarion.libs.libtts._kokoro._backend import KokoroBackend
+from aquarion.libs.libtts._kokoro._backend import _TEXT_IN_LOG_MAX_LEN, KokoroBackend
 from aquarion.libs.libtts._kokoro._settings import KokoroSettings, KokoroVoices
 from aquarion.libs.libtts.api import (
     ITTSBackend,
@@ -110,6 +111,53 @@ def test_kokorobackend_should_use_local_voice_path_when_given(
     backend.start()
     assert mock_kpipeline.return_value.load_voice.call_count == 1  # type:ignore[misc]
     assert mock_kpipeline.return_value.load_voice.call_args.args[0] == str(expected)  # type:ignore[misc]
+
+
+def test_kokorobackend_should_log_its_initialization(logot: Logot) -> None:
+    KokoroBackend(KokoroSettings())
+    logot.assert_logged(logged.debug("Kokoro TTS Backend initialized."))
+
+
+def test_kokorobackend_update_settings_should_log_its_action(logot: Logot) -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.update_settings(KokoroSettings())
+    logot.assert_logged(logged.debug("Kokoro TTS backend settings updated."))
+
+
+def test_kokorobackend_convert_should_log_its_action(logot: Logot) -> None:
+    text = "some text"
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    b"".join(list(backend.convert(text)))
+    logot.assert_logged(logged.debug(f"Kokoro TTS backend converting text: {text}"))
+
+
+def test_kokorobackend_convert_should_truncate_long_text_in_log(logot: Logot) -> None:
+    long_text = "123456789_" * 20  # len(str) == 10, 10 * 20 == 200, 200 > max log len
+    expected = f"{long_text[:_TEXT_IN_LOG_MAX_LEN]}..."
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    b"".join(list(backend.convert(long_text)))
+    logot.assert_logged(logged.debug(f"Kokoro TTS backend converting text: {expected}"))
+
+
+def test_kokorobackend_start_should_log_its_actions(logot: Logot) -> None:
+    settings = KokoroSettings()
+    backend = KokoroBackend(settings)
+    backend.start()
+    logot.assert_logged(
+        logged.debug("Starting Kokoro TTS backend...")
+        >> logged.debug("Kokoro TTS model loaded.")
+        >> logged.debug(f"Kokoro TTS voice loaded: {settings.voice}")
+        >> logged.debug("Kokoro TTS backend started.")
+    )
+
+
+def test_kokorobackend_stop_should_log_its_action(logot: Logot) -> None:
+    backend = KokoroBackend(KokoroSettings())
+    backend.start()
+    backend.stop()
+    logot.assert_logged(logged.debug("Kokoro TTS backend stopped."))
 
 
 ## ITTSBackend Protocol Conformity ##
