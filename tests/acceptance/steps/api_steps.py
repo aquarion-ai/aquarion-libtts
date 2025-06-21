@@ -134,3 +134,9 @@ def _(step: Step) -> None:
         from_dict=json.loads(step.context.json_result)
     )
     assert imported_settings == step.context.settings
+
+
+@then("the audio specification should include {format} and {sample_rate:d}")
+def _(step: Step, format: str, sample_rate: int) -> None:  # noqa: A002
+    assert step.context.backend.audio_spec.format == format
+    assert step.context.backend.audio_spec.sample_rate == sample_rate

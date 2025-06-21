@@ -123,3 +123,13 @@ Feature: TTS Library Interface
         Examples:
             | plugin_id |
             | kokoro_v1 |
+
+    Scenario Outline: Get a backend's audio specification
+        Given I am using the <plugin_id> plugin
+        When I make the default settings for the backend
+        And I make the backend using the settings
+        Then the audio specification should include <format> and <sample_rate>
+
+        Examples:
+            | plugin_id | format     | sample_rate |
+            | kokoro_v1 | Linear PCM | 24000       |
