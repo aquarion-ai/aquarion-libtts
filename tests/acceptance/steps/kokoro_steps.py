@@ -20,50 +20,16 @@
 from pathlib import Path
 from typing import Final
 from unittest import mock
-from warnings import filterwarnings
 
 import torch
 from bsdiff4 import diff
-from radish import after, before, given, then, when
-from radish.feature import Feature
-from radish.scenario import Scenario
+from radish import then, when
 from radish.stepmodel import Step
 
-from aquarion.libs.libtts.api import TTSPluginRegistry
-
-PLUGIN_ID: Final = "kokoro_v1"
 MIN_GPU_MEMORY_ALLOCATION: Final = 300_000_000  # bytes
 MAX_GPU_RESIDUAL_MEMORY: Final = 10_000_000  # bytes
 MAX_SPEECH_DIFF_LEN: Final = 28_000  # NDIFF4 bytes
 MAX_GPU_LOOP_RESIDUAL_MEMORY: Final = 12_000_000  # bytes
-
-
-@before.each_feature
-def _silence_warnings(_: Feature) -> None:
-    """Silence specific warnings from dependencies."""
-    filterwarnings(
-        action="ignore",
-        message="Importing 'parser.split_arg_string' is deprecated",
-        category=DeprecationWarning,
-    )
-    filterwarnings(
-        action="ignore",
-        message="dropout option adds dropout after all but last recurrent layer",
-        category=UserWarning,
-    )
-    filterwarnings(
-        action="ignore",
-        message="`torch.nn.utils.weight_norm` is deprecated",
-        category=FutureWarning,
-    )
-
-
-@after.each_scenario
-def _clean_up(scenario: Scenario) -> None:
-    """Make sure any started TTS backend is stopped and mocks are unpatched."""
-    if hasattr(scenario.context, "backend") and scenario.context.backend.is_started:
-        scenario.context.backend.stop()
-    mock.patch.stopall()
 
 
 class LocalDataNotFoundError(RuntimeError):
@@ -125,60 +91,19 @@ def find_local_paths() -> dict[str, Path]:
 ### GIVENs ###
 
 
-@given("I have loaded and enabled the Kokoro plugin")
-def _(step: Step) -> None:
-    registry = TTSPluginRegistry()
-    registry.load_plugins(validate=True)
-    registry.enable(PLUGIN_ID)
-    plugin = registry.get_plugin(PLUGIN_ID)
-    step.context.plugin = plugin
-
-
 ### WHENs ###
 
 
-@when(r"I get the display name for {locale:w}")
-def _(step: Step, locale: str) -> None:
-    step.context.display_name = step.context.plugin.get_display_name(locale)
-
-
-@when(r"I create default settings")
-def _(step: Step) -> None:
-    step.context.settings = step.context.plugin.make_settings()
-
-
-@when("I create settings with '{setting:w}' set to '{value}'")
-def _(step: Step, setting: str, value: str) -> None:
-    step.context.settings = step.context.plugin.make_settings(
-        from_dict={setting: value}
-    )
-
-
-@when("I create the Kokoro backend using the settings")
-def _(step: Step) -> None:
-    step.context.backend = step.context.plugin.make_backend(step.context.settings)
-
-
-@when("I start the backend")
-def _(step: Step) -> None:
-    step.context.baseline_gpu_memory = torch.cuda.memory_allocated()
-    step.context.backend.start()
-
-
-@when("I update the settings to {locale:w} and {voice:w}")
+@when("I make new settings using {locale:w} and {voice:w}")
 def _(step: Step, locale: str, voice: str) -> None:
-    new_settings = step.context.plugin.make_settings(
+    step.context.settings = step.context.plugin.make_settings(
         from_dict={"locale": locale, "voice": voice}
     )
-    step.context.new_settings = new_settings
-    step.context.backend.update_settings(new_settings)
 
 
-@when("I update the '{setting:w}' setting to '{value}'")
-def _(step: Step, setting: str, value: str) -> None:
-    new_settings = step.context.plugin.make_settings(from_dict={setting: value})
-    step.context.new_settings = new_settings
-    step.context.backend.update_settings(new_settings)
+@when("I measure baseline GPU memory usage")
+def _(step: Step) -> None:
+    step.context.baseline_gpu_memory = torch.cuda.memory_allocated()
 
 
 @when("I convert text to speech '{count:d}' times in a row")
@@ -194,7 +119,7 @@ def _(step: Step, count: int) -> None:
     step.context.ending_gpu_memory = torch.cuda.memory_allocated()
 
 
-@when("I create settings with paths to pre-existing local files")
+@when("I make settings with paths to pre-existing local files")
 def _(step: Step) -> None:
     local_paths = find_local_paths()
     step.context.settings = step.context.plugin.make_settings(from_dict=local_paths)
@@ -208,11 +133,6 @@ def _(step: Step) -> None:
 
 
 ### THENs ###
-
-
-@then("I expect the result to be {expected:w}")
-def _(step: Step, expected: str) -> None:
-    assert step.context.display_name == expected
 
 
 @then("the model should be loaded in the GPU")
@@ -240,18 +160,11 @@ def _(step: Step) -> None:
     )
 
 
-@then("the backend should use the new settings values")
-def _(step: Step) -> None:
-    current_settings = step.context.backend.get_settings().to_dict()
-    for setting, value in step.context.new_settings.to_dict().items():
-        assert current_settings[setting] == value
-
-
-@then("converting text to speech should work as expected")
+@then("the audio output should be as expected")
 def _(step: Step) -> None:
     expected = ((Path(__file__).parent) / "kokoro_expected.pcm").read_bytes()
-    speech = b"".join(list(step.context.backend.convert("Hi there!")))
-    diff_len = len(diff(speech, expected))
+    audio_bytes = b"".join(list(step.context.audio))
+    diff_len = len(diff(audio_bytes, expected))
     assert diff_len < MAX_SPEECH_DIFF_LEN, (
         "Generated speech audio is more different than expected.  "
         f"({diff_len} > {MAX_SPEECH_DIFF_LEN})"
