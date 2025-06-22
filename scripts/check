@@ -185,24 +185,23 @@ def --wrapped "main accept wip" [
 ### Individual security tasks
 
 # Check dependencies for security vulnerabilities.
-def --wrapped "main sec vuln" [
-    ...rest: string # Extra arguments for Trivy
-]: nothing -> string {
+def "main sec vuln" []: nothing -> string {
+    let project_root = (git rev-parse --show-toplevel | str trim)
+    let trivy_cache_path = ($project_root | path join ".cache" "trivy")
+    let report_path = ($trivy_cache_path | path join "report.json")
+    mkdir $trivy_cache_path
+    trivy fs . --scanners vuln --include-dev-deps -f json -o $report_path
+    trivy convert --scanners vuln $report_path
     (
-        trivy fs . --scanners vuln --include-dev-deps --severity UNKNOWN,LOW,MEDIUM
-        --exit-code 0 ...$rest
-    )
-    (
+        # --format template without a template silences output.
         trivy fs . --scanners vuln --include-dev-deps --severity HIGH,CRITICAL
-        --exit-code 1 ...$rest
+        --exit-code 1 --quiet --format template
     )
 }
 
 # Check for secrets that should not be shared.
-def --wrapped "main sec secret" [
-    ...rest: string # Extra arguments for Trivy
-]: nothing -> string {
-    trivy fs . --scanners secret --include-dev-deps ...$rest
+def "main sec secret" []: nothing -> string {
+    trivy fs . --scanners secret --include-dev-deps --exit-code 1
 }
 
 

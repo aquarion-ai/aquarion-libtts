@@ -61,3 +61,18 @@ def "main coverage accept" [
     if $total { $extra = ["--format", "total"] }
     hatch run $"($environ):coverage" report --rcfile=radish_coverage.toml ...$extra
 }
+
+# Report on last vulnerability scan results.
+def "main sec" []: nothing -> string {
+    let project_root = (git rev-parse --show-toplevel | str trim)
+    let report_path = ($project_root | path join ".cache" "trivy" "report.json")
+    trivy convert --scanners vuln $report_path
+}
+
+# Output only the highest detected Trivy severity level.
+def "main sec highest" []: nothing -> string {
+    let project_root = (git rev-parse --show-toplevel | str trim)
+    let template_path = ($project_root | path join "scripts" "trivy-highest.tpl")
+    let report_path = ($project_root | path join ".cache" "trivy" "report.json")
+    trivy convert $report_path --format template --template $"@($template_path)" --quiet
+}
