@@ -127,15 +127,18 @@ jobs:
         run: |
           export TEST_TOTAL=$(devbox run report coverage test --total --ci)
           export ACCEPT_TOTAL=$(devbox run report coverage accept --total --ci)
-          export HIGHEST_VULN=$(devbox run report sec highest)
-          [[ "$HIGHEST_VULN" == "HIGH" || "$HIGHEST_VULN" == "CRITICAL" ]] && export VULN_ERROR=true || export VULN_ERROR=false
+          export SEC_TOTAL=$(devbox run report sec total)
+          export SEC_HIGHEST=$(devbox run report sec highest)
+          [[ "$SEC_HIGHEST" == "HIGH" || "$SEC_HIGHEST" == "CRITICAL" ]] && export SEC_ERROR=true || export SEC_ERROR=false
           echo "test_total=$TEST_TOTAL" >> $GITHUB_ENV
           echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_ENV
-          echo "highest_vuln=$HIGHEST_VULN" >> $GITHUB_ENV
-          echo "vuln_error=$VULN_ERROR" >> $GITHUB_ENV
+          echo "sec_total=$SEC_TOTAL" >> $GITHUB_ENV
+          echo "sec_highest=$SEC_HIGHEST" >> $GITHUB_ENV
+          echo "sec_error=$SEC_ERROR" >> $GITHUB_ENV
           echo "### Total test coverage: ${TEST_TOTAL}%" >> $GITHUB_STEP_SUMMARY
           echo "### Total acceptance test coverage: ${ACCEPT_TOTAL}%" >> $GITHUB_STEP_SUMMARY
-          echo "### Highest vulnerability severity level: ${HIGHEST_VULN}" >> $GITHUB_STEP_SUMMARY
+          echo "### Total vulnerabilities: ${SEC_TOTAL}" >> $GITHUB_STEP_SUMMARY
+          echo "### Highest vulnerability severity level: ${SEC_HIGHEST}" >> $GITHUB_STEP_SUMMARY
 
       - name: Get repo name
         run: echo "repo_name=${{ github.repository }}" | sed "s/\//_/" >> $GITHUB_ENV
@@ -164,12 +167,22 @@ jobs:
           maxColorRange: 80
           valColorRange: ${{ env.accept_total }}
 
-      - name: Create Vulnerability Severity Badge
+      - name: Create Security Total Badge
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: 079b402971d82c07d05c74f37c57b088
-          filename: ${{ env.repo_name }}__${{ github.ref_name }}__vuln.json
+          filename: ${{ env.repo_name }}__${{ github.ref_name }}__sec_total.json
           label: vulnerabilities
-          message: ${{ env.highest_vuln }}
-          isError: ${{ env.vuln_error }}
+          message: ${{ env.sec_total }}
+          isError: ${{ env.sec_error }}
+
+      - name: Create Security Severity Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 079b402971d82c07d05c74f37c57b088
+          filename: ${{ env.repo_name }}__${{ github.ref_name }}__sec_highest.json
+          label: severity
+          message: ${{ env.sec_highest }}
+          isError: ${{ env.sec_error }}
