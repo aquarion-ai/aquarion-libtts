@@ -33,8 +33,11 @@ type JSONSerializableTypes = (
 
 
 @runtime_checkable
-class ITTSSettings(Protocol):
+class ITTSSettings(Protocol):  # noqa: PLW1641
     """Common interface for all TTS backend settings."""
+
+    # NOTE: There is no expectation that ITTSSettings implementations be immutable or
+    # hashable.
 
     # The locale should be a POSIX-compliant locale string like `en_CA`, `zh-Hant`,
     # `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be a general as `fr` or as

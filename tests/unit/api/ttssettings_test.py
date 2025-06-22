@@ -33,7 +33,7 @@ from aquarion.libs.libtts.api import (
 ### ITTSSettings Tests ###
 
 
-class DummyTTSSettings:
+class DummyTTSSettings:  # noqa: PLW1641
     """Dummy ITTSSettings to test the protocol.
 
     Specific implementations here do not matter, the only important thing is to conform
@@ -58,7 +58,7 @@ class DummyTTSSettings:
         return {"attr1": self.attr1}
 
 
-class AnotherTTSSettings:
+class AnotherTTSSettings:  # noqa: PLW1641
     """NOT the DummyTTSSettings class."""
 
     # These need to exist to conform to the ITTSSetting protocol, but are not actually

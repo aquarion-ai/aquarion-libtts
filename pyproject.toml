@@ -46,7 +46,7 @@ dependencies = [
   "babel~=2.17.0",
   "loguru~=0.7.3",
   "pluggy~=1.6.0",
-  "pydantic~=2.11.5",
+  "pydantic~=2.11.7",
 ]
 description = 'Text To Speech (TTS) beckend library for Aquarion AI'
 dynamic = ["version"]
@@ -67,16 +67,16 @@ Source = "https://github.com/aquarion-ai/aquarion-libtts"
 
 [project.optional-dependencies]
 cpu = [
-  "torch>=2.7.1",
+  "torch~=2.7.1",
 ]
 cu128 = [
-  "torch>=2.7.1",
+  "torch~=2.7.1",
 ]
 kokoro = [
   "en-core-web-sm~=3.8.0",
   "kokoro~=0.9.4",
   "pip~=25.1.1",
-  "torch>=2.7.1",
+  "torch~=2.7.1",
 ]
 
 [project.entry-points.'aquarion-libtts']
@@ -86,19 +86,19 @@ kokoro_v1 = "aquarion.libs.libtts._kokoro"
 
 [dependency-groups]
 accept = [
-  "bsdiff4>=1.2.6",
-  "coverage[toml]~=7.8.2",
+  "bsdiff4~=1.2.6",
+  "coverage[toml]~=7.9.1",
   "radish-bdd~=0.18.2",
 ]
 babel = [
   "babel~=2.17.0",
 ]
 hatch-static-analysis = [
-  "ruff~=0.11.13",
+  "ruff~=0.12.0",
 ]
 hatch-test = [
   "coverage-enable-subprocess==1.0", # Hatch test default inclusion
-  "coverage[toml]~=7.8.2", # Hatch test default inclusion
+  "coverage[toml]~=7.9.1", # Hatch test default inclusion
   "logot~=1.4.0",
   "loguru~=0.7.3",
   "pytest-mock~=3.14.1", # Hatch test default inclusion
@@ -106,18 +106,18 @@ hatch-test = [
   "pytest-rerunfailures~=15.1.0", # Hatch test default inclusion
   "pytest-socket~=0.7.0",
   "pytest-xdist[psutil]~=3.7.0", # Hatch test default inclusion
-  "pytest~=8.4.0", # Hatch test default inclusion
+  "pytest~=8.4.1", # Hatch test default inclusion
 ]
 hatch-uv = [
-  "uv~=0.7.11",
+  "uv~=0.7.13",
 ]
 types = [
   "logot~=1.4.0",
   "loguru~=0.7.3",
-  "mypy~=1.16.0",
+  "mypy~=1.16.1",
   "pandas_stubs~=2.2.3", # PyTorch & Kokoro TTS stub
-  "pytest-mock~=3.14.0",
-  "pytest~=8.4.0",
+  "pytest-mock~=3.14.1",
+  "pytest~=8.4.1",
   "scipy-stubs~=1.15.3", # PyTorch & Kokoro TTS stub, I think
   "types-colorama~=0.4.15", # mypy type stub
   "types-pexpect~=4.9.0", # mypy type stub
@@ -135,7 +135,7 @@ types = [
   "types_pywin32~=310.0.0", # PyTorch & Kokoro TTS stub
   "types_pyyaml~=6.0.12", # PyTorch & Kokoro TTS stub
   "types_regex~=2024.11.6", # PyTorch & Kokoro TTS stub
-  "types_requests~=2.32.0", # PyTorch & Kokoro TTS stub
+  "types_requests~=2.32.4", # PyTorch & Kokoro TTS stub
   "types_simplejson~=3.20.0", # PyTorch & Kokoro TTS stub
   "types_tabulate~=0.9.0", # PyTorch & Kokoro TTS stub
   "types_tensorflow~=2.18.0", # PyTorch & Kokoro TTS stub

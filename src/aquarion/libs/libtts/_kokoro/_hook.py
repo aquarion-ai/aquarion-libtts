@@ -32,12 +32,12 @@ def register_tts_plugin() -> ITTSPlugin | None:
     #       I.e. if the [kokoro] & [cu128] extras are not installed, we just skip
     #       registering the KokoroPlugin.
     try:
-        import kokoro  # noqa: F401
-        import torch  # noqa: F401
+        import kokoro  # noqa: F401, PLC0415
+        import torch  # noqa: F401, PLC0415
     except ModuleNotFoundError:
         logger.debug("Skipping Kokoro TTS plugin because of a missing dependency.")
         return None
-    from aquarion.libs.libtts._kokoro._plugin import KokoroPlugin
+    from aquarion.libs.libtts._kokoro._plugin import KokoroPlugin  # noqa: PLC0415
 
     logger.debug("Registering Kokoro TTS plugin.")
     return KokoroPlugin()
