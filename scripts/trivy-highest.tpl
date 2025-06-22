@@ -5,6 +5,7 @@
 
 {{- $severities := dict "UNKNOWN" 0 "LOW" 1 "MEDIUM" 2 "HIGH" 3 "CRITICAL" 4 -}}
 {{- $max := 0 -}}
+
 {{- range . }}
   {{- range .Vulnerabilities }}
     {{- $sev := index $severities .Severity -}}
@@ -13,9 +14,9 @@
 {{- end }}
 
 {{- if eq $max 0 }}
-None
+none
 {{- else }}
   {{- range $k, $v := $severities }}
-    {{- if eq $v $max }}{{ $k }}{{ end }}
+    {{- if eq $v $max }}{{ $k | lower }}{{ end }}
   {{- end }}
 {{- end }}
