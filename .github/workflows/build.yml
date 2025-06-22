@@ -135,7 +135,7 @@ jobs:
           echo "vuln_error=$VULN_ERROR" >> $GITHUB_ENV
           echo "### Total test coverage: ${TEST_TOTAL}%" >> $GITHUB_STEP_SUMMARY
           echo "### Total acceptance test coverage: ${ACCEPT_TOTAL}%" >> $GITHUB_STEP_SUMMARY
-          echo "### Highest vulnerability severity level: ${HIGHEST_VULN}%" >> $GITHUB_STEP_SUMMARY
+          echo "### Highest vulnerability severity level: ${HIGHEST_VULN}" >> $GITHUB_STEP_SUMMARY
 
       - name: Get repo name
         run: echo "repo_name=${{ github.repository }}" | sed "s/\//_/" >> $GITHUB_ENV
