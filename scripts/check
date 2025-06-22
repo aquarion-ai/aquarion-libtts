@@ -188,7 +188,14 @@ def --wrapped "main accept wip" [
 def --wrapped "main sec vuln" [
     ...rest: string # Extra arguments for Trivy
 ]: nothing -> string {
-    trivy fs . --scanners vuln --include-dev-deps ...$rest
+    (
+        trivy fs . --scanners vuln --include-dev-deps --severity UNKNOWN,LOW,MEDIUM
+        --exit-code 0 ...$rest
+    )
+    (
+        trivy fs . --scanners vuln --include-dev-deps --severity HIGH,CRITICAL
+        --exit-code 1 ...$rest
+    )
 }
 
 # Check for secrets that should not be shared.
