@@ -123,14 +123,19 @@ jobs:
       - name: Run licence checks
         run: devbox run check licences
 
-      - name: Get test coverage totals
+      - name: Create Actions report
         run: |
           export TEST_TOTAL=$(devbox run report coverage test --total --ci)
           export ACCEPT_TOTAL=$(devbox run report coverage accept --total --ci)
+          export HIGHEST_VULN=$(devbox run report sec highest)
+          [[ "$HIGHEST_VULN" == "HIGH" || "$HIGHEST_VULN" == "CRITICAL" ]] && export VULN_ERROR=true || export VULN_ERROR=false
           echo "test_total=$TEST_TOTAL" >> $GITHUB_ENV
           echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_ENV
+          echo "highest_vuln=$HIGHEST_VULN" >> $GITHUB_ENV
+          echo "vuln_error=$VULN_ERROR" >> $GITHUB_ENV
           echo "### Total test coverage: ${TEST_TOTAL}%" >> $GITHUB_STEP_SUMMARY
           echo "### Total acceptance test coverage: ${ACCEPT_TOTAL}%" >> $GITHUB_STEP_SUMMARY
+          echo "### Highest vulnerability severity level: ${HIGHEST_VULN}%" >> $GITHUB_STEP_SUMMARY
 
       - name: Get repo name
         run: echo "repo_name=${{ github.repository }}" | sed "s/\//_/" >> $GITHUB_ENV
@@ -158,3 +163,13 @@ jobs:
           minColorRange: 50
           maxColorRange: 80
           valColorRange: ${{ env.accept_total }}
+
+      - name: Create Vulnerability Severity Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 079b402971d82c07d05c74f37c57b088
+          filename: ${{ env.repo_name }}__${{ github.ref_name }}__vuln.json
+          label: vulnerabilities
+          message: ${{ env.highest_vuln }}
+          isError: ${{ env.vuln_error }}
