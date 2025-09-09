@@ -30,6 +30,8 @@ from aquarion.libs.libtts.api._ttsbackend import ITTSBackend
 from aquarion.libs.libtts.api._ttssettings import (
     ITTSSettings,
     JSONSerializableTypes,
+    TTSSettingsSpecEntry,
+    TTSSettingsSpecEntryTypes,
 )
 
 _tts_hookspec = HookspecMarker(distribution_name)
@@ -85,6 +87,18 @@ class ITTSPlugin(Protocol):
         Implementations of this interface should check that they are only getting the
         correct concrete settings class and raise TypeError if any other kind of
         concrete ITTSSettings is given.
+        """
+
+    def get_settings_spec(
+        self,
+    ) -> Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]]:
+        """Return a specification that describes all the backend's settings.
+
+        Returns an immutable mapping of from setting key/attribute to
+        TTSSettingsSpecEntry instances.
+
+        Implementations should probably return a MappingProxyType to achieve the
+        immutability.
         """
 
 

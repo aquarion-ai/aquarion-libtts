@@ -138,6 +138,7 @@ ttsbackend
 ttspluginregistry
 ttsplugins
 ttssettings
+ttssettingsspecentry
 usefixtures
 uvenv
 vars

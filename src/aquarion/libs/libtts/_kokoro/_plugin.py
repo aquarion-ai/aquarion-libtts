@@ -25,7 +25,13 @@ from loguru import logger
 from aquarion.libs.libtts._kokoro._backend import KokoroBackend
 from aquarion.libs.libtts._kokoro._settings import KokoroSettings
 from aquarion.libs.libtts._utils import load_internal_language
-from aquarion.libs.libtts.api import ITTSBackend, ITTSSettings, JSONSerializableTypes
+from aquarion.libs.libtts.api import (
+    ITTSBackend,
+    ITTSSettings,
+    JSONSerializableTypes,
+    TTSSettingsSpecEntry,
+    TTSSettingsSpecEntryTypes,
+)
 
 
 class KokoroPlugin:
@@ -88,3 +94,16 @@ class KokoroPlugin:
         backend = KokoroBackend(settings)
         logger.debug("Created new KokoroBackend.")
         return backend
+
+    def get_settings_spec(
+        self,
+    ) -> Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]]:
+        """Return a specification that describes all the backend's settings.
+
+        Returns an immutable mapping of from setting key/attribute to
+        TTSSettingsSpecEntry instances.
+
+        Implementations should probably return a MappingProxyType to achieve the
+        immutability.
+        """
+        return KokoroSettings._make_spec()  # noqa: SLF001

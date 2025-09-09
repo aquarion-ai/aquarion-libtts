@@ -19,6 +19,7 @@
 
 import importlib
 from collections.abc import Mapping
+from types import MappingProxyType
 from typing import Final, Never, cast
 
 import pytest
@@ -35,6 +36,8 @@ from aquarion.libs.libtts.api._ttsplugins import (
 from aquarion.libs.libtts.api._ttssettings import (
     ITTSSettings,
     JSONSerializableTypes,
+    TTSSettingsSpecEntry,
+    TTSSettingsSpecEntryTypes,
 )
 from tests.unit.api.ttsbackend_test import DummyTTSBackend
 from tests.unit.api.ttssettings_test import AnotherTTSSettings, DummyTTSSettings
@@ -95,6 +98,13 @@ class DummyTTSPlugin:
         backend = DummyTTSBackend()
         backend.update_settings(settings)
         return backend
+
+    def get_settings_spec(
+        self,
+    ) -> Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]]:
+        spec = {"attr1": TTSSettingsSpecEntry(type=str)}
+        proxy = MappingProxyType(spec)
+        return proxy  # Makes type checker happy # noqa: RET504
 
 
 def test_ittsplugin_should_conform_to_its_protocol() -> None:
@@ -230,6 +240,33 @@ def test_ittsplugin_make_backend_should_raise_error_if_incorrect_settings_given(
     settings = AnotherTTSSettings()
     with pytest.raises(TypeError, match="Incorrect settings type"):
         plugin.make_backend(settings)
+
+
+## .get_settings_spec tests
+
+
+def test_ittsplugin_get_settings_spec_should_return_a_mapping_of_ttssettingsspecentry(
+    # Force line wrap in Ruff.
+) -> None:
+    plugin = DummyTTSPlugin()
+    spec = plugin.get_settings_spec()
+    assert isinstance(spec, Mapping)
+    assert all(isinstance(entry, TTSSettingsSpecEntry) for entry in spec.values())
+
+
+def test_ittsplugin_get_settings_spec_result_should_include_all_settings() -> None:
+    plugin = DummyTTSPlugin()
+    spec = plugin.get_settings_spec()
+    assert set(spec.keys()) == {"attr1"}
+
+
+def test_ittsplugin_get_settings_spec_result_should_be_immutable() -> None:
+    plugin = DummyTTSPlugin()
+    spec = plugin.get_settings_spec()
+    with pytest.raises(TypeError, match="object does not support item assignment"):
+        spec["new_key"] = "invalid"  # type:ignore[index]
+    with pytest.raises(TypeError, match="object does not support item assignment"):
+        spec["attr1"] = "also invalid"  # type:ignore[index]
 
 
 ### TTSPluginRegistry Tests ###

@@ -22,12 +22,19 @@ These tests serve mostly to document the expectations of all ITTSSettings
 implementations.
 """
 
+from dataclasses import FrozenInstanceError
+from typing import Final, TypedDict
+
 import pytest
 
 from aquarion.libs.libtts.api import (
     ITTSSettings,
     ITTSSettingsHolder,
     JSONSerializableTypes,
+)
+from aquarion.libs.libtts.api._ttssettings import (
+    TTSSettingsSpecEntry,
+    TTSSettingsSpecEntryTypes,
 )
 
 ### ITTSSettings Tests ###
@@ -179,3 +186,48 @@ def test_ittssettingsholder_update_settings_should_raise_error_if_incorrect_type
     incorrect_settings = AnotherTTSSettings()
     with pytest.raises(TypeError, match="Incorrect settings type"):
         holder.update_settings(incorrect_settings)
+
+
+### TTSSettingsSpecEntry tests ###
+
+
+class SpecEntryArgsType[T: TTSSettingsSpecEntryTypes](TypedDict):
+    """TypedDict for augments to pass to TTSSettingsSpecEntry."""
+
+    type: type[T]
+    min: int | None
+    max: int | None
+    values: frozenset[T] | None
+
+
+SPEC_ENTRY_ARGS: Final[SpecEntryArgsType[int]] = {
+    "type": int,
+    "min": 5,
+    "max": 10,
+    "values": frozenset([5, 7, 9]),
+}
+
+
+def test_ttssettingsspecentry_should_accept_expected_arguments() -> None:
+    TTSSettingsSpecEntry[int](**SPEC_ENTRY_ARGS)
+
+
+def test_ttssettingsspecentry_should_require_the_type_argument() -> None:
+    args = SPEC_ENTRY_ARGS.copy()
+    del args["type"]  # type:ignore[misc]
+    with pytest.raises(TypeError, match="missing .* required keyword-only argument"):
+        TTSSettingsSpecEntry[int](**args)
+
+
+def test_ttssettingsspecentry_should_accept_only_keyword_arguments() -> None:
+    with pytest.raises(
+        TypeError, match="takes 1 positional argument but .* were given"
+    ):
+        TTSSettingsSpecEntry(*SPEC_ENTRY_ARGS.values())  # type:ignore[call-arg]
+
+
+@pytest.mark.parametrize("attribute", SPEC_ENTRY_ARGS.keys())
+def test_ttssettingsspecentry_should_be_immutable(attribute: str) -> None:
+    entry = TTSSettingsSpecEntry[int](**SPEC_ENTRY_ARGS)
+    with pytest.raises(FrozenInstanceError, match="cannot assign to field"):
+        setattr(entry, attribute, SPEC_ENTRY_ARGS[attribute])  # type:ignore[literal-required,misc]

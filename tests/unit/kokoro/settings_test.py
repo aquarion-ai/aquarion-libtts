@@ -17,6 +17,7 @@
 
 """Unit tests for _kokoro._settings module."""
 
+from collections.abc import Mapping
 from pathlib import Path
 from typing import Final, cast
 
@@ -29,7 +30,11 @@ from aquarion.libs.libtts._kokoro._settings import (
     KokoroSettings,
     KokoroVoices,
 )
-from aquarion.libs.libtts.api import ITTSSettings, JSONSerializableTypes
+from aquarion.libs.libtts.api import (
+    ITTSSettings,
+    JSONSerializableTypes,
+    TTSSettingsSpecEntry,
+)
 from tests.unit.kokoro.conftest import (
     INVALID_SETTINGS_CASES,
     SETTINGS_ARGS,
@@ -142,6 +147,31 @@ def test_kokorosettings_should_accept_supported_voices(locale: str, voice: str) 
     assert str(settings.locale) == locale
 
 
+def test_kokorosettings_should_coerce_voice_strings_to_enum_on_instantiation() -> None:
+    settings = KokoroSettings(voice="af_heart")  # type:ignore[arg-type]
+    assert settings.voice == KokoroVoices.af_heart
+    assert isinstance(settings.voice, KokoroVoices)
+
+
+def test_kokorosettings_should_coerce_device_strings_to_enum_on_instantiation() -> None:
+    settings = KokoroSettings(device="cpu")  # type:ignore[arg-type]
+    assert settings.device == KokoroDeviceNames.cpu
+    assert isinstance(settings.device, KokoroDeviceNames)
+
+
+@pytest.mark.parametrize(
+    "attribute", [attr for attr in SETTINGS_ARGS if attr.endswith("_path")]
+)
+def test_kokorosettings_should_raise_an_error_if_file_path_does_not_exist(
+    attribute: str,
+) -> None:
+    with pytest.raises(ValueError, match="Path does not point to a file"):
+        KokoroSettings(**{attribute: Path("non-existant-path")})  # type:ignore[arg-type]
+
+
+## .lang_code tests
+
+
 @pytest.mark.parametrize(
     ("locale", "voice", "expected"),
     [
@@ -155,6 +185,9 @@ def test_kokorosettings_lang_code_should_return_the_correct_language_code(
 ) -> None:
     settings = KokoroSettings(locale=locale, voice=voice)
     assert settings.lang_code == expected
+
+
+## .to_dict tests
 
 
 def test_kokorosettings_to_dict_should_return_voice_as_a_string() -> None:
@@ -179,26 +212,28 @@ def test_kokorosettings_to_dict_should_log_dictionary_creation(logot: Logot) -> 
     )
 
 
-def test_kokorosettings_should_coerce_voice_strings_to_enum_on_instantiation() -> None:
-    settings = KokoroSettings(voice="af_heart")  # type:ignore[arg-type]
-    assert settings.voice == KokoroVoices.af_heart
-    assert isinstance(settings.voice, KokoroVoices)
+## _make_spec tests
 
 
-def test_kokorosettings_should_coerce_device_strings_to_enum_on_instantiation() -> None:
-    settings = KokoroSettings(device="cpu")  # type:ignore[arg-type]
-    assert settings.device == KokoroDeviceNames.cpu
-    assert isinstance(settings.device, KokoroDeviceNames)
-
-
-@pytest.mark.parametrize(
-    "attribute", [attr for attr in SETTINGS_ARGS if attr.endswith("_path")]
-)
-def test_kokorosettings_should_raise_an_error_if_file_path_does_not_exist(
-    attribute: str,
+def test_kokorosettings_make_spec_should_return_a_mapping_of_ttssettingsspecentry(
+    # Force line wrap in Ruff.
 ) -> None:
-    with pytest.raises(ValueError, match="Path does not point to a file"):
-        KokoroSettings(**{attribute: Path("non-existant-path")})  # type:ignore[arg-type]
+    spec = KokoroSettings._make_spec()  # noqa: SLF001
+    assert isinstance(spec, Mapping)
+    assert all(isinstance(entry, TTSSettingsSpecEntry) for entry in spec.values())
+
+
+def test_kokorosettings_make_spec_result_should_include_all_settings() -> None:
+    spec = KokoroSettings._make_spec()  # noqa: SLF001
+    assert sorted(spec.keys()) == sorted(SETTINGS_ARGS)
+
+
+def test_kokorosettings_make_spec_result_should_be_immutable() -> None:
+    spec = KokoroSettings._make_spec()  # noqa: SLF001
+    with pytest.raises(TypeError, match="object does not support item assignment"):
+        spec["new_key"] = "invalid"  # type:ignore[index]
+    with pytest.raises(TypeError, match="object does not support item assignment"):
+        spec["attr1"] = "also invalid"  # type:ignore[index]
 
 
 ## ITTSSettings Protocol Conformity ##

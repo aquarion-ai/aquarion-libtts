@@ -18,7 +18,9 @@
 
 """Kokoro TTS settings implementation."""
 
+from collections.abc import Mapping
 from enum import StrEnum, auto
+from types import MappingProxyType
 from typing import Annotated, Final, Self, cast
 
 from babel import Locale, UnknownLocaleError
@@ -32,7 +34,11 @@ from pydantic import (
     model_validator,
 )
 
-from aquarion.libs.libtts.api import JSONSerializableTypes
+from aquarion.libs.libtts.api import (
+    JSONSerializableTypes,
+    TTSSettingsSpecEntry,
+    TTSSettingsSpecEntryTypes,
+)
 
 _VOICE_LOCALE_ALIASES: Final = {
     "en_CA": "en_US",
@@ -102,6 +108,11 @@ def _validate_locale(locale: str) -> str:
     return str(supported_locale)
 
 
+def _enum_strs(enum: type[StrEnum]) -> frozenset[str]:
+    """Return a frozen set of enumeration strings."""
+    return frozenset(str(entry) for entry in enum)
+
+
 class KokoroSettings(  # type:ignore[explicit-any]
     BaseModel, revalidate_instances="always", extra="forbid", validate_default=True
 ):
@@ -132,13 +143,23 @@ class KokoroSettings(  # type:ignore[explicit-any]
     """
 
     locale: Annotated[str, BeforeValidator(_validate_locale)] = "en_CA"
+    _locale_spec = TTSSettingsSpecEntry(
+        type=str, min=2, values=_enum_strs(KokoroLocales)
+    )
     voice: KokoroVoices = KokoroVoices.af_heart
-    speed: Annotated[float, Field(gt=0, le=1.0)] = 1.0
+    _voice_spec = TTSSettingsSpecEntry(type=str, values=_enum_strs(KokoroVoices))
+    speed: Annotated[float, Field(ge=0.1, le=1.0)] = 1.0
+    _speed_spec = TTSSettingsSpecEntry(type=float, min=0.1, max=1.0)
     device: KokoroDeviceNames | None = None
+    _device_spec = TTSSettingsSpecEntry(type=str, values=_enum_strs(KokoroDeviceNames))
     repo_id: str = "hexgrad/Kokoro-82M"
+    _repo_id_spec = TTSSettingsSpecEntry(type=str)
     model_path: FilePath | None = None
+    _model_path_spec = TTSSettingsSpecEntry(type=str)
     config_path: FilePath | None = None
+    _config_path_spec = TTSSettingsSpecEntry(type=str)
     voice_path: FilePath | None = None
+    _voice_path_spec = TTSSettingsSpecEntry(type=str)
 
     @property
     def lang_code(self) -> str:
@@ -168,3 +189,19 @@ class KokoroSettings(  # type:ignore[explicit-any]
             )
             raise ValueError(message)
         return self
+
+    @classmethod
+    def _make_spec(
+        cls,
+    ) -> Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]]:
+        """Return a specification that describes all the backend's settings.
+
+        This must conform to ITTSPlugin.get_settings_spec(), even though it is
+        implemented here.
+
+        This way all Pydantic-specific code is kept together.
+        """
+        spec: dict[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]] = {}
+        for setting in cls.model_fields:
+            spec[setting] = getattr(cls, f"_{setting}_spec").get_default()  # type:ignore[misc]
+        return MappingProxyType(spec)

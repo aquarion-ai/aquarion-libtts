@@ -17,7 +17,8 @@
 
 """Unit tests for _kokoro._plugin module."""
 
-from typing import TYPE_CHECKING, cast
+from collections.abc import Mapping
+from typing import cast
 
 import pytest
 from logot import Logot, logged
@@ -29,6 +30,7 @@ from aquarion.libs.libtts.api import (
     ITTSPlugin,
     ITTSSettings,
     JSONSerializableTypes,
+    TTSSettingsSpecEntry,
 )
 from tests.unit.api.ttssettings_test import AnotherTTSSettings
 from tests.unit.kokoro.conftest import (
@@ -36,10 +38,6 @@ from tests.unit.kokoro.conftest import (
     SETTINGS_ARGS,
     SettingsDict,
 )
-
-if TYPE_CHECKING:
-    from collections.abc import Mapping
-
 
 ### KokoroPlugin Tests ###
 
@@ -210,3 +208,30 @@ def test_kokoroplugin_make_backend_should_raise_error_if_incorrect_settings_give
     settings = AnotherTTSSettings()
     with pytest.raises(TypeError, match="Incorrect settings type"):
         plugin.make_backend(settings)
+
+
+## .get_settings_spec tests
+
+
+def test_kokoroplugin_get_settings_spec_should_return_a_mapping_of_ttssettingsspecentry(
+    # Force line wrap in Ruff.
+) -> None:
+    plugin = KokoroPlugin()
+    spec = plugin.get_settings_spec()
+    assert isinstance(spec, Mapping)
+    assert all(isinstance(entry, TTSSettingsSpecEntry) for entry in spec.values())
+
+
+def test_kokoroplugin_get_settings_spec_result_should_include_all_settings() -> None:
+    plugin = KokoroPlugin()
+    spec = plugin.get_settings_spec()
+    assert sorted(spec.keys()) == sorted(SETTINGS_ARGS)
+
+
+def test_kokoroplugin_get_settings_spec_result_should_be_immutable() -> None:
+    plugin = KokoroPlugin()
+    spec = plugin.get_settings_spec()
+    with pytest.raises(TypeError, match="object does not support item assignment"):
+        spec["new_key"] = "invalid"  # type:ignore[index]
+    with pytest.raises(TypeError, match="object does not support item assignment"):
+        spec["attr1"] = "also invalid"  # type:ignore[index]

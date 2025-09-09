@@ -19,6 +19,7 @@
 """TTSSettings protocol."""
 
 from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
 type JSONSerializableTypes = (
@@ -72,3 +73,16 @@ class ITTSSettingsHolder(Protocol):
         correct concrete settings class and raise TypeError if any other kind of
         concrete ITTSSettings is given.
         """
+
+
+type TTSSettingsSpecEntryTypes = str | int | float
+
+
+@dataclass(frozen=True, kw_only=True)
+class TTSSettingsSpecEntry[T: TTSSettingsSpecEntryTypes]:
+    """An specification entry describing one setting in an ITTSSettings object."""
+
+    type: type[T]
+    min: int | float | None = None
+    max: int | float | None = None
+    values: frozenset[T] | None = None
