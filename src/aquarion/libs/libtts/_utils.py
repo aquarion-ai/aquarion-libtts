@@ -35,12 +35,34 @@ load_internal_language = partial(
 )
 
 
+def fake_gettext(string: str) -> str:
+    """Fake gettext _() function that just returns the original string.
+
+    This is useful for when i18n message definition and it's actual translation are done
+    at different times.  E.g. defined at import or class definition time, but actually
+    translated at runtime.
+
+    Example usage:
+
+    from aquarion.libs.libtts._utils import fake_gettext as _
+
+    class_var = _("some text")
+
+
+    Naming this function as _() will cause Babel to extract the text to the message
+    template, but actual translation would have to be done later with something like
+
+    return _(class_var)
+
+    where _() in this case is the real gettext.
+
+    """
+    return string
+
+
 def _language_test_string() -> None:  # pragma: no cover
     """Container for a test string to translate. Do not call."""
-
-    def _(string: str) -> str:
-        return string
-
+    _ = fake_gettext
     # Translator: This should be translated to say "I am translated in to {locale}".
     # E.g. "I am translated in to en_CA". It is only used for testing.
     _("I am not translated")
