@@ -4,14 +4,14 @@
 # French translations for aquarion-libtts.
 # Copyright (C) 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
 # This file is distributed under the same license as the aquarion-libtts project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+# Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: aquarion-libtts 0.0.1\n"
 "Report-Msgid-Bugs-To: aquarion.5.krystopher@spamgourmet.org\n"
-"POT-Creation-Date: 2025-06-07 15:30-0400\n"
+"POT-Creation-Date: 2025-09-08 22:30-0400\n"
 "PO-Revision-Date: 2025-06-07 15:31-0400\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>\n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -20,13 +20,45 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: src/aquarion/libs/libtts/_kokoro.py:288
-msgid "Kokoro"
-msgstr "Kokoro"
-
 #. Translator: This should be translated to say "I am translated in to
 #. {locale}".
 #. E.g. "I am translated in to en_CA". It is only used for testing.
-#: src/aquarion/libs/libtts/_utils.py:44
+#: src/aquarion/libs/libtts/_utils.py:68
 msgid "I am not translated"
 msgstr "Je suis traduit en fr"
+
+#: src/aquarion/libs/libtts/_kokoro/_plugin.py:62
+msgid "Kokoro"
+msgstr "Kokoro"
+
+#: src/aquarion/libs/libtts/_kokoro/_settings.py:150
+msgid "Locale"
+msgstr "Paramètre de localisation"
+
+#: src/aquarion/libs/libtts/_kokoro/_settings.py:154
+msgid "Voice"
+msgstr "Voix"
+
+#: src/aquarion/libs/libtts/_kokoro/_settings.py:158
+msgid "Speed"
+msgstr "Vitesse"
+
+#: src/aquarion/libs/libtts/_kokoro/_settings.py:162
+msgid "Compute Device"
+msgstr "Périphérique de calcul"
+
+#: src/aquarion/libs/libtts/_kokoro/_settings.py:166
+msgid "Repository ID"
+msgstr "Identifiant du dépôt"
+
+#: src/aquarion/libs/libtts/_kokoro/_settings.py:170
+msgid "Model File Path"
+msgstr "Chemin du fichier modèle"
+
+#: src/aquarion/libs/libtts/_kokoro/_settings.py:174
+msgid "Configuration File Path"
+msgstr "Chemin du fichier de configuration"
+
+#: src/aquarion/libs/libtts/_kokoro/_settings.py:178
+msgid "Voice File Path"
+msgstr "Chemin du fichier vocal"

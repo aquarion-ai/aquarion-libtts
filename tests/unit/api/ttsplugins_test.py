@@ -52,6 +52,9 @@ DUMMY_ID: Final = "I am an id"
 DUMMY_DISPLAY_NAME_EN_CA: Final = "I am a display name"
 DUMMY_DISPLAY_NAME_FR_CA: Final = "Je suis un nom affiché"
 DUMMY_DISPLAY_NAME_DEFAULT: Final = "I am a default display name"
+DUMMY_ATTR1_DISPLAY_NAME_EN_CA: Final = "I am attr1's display name"
+DUMMY_ATTR1_DISPLAY_NAME_FR_CA: Final = "Je suis le nom affiché de attr1"
+DUMMY_ATTR1_DISPLAY_NAME_DEFAULT: Final = "I am attr1's default display name"
 
 
 class DummyTTSPlugin:
@@ -105,6 +108,14 @@ class DummyTTSPlugin:
         spec = {"attr1": TTSSettingsSpecEntry(type=str)}
         proxy = MappingProxyType(spec)
         return proxy  # Makes type checker happy # noqa: RET504
+
+    def get_setting_display_name(self, setting_name: str, locale: str) -> str:
+        assert setting_name == "attr1"
+        if locale == "en_CA":
+            return DUMMY_ATTR1_DISPLAY_NAME_EN_CA
+        if locale == "fr_CA":
+            return DUMMY_ATTR1_DISPLAY_NAME_FR_CA
+        return DUMMY_ATTR1_DISPLAY_NAME_DEFAULT
 
 
 def test_ittsplugin_should_conform_to_its_protocol() -> None:
@@ -267,6 +278,54 @@ def test_ittsplugin_get_settings_spec_result_should_be_immutable() -> None:
         spec["new_key"] = "invalid"  # type:ignore[index]
     with pytest.raises(TypeError, match="object does not support item assignment"):
         spec["attr1"] = "also invalid"  # type:ignore[index]
+
+
+## .get_setting_display_name tests
+
+
+GET_SETTING_DISPLAY_NAME_ARGS: Final = {
+    "setting_name": "attr1",
+    "locale": "en_CA",
+}
+
+
+def test_ittsplugin_get_setting_display_name_should_accept_required_arguments() -> None:
+    plugin = DummyTTSPlugin()
+    plugin.get_setting_display_name(**GET_SETTING_DISPLAY_NAME_ARGS)
+
+
+@pytest.mark.parametrize("argument", GET_SETTING_DISPLAY_NAME_ARGS)
+def test_ittsplugin_get_setting_display_name_should_require_required_arguments(
+    argument: str,
+) -> None:
+    args = GET_SETTING_DISPLAY_NAME_ARGS.copy()
+    del args[argument]
+    plugin = DummyTTSPlugin()
+    with pytest.raises(TypeError, match="missing 1 required positional argument"):
+        plugin.get_setting_display_name(**args)
+
+
+@pytest.mark.parametrize(
+    ("locale", "expected"),
+    [
+        ("en_CA", DUMMY_ATTR1_DISPLAY_NAME_EN_CA),
+        ("fr_CA", DUMMY_ATTR1_DISPLAY_NAME_FR_CA),
+    ],
+)
+def test_ittsplugin_get_setting_display_name_should_return_correct_name_for_locale(
+    locale: str, expected: str
+) -> None:
+    plugin = DummyTTSPlugin()
+    display_name = plugin.get_setting_display_name("attr1", locale)
+    assert display_name == expected
+
+
+def test_ittsplugin_get_setting_display_name_should_return_a_fallback_if_locale_unknown(
+    # Force line wrap in Ruff.
+) -> None:
+    plugin = DummyTTSPlugin()
+    display_name = plugin.get_setting_display_name("attr1", "ja")
+    assert display_name == DUMMY_ATTR1_DISPLAY_NAME_DEFAULT
 
 
 ### TTSPluginRegistry Tests ###

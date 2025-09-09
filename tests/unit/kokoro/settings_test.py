@@ -166,7 +166,7 @@ def test_kokorosettings_should_raise_an_error_if_file_path_does_not_exist(
     attribute: str,
 ) -> None:
     with pytest.raises(ValueError, match="Path does not point to a file"):
-        KokoroSettings(**{attribute: Path("non-existant-path")})  # type:ignore[arg-type]
+        KokoroSettings(**{attribute: Path("non-existent-path")})  # type:ignore[arg-type]
 
 
 ## .lang_code tests
@@ -234,6 +234,43 @@ def test_kokorosettings_make_spec_result_should_be_immutable() -> None:
         spec["new_key"] = "invalid"  # type:ignore[index]
     with pytest.raises(TypeError, match="object does not support item assignment"):
         spec["attr1"] = "also invalid"  # type:ignore[index]
+
+
+## _get_setting_display_name tests
+
+
+def test_kokorosettings_get_setting_display_name_should_accept_a_setting_name() -> None:
+    KokoroSettings._get_setting_display_name("locale")  # noqa: SLF001
+
+
+def test_kokorosettings_get_setting_display_name_should_require_a_setting_name(
+    # Force line wrap in Ruff.
+) -> None:
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        KokoroSettings._get_setting_display_name()  # type:ignore[call-arg]  # noqa: SLF001
+
+
+@pytest.mark.parametrize(
+    ("setting", "expected"),
+    zip(
+        SETTINGS_ARGS,
+        [
+            "Locale",  # locale
+            "Voice",  # voice
+            "Speed",  # speed
+            "Compute Device",  # device
+            "Repository ID",  # repo_id
+            "Model File Path",  # model_path
+            "Configuration File Path",  # config_path
+            "Voice File Path",  # voice_path
+        ],
+        strict=True,
+    ),
+)
+def test_kokorosettings_get_setting_display_name_should_return_the_display_name(
+    setting: str, expected: str
+) -> None:
+    assert KokoroSettings._get_setting_display_name(setting) == expected  # noqa: SLF001
 
 
 ## ITTSSettings Protocol Conformity ##

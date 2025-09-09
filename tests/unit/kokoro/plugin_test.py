@@ -18,7 +18,7 @@
 """Unit tests for _kokoro._plugin module."""
 
 from collections.abc import Mapping
-from typing import cast
+from typing import Final, cast
 
 import pytest
 from logot import Logot, logged
@@ -235,3 +235,106 @@ def test_kokoroplugin_get_settings_spec_result_should_be_immutable() -> None:
         spec["new_key"] = "invalid"  # type:ignore[index]
     with pytest.raises(TypeError, match="object does not support item assignment"):
         spec["attr1"] = "also invalid"  # type:ignore[index]
+
+
+## .get_setting_display_name tests
+
+
+GET_SETTING_DISPLAY_NAME_ARGS: Final = {
+    "setting_name": "locale",
+    "locale": "en_CA",
+}
+
+EXPECTED_SETTING_DISPLAY_NAMES = {
+    "locale": {
+        "en": "Locale",
+        "fr": "Paramètre de localisation",
+    },
+    "voice": {
+        "en": "Voice",
+        "fr": "Voix",
+    },
+    "speed": {
+        "en": "Speed",
+        "fr": "Vitesse",
+    },
+    "device": {
+        "en": "Compute Device",
+        "fr": "Périphérique de calcul",
+    },
+    "repo_id": {
+        "en": "Repository ID",
+        "fr": "Identifiant du dépôt",
+    },
+    "model_path": {
+        "en": "Model File Path",
+        "fr": "Chemin du fichier modèle",
+    },
+    "config_path": {
+        "en": "Configuration File Path",
+        "fr": "Chemin du fichier de configuration",
+    },
+    "voice_path": {
+        "en": "Voice File Path",
+        "fr": "Chemin du fichier vocal",
+    },
+}
+for setting_name in EXPECTED_SETTING_DISPLAY_NAMES:  # noqa: PLC0206
+    for locale in ("en_CA", "en_US", "en_GB"):
+        EXPECTED_SETTING_DISPLAY_NAMES[setting_name][locale] = (
+            EXPECTED_SETTING_DISPLAY_NAMES[setting_name]["en"]
+        )
+for setting_name in EXPECTED_SETTING_DISPLAY_NAMES:  # noqa: PLC0206
+    for locale in ("fr_CA", "fr_FR"):
+        EXPECTED_SETTING_DISPLAY_NAMES[setting_name][locale] = (
+            EXPECTED_SETTING_DISPLAY_NAMES[setting_name]["fr"]
+        )
+
+
+def test_kokoroplugin_get_setting_display_name_should_accept_required_arguments() -> (
+    None
+):
+    plugin = KokoroPlugin()
+    plugin.get_setting_display_name(**GET_SETTING_DISPLAY_NAME_ARGS)
+
+
+@pytest.mark.parametrize("argument", GET_SETTING_DISPLAY_NAME_ARGS)
+def test_kokoroplugin_get_setting_display_name_should_require_required_arguments(
+    argument: str,
+) -> None:
+    args = GET_SETTING_DISPLAY_NAME_ARGS.copy()
+    del args[argument]
+    plugin = KokoroPlugin()
+    with pytest.raises(TypeError, match="missing 1 required positional argument"):
+        plugin.get_setting_display_name(**args)
+
+
+@pytest.mark.parametrize(
+    ("setting_name", "locale", "expected"),
+    [
+        (setting, locale, expected)
+        for setting, info in EXPECTED_SETTING_DISPLAY_NAMES.items()
+        for locale, expected in info.items()
+    ],
+)
+def test_kokoroplugin_get_setting_display_name_should_return_correct_name_for_locale(
+    setting_name: str, locale: str, expected: str
+) -> None:
+    plugin = KokoroPlugin()
+    display_name = plugin.get_setting_display_name(setting_name, locale)
+    assert display_name == expected
+
+
+@pytest.mark.parametrize(
+    ("setting_name", "expected"),
+    [
+        (setting, info["en_CA"])
+        for setting, info in EXPECTED_SETTING_DISPLAY_NAMES.items()
+    ],
+)
+def test_kokoroplugin_get_setting_display_name_should_return_fallback_if_locale_unknown(
+    setting_name: str, expected: str
+) -> None:
+    plugin = KokoroPlugin()
+    display_name = plugin.get_setting_display_name(setting_name, "ja")
+    assert display_name == expected

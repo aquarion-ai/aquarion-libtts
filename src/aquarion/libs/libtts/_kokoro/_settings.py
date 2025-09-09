@@ -34,6 +34,7 @@ from pydantic import (
     model_validator,
 )
 
+from aquarion.libs.libtts._utils import fake_gettext as _
 from aquarion.libs.libtts.api import (
     JSONSerializableTypes,
     TTSSettingsSpecEntry,
@@ -146,20 +147,35 @@ class KokoroSettings(  # type:ignore[explicit-any]
     _locale_spec = TTSSettingsSpecEntry(
         type=str, min=2, values=_enum_strs(KokoroLocales)
     )
+    _locale_display_name = _("Locale")
+
     voice: KokoroVoices = KokoroVoices.af_heart
     _voice_spec = TTSSettingsSpecEntry(type=str, values=_enum_strs(KokoroVoices))
+    _voice_display_name = _("Voice")
+
     speed: Annotated[float, Field(ge=0.1, le=1.0)] = 1.0
     _speed_spec = TTSSettingsSpecEntry(type=float, min=0.1, max=1.0)
+    _speed_display_name = _("Speed")
+
     device: KokoroDeviceNames | None = None
     _device_spec = TTSSettingsSpecEntry(type=str, values=_enum_strs(KokoroDeviceNames))
+    _device_display_name = _("Compute Device")
+
     repo_id: str = "hexgrad/Kokoro-82M"
     _repo_id_spec = TTSSettingsSpecEntry(type=str)
+    _repo_id_display_name = _("Repository ID")
+
     model_path: FilePath | None = None
     _model_path_spec = TTSSettingsSpecEntry(type=str)
+    _model_path_display_name = _("Model File Path")
+
     config_path: FilePath | None = None
     _config_path_spec = TTSSettingsSpecEntry(type=str)
+    _config_path_display_name = _("Configuration File Path")
+
     voice_path: FilePath | None = None
     _voice_path_spec = TTSSettingsSpecEntry(type=str)
+    _voice_path_display_name = _("Voice File Path")
 
     @property
     def lang_code(self) -> str:
@@ -203,5 +219,15 @@ class KokoroSettings(  # type:ignore[explicit-any]
         """
         spec: dict[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]] = {}
         for setting in cls.model_fields:
+            # .get_default() is part of Pydantic magic and is needed to get the original
+            # spec entry as declared on the settings class.
             spec[setting] = getattr(cls, f"_{setting}_spec").get_default()  # type:ignore[misc]
+        # MappingProxyType makes the dict read-only.
         return MappingProxyType(spec)
+
+    @classmethod
+    def _get_setting_display_name(cls, setting_name: str) -> str:
+        """Return the default display name for the given setting."""
+        # .get_default() is part of Pydantic magic and is needed to get the original
+        # spec entry as declared on the settings class.
+        return str(getattr(cls, f"_{setting_name}_display_name").get_default())  # type:ignore[misc]
