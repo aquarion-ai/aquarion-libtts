@@ -138,7 +138,8 @@ def babel_extract [input_dir: string, output_file: string]: nothing -> string {
     (
         pybabel extract -o $output_file --project $project --version $version --no-wrap
         --header-comment $header --copyright-holder $"($author_name) <($author_email)>"
-        --msgid-bugs-address $author_email -c "Translator:" $input_dir
+        --msgid-bugs-address $author_email -c "Translator:" --ignore-dirs ".*"
+        $input_dir
     )
 }
 
