@@ -404,7 +404,7 @@ check-filenames = true
 check-hidden = false
 ignore-words = ["project-words.txt"]
 quiet-level = 0
-skip = ["__pycache__", "uv.lock"]
+skip = ["__pycache__", "uv.lock", "*.po"]
 write-changes = true
 
 [tool.commitizen]
