@@ -148,34 +148,53 @@ class KokoroSettings(  # type:ignore[explicit-any]
         type=str, min=2, values=_enum_strs(KokoroLocales)
     )
     _locale_display_name = _("Locale")
+    _locale_description = _("The regional or international locale setting.")
 
     voice: KokoroVoices = KokoroVoices.af_heart
     _voice_spec = TTSSettingsSpecEntry(type=str, values=_enum_strs(KokoroVoices))
     _voice_display_name = _("Voice")
+    _voice_description = _("The voice used by the text-to-speech system.")
 
     speed: Annotated[float, Field(ge=0.1, le=1.0)] = 1.0
     _speed_spec = TTSSettingsSpecEntry(type=float, min=0.1, max=1.0)
     _speed_display_name = _("Speed")
+    _speed_description = _("The speaking speed of the text-to-speech system.")
 
     device: KokoroDeviceNames | None = None
     _device_spec = TTSSettingsSpecEntry(type=str, values=_enum_strs(KokoroDeviceNames))
     _device_display_name = _("Compute Device")
+    _device_description = _(
+        "The device used for running the TTS system (e.g., cpu or cuda)."
+    )
 
     repo_id: str = "hexgrad/Kokoro-82M"
     _repo_id_spec = TTSSettingsSpecEntry(type=str)
     _repo_id_display_name = _("Repository ID")
+    _repo_id_description = _("The identifier or path of the Kokoro TTS Git repository.")
 
     model_path: FilePath | None = None
     _model_path_spec = TTSSettingsSpecEntry(type=str)
     _model_path_display_name = _("Model File Path")
+    _model_path_description = _(
+        "The file path to the Kokoro TTS model file.  Required only for offline or "
+        "air-gapped use; otherwise, files are downloaded and cached automatically."
+    )
 
     config_path: FilePath | None = None
     _config_path_spec = TTSSettingsSpecEntry(type=str)
     _config_path_display_name = _("Configuration File Path")
+    _config_path_description = _(
+        "The file path to the Kokoro TTS configuration file.  Required only for offline"
+        " or air-gapped use; otherwise, files are downloaded and cached automatically."
+    )
 
     voice_path: FilePath | None = None
     _voice_path_spec = TTSSettingsSpecEntry(type=str)
     _voice_path_display_name = _("Voice File Path")
+    _voice_path_description = _(
+        "The file path to the Kokoro TTS voice file.  Required only for offline or "
+        "air-gapped use; otherwise, files are downloaded and cached automatically."
+    )
 
     @property
     def lang_code(self) -> str:
@@ -231,3 +250,10 @@ class KokoroSettings(  # type:ignore[explicit-any]
         # .get_default() is part of Pydantic magic and is needed to get the original
         # spec entry as declared on the settings class.
         return str(getattr(cls, f"_{setting_name}_display_name").get_default())  # type:ignore[misc]
+
+    @classmethod
+    def _get_setting_description(cls, setting_name: str) -> str:
+        """Return the default description for the given setting."""
+        # .get_default() is part of Pydantic magic and is needed to get the original
+        # spec entry as declared on the settings class.
+        return str(getattr(cls, f"_{setting_name}_description").get_default())  # type:ignore[misc]

@@ -123,3 +123,19 @@ class KokoroPlugin:
         """
         _, t = load_internal_language(locale)
         return _(KokoroSettings._get_setting_display_name(setting_name))  # noqa: SLF001
+
+    def get_setting_description(self, setting_name: str, locale: str) -> str:
+        """Return the given setting's description appropriate for the given locale.
+
+        The locale should be a POSIX-compliant or standard format locale string like
+        `en_CA`, `zh-Hant`, `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be as
+        general as `fr` or as specific as `language_territory_script_variant@modifier`.
+
+        Plugins are expected to to do their best to accommodate the given locale, but
+        can fall back to more a general language variant.  E.g. from `en_CA` to `en`.
+
+        If the given locale is not supported at all, then the plugin is expected to
+        return a description in it's default language.
+        """
+        _, t = load_internal_language(locale)
+        return _(KokoroSettings._get_setting_description(setting_name))  # noqa: SLF001

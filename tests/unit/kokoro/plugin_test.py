@@ -156,9 +156,9 @@ def test_kokoroplugin_make_settings_should_return_a_ittssettings_object() -> Non
     assert isinstance(settings, ITTSSettings)  # Runtime check as well
 
 
-def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_key_given() -> (
-    None
-):
+def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_key_given(
+    # Force line wrap in Ruff.
+) -> None:
     plugin = KokoroPlugin()
     with pytest.raises(ValueError, match="Extra inputs are not permitted"):
         plugin.make_settings(from_dict={"invalid": None})
@@ -201,9 +201,9 @@ def test_kokoroplugin_make_backend_should_return_a_ittsbackend_object() -> None:
     assert isinstance(backend, ITTSBackend)  # Runtime check as well
 
 
-def test_kokoroplugin_make_backend_should_raise_error_if_incorrect_settings_given() -> (
-    None
-):
+def test_kokoroplugin_make_backend_should_raise_error_if_incorrect_settings_given(
+    # Force line wrap in Ruff.
+) -> None:
     plugin = KokoroPlugin()
     settings = AnotherTTSSettings()
     with pytest.raises(TypeError, match="Incorrect settings type"):
@@ -244,7 +244,6 @@ GET_SETTING_DISPLAY_NAME_ARGS: Final = {
     "setting_name": "locale",
     "locale": "en_CA",
 }
-
 EXPECTED_SETTING_DISPLAY_NAMES = {
     "locale": {
         "en": "Locale",
@@ -291,9 +290,9 @@ for setting_name in EXPECTED_SETTING_DISPLAY_NAMES:  # noqa: PLC0206
         )
 
 
-def test_kokoroplugin_get_setting_display_name_should_accept_required_arguments() -> (
-    None
-):
+def test_kokoroplugin_get_setting_display_name_should_accept_required_arguments(
+    # Force line wrap in Ruff.
+) -> None:
     plugin = KokoroPlugin()
     plugin.get_setting_display_name(**GET_SETTING_DISPLAY_NAME_ARGS)
 
@@ -338,3 +337,132 @@ def test_kokoroplugin_get_setting_display_name_should_return_fallback_if_locale_
     plugin = KokoroPlugin()
     display_name = plugin.get_setting_display_name(setting_name, "ja")
     assert display_name == expected
+
+
+## .get_setting_description tests
+
+
+GET_SETTING_DESCRIPTION_ARGS: Final = {
+    "setting_name": "locale",
+    "locale": "en_CA",
+}
+EXPECTED_SETTING_DESCRIPTIONS = {
+    "locale": {
+        "en": "The regional or international locale setting.",
+        "fr": "Le paramètre régional ou la norme locale internationale.",
+    },
+    "voice": {
+        "en": "The voice used by the text-to-speech system.",
+        "fr": "La voix utilisée par le système de synthèse vocale.",
+    },
+    "speed": {
+        "en": "The speaking speed of the text-to-speech system.",
+        "fr": "La vitesse de parole du système de synthèse vocale.",
+    },
+    "device": {
+        "en": "The device used for running the TTS system (e.g., cpu or cuda).",
+        "fr": (
+            "Le périphérique utilisé pour exécuter le système de synthèse vocale"
+            " (ex. : cpu ou cuda)."
+        ),
+    },
+    "repo_id": {
+        "en": "The identifier or path of the Kokoro TTS Git repository.",
+        "fr": "L'identifiant ou le chemin du dépôt Git de Kokoro SSV.",
+    },
+    "model_path": {
+        "en": (
+            "The file path to the Kokoro TTS model file.  Required only for offline or "
+            "air-gapped use; otherwise, files are downloaded and cached automatically."
+        ),
+        "fr": (
+            "Le chemin du fichier modèle utilisé par Kokoro pour la synthèse vocale.  "
+            "Nécessaire uniquement pour une utilisation hors ligne ou en environment "
+            "isolé ; sinon, les fichiers sont téléchargés et "
+            "mis en cache "  # codespell:ignore mis
+            "automatiquement."
+        ),
+    },
+    "config_path": {
+        "en": (
+            "The file path to the Kokoro TTS configuration file.  Required only for "
+            "offline or air-gapped use; otherwise, files are downloaded and cached "
+            "automatically."
+        ),
+        "fr": (
+            "Le chemin du fichier de configuration utilisé par Kokoro pour la synthèse "
+            "vocale.  Nécessaire uniquement pour une utilisation hors ligne ou en "
+            "environment isolé ; sinon, les fichiers sont téléchargés et "
+            "mis en cache"  # codespell:ignore mis
+            " automatiquement."
+        ),
+    },
+    "voice_path": {
+        "en": (
+            "The file path to the Kokoro TTS voice file.  Required only for offline or "
+            "air-gapped use; otherwise, files are downloaded and cached automatically."
+        ),
+        "fr": (
+            "Le chemin du fichier vocal utilisé par Kokoro pour la synthèse vocale.  "
+            "Nécessaire uniquement pour une utilisation hors ligne ou en environment "
+            "isolé ; sinon, les fichiers sont téléchargés et "
+            "mis en cache "  # codespell:ignore mis
+            "automatiquement."
+        ),
+    },
+}
+for setting_name in EXPECTED_SETTING_DESCRIPTIONS:  # noqa: PLC0206
+    for locale in ("en_CA", "en_US", "en_GB"):
+        EXPECTED_SETTING_DESCRIPTIONS[setting_name][locale] = (
+            EXPECTED_SETTING_DESCRIPTIONS[setting_name]["en"]
+        )
+for setting_name in EXPECTED_SETTING_DESCRIPTIONS:  # noqa: PLC0206
+    for locale in ("fr_CA", "fr_FR"):
+        EXPECTED_SETTING_DESCRIPTIONS[setting_name][locale] = (
+            EXPECTED_SETTING_DESCRIPTIONS[setting_name]["fr"]
+        )
+
+
+def test_kokoroplugin_get_setting_description_should_accept_required_arguments(
+    # Force line wrap in Ruff.
+) -> None:
+    plugin = KokoroPlugin()
+    plugin.get_setting_description(**GET_SETTING_DESCRIPTION_ARGS)
+
+
+@pytest.mark.parametrize("argument", GET_SETTING_DESCRIPTION_ARGS)
+def test_kokoroplugin_get_setting_description_should_require_required_arguments(
+    argument: str,
+) -> None:
+    args = GET_SETTING_DESCRIPTION_ARGS.copy()
+    del args[argument]
+    plugin = KokoroPlugin()
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        plugin.get_setting_description(**args)
+
+
+@pytest.mark.parametrize(
+    ("setting_name", "locale"),
+    [
+        (setting, locale)
+        for setting, info in EXPECTED_SETTING_DESCRIPTIONS.items()
+        for locale in info
+    ],
+)
+def test_kokoroplugin_get_setting_description_should_return_correct_value_for_locale(
+    setting_name: str, locale: str
+) -> None:
+    expected = EXPECTED_SETTING_DESCRIPTIONS[setting_name][locale]
+    plugin = KokoroPlugin()
+    description = plugin.get_setting_description(setting_name, locale)
+    assert description == expected
+
+
+@pytest.mark.parametrize("setting_name", EXPECTED_SETTING_DESCRIPTIONS)
+def test_kokoroplugin_get_setting_description_should_return_fallback_if_locale_unknown(
+    setting_name: str,
+) -> None:
+    expected = EXPECTED_SETTING_DESCRIPTIONS[setting_name]["en_CA"]
+    plugin = KokoroPlugin()
+    description = plugin.get_setting_description(setting_name, "ja")
+    assert description == expected

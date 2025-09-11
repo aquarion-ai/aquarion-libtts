@@ -55,6 +55,9 @@ DUMMY_DISPLAY_NAME_DEFAULT: Final = "I am a default display name"
 DUMMY_ATTR1_DISPLAY_NAME_EN_CA: Final = "I am attr1's display name"
 DUMMY_ATTR1_DISPLAY_NAME_FR_CA: Final = "Je suis le nom affiché de attr1"
 DUMMY_ATTR1_DISPLAY_NAME_DEFAULT: Final = "I am attr1's default display name"
+DUMMY_ATTR1_DESCRIPTION_EN_CA: Final = "I am attr1's description"
+DUMMY_ATTR1_DESCRIPTION_FR_CA: Final = "Je suis la description de attr1"
+DUMMY_ATTR1_DESCRIPTION_DEFAULT: Final = "I am attr1's default description"
 
 
 class DummyTTSPlugin:
@@ -116,6 +119,14 @@ class DummyTTSPlugin:
         if locale == "fr_CA":
             return DUMMY_ATTR1_DISPLAY_NAME_FR_CA
         return DUMMY_ATTR1_DISPLAY_NAME_DEFAULT
+
+    def get_setting_description(self, setting_name: str, locale: str) -> str:
+        assert setting_name == "attr1"
+        if locale == "en_CA":
+            return DUMMY_ATTR1_DESCRIPTION_EN_CA
+        if locale == "fr_CA":
+            return DUMMY_ATTR1_DESCRIPTION_FR_CA
+        return DUMMY_ATTR1_DESCRIPTION_DEFAULT
 
 
 def test_ittsplugin_should_conform_to_its_protocol() -> None:
@@ -301,7 +312,7 @@ def test_ittsplugin_get_setting_display_name_should_require_required_arguments(
     args = GET_SETTING_DISPLAY_NAME_ARGS.copy()
     del args[argument]
     plugin = DummyTTSPlugin()
-    with pytest.raises(TypeError, match="missing 1 required positional argument"):
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
         plugin.get_setting_display_name(**args)
 
 
@@ -326,6 +337,54 @@ def test_ittsplugin_get_setting_display_name_should_return_a_fallback_if_locale_
     plugin = DummyTTSPlugin()
     display_name = plugin.get_setting_display_name("attr1", "ja")
     assert display_name == DUMMY_ATTR1_DISPLAY_NAME_DEFAULT
+
+
+## .get_setting_description tests
+
+
+GET_SETTING_DESCRIPTION_ARGS: Final = {
+    "setting_name": "attr1",
+    "locale": "en_CA",
+}
+
+
+def test_ittsplugin_get_setting_description_should_accept_required_arguments() -> None:
+    plugin = DummyTTSPlugin()
+    plugin.get_setting_description(**GET_SETTING_DESCRIPTION_ARGS)
+
+
+@pytest.mark.parametrize("argument", GET_SETTING_DESCRIPTION_ARGS)
+def test_ittsplugin_get_setting_description_should_require_required_arguments(
+    argument: str,
+) -> None:
+    args = GET_SETTING_DESCRIPTION_ARGS.copy()
+    del args[argument]
+    plugin = DummyTTSPlugin()
+    with pytest.raises(TypeError, match="missing .* required positional argument"):
+        plugin.get_setting_description(**args)
+
+
+@pytest.mark.parametrize(
+    ("locale", "expected"),
+    [
+        ("en_CA", DUMMY_ATTR1_DESCRIPTION_EN_CA),
+        ("fr_CA", DUMMY_ATTR1_DESCRIPTION_FR_CA),
+    ],
+)
+def test_ittsplugin_get_setting_description_should_return_correct_value_for_locale(
+    locale: str, expected: str
+) -> None:
+    plugin = DummyTTSPlugin()
+    description = plugin.get_setting_description("attr1", locale)
+    assert description == expected
+
+
+def test_ittsplugin_get_setting_description_should_return_a_fallback_if_locale_unknown(
+    # Force line wrap in Ruff.
+) -> None:
+    plugin = DummyTTSPlugin()
+    description = plugin.get_setting_description("attr1", "ja")
+    assert description == DUMMY_ATTR1_DESCRIPTION_DEFAULT
 
 
 ### TTSPluginRegistry Tests ###
