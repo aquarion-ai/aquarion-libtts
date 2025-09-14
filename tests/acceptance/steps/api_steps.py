@@ -17,11 +17,20 @@
 
 """API BDD steps."""
 
+import builtins
 import json
-from typing import Final
+import pathlib
+import types
+import typing
+from enum import EnumType
+from pathlib import Path
+from types import NoneType, UnionType
+from typing import Annotated, Any, Final, Optional, get_args, get_origin
 
 from radish import then, when
 from radish.stepmodel import Step
+
+from aquarion.libs.libtts.api import TTSSettingsSpecEntryTypes, TTSSettingsSpecType
 
 MIN_AUDIO_LEN: Final = 100000  # bytes
 
@@ -70,6 +79,11 @@ def _(step: Step) -> None:
 @when("I convert the settings to a dictionary")
 def _(step: Step) -> None:
     step.context.settings_dict = step.context.settings.to_dict()
+
+
+@when("I get the backend's settings specification")
+def _(step: Step) -> None:
+    step.context.spec = step.context.plugin.get_settings_spec()
 
 
 ### THENs ###
@@ -140,3 +154,125 @@ def _(step: Step) -> None:
 def _(step: Step, format: str, sample_rate: int) -> None:  # noqa: A002
     assert step.context.backend.audio_spec.format == format
     assert step.context.backend.audio_spec.sample_rate == sample_rate
+
+
+@then("all setting attributes should be included in the specification")
+def _(step: Step) -> None:
+    for setting_name in type(step.context.settings).model_fields:
+        assert setting_name in step.context.spec, f"{setting_name} not in specification"
+
+
+@then("all setting specification types should be correct")
+def _(step: Step) -> None:
+    spec = step.context.spec
+    for setting_name, field in type(step.context.settings).model_fields.items():
+        assert_settings_spec_types(setting_name, spec, field.annotation)
+
+
+### Utility Functions ###
+
+
+def assert_settings_spec_types(
+    setting_name: str,
+    spec: TTSSettingsSpecType,
+    setting_type: Any,  # noqa: ANN401
+) -> None:
+    """Check that settings types match their spec type.
+
+    This is a recursive function.
+
+    """
+    concrete_type = get_origin(setting_type)
+    if concrete_type is None:
+        concrete_type = setting_type
+    match concrete_type:
+        case builtins.str | builtins.int | builtins.float:
+            assert_base_spec_type(setting_name, spec, setting_type)
+        case EnumType() as enum_type:
+            assert_enum_spec_type(setting_name, spec, enum_type)
+        case pathlib.Path:
+            assert_path_spec_type(setting_name, spec, setting_type)
+        case types.UnionType | typing.Union if NoneType in get_args(setting_type):
+            # Note: Optional[X] is an alias for Union[X, None], so both forms are caught
+            # here.
+            nested_type = assert_union_with_none_setting_type(
+                setting_name, setting_type
+            )
+            assert_settings_spec_types(setting_name, spec, nested_type)
+        case typing.Annotated:
+            nested_type = unwrap_annotated_setting_type(setting_type)
+            assert_settings_spec_types(setting_name, spec, nested_type)
+        case _:
+            message = (
+                f"Setting type {setting_type} is unsupported for settings spec testing"
+                f" for setting {setting_name}"
+            )
+            raise AssertionError(message)
+
+
+def assert_base_spec_type(
+    setting_name: str,
+    spec: TTSSettingsSpecType,
+    setting_type: TTSSettingsSpecEntryTypes,
+) -> None:
+    """Assert that the spec type and the setting base type match."""
+    spec_type = spec[setting_name].type
+    assert spec_type is setting_type, (
+        f"Spec type {spec_type} does not match setting type {setting_type} for setting "
+        f"{setting_name}"
+    )
+
+
+def assert_enum_spec_type(
+    setting_name: str, spec: TTSSettingsSpecType, setting_type: EnumType
+) -> None:
+    """Assert that the spec values and type match the enum options and value types."""
+    spec_type = spec[setting_name].type
+    spec_values = spec[setting_name].values
+    assert len(spec_values) > 0, (
+        f"Spec missing valid values for setting {setting_name} of type {setting_type}"
+    )
+    assert len(spec_values) == len(setting_type), (
+        f"Spec values {spec_values} and enum {setting_type} values do not "
+        f"match for setting {setting_name}"
+    )
+    for enum_entry in setting_type:
+        enum_value_type = type(enum_entry.value)
+        assert enum_value_type is spec_type, (
+            f"Spec type {spec_type} does not match enum value type {enum_value_type}"
+        )
+
+
+def assert_path_spec_type(
+    setting_name: str,
+    spec: TTSSettingsSpecType,
+    setting_type: Path,
+) -> None:
+    """Assert that Path setting types are treated as str spec types."""
+    spec_type = spec[setting_name].type
+    is_correct = setting_type is Path and spec_type is str
+    assert is_correct, (
+        f"Spec type {spec_type} is incorrect for setting type {setting_type} for "
+        f"setting {setting_name}"
+    )
+
+
+def assert_union_with_none_setting_type(
+    setting_name: str,
+    setting_type: UnionType | Optional[Any],  # noqa: ANN401, UP045
+) -> Any:  # noqa: ANN401
+    """Assert that the setting type matches 'Nested | None' and return Nested."""
+    union_args = set(get_args(setting_type))
+    assert len(union_args) == 2, (
+        f"Too many possibilities in {setting_type} for settings {setting_name}"
+    )
+    assert NoneType in union_args, (
+        f"Union {setting_type} does not include None for setting {setting_name}"
+    )
+    union_args.remove(NoneType)
+    return union_args.pop()
+
+
+def unwrap_annotated_setting_type(setting_type: Annotated[Any, Any]) -> Any:  # noqa: ANN401
+    """Return the nested type from an Annotated type hint."""
+    return next(iter(get_args(setting_type)))

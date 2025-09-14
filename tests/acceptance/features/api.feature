@@ -133,3 +133,14 @@ Feature: TTS Library Interface
         Examples:
             | plugin_id | format     | sample_rate |
             | kokoro_v1 | Linear PCM | 24000       |
+
+    Scenario Outline: Get a backend's settings specification
+        Given I am using the <plugin_id> plugin
+        When I get the backend's settings specification
+        And I make the default settings for the backend
+        Then all setting attributes should be included in the specification
+        And all setting specification types should be correct
+
+        Examples:
+            | plugin_id |
+            | kokoro_v1 |
