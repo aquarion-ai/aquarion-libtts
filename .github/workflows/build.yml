@@ -54,7 +54,7 @@ jobs:
         uses: jetify-com/devbox-install-action@v0.13.0
         with:
           enable-cache: "true"
-          devbox-version: "0.14.2"
+          devbox-version: "0.16.0"
 
       - name: Cache uv Python
         uses: actions/cache@v4
