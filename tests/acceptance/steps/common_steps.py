@@ -124,7 +124,7 @@ def _(step: Step, text: str) -> None:
 ### THENs ###
 
 
-@then("I see {display_name:S}")
+@then("I see {display_name:QuotedString}")
 def _(step: Step, display_name: str) -> None:
     assert step.context.display_name == display_name, (
         f"{step.context.display_name} does not match {display_name}"

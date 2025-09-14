@@ -58,14 +58,15 @@ Feature: TTS Library Interface
         Then I see <display_name>
 
         Examples:
+            # Note: display_name must be in quotes
             | plugin_id | locale | display_name |
-            | kokoro_v1 | en_CA  | Kokoro       |
-            | kokoro_v1 | en_US  | Kokoro       |
-            | kokoro_v1 | en_GB  | Kokoro       |
-            | kokoro_v1 | en     | Kokoro       |
-            | kokoro_v1 | fr_CA  | Kokoro       |
-            | kokoro_v1 | fr_FR  | Kokoro       |
-            | kokoro_v1 | fr     | Kokoro       |
+            | kokoro_v1 | en_CA  | "Kokoro"     |
+            | kokoro_v1 | en_US  | "Kokoro"     |
+            | kokoro_v1 | en_GB  | "Kokoro"     |
+            | kokoro_v1 | en     | "Kokoro"     |
+            | kokoro_v1 | fr_CA  | "Kokoro"     |
+            | kokoro_v1 | fr_FR  | "Kokoro"     |
+            | kokoro_v1 | fr     | "Kokoro"     |
 
     Scenario Outline: Make a backend with default settings
         Given I am using the <plugin_id> plugin
@@ -144,3 +145,18 @@ Feature: TTS Library Interface
         Examples:
             | plugin_id |
             | kokoro_v1 |
+
+    Scenario Outline: Get a plugin's setting display name for a locale
+        Given I am using the <plugin_id> plugin
+        When I get the display name for <setting_name> for <locale>
+        Then I see <display_name>
+
+        Examples:
+            # Note: display_name must be in quotes
+            | plugin_id | setting_name | locale | display_name               |
+            | kokoro_v1 | voice        | en     | "Voice"                    |
+            | kokoro_v1 | device       | en     | "Compute Device"           |
+            | kokoro_v1 | model_path   | en     | "Model File Path"          |
+            | kokoro_v1 | voice        | fr     | "Voix"                     |
+            | kokoro_v1 | device       | fr     | "Périphérique de calcul"   |
+            | kokoro_v1 | model_path   | fr     | "Chemin du fichier modèle" |

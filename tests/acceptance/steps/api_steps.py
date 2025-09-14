@@ -86,6 +86,13 @@ def _(step: Step) -> None:
     step.context.spec = step.context.plugin.get_settings_spec()
 
 
+@when("I get the display name for {setting_name:w} for {locale:w}")
+def _(step: Step, setting_name: str, locale: str) -> None:
+    step.context.display_name = step.context.plugin.get_setting_display_name(
+        setting_name, locale
+    )
+
+
 ### THENs ###
 
 
