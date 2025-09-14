@@ -93,6 +93,13 @@ def _(step: Step, setting_name: str, locale: str) -> None:
     )
 
 
+@when("I get the description for {setting_name:w} for {locale:w}")
+def _(step: Step, setting_name: str, locale: str) -> None:
+    step.context.description = step.context.plugin.get_setting_description(
+        setting_name, locale
+    )
+
+
 ### THENs ###
 
 
@@ -174,6 +181,13 @@ def _(step: Step) -> None:
     spec = step.context.spec
     for setting_name, field in type(step.context.settings).model_fields.items():
         assert_settings_spec_types(setting_name, spec, field.annotation)
+
+
+@then("I see the description starts with {description:QuotedString}")
+def _(step: Step, description: str) -> None:
+    assert step.context.description.startswith(description), (
+        f"{step.context.description} does not match {description}"
+    )
 
 
 ### Utility Functions ###

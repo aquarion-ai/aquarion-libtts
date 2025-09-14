@@ -55,7 +55,7 @@ Feature: TTS Library Interface
     Scenario Outline: Get a plugin's display name for a locale
         Given I am using the <plugin_id> plugin
         When I get the display name for <locale>
-        Then I see <display_name>
+        Then I see the display name is <display_name>
 
         Examples:
             # Note: display_name must be in quotes
@@ -149,7 +149,7 @@ Feature: TTS Library Interface
     Scenario Outline: Get a plugin's setting display name for a locale
         Given I am using the <plugin_id> plugin
         When I get the display name for <setting_name> for <locale>
-        Then I see <display_name>
+        Then I see the display name is <display_name>
 
         Examples:
             # Note: display_name must be in quotes
@@ -160,3 +160,18 @@ Feature: TTS Library Interface
             | kokoro_v1 | voice        | fr     | "Voix"                     |
             | kokoro_v1 | device       | fr     | "Périphérique de calcul"   |
             | kokoro_v1 | model_path   | fr     | "Chemin du fichier modèle" |
+
+    Scenario Outline: Get a plugin's setting description for a locale
+        Given I am using the <plugin_id> plugin
+        When I get the description for <setting_name> for <locale>
+        Then I see the description starts with <description>
+
+        Examples:
+            # Note: description must be in quotes
+            | plugin_id | setting_name | locale | description                                                                                |
+            | kokoro_v1 | voice        | en     | "The voice used by the text-to-speech system."                                             |
+            | kokoro_v1 | device       | en     | "The device used for running the TTS system (e.g., cpu or cuda)."                          |
+            | kokoro_v1 | model_path   | en     | "The file path to the Kokoro TTS model file."                                              |
+            | kokoro_v1 | voice        | fr     | "La voix utilisée par le système de synthèse vocale."                                      |
+            | kokoro_v1 | device       | fr     | "Le périphérique utilisé pour exécuter le système de synthèse vocale (ex. : cpu ou cuda)." |
+            | kokoro_v1 | model_path   | fr     | "Le chemin du fichier modèle utilisé par Kokoro pour la synthèse vocale."                  |

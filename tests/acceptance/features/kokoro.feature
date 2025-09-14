@@ -14,15 +14,15 @@ Feature: Kokoro TTS
 
     Scenario Outline: Getting Display Names in Supported Locales
         When I get the display name for <locale>
-        Then I see <display_name>
+        Then I see the display name is <display_name>
 
         Examples:
             | locale | display_name |
-            | en_CA  | Kokoro       |
-            | en_GB  | Kokoro       |
-            | en_US  | Kokoro       |
-            | fr_CA  | Kokoro       |
-            | fr_FR  | Kokoro       |
+            | en_CA  | "Kokoro"     |
+            | en_GB  | "Kokoro"     |
+            | en_US  | "Kokoro"     |
+            | fr_CA  | "Kokoro"     |
+            | fr_FR  | "Kokoro"     |
 
     @gpu
     Scenario: Using an NVIDIA GPU
