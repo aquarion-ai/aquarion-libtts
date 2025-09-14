@@ -35,6 +35,7 @@ from aquarion.libs.libtts.api._ttssettings import (
     JSONSerializableTypes,
     TTSSettingsSpecEntry,
     TTSSettingsSpecEntryTypes,
+    TTSSettingsSpecType,
 )
 
 __all__ = [
@@ -49,6 +50,7 @@ __all__ = [
     "TTSPluginRegistry",
     "TTSSettingsSpecEntry",
     "TTSSettingsSpecEntryTypes",
+    "TTSSettingsSpecType",
     "load_language",
     "tts_hookimpl",
 ]

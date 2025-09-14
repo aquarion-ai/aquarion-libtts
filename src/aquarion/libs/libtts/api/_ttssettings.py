@@ -76,6 +76,7 @@ class ITTSSettingsHolder(Protocol):
 
 
 type TTSSettingsSpecEntryTypes = str | int | float
+type TTSSettingsSpecType = Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]]
 
 
 @dataclass(frozen=True, kw_only=True)

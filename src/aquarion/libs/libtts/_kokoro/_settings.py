@@ -18,7 +18,6 @@
 
 """Kokoro TTS settings implementation."""
 
-from collections.abc import Mapping
 from enum import StrEnum, auto
 from types import MappingProxyType
 from typing import Annotated, Final, Self, cast
@@ -39,6 +38,7 @@ from aquarion.libs.libtts.api import (
     JSONSerializableTypes,
     TTSSettingsSpecEntry,
     TTSSettingsSpecEntryTypes,
+    TTSSettingsSpecType,
 )
 
 _VOICE_LOCALE_ALIASES: Final = {
@@ -228,7 +228,7 @@ class KokoroSettings(  # type:ignore[explicit-any]
     @classmethod
     def _make_spec(
         cls,
-    ) -> Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]]:
+    ) -> TTSSettingsSpecType:
         """Return a specification that describes all the backend's settings.
 
         This must conform to ITTSPlugin.get_settings_spec(), even though it is
