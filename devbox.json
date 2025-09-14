@@ -2,7 +2,7 @@
     "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.14.2/.schema/devbox.schema.json",
     "description": "Set up base environment and non-Python dev tools for aquarion-libtts.",
     "env": {
-        "AQ_COMMITIZEN_MINIMUM_VERSION": "4.6.0",
+        "AQ_COMMITIZEN_MINIMUM_VERSION": "4.9.1",
         "AQ_CZ_CONVENTIONAL_GITMOJI_MINIMUM_VERSION": "0.7.0",
         "AQ_HATCH_MINIMUM_VERSION": "1.14.1",
         "AQ_PIP_MINIMUM_VERSION": "25.1.0",
@@ -15,9 +15,9 @@
     "name": "Aquarion AI - aquarion-libtts dev and CI environment",
     "packages": {
         "espeak-ng": "1.51",
-        "markdownlint-cli2": "0.17.2",
-        "nushell": "0.104.0",
-        "trivy": "0.61.1",
-        "uv": "0.7.8"
+        "markdownlint-cli2": "0.18.1",
+        "nushell": "0.106.1",
+        "trivy": "0.65.0",
+        "uv": "0.8.2"
     }
 }

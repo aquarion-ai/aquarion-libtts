@@ -28,13 +28,13 @@ default_language_version:
 
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.6.0
+    rev: v4.9.1
     hooks:
       - id: commitizen
         additional_dependencies: [cz-conventional-gitmoji~=0.7.0]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-ast
@@ -52,7 +52,7 @@ repos:
       - id: detect-private-key
       - id: end-of-file-fixer
       - id: file-contents-sorter
-        args: [--ignore-case, --unique]
+        args: [--ignore-case]
         files: project-words.txt
       - id: fix-byte-order-marker
       - id: forbid-submodules
@@ -71,7 +71,7 @@ repos:
       - id: text-unicode-replacement-char
 
   - repo: https://github.com/google/yamlfmt
-    rev: v0.16.0
+    rev: v0.17.2
     hooks:
       - id: yamlfmt # See .yamlfmt.yaml for config.
 
@@ -83,12 +83,12 @@ repos:
           - tomli
 
   - repo: https://github.com/ninoseki/uv-sort
-    rev: v0.6.0
+    rev: v0.6.1
     hooks:
       - id: uv-sort
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.7.8
+    rev: 0.8.17
     hooks:
       - id: uv-lock
 

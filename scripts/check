@@ -220,7 +220,7 @@ def common []: nothing -> string {
 def filter_pre_commit_config [...filter_hooks: string] {
     let orig_config = (open .pre-commit-config.yaml)
     let orig_repos = $orig_config | get repos
-    let filtered_repos = $orig_repos | filter {|item|
+    let filtered_repos = $orig_repos | where {|item|
         not ($item.hooks.0.id in $filter_hooks)
     }
     let new_config = $orig_config | update repos $filtered_repos
