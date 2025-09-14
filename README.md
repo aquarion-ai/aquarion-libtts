@@ -225,8 +225,8 @@ This section is an attempt clarify which tool is used for which common task.
 | Commit changes from the terminal          | Commitizen _(use `cz c`)_                |
 | Report on last code coverage run          | The `report` script (coverage)           |
 | Update version on a release               | Hatch                                    |
-| Pin project dependency versions           | Hatch (using uv)                         |
-| Pin development dependency versions       | Hatch (using uv)                         |
+| Pin project dependency versions           | uv                                       |
+| Pin development dependency versions       | uv                                       |
 | Format Markdown                           | pre-commit (markdownlint-cli2)           |
 | Format YAML                               | pre-commit (yamlfmt)                     |
 | Format JSON                               | pre-commit (pretty-format-json)          |
