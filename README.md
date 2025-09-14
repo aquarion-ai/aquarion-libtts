@@ -8,6 +8,7 @@ Experiment in creating a scalable local AI voice chat bot.
 
 [![Static Badge](https://img.shields.io/badge/Part_of-Aquarion_AI-blue)](https://github.com/aquarion-ai)
 [![Docs Licence](https://img.shields.io/badge/docs_licence-CC_BY_SA_4.0-red)](https://creativecommons.org/licenses/by-sa/4.0/)
+[![REUSE status](https://api.reuse.software/badge/github.com/aquarion-ai/aquarion-libtts)](https://api.reuse.software/info/github.com/aquarion-ai/aquarion-libtts)
 <!-- markdownlint-disable MD013 -->
 <!--
 [![PyPI - License](https://img.shields.io/pypi/l/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
@@ -198,6 +199,8 @@ This project follows the following standard practices:
 - [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) for the changelog.
 
 - [Make a README](https://www.makeareadme.com/) for the README
+
+- [REUSE SOFTWARE](https://reuse.software/) for licence and copyright information.
 
 ### What Tool Does What
 
