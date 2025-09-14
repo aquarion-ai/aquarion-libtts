@@ -76,6 +76,11 @@ def _(step: Step) -> None:
     pass  # Nothing to do
 
 
+@when("I get the display name for {locale:w}")
+def _(step: Step, locale: str) -> None:
+    step.context.display_name = step.context.plugin.get_display_name(locale)
+
+
 @when("I convert the settings to a dictionary")
 def _(step: Step) -> None:
     step.context.settings_dict = step.context.settings.to_dict()
@@ -142,6 +147,13 @@ def _(step: Step) -> None:
 @then("I should see no plugins")
 def _(step: Step) -> None:
     assert step.context.result == set()
+
+
+@then("I see the display name is {display_name:QuotedString}")
+def _(step: Step, display_name: str) -> None:
+    assert step.context.display_name == display_name, (
+        f"{step.context.display_name} does not match {display_name}"
+    )
 
 
 @then("I get a stream of binary output")

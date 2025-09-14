@@ -79,11 +79,6 @@ def _(step: Step, plugin_id: str) -> None:
 ### WHENs ###
 
 
-@when("I get the display name for {locale:w}")
-def _(step: Step, locale: str) -> None:
-    step.context.display_name = step.context.plugin.get_display_name(locale)
-
-
 @when("I make the default settings for the backend")
 def _(step: Step) -> None:
     step.context.settings = step.context.plugin.make_settings()
@@ -122,13 +117,6 @@ def _(step: Step, text: str) -> None:
 
 
 ### THENs ###
-
-
-@then("I see the display name is {display_name:QuotedString}")
-def _(step: Step, display_name: str) -> None:
-    assert step.context.display_name == display_name, (
-        f"{step.context.display_name} does not match {display_name}"
-    )
 
 
 @then("the backend should use the given settings")
