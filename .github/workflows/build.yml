@@ -132,7 +132,7 @@ jobs:
           echo "test_total=$TEST_TOTAL" >> $GITHUB_ENV
           echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_ENV
           echo "sec_total=$SEC_TOTAL" >> $GITHUB_ENV
-          # echo "sec_highest=$SEC_HIGHEST" >> $GITHUB_ENV
+          echo "sec_highest=$SEC_HIGHEST" >> $GITHUB_ENV
           echo "sec_error=$SEC_ERROR" >> $GITHUB_ENV
           # echo "### Total test coverage: ${TEST_TOTAL}%" >> $GITHUB_STEP_SUMMARY
           # echo "### Total acceptance test coverage: ${ACCEPT_TOTAL}%" >> $GITHUB_STEP_SUMMARY
