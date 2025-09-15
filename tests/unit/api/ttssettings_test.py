@@ -158,7 +158,7 @@ def test_ittssettingsholder_update_settings_should_require_the_settings_argument
     None
 ):
     holder = DummyTTSSettingsHolder()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         holder.update_settings()  # type:ignore[call-arg]
 
 
@@ -215,13 +215,13 @@ def test_ttssettingsspecentry_should_accept_expected_arguments() -> None:
 def test_ttssettingsspecentry_should_require_the_type_argument() -> None:
     args = SPEC_ENTRY_ARGS.copy()
     del args["type"]  # type:ignore[misc]
-    with pytest.raises(TypeError, match="missing .* required keyword-only argument"):
+    with pytest.raises(TypeError, match=r"missing .* required keyword-only argument"):
         TTSSettingsSpecEntry[int](**args)
 
 
 def test_ttssettingsspecentry_should_accept_only_keyword_arguments() -> None:
     with pytest.raises(
-        TypeError, match="takes 1 positional argument but .* were given"
+        TypeError, match=r"takes 1 positional argument but .* were given"
     ):
         TTSSettingsSpecEntry(*SPEC_ENTRY_ARGS.values())  # type:ignore[call-arg]
 

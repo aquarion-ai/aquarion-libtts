@@ -50,17 +50,17 @@ def test_load_language_should_accept_a_local_path_of_type_traversable() -> None:
 
 
 def test_load_language_should_require_the_locale_argument() -> None:
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         load_language(domain="some domain", locale_path="some path")
 
 
 def test_load_language_should_require_the_domain_argument() -> None:
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         load_language(locale="en_CA", locale_path="some path")
 
 
 def test_load_language_should_require_the_locale_path_argument() -> None:
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         load_language(locale="en_CA", domain="some domain")
 
 
@@ -79,7 +79,7 @@ def test_load_language_should_validate_the_locale() -> None:
 
 def test_load_language_should_load_the_correct_translation_catalog() -> None:
     expected = "Je suis traduit"
-    _, t = load_language("fr_CA", "test", TEST_LOCALE_PATH)
+    _, _t = load_language("fr_CA", "test", TEST_LOCALE_PATH)
     translated: str = _("I am translated")
     assert translated == expected
 
@@ -87,7 +87,7 @@ def test_load_language_should_load_the_correct_translation_catalog() -> None:
 def test_load_language_should_convert_cldr_locale_format_to_posix_format() -> None:
     expected = "Je suis traduit"
     # Hyphen instead of underscore.
-    _, t = load_language("fr-CA", "test", TEST_LOCALE_PATH)
+    _, _t = load_language("fr-CA", "test", TEST_LOCALE_PATH)
     translated: str = _("I am translated")
     assert translated == expected
 
@@ -101,7 +101,7 @@ def test_load_language_should_convert_cldr_locale_format_to_posix_format() -> No
     ],
 )
 def test_load_language_should_normalize_the_locale(locale: str, expected: str) -> None:
-    _, t = load_language(locale, "test", TEST_LOCALE_PATH)
+    _, _t = load_language(locale, "test", TEST_LOCALE_PATH)
     translated: str = _("I am translated")
     assert translated == expected
 
@@ -117,14 +117,14 @@ def test_load_language_should_normalize_the_locale(locale: str, expected: str) -
 def test_load_language_should_enable_falling_back_to_less_precise_translations(
     locale: str, expected: str
 ) -> None:
-    _, t = load_language(locale, "test", TEST_LOCALE_PATH)
+    _, _t = load_language(locale, "test", TEST_LOCALE_PATH)
     translated: str = _("I am translated")
     assert translated == expected
 
 
 def test_load_language_should_fall_back_to_the_default_locale() -> None:
     expected = "I am translated"
-    _, t = load_language("bas_CM", "test", TEST_LOCALE_PATH)
+    _, _t = load_language("bas_CM", "test", TEST_LOCALE_PATH)
     translated: str = _("I am translated")
     assert translated == expected
 
@@ -145,7 +145,7 @@ def test_load_language_should_log_the_actual_loaded_language(
     logot: Logot, locale: str, expected: str
 ) -> None:
     load_language.cache_clear()
-    _, t = load_language(locale, "test", TEST_LOCALE_PATH)
+    _, _t = load_language(locale, "test", TEST_LOCALE_PATH)
     logot.assert_logged(
         logged.debug(f"Attempting to load translations for locale: {locale}")
         >> logged.debug(f"Loaded translations for locale: {expected}")
@@ -153,7 +153,7 @@ def test_load_language_should_log_the_actual_loaded_language(
 
 
 def test_load_language_should_log_when_no_translations_found(logot: Logot) -> None:
-    _, t = load_language("bas_CM", "test", TEST_LOCALE_PATH)
+    _, _t = load_language("bas_CM", "test", TEST_LOCALE_PATH)
     logot.assert_logged(
         logged.debug("Attempting to load translations for locale: bas_CM")
         >> logged.debug("No translations found for locale bas_CM, using defaults")

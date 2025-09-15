@@ -69,7 +69,7 @@ def test_kokorobackend_should_accept_settings_as_a_positional_argument() -> None
 
 
 def test_kokorobackend_should_require_the_settings_argument() -> None:
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         KokoroBackend()  # type:ignore[call-arg]
 
 
@@ -194,7 +194,7 @@ def test_kokorobackend_update_settings_should_accept_a_settings_argument() -> No
 
 def test_kokorobackend_update_settings_should_require_the_settings_argument() -> None:
     backend = KokoroBackend(KokoroSettings())
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         backend.update_settings()  # type:ignore[call-arg]
 
 
@@ -256,7 +256,7 @@ def test_kokorobackend_audio_spec_should_return_a_ttsaudiospec_instance() -> Non
 
 def test_kokorobackend_convert_should_require_some_text_input() -> None:
     backend = KokoroBackend(KokoroSettings())
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         backend.convert()  # type:ignore[call-arg]
 
 
@@ -297,7 +297,7 @@ def test_kokorobackend_is_started_should_return_false_if_stopped() -> None:
 
 def test_kokorobackend_is_started_should_be_read_only() -> None:
     backend = KokoroBackend(KokoroSettings())
-    with pytest.raises(AttributeError, match="property .* of .* object has no setter"):
+    with pytest.raises(AttributeError, match=r"property .* of .* object has no setter"):
         backend.is_started = True  # type:ignore[misc]
 
 

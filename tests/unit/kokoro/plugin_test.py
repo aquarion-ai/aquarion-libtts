@@ -89,7 +89,7 @@ def test_kokoroplugin_get_display_name_should_accept_a_locale_argument() -> None
 
 def test_kokoroplugin_get_display_name_should_require_the_locale_argument() -> None:
     plugin = KokoroPlugin()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         plugin.get_display_name()  # type:ignore[call-arg]
 
 
@@ -180,7 +180,7 @@ def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_value_gi
 
 def test_kokoroplugin_make_backend_should_require_a_settings_argument() -> None:
     plugin = KokoroPlugin()
-    with pytest.raises(TypeError, match="missing *. required positional argument"):
+    with pytest.raises(TypeError, match=r"missing *. required positional argument"):
         plugin.make_backend()  # type:ignore[call-arg]
 
 
@@ -437,7 +437,7 @@ def test_kokoroplugin_get_setting_description_should_require_required_arguments(
     args = GET_SETTING_DESCRIPTION_ARGS.copy()
     del args[argument]
     plugin = KokoroPlugin()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         plugin.get_setting_description(**args)
 
 

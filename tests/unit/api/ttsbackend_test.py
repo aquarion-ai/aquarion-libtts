@@ -56,13 +56,13 @@ def test_ttsaudiospec_should_accept_required_arguments_as_keyword_arguments() ->
 def test_ttsaudiospec_should_require_required_arguments(argument: str) -> None:
     arguments = AUDIO_SPEC_REQUIRED_ARGS.copy()
     del arguments[argument]
-    with pytest.raises(TypeError, match="missing .* required keyword-only argument"):
+    with pytest.raises(TypeError, match=r"missing .* required keyword-only argument"):
         TTSAudioSpec(**arguments)  # type:ignore[arg-type]
 
 
 def test_ttsaudiospec_should_require_all_keyword_arguments() -> None:
     with pytest.raises(
-        TypeError, match="takes .* positional argument.? but .* were given"
+        TypeError, match=r"takes .* positional argument.? but .* were given"
     ):
         TTSAudioSpec(*AUDIO_SPEC_REQUIRED_ARGS.values())  # type:ignore[call-arg]
 
@@ -165,7 +165,7 @@ def test_ittsbackend_update_settings_should_accept_a_settings_argument() -> None
 
 def test_ittsbackend_update_settings_should_require_the_settings_argument() -> None:
     backend = DummyTTSBackend()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         backend.update_settings()  # type:ignore[call-arg]
 
 
@@ -211,7 +211,7 @@ def test_ittsbackend_audio_spec_should_return_a_ttsaudiospec_instance() -> None:
 
 def test_ittsbackend_convert_should_require_some_text_input() -> None:
     backend = DummyTTSBackend()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         backend.convert()  # type:ignore[call-arg]
 
 
@@ -250,7 +250,7 @@ def test_ittsbackend_is_started_should_return_false_if_stopped() -> None:
 
 def test_ittsbackend_is_started_should_be_read_only() -> None:
     backend = DummyTTSBackend()
-    with pytest.raises(AttributeError, match="property .* of .* object has no setter"):
+    with pytest.raises(AttributeError, match=r"property .* of .* object has no setter"):
         backend.is_started = True  # type:ignore[misc]
 
 

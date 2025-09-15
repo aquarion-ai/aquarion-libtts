@@ -161,7 +161,7 @@ def test_ittsplugin_get_display_name_should_accept_a_locale_argument() -> None:
 
 def test_ittsplugin_get_display_name_should_require_the_locale_argument() -> None:
     plugin = DummyTTSPlugin()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         plugin.get_display_name()  # type:ignore[call-arg]
 
 
@@ -234,7 +234,7 @@ def test_ittsplugin_make_settings_should_raise_an_error_if_an_invalid_value_give
 
 def test_ittsplugin_make_backend_should_require_a_settings_argument() -> None:
     plugin = DummyTTSPlugin()
-    with pytest.raises(TypeError, match="missing *. required positional argument"):
+    with pytest.raises(TypeError, match=r"missing *. required positional argument"):
         plugin.make_backend()  # type:ignore[call-arg]
 
 
@@ -312,7 +312,7 @@ def test_ittsplugin_get_setting_display_name_should_require_required_arguments(
     args = GET_SETTING_DISPLAY_NAME_ARGS.copy()
     del args[argument]
     plugin = DummyTTSPlugin()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         plugin.get_setting_display_name(**args)
 
 
@@ -360,7 +360,7 @@ def test_ittsplugin_get_setting_description_should_require_required_arguments(
     args = GET_SETTING_DESCRIPTION_ARGS.copy()
     del args[argument]
     plugin = DummyTTSPlugin()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         plugin.get_setting_description(**args)
 
 
@@ -462,7 +462,7 @@ def test_ttspluginregistry_load_plugins_should_require_validate_to_be_keyword_on
 ) -> None:
     registry = TTSPluginRegistry()
     with pytest.raises(
-        TypeError, match="takes .* positional argument.? but .* were given"
+        TypeError, match=r"takes .* positional argument.? but .* were given"
     ):
         registry.load_plugins(False)  # type:ignore[misc]  # noqa: FBT003
 
@@ -481,7 +481,7 @@ def test_ttspluginregistry_load_plugins_should_raise_error_if_invalid_hookimpl(
 ) -> None:
     monkeypatch.setattr(importlib.metadata, "distributions", dummy_distributions)
     registry = TTSPluginRegistry()
-    with pytest.raises(PluginValidationError, match="unknown hook .* in plugin"):
+    with pytest.raises(PluginValidationError, match=r"unknown hook .* in plugin"):
         registry.load_plugins()
 
 
@@ -555,7 +555,7 @@ def test_ttspluginregistry_list_plugin_ids_should_only_accept_keyword_arguments(
 ):
     registry = TTSPluginRegistry()
     with pytest.raises(
-        TypeError, match="takes 1 positional argument but .* were given"
+        TypeError, match=r"takes 1 positional argument but .* were given"
     ):
         registry.list_plugin_ids(False, False)  # type:ignore[misc]  # noqa: FBT003
 
@@ -604,7 +604,7 @@ def test_ttspluginregistry_get_plugin_should_accept_an_id_argument() -> None:
 
 def test_ttspluginregistry_get_plugin_should_require_the_id_argument() -> None:
     registry = TTSPluginRegistry()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         registry.get_plugin()  # type:ignore[call-arg]
 
 
@@ -659,7 +659,7 @@ def test_ttspluginregistry_enable_should_accept_an_id_argument() -> None:
 
 def test_ttspluginregistry_enable_should_require_the_id_argument() -> None:
     registry = TTSPluginRegistry()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         registry.enable()  # type:ignore[call-arg]
 
 
@@ -708,7 +708,7 @@ def test_ttspluginregistry_disable_should_accept_an_id_argument() -> None:
 
 def test_ttspluginregistry_disable_should_require_the_id_argument() -> None:
     registry = TTSPluginRegistry()
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         registry.disable()  # type:ignore[call-arg]
 
 

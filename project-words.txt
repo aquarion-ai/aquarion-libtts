@@ -175,3 +175,4 @@ waivable
 webassets
 xdist
 xfail
+xlrd

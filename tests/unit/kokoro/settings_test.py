@@ -61,7 +61,7 @@ def test_kokorosettings_should_only_accept_keyword_arguments(
     arguments = SETTINGS_ARGS.copy()
     arguments.update(real_settings_path_args)
     with pytest.raises(
-        TypeError, match="takes 1 positional argument but .* were given"
+        TypeError, match=r"takes 1 positional argument but .* were given"
     ):
         KokoroSettings(*arguments.values())
 
@@ -246,7 +246,7 @@ def test_kokorosettings_get_setting_display_name_should_accept_a_setting_name() 
 def test_kokorosettings_get_setting_display_name_should_require_a_setting_name(
     # Force line wrap in Ruff.
 ) -> None:
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         KokoroSettings._get_setting_display_name()  # type:ignore[call-arg]  # noqa: SLF001
 
 
@@ -313,7 +313,7 @@ def test_kokorosettings_get_setting_description_should_accept_a_setting_name() -
 def test_kokorosettings_get_setting_description_should_require_a_setting_name(
     # Force line wrap in Ruff.
 ) -> None:
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         KokoroSettings._get_setting_description()  # type:ignore[call-arg]  # noqa: SLF001
 
 

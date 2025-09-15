@@ -58,7 +58,7 @@ class KokoroPlugin:
         If the given locale is not supported at all, then the plugin is expected to
         return a display name in it's default language.
         """
-        _, t = load_internal_language(locale)
+        _, _t = load_internal_language(locale)
         return _("Kokoro")
 
     def make_settings(
@@ -121,7 +121,7 @@ class KokoroPlugin:
         If the given locale is not supported at all, then the plugin is expected to
         return a display name in it's default language.
         """
-        _, t = load_internal_language(locale)
+        _, _t = load_internal_language(locale)
         return _(KokoroSettings._get_setting_display_name(setting_name))  # noqa: SLF001
 
     def get_setting_description(self, setting_name: str, locale: str) -> str:
@@ -137,5 +137,5 @@ class KokoroPlugin:
         If the given locale is not supported at all, then the plugin is expected to
         return a description in it's default language.
         """
-        _, t = load_internal_language(locale)
+        _, _t = load_internal_language(locale)
         return _(KokoroSettings._get_setting_description(setting_name))  # noqa: SLF001

@@ -31,7 +31,7 @@ def test_load_internal_language_should_accept_a_locale_argument() -> None:
 
 
 def test_load_internal_language_should_require_the_locale_argument() -> None:
-    with pytest.raises(TypeError, match="missing .* required positional argument"):
+    with pytest.raises(TypeError, match=r"missing .* required positional argument"):
         load_internal_language()
 
 
@@ -54,6 +54,6 @@ def test_load_internal_language_should_return_gettext_and_translations_instance(
 def test_load_internal_language_should_load_the_correct_translation_catalog(
     locale: str, expected: str
 ) -> None:
-    _, t = load_internal_language(locale)
+    _, _t = load_internal_language(locale)
     translated: str = _("I am not translated")
     assert translated == expected
