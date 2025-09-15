@@ -130,10 +130,10 @@ jobs:
           export SEC_HIGHEST=$(devbox run report sec highest)
           [[ "$SEC_HIGHEST" == "HIGH" || "$SEC_HIGHEST" == "CRITICAL" ]] && export SEC_ERROR=true || export SEC_ERROR=false
           echo "test_total=$TEST_TOTAL" >> $GITHUB_ENV
-          echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_ENV
-          echo "sec_total=$SEC_TOTAL" >> $GITHUB_ENV
-          echo "sec_highest=$SEC_HIGHEST" >> $GITHUB_ENV
-          echo "sec_error=$SEC_ERROR" >> $GITHUB_ENV
+          # echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_ENV
+          # echo "sec_total=$SEC_TOTAL" >> $GITHUB_ENV
+          # echo "sec_highest=$SEC_HIGHEST" >> $GITHUB_ENV
+          # echo "sec_error=$SEC_ERROR" >> $GITHUB_ENV
           # echo "### Total test coverage: ${TEST_TOTAL}%" >> $GITHUB_STEP_SUMMARY
           # echo "### Total acceptance test coverage: ${ACCEPT_TOTAL}%" >> $GITHUB_STEP_SUMMARY
           # echo "### Total vulnerabilities: ${SEC_TOTAL}" >> $GITHUB_STEP_SUMMARY
