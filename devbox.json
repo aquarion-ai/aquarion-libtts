@@ -1,5 +1,5 @@
 {
-    "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.14.2/.schema/devbox.schema.json",
+    "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.16.0/.schema/devbox.schema.json",
     "description": "Set up base environment and non-Python dev tools for aquarion-libtts.",
     "env": {
         "AQ_COMMITIZEN_MINIMUM_VERSION": "4.9.1",
