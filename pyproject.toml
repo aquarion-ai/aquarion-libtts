@@ -46,7 +46,7 @@ dependencies = [
   "babel~=2.17.0",
   "loguru~=0.7.3",
   "pluggy~=1.6.0",
-  "pydantic~=2.11.7",
+  "pydantic~=2.11.9",
 ]
 description = 'Text To Speech (TTS) beckend library for Aquarion AI'
 dynamic = ["version"]
@@ -67,16 +67,19 @@ Source = "https://github.com/aquarion-ai/aquarion-libtts"
 
 [project.optional-dependencies]
 cpu = [
-  "torch~=2.7.1",
+  "torch~=2.8.0",
 ]
 cu128 = [
-  "torch~=2.7.1",
+  "torch~=2.8.0",
+]
+cu129 = [
+  "torch~=2.8.0",
 ]
 kokoro = [
   "en-core-web-sm~=3.8.0",
   "kokoro~=0.9.4",
-  "pip~=25.1.1",
-  "torch~=2.7.1",
+  "pip~=25.2.0",
+  "torch~=2.8.0",
 ]
 
 [project.entry-points.'aquarion-libtts']
@@ -147,6 +150,7 @@ conflicts = [
   [
     {extra = "cpu"},
     {extra = "cu128"},
+    {extra = "cu129"},
   ],
 ]
 
@@ -156,6 +160,7 @@ en-core-web-sm = {url = "https://github.com/explosion/spacy-models/releases/down
 torch = [
   {index = "pytorch-cpu", extra = "cpu"},
   {index = "pytorch-cu128", extra = "cu128"},
+  {index = "pytorch-cu129", extra = "cu129"},
 ]
 
 [[tool.uv.index]]
@@ -167,6 +172,11 @@ url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 name = "pytorch-cu128"
 url = "https://download.pytorch.org/whl/cu128"
+
+[[tool.uv.index]]
+explicit = true
+name = "pytorch-cu129"
+url = "https://download.pytorch.org/whl/cu129"
 
 ### Hatch ###
 
@@ -186,7 +196,7 @@ packages = ["src/aquarion"]
 # Env: default
 
 [tool.hatch.envs.default]
-features = ["kokoro", "cu128"]
+features = ["kokoro", "cu129"]
 type = "uvenv"
 
 # Env: hatch-uv
@@ -232,7 +242,7 @@ check = """
 # Env: accept
 
 [tool.hatch.envs.accept]
-features = ["kokoro", "cu128"]
+features = ["kokoro", "cu129"]
 groups = ["accept"]
 type = "uvenv"
 
