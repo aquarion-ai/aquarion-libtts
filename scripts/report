@@ -74,7 +74,10 @@ def "main sec highest" []: nothing -> string {
     let project_root = (git rev-parse --show-toplevel | str trim)
     let template_path = ($project_root | path join "scripts" "trivy_highest.tpl")
     let report_path = ($project_root | path join ".cache" "trivy" "report.json")
-    trivy convert $report_path --format template --template $"@($template_path)" --quiet
+    (
+        trivy convert $report_path --format template --template $"@($template_path)"
+        --quiet | str trim
+    )
 }
 
 # Output only the total number of Trivy vulnerabilities found.
