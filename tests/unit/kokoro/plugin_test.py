@@ -379,7 +379,7 @@ EXPECTED_SETTING_DESCRIPTIONS = {
             "Le chemin du fichier modèle utilisé par Kokoro pour la synthèse vocale.  "
             "Nécessaire uniquement pour une utilisation hors ligne ou en environment "
             "isolé ; sinon, les fichiers sont téléchargés et "
-            "mis en cache "  # codespell:ignore mis
+            "mis en cache "
             "automatiquement."
         ),
     },
@@ -393,7 +393,7 @@ EXPECTED_SETTING_DESCRIPTIONS = {
             "Le chemin du fichier de configuration utilisé par Kokoro pour la synthèse "
             "vocale.  Nécessaire uniquement pour une utilisation hors ligne ou en "
             "environment isolé ; sinon, les fichiers sont téléchargés et "
-            "mis en cache"  # codespell:ignore mis
+            "mis en cache"
             " automatiquement."
         ),
     },
@@ -406,7 +406,7 @@ EXPECTED_SETTING_DESCRIPTIONS = {
             "Le chemin du fichier vocal utilisé par Kokoro pour la synthèse vocale.  "
             "Nécessaire uniquement pour une utilisation hors ligne ou en environment "
             "isolé ; sinon, les fichiers sont téléchargés et "
-            "mis en cache "  # codespell:ignore mis
+            "mis en cache "
             "automatiquement."
         ),
     },
