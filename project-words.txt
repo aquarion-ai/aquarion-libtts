@@ -4,6 +4,7 @@ analyzer
 aplay
 Aquarion
 automatiquement
+autosummary
 autouse
 beautifulsoup
 beckend
@@ -74,6 +75,7 @@ ligne
 linters
 logot
 loguru
+master
 matrixed
 mkdocs
 mktemp
@@ -147,6 +149,7 @@ synthèse
 système
 tensorflow
 tobytes
+toctree
 tomli
 toplevel
 torchvision
