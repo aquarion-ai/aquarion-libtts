@@ -96,6 +96,9 @@ accept = [
 babel = [
   "babel~=2.17.0",
 ]
+docs = [
+  "sphinx>=8.2.3",
+]
 hatch-static-analysis = [
   "ruff~=0.13.0",
 ]
@@ -279,6 +282,16 @@ init-src = ".hatch_scripts babel init src {args}"
 init-tests = ".hatch_scripts babel init tests {args}"
 update-src = ".hatch_scripts babel update src {args}"
 update-tests = ".hatch_scripts babel update tests {args}"
+
+# Env: docs
+
+[tool.hatch.envs.docs]
+features = ["kokoro", "cpu"]
+groups = ["docs"]
+type = "uvenv"
+
+[tool.hatch.envs.docs.scripts]
+#build = ""
 
 ### Coverage ###
 
