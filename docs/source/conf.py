@@ -66,3 +66,11 @@ autodoc_default_options = {
     "inherited-members": True,
     "show-inheritance": True,
 }
+
+# -- Read The Docs Theme -----------------------------------------------------
+# https://sphinx-rtd-theme.readthedocs.io/en/latest/configuring.html
+
+html_theme_options = {
+    "prev_next_buttons_location": "both",
+    "style_external_links": True,
+}
