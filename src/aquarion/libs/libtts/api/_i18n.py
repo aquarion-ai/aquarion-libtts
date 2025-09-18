@@ -44,7 +44,7 @@ class HashableTraversable(Hashable, Traversable):
 def load_language(
     locale: str, domain: str, locale_path: HashablePathLike | HashableTraversable | str
 ) -> LoadLanguageReturnType:
-    """Return a gettext _() function and a *Translations instance.
+    """Return a gettext _() function and a Translations instance.
 
     locale must be parsable by the Babel package and will be normalized by it as well.
 

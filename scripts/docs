@@ -1,3 +1,4 @@
+#!/usr/bin/env nu
 # SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
 # SPDX-License-Identifier: AGPL-3.0-only
 
@@ -15,23 +16,24 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-# Minimal makefile for Sphinx documentation
-#
 
-# You can set these variables from the command line, and also
-# from the environment for the first two.
-SPHINXOPTS    ?=
-SPHINXBUILD   ?= sphinx-build
-SOURCEDIR     = source
-BUILDDIR      = build
+### Default commands
 
-# Put it first so that "make" without argument is like "make help".
-help:
-	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+# Commands to more easily work with I18N / L10N translation.
+def main []: nothing -> string {
+    help main
+}
 
-.PHONY: help Makefile
+### Grouped tasks
 
-# Catch-all target: route all unknown targets to Sphinx using the new
-# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile
-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+# Build the API docs in all relevant formats.
+def "main build" []: nothing -> string {
+    main build html
+}
+
+### Individual tasks
+
+# Build the HTML API docs.
+def "main build html" []: nothing -> string {
+    hatch run docs:build-html
+}

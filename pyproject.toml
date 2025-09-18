@@ -291,7 +291,9 @@ groups = ["docs"]
 type = "uvenv"
 
 [tool.hatch.envs.docs.scripts]
-#build = ""
+build-html = """
+    sphinx-build -M html ./docs/source ./docs/build --fresh-env --fail-on-warning
+"""
 
 ### Coverage ###
 
