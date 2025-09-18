@@ -22,6 +22,8 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 """
 
+from aquarion.libs.libtts.__about__ import __version__
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -29,8 +31,8 @@ project = "aquarion-libtts"
 copyright = "2025-present, Krys Lawrence"  # noqa: A001
 author = "Krys Lawrence"
 
-version = "0.1"
-release = "0.1.1"
+release = f"v{__version__}"
+version = release
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
