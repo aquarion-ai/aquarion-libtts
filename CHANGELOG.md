@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Kokoro TTS as the first text-to-speech backend that is supported.
 - A settings specification and description system for dynamic settings UI generation.
 - Starting README documentation.
+- Starting API documentation.
 
 ### Fixed
 
