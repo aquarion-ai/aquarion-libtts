@@ -82,6 +82,7 @@ mkdocs
 mktemp
 modèle
 mypy
+myst
 networkx
 noncommercially
 norme

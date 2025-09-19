@@ -24,8 +24,7 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 from aquarion.libs.libtts.__about__ import __version__
 
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+# -- Sphinx ----------------------------------------------------------------------------
 
 project = "aquarion-libtts"
 copyright = "2025-present, Krys Lawrence"  # noqa: A001
@@ -34,12 +33,11 @@ author = "Krys Lawrence"
 release = f"v{__version__}"
 version = release
 
-# -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    "sphinx.ext.napoleon",
+    "myst_parser",
 ]
 
 templates_path = ["_templates"]
@@ -47,30 +45,39 @@ exclude_patterns = []
 
 language = "en"
 
-# -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
-# -- Autosummary Extension ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html
+# -- Autosummary -----------------------------------------------------------------------
 
 autosummary_ignore_module_all = False
+autosummary_generate_overwrite = True
 
-# -- Autodoc Extension -------------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
+# -- Autodoc ---------------------------------------------------------------------------
 
 autodoc_default_options = {
     "members": True,
     "inherited-members": True,
     "show-inheritance": True,
+    "class-doc-from": "both",
 }
 
-# -- Read The Docs Theme -----------------------------------------------------
-# https://sphinx-rtd-theme.readthedocs.io/en/latest/configuring.html
+# -- Napoleon --------------------------------------------------------------------------
+
+
+# -- Read The Docs Theme ---------------------------------------------------------------
 
 html_theme_options = {
     "prev_next_buttons_location": "both",
     "style_external_links": True,
+}
+
+# -- Myst Parser -----------------------------------------------------------------------
+
+myst_enable_extensions = [
+    "substitution",
+]
+myst_substitutions = {
+    "release": release,
+    "version": version,
 }
