@@ -18,24 +18,48 @@
 
 """Plugin system for aquarion-libtts plugins."""
 
+from __future__ import annotations
+
+import os
 import sys
-from collections.abc import Mapping
-from typing import Never, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Any, Never, Protocol, runtime_checkable
 
 from loguru import logger
 from pluggy import HookimplMarker, HookspecMarker, PluginManager
 
 from aquarion.libs.libtts.__about__ import __name__ as distribution_name
-from aquarion.libs.libtts.api._ttsbackend import ITTSBackend
-from aquarion.libs.libtts.api._ttssettings import (
-    ITTSSettings,
-    JSONSerializableTypes,
-    TTSSettingsSpecEntry,
-    TTSSettingsSpecEntryTypes,
-)
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Mapping
+
+    from aquarion.libs.libtts.api._ttsbackend import ITTSBackend
+    from aquarion.libs.libtts.api._ttssettings import (
+        ITTSSettings,
+        JSONSerializableTypes,
+        TTSSettingsSpecEntry,
+        TTSSettingsSpecEntryTypes,
+    )
 
 _tts_hookspec = HookspecMarker(distribution_name)
-tts_hookimpl = HookimplMarker(_tts_hookspec.project_name)
+
+
+if os.getenv("SPHINX_BUILD") != "1":
+    tts_hookimpl = HookimplMarker(_tts_hookspec.project_name)
+else:
+    # NOTE: This is here to work around the fact the Sphinx's autosummary extension does
+    #       not support documenting module-level variables. :(  At least not in v8.2.3.
+    def tts_hookimpl(**kwargs: Any) -> Callable[[], ITTSPlugin | None]:  # type: ignore  # noqa: ANN401, PGH003
+        """Decorate a function to mark it as a TTS plugin registration hook.
+
+        This is a decorator.
+
+        The decorated function is expected to return an ITTSPlugin or None if no plugin
+        is to be registered.  E.g. Missing dependencies, incompatible hardware, etc.
+
+        For more detailed usage options, see the
+        `Pluggy package <https://pluggy.readthedocs.io/en/stable/#implementations>`__.
+
+        """
 
 
 @runtime_checkable
