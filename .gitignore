@@ -21,7 +21,8 @@
 *.swp
 .ruff_cache
 *.wav
-docs/source/api
+docs/source/api/*
+!docs/source/api/index.md
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode

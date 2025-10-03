@@ -1,4 +1,4 @@
-# Aquarion AI - Text To Speech (TTS) Library {{ release }} Documentation
+# API Documentation
 
 % SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
 % SPDX-License-Identifier: AGPL-3.0-only
@@ -17,31 +17,13 @@
 % You should have received a copy of the GNU Affero General Public License along with
 % this program. If not, see <https://www.gnu.org/licenses/>.
 
-```{toctree}
-:caption: Table of Contents
-:maxdepth: 2
-:hidden:
+The *aquarion-libtts {{ release }}* distribution contains the following top-level
+package.
 
-getting_started.md
-api/index.md
-plugins.md
-contributing.md
+```{eval-rst}
+.. autosummary::
+   :toctree: .
+   :recursive:
 
-```
-
-```{include} ../../README.md
-:start-after: <!-- include_start_1 -->
-:end-before: <!-- include_end_1 -->
-```
-
-## Links
-
-- [Aquarion AI on GitHub](https://github.com/aquarion-ai)
-- [aquarion-libtts on GitHub](https://github.com/aquarion-ai/aquarion-libtts)
-%- [aquarion-libtts on PyPI](https://pypi.org)
-%- [aquarion-libtts Documentation](https://readthedocs.org)
-
-```{include} ../../README.md
-:start-after: <!-- include_start_2 -->
-:end-before: <!-- include_end_2 -->
+   aquarion.libs.libtts
 ```

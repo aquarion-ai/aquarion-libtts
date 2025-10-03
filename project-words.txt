@@ -24,6 +24,7 @@ CUDA
 cython
 dateutil
 defenses
+deflist
 defusedxml
 devbox
 Devboxes
@@ -43,6 +44,7 @@ filterwarnings
 Generis
 GITMOJI
 hexgrad
+hookimpl
 hookspecs
 htmlcov
 huggingface
@@ -132,9 +134,13 @@ schneegans
 scipy
 scrapy
 sdist
+setframerate
+setnchannels
+setsampwidth
 setuptools
 simplejson
 siwis
+smartquotes
 sont
 spacy
 specname
@@ -178,6 +184,7 @@ vocale
 Voix
 waivable
 webassets
+writeframes
 xdist
 xfail
 xlrd

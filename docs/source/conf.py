@@ -22,7 +22,11 @@ https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 """
 
+import os
+
 from aquarion.libs.libtts.__about__ import __version__
+
+os.environ["SPHINX_BUILD"] = "1"  # Enable code to detect when imported by Sphinx.
 
 # -- Sphinx ----------------------------------------------------------------------------
 
@@ -60,6 +64,7 @@ autodoc_default_options = {
     "inherited-members": True,
     "show-inheritance": True,
     "class-doc-from": "both",
+    "undoc-members": True,
 }
 
 # -- Napoleon --------------------------------------------------------------------------
@@ -76,8 +81,13 @@ html_theme_options = {
 
 myst_enable_extensions = [
     "substitution",
+    "colon_fence",
+    "replacements",
+    "smartquotes",
+    "deflist",
 ]
 myst_substitutions = {
     "release": release,
     "version": version,
 }
+myst_heading_anchors = 2
