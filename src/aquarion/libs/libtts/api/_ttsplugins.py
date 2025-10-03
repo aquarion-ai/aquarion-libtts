@@ -48,7 +48,7 @@ if os.getenv("SPHINX_BUILD") != "1":
 else:
     # NOTE: This is here to work around the fact the Sphinx's autosummary extension does
     #       not support documenting module-level variables. :(  At least not in v8.2.3.
-    def tts_hookimpl(**kwargs: Any) -> Callable[[], ITTSPlugin | None]:  # type: ignore  # noqa: ANN401, PGH003
+    def tts_hookimpl(**kwargs: Any) -> Callable[[], ITTSPlugin | None]:  # type: ignore  # noqa: ANN401, PGH003  # pragma: no cover
         """Decorate a function to mark it as a TTS plugin registration hook.
 
         This is a decorator.
