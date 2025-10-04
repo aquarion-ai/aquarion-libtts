@@ -172,7 +172,7 @@ functional default values on instantiation.  Though this not not strictly requir
 
 ## The Backend
 
-Finally, there is the TTS backend object itself.  This is main object.  It is
+Finally, there is the TTS backend object itself.  This is the main object.  It is
 responsible for converting text input in to an audio stream output.  It is also
 responsible for reporting the kind of audio it produces (e.g. raw PCM, WAVE, MP3, OGG,
 VP8, stereo, mono, 8-bit, 16-bit, etc.).  Client software is expected to support
