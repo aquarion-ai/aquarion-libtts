@@ -42,6 +42,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     "myst_parser",
+    "sphinx.ext.intersphinx",
 ]
 
 templates_path = ["_templates"]
@@ -91,3 +92,7 @@ myst_substitutions = {
     "version": version,
 }
 myst_heading_anchors = 2
+
+# -- Intersphinx -----------------------------------------------------------------------
+
+intersphinx_mapping = {"python": ("https://docs.python.org/3.12", None)}

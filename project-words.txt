@@ -51,6 +51,7 @@ huggingface
 Identifiant
 iniconfig
 internationale
+intersphinx
 ionide
 ipynb
 ipython
@@ -171,6 +172,7 @@ ttsplugins
 ttssettings
 ttssettingsspecentry
 téléchargés
+undoc
 uniquement
 usefixtures
 utilisé
