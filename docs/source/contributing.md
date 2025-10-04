@@ -47,6 +47,16 @@ This project follows the following standard practices:
 
 - [REUSE SOFTWARE](https://reuse.software/) for licence and copyright information.
 
+- [Ruff](https://docs.astral.sh/ruff/) for Python code style.
+
+- [MyST-style Markdown](https://myst-parser.readthedocs.io/) for project documentation.
+
+- [reStructuredText](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#restructuredtext-primer)
+  for comments, docstrings and generated API documentation.
+
+- [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
+  for comments and docstrings.
+
 ## Developer Installation
 
 1. Update NVIDIA drivers. \
