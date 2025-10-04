@@ -38,33 +38,60 @@ class TTSAudioSpec:
 
 @runtime_checkable
 class ITTSBackend(ITTSSettingsHolder, Protocol):
-    """Common interface for all TTS backends."""
+    """Common interface for all TTS backends.
+
+    An ITTSBackend is responsible for converting text in to speech audio stream chunks.
+    To do this, it should first be started with :meth:`start`, then :meth:`convert`
+    can be used to do any number of conversions, and finally it should be shut down with
+    :meth:`stop` when no longer needed.
+
+    An ITTSBackend is also responsible for reporting the kind of audio that it produces
+    (e.g. raw PCM, WAVE, MP3, OGG, VP8, stereo, mono, 8-bit, 16-bit, etc.).  This is
+    reported via the :attr:`audio_spec` attribute.
+
+    Lastly, since each ITTSBackend is also an :class:`ITTSSettingsHolder`, then it must
+    also accept configuration settings.  These are commonly provided at instantiation,
+    but that is not strictly required to conform to the :class:`ITTSSettingsHolder`
+    protocol.
+
+    """
 
     @property
     def audio_spec(self) -> TTSAudioSpec:
-        """Return metadata about the speech audio format.
+        """Metadata about the speech audio format.
 
         E.g. Mono 16-bit little-endian linear PCM audio at 24KHz.
+
         """
 
     @property
     def is_started(self) -> bool:
-        """Return True if TTS backend is started / running, False otherwise."""
+        """True if TTS backend is started, False otherwise."""
 
     def convert(self, text: str) -> Iterator[bytes]:
-        """Return speech audio for the given text as one or more chunks of bytes.
+        """Return speech audio for the given text as one or more binary chunks.
 
-        The audio data must be in the same format as specified in .audio_spec.
+        Args:
+            text: The text to convert in to speech.
+
+        Returns:
+            An :class:`~collections.abc.Iterator` of chunks of audio in the format
+            specified by :attr:`audio_spec`.
+
         """
 
     def start(self) -> None:
         """Start the TTS backend.
 
-        If the backend is already started, this method should be idempotent.
+        If the backend is already started, this method should be idempotent and do
+        nothing.
+
         """
 
     def stop(self) -> None:
         """Stop the TTS backend.
 
-        If the backend is already stopped, this method should be idempotent.
+        If the backend is already started, this method should be idempotent and do
+        nothing.
+
         """
