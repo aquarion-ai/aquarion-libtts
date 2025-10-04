@@ -16,7 +16,7 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-"""Aquarion AI Text To Speech TTS backend component."""
+"""Aquarion AI Text To Speech TTS backend library."""
 
 from loguru import logger
 

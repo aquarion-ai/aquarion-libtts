@@ -33,7 +33,7 @@ type LoadLanguageReturnType = tuple[GettextFuncType, NullTranslations]
 
 
 class HashablePathLike(Hashable, PathLike[str]):
-    """PathLikes are hashable, but his makes it explicit for the type checker."""
+    """PathLikes are hashable, but this makes it explicit for the type checker."""
 
 
 class HashableTraversable(Hashable, Traversable):
