@@ -70,12 +70,14 @@ class ITTSPlugin(Protocol):
 
     @property
     def id(self) -> str:
-        """Unique identifier for the plugin.
+        """A unique identifier for the plugin.
 
         The id must be unique across all Aquarion libtts plugins.  Also, it is
         recommended to include at least a major version number as a suffix so that
         multiple versions / implementations of a plugin can be installed and supported
         simultaneously.  E.g. for backwards compatibility.
+
+        This should be read-only.
 
         Example:
             kokoro_v1

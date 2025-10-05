@@ -62,11 +62,17 @@ class ITTSBackend(ITTSSettingsHolder, Protocol):
 
         E.g. Mono 16-bit little-endian linear PCM audio at 24KHz.
 
+        This should be read-only.
+
         """
 
     @property
     def is_started(self) -> bool:
-        """True if TTS backend is started, False otherwise."""
+        """True if TTS backend is started, False otherwise.
+
+        This should be read-only.
+
+        """
 
     def convert(self, text: str) -> Iterator[bytes]:
         """Return speech audio for the given text as one or more binary chunks.
