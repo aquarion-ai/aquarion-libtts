@@ -105,17 +105,27 @@ class ITTSSettings(Protocol):  # noqa: PLW1641
 
 @runtime_checkable
 class ITTSSettingsHolder(Protocol):
-    """Common interface for objects that accept and contain ITTSSettings."""
+    """Common interface for objects that accept and contain :class:`ITTSSettings`."""
 
     def get_settings(self) -> ITTSSettings:
-        """Return the current setting in use."""
+        """Return the current setting in use.
+
+        Returns:
+            The current settings in use.
+
+        """
 
     def update_settings(self, new_settings: ITTSSettings) -> None:
         """Update to the new given settings.
 
-        Implementations of this interface should check that they are only getting the
-        correct concrete settings class and raise TypeError if any other kind of
-        concrete ITTSSettings is given.
+        Args:
+            new_settings: The new complete set of settings to start using immediately.
+
+        Raises:
+            TypeError: Implementations of this interface should check that they are only
+                getting the correct concrete settings class and raise an exception if
+                any other kind of :class:`ITTSSettings` is given.
+
         """
 
 
