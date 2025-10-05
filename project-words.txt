@@ -4,6 +4,7 @@ analyzer
 aplay
 Aquarion
 automatiquement
+automethod
 autosummary
 autouse
 beautifulsoup

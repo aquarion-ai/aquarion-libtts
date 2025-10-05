@@ -35,28 +35,72 @@ type JSONSerializableTypes = (
 
 @runtime_checkable
 class ITTSSettings(Protocol):  # noqa: PLW1641
-    """Common interface for all TTS backend settings."""
+    """Common interface for all TTS backend settings.
 
-    # NOTE: There is no expectation that ITTSSettings implementations be immutable or
-    # hashable.
+    Implementations of this interface are expected to add their own setting attributes
+    for the specific :class:`ITTSBackend` implementation they go with.
 
-    # The locale should be a POSIX-compliant locale string like `en_CA`, `zh-Hant`,
-    # `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be a general as `fr` or as
-    # specific as `language_territory_script_variant@modifier`.
-    #
-    # Settings holders are expected to to do their best to accommodate the given locale,
-    # but can fall back to more a general language variant if required.  E.g. from
-    # `en_CA` to `en`.
-    #
-    # If the given locale is not supported at all, then the settings holder is expected
-    # to use it's default locale instead.
+    **Note:** There is no expectation that ITTSSettings implementations be immutable or
+    hashable, but it's probably a good idea.
+
+    Example:
+        .. code:: python
+
+            class MySettings:
+                locale: str = "en"
+                voice: str = "bella"
+                speed: float = 1.0
+                api_key: str
+                cache_path: Path
+
+                def __eq__(self, other: object) -> bool:
+                    # Your implementation here
+
+                def to_dict(self) -> dict[str, JSONSerializableTypes]:
+                    # Your implementation here
+
+    .. automethod:: __eq__
+
+    """
+
+    #: The locale should be a POSIX-compliant (i.e. using underscores) or CLDR-compliant
+    #: (i.e. using hyphens) locale string like ``en_CA``, ``zh-Hant``,
+    #: ``ca-ES-valencia``, or even ``de_DE.UTF-8@euro``.  It can be as general as ``fr``
+    #: or as specific as ``language_territory_script_variant@modifier``.
     locale: str
 
     def __eq__(self, other: object) -> bool:
-        """Return True if all settings values match."""
+        """Return True if all settings values match, False otherwise.
+
+        Args:
+            other: The other :class:`ITTSSettings` instance to compare against.
+
+        Returns:
+            :obj:`True` if ``other`` is an instance of the same concrete implementation
+            of :class:`ITTSSettings` and all the settings values are the same.  False
+            otherwise.
+
+        """
 
     def to_dict(self) -> dict[str, JSONSerializableTypes]:
-        """Export all settings as a dictionary of only JSON-serializable types."""
+        """Export all settings as a dictionary of only JSON-serializable types.
+
+        Returns:
+            A dictionary where the keys are the setting names and the values are the
+            setting values converted as necessary to simple base JSON-compatible types.
+
+        Example:
+            .. code:: JSON
+
+                {
+                    "locale": "en",
+                    "voice": "bella",
+                    "speed": 1.0,
+                    "api_key": "Your API key here",
+                    "cache_path": "Cache path converted to a basic string"
+                }
+
+        """
 
 
 @runtime_checkable
