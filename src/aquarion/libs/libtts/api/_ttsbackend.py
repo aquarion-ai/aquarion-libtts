@@ -27,13 +27,25 @@ from aquarion.libs.libtts.api._ttssettings import ITTSSettingsHolder
 
 @dataclass(kw_only=True, frozen=True, slots=True)
 class TTSAudioSpec:
-    """Audio metadata about the speed audio that an ITTSBackend returns."""
+    """Audio metadata about the audio format that an :class:`ITTSBackend` returns.
 
-    format: str  # E.g. "Linear PCM", "WAV", "MP3", etc.
-    sample_rate: int  # E.g 8000, 24000, 48000, etc.
-    sample_width: int  # E.g. 8 for 8-bit, 12 for 12-bit, 16 for 16-bit, etc.
-    byte_order: str  # E.g. "Little-Endian", "LE", "big-endian", "be", etc.
-    num_channels: int  # E.g. 1 for mono, 2 for stereo, etc.
+    **Note:** Instances of this class are immutable once created.
+
+    """
+
+    #: E.g. "Linear PCM", "WAV", "MP3", etc.
+    format: str
+    #: E.g 8000, 24000, 48000, etc.
+    sample_rate: int
+    #: E.g. 8 for 8-bit, 12 for 12-bit, 16 for 16-bit, etc.
+    sample_width: int
+    #: E.g. "Little-Endian", "LE", "big-endian", "be", etc.
+    #:
+    #: **Note:** There is no standard for this but Ffmpeg uses ``be`` and ``le`` so
+    #: maybe it is worth sticking with those.
+    byte_order: str
+    #: E.g. 1 for mono, 2 for stereo, etc.
+    num_channels: int
 
 
 @runtime_checkable
