@@ -234,19 +234,52 @@ class ITTSPlugin(Protocol):
 
 
 class TTSPluginRegistry:
-    """Registry of all aquarion-libtts backend plugins."""
+    """Registry of all aquarion-libtts backend plugins.
+
+    TTS backends and everything related to them are created / accessed through
+    :class:`ITTSPlugin` instances.  The plugin registry is responsible for finding,
+    loading, listing, enabling, disabling and giving access to those plugins.
+
+    """
 
     def __init__(self) -> None:
         self._plugins: dict[str, ITTSPlugin] = {}
         self._enabled_plugins: set[str] = set()
 
     def load_plugins(self, *, validate: bool = True) -> None:
-        """Load all aquarion-tts backend plugins.
+        """Load all aquarion-libtts backend plugins.
 
-        All plugins are disabled by default.  Use .enable() to enable a plugin.
+        Plugins are discovered by searching for
+        `pyproject.toml entry points <https://packaging.python.org/en/latest/specifications/pyproject-toml/#entry-points>`__
+        named `aquarion-libtts`, then searching those entry points for hook functions
+        decorated with :deco:`tts_hookimpl`, and finally calling those hook functions.
+        The plugins returned by those hook functions are then stored in the plugin
+        registry and made accessible.
 
-        If validate is True (the default), raises PluginValidationError if any plugin
-        hook implementations do not conform to accepted hook specifications.
+        Note:
+            All plugins are disabled by default.  Use :meth:`enable` to enable a plugin.
+
+        Args:
+            validate: If :obj:`True` (the default), then an exception is raised if any
+                hook functions do not conform to expected hook specification.
+
+        Raises:
+            PluginValidationError: If ``validate`` is True and a hook function does not
+                conform to the expected specification.
+
+        Examples:
+            .. code:: toml
+
+                [project.entry-points.'aquarion-libtts']
+                my_plugin_v1 = "package.hook"
+
+            .. code:: python
+
+                @tts_hookimpl
+                def register_my_tts_plugin() -> ITTSPlugin | None:
+                    from package.plugin import MyTTSPlugin
+                    return MyTTSPlugin()
+
         """
         logger.debug(f"Loading TTS plugins for {_tts_hookspec.project_name}...")
         manager = PluginManager(_tts_hookspec.project_name)
@@ -270,13 +303,19 @@ class TTSPluginRegistry:
     def list_plugin_ids(
         self, *, only_disabled: bool = False, list_all: bool = False
     ) -> set[str]:
-        """Return the list of plugin IDs.
+        """Return the set of plugin IDs.
 
         By default, only enabled plugins are listed.
-        If disabled_only_is True, then only the disabled plugins are listed.
-        If all True, then all plugins are listed regardless of their enabled/disabled
-        status.
-        If both arguments are True, then a ValueError is raised.
+
+        Args:
+            only_disabled: If this is :obj:`True`, then only the *disabled* plugins are
+                listed.
+            list_all: If this is :obj:`True`, then *all* plugins are listed, regardless
+                of their enabled/disabled status.
+
+        Raises:
+            ValueError: If both arguments are :obj:`True`.
+
         """
         if only_disabled and list_all:
             message = (
@@ -290,11 +329,15 @@ class TTSPluginRegistry:
             return set(self._plugins)
         return {id_ for id_ in self._plugins if self.is_enabled(id_)}
 
-    def get_plugin(self, id_: str) -> ITTSPlugin:
-        """Return the plugin the for the given id.
+    def get_plugin(self, id_: str) -> ITTSPlugin:  # noqa: D417
+        """Return the plugin the for the given ID.
 
-        Raises ValueError exception if the given id does not match any registered
-        plugin.
+        Args:
+            `id_`: The ID of the desired already loaded plugin.  E.g. ``kokoro_v1``.
+
+        Raises:
+            ValueError: If the given ID does not match any registered plugin.
+
         """
         try:
             return self._plugins[id_]
@@ -302,14 +345,33 @@ class TTSPluginRegistry:
             self._raise_plugin_not_found(id_)
 
     def is_enabled(self, plugin_id: str) -> bool:
-        """Return True if the plugin of the given ID is enabled, False otherwise."""
+        """Return :obj:`True` if the plugin is enabled, :obj:`False` otherwise.
+
+        Args:
+            plugin_id: The ID of the plugin in question.
+
+        Returns:
+            :obj:`True` if the plugin is enabled, :obj:`False` otherwise.
+
+        """
         return plugin_id in self._enabled_plugins
 
     def enable(self, plugin_id: str) -> None:
-        """Enable a TTS plugin for inclusion in .get_display_names().
+        """Enable a TTS plugin for inclusion in :meth:`list_plugin_ids`.
 
-        Raises ValueError exception if the given id does not match any registered
-        plugin.
+        The idea behind enabled vs disabled plugins is that it allows one to manage
+        which plugins are listed / displayed to a user, independently of all the plugins
+        that are installed / loaded.  I.e. It allows for filtering which plugins one
+        wants exposed and which should be kept hidden.  E.g. Some plugins could be not
+        supported by your application, even thought they got installed with some other
+        dependency.
+
+        Args:
+            plugin_id: The ID of the desired plugin.
+
+        Raises:
+            ValueError: If the given ID does not match any registered plugin.
+
         """
         if plugin_id not in self._plugins:
             self._raise_plugin_not_found(plugin_id)
@@ -317,10 +379,19 @@ class TTSPluginRegistry:
         logger.debug(f"Enabled TTS plugin: {plugin_id}")
 
     def disable(self, plugin_id: str) -> None:
-        """Disable a TTS plugin from inclusion in .get_display_names().
+        """Disable a TTS plugin for inclusion in :meth:`list_plugin_ids`.
 
-        Raises ValueError exception if the given id does not match any registered
-        plugins.
+        Args:
+            plugin_id: The ID of the desired plugin.
+
+        Raises:
+            ValueError: If the given ID does not match any registered plugin.
+
+        Note:
+            Disabling a plugin does not affect any existing instances of that plugin in
+            any way.  So, proper TTS backend instance management and stopping must still
+            be handled separately.
+
         """
         if plugin_id not in self._plugins:
             self._raise_plugin_not_found(plugin_id)
