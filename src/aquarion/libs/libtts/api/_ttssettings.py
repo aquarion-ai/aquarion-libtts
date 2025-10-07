@@ -135,9 +135,76 @@ type TTSSettingsSpecType = Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntr
 
 @dataclass(frozen=True, kw_only=True)
 class TTSSettingsSpecEntry[T: TTSSettingsSpecEntryTypes]:
-    """An specification entry describing one setting in an ITTSSettings object."""
+    """An specification entry describing one setting in an ITTSSettings object.
 
+    Since :class:`ITTSSettings` can contain custom TTS backend specific setting
+    attributes, there is a need for a way to describe those setting attributes in a
+    standardized way so that settings UIs can be constructed dynamically in applications
+    that use aquarion-libtts.  Instances of this class, in a dictionary, for example,
+    can provide a specification for how to render settings fields in a UI.
+
+    Instances of this class are immutable once created.
+
+    Example:
+        .. code:: python
+
+            spec = {
+                "locale": TTSSettingSpecEntry(
+                    type=str,
+                    min=2,
+                    values=frozenset("en", "fr")
+                ),
+                "voice": TTSSettingSpecEntry(type=str),
+                "speed": TTSSettingSpecEntry(type=float, min=0.1, max=1.0),
+                "api_key": TTSSettingSpecEntry(type=str),
+                "cache_path": TTSSettingSpecEntry(type=str),
+            }
+
+    With the example above, one could imagine a UI with multiple text box fields.
+    ``locale`` could be a dropdown or a set of radio buttons.  There could be validation
+    for valid ranges.  ``speed`` could have up and down arrow buttons to increase and
+    decrease the value, and / or react to a mouse's scroll wheel.  Etc.
+
+    """
+
+    #: The type of setting it is.
+    #:
+    #: This is required.
+    #:
+    #: Currently supported types: :class:`str`, :class:`int` and :class:`float` only.
+    #:
+    #: This should be set to the actual type class, **not** a string name of a type.
+    #:
+    #: Also, only Python basic types should be used.  I.e. **not** classes like
+    #: :class:`~pathlib.Path` or :class:`~decimal.Decimal`, etc.
+    #:
     type: type[T]
+
+    #: The minimum allowed value or minimum allowed length.
+    #:
+    #: This is optional.
+    #:
+    #: For strings this is the minimum allowed length of the string.
+    #:
+    #: For numeric types, this is the minimum allowed value.
+    #:
     min: int | float | None = None
+
+    #: The maximum allowed value or maximum allowed length.
+    #:
+    #: This is optional.
+    #:
+    #: For strings this is the maximum allowed length of the string.
+    #:
+    #: For numeric types, this is the maximum allowed value.
+    #:
     max: int | float | None = None
+
+    #: The set of specific allowed values.
+    #:
+    #: This is optional.
+    #:
+    #: Some fields might only accept a restricted set of specific valid values.  Think
+    #: enumerations.  Acceptable values can be specified with this attribute.
+    #:
     values: frozenset[T] | None = None
