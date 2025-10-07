@@ -95,4 +95,7 @@ myst_heading_anchors = 2
 
 # -- Intersphinx -----------------------------------------------------------------------
 
-intersphinx_mapping = {"python": ("https://docs.python.org/3.12", None)}
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3.12", None),
+    "babel": ("https://babel.pocoo.org/en/stable/", None),
+}

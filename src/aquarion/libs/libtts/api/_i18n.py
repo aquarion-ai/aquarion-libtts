@@ -44,30 +44,73 @@ class HashableTraversable(Hashable, Traversable):
 def load_language(
     locale: str, domain: str, locale_path: HashablePathLike | HashableTraversable | str
 ) -> LoadLanguageReturnType:
-    """Return a gettext _() function and a Translations instance.
+    """Return a :mod:`gettext` ``_()`` function and a ``*Translations`` instance.
 
-    locale must be parsable by the Babel package and will be normalized by it as well.
+    Args:
+        locale:
+            The desired locale to find and load.  E.g. ``en_CA`` or `fr``, etc.
 
-    locale is generally expected to be in POSIX format (i.e. using underscores) but
-    CLDR format (i.e. using hyphens) is also supported and will be converted to POSIX
-    format automatically for the purpose of finding translation catalogues.
+            ``locale`` must be parsable by the `Babel`_ package and will be normalized
+            by it as well.
 
-    It is recommended that TTS plugins keep their translation files inside their
-    package (i.e. wheel) by using importlib.resources.files() to access a locale
-    directory.
+            ``locale`` is generally expected to be in POSIX format (i.e. using
+            underscores) but CLDR format (i.e. using hyphens) is also supported and will
+            be converted to POSIX format automatically for the purpose of finding
+            translation catalogues.
+
+        domain:
+            A name unique to your app / project.  This domain name becomes the file
+            name of your message catalogues and templates.  For example you you could
+            your project's name or your root package's name.  E.g. ``my-cool-project``.
+
+            .. note::
+                Do not use ``aquarion-libtts`` as your domain name.  That is reserved
+                for this project.
+
+        locale_path:
+            The base path where your language files can be found.  This can be
+            a regular path (as a :class:`str` or a :class:`~pathlib.Path`) or this
+            could be some path inside your own Python package, retrieved with the help
+            of :func:`importlib.resources.files`, for example.
+
+            .. note::
+                It is recommended that third-party :doc:`TTS plugins <../plugins>` keep
+                their translation files inside their package (i.e. wheel) by using
+                :func:`importlib.resources.files` to access a locale directory.
 
     If an exact match on locale cannot be found, less specific fallback locales well be
-    used instead.  E.g. if `kk_Cyrl_KZ` is not found, then `kk_Cyrl` will be tried, and
-    then just `kk`.
+    used instead.  E.g. if ``kk_Cyrl_KZ`` is not found, then ``kk_Cyrl`` will be tried,
+    and then just ``kk``.
 
     If no matching locale is found, then the gettext methods will just return the hard
     coded strings from the source file.
 
-    Raises various exceptions if an invalid locale is given, as determined by the Babel
-    package's Local.parse() method.
+    Returns:
+        A :class:`tuple` of (a :meth:`~gettext.GNUTranslations.gettext` callable, a
+        :class:`~gettext.GNUTranslations` instance).
 
-    Note: Once loaded, the language translations are cached for the duration of the
-    process.
+        The ``gettext`` callable is provided for easy use of the more common action.
+
+        The ``*Translations`` instance provides access to all the other, less common
+        translation capabilities one might need, e.g. ``ngettext``, ``pgettext``, etc.
+
+        .. attention::
+            It is common practice to name the ``gettext`` callable ``_``, so that
+            extracting and retrieving translated messages is as easy is ``_("text to be
+            translated")``.  In fact, if you use `Babel`_ this will be expected by
+            default for translatable strings to be found.
+
+    Raises:
+        various: If an invalid locale is given various possible exceptions can be
+            raised.  See Babel package's :external+babel:meth:`babel.core.Locale.parse`
+            for details..
+
+    Note:
+        Once loaded, the language translations are cached for the duration of the
+        process.
+
+    .. _Babel: https://babel.pocoo.org/
+
     """
     logger.debug(f"Attempting to load translations for locale: {locale}")
     loc = Locale.parse(locale, sep="-") if "-" in locale else Locale.parse(locale)
