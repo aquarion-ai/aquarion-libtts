@@ -66,7 +66,24 @@ else:
         Returns:
             The decorated function, but marked as a TTS plugin registration hook.
 
-        .. _Pluggy: https://pluggy.readthedocs.io/en/stable/#implementations
+        Example:
+            .. code:: python
+
+                @tts_hookimpl
+                def register_my_tts_plugin() -> ITTSPlugin | None:
+                    # NOTE: It is important that we do not import our plugin class or
+                    #       related packages at module import time.
+                    #       This hook needs to be able to run even when our required
+                    #       dependencies, etc. are not installed.
+                    try:
+                        import dependency
+                    except ModuleNotFoundError:
+                        return None
+                    from package.plugin import MyTTSPlugin
+
+                    return MyTTSPlugin()
+
+            .. _Pluggy: https://pluggy.readthedocs.io/en/stable/#implementations
 
         """
 

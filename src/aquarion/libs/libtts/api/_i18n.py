@@ -58,6 +58,13 @@ def load_language(
             be converted to POSIX format automatically for the purpose of finding
             translation catalogues.
 
+            If an exact match on locale cannot be found, less specific fallback locales
+            well be used instead.  E.g. if ``kk_Cyrl_KZ`` is not found, then ``kk_Cyrl``
+            will be tried, and then just ``kk``.
+
+            If no matching locale is found, then the gettext methods will just return
+            the hard coded strings from the source file.
+
         domain:
             A name unique to your app / project.  This domain name becomes the file
             name of your message catalogues and templates.  For example you you could
@@ -78,13 +85,6 @@ def load_language(
                 their translation files inside their package (i.e. wheel) by using
                 :func:`importlib.resources.files` to access a locale directory.
 
-    If an exact match on locale cannot be found, less specific fallback locales well be
-    used instead.  E.g. if ``kk_Cyrl_KZ`` is not found, then ``kk_Cyrl`` will be tried,
-    and then just ``kk``.
-
-    If no matching locale is found, then the gettext methods will just return the hard
-    coded strings from the source file.
-
     Returns:
         A :class:`tuple` of (a :meth:`~gettext.GNUTranslations.gettext` callable, a
         :class:`~gettext.GNUTranslations` instance).
@@ -104,6 +104,22 @@ def load_language(
         various: If an invalid locale is given various possible exceptions can be
             raised.  See Babel package's :external+babel:meth:`babel.core.Locale.parse`
             for details..
+
+    Example:
+        .. code:: python
+
+            from importlib.resources import files
+            from typing import cast
+
+            from aquarion.libs.libtts.api import HashableTraversable
+
+            locale_path = cast(HashableTraversable, files(__name__) / "locale")
+            _, t = load_language(
+                "fr_CA",
+                domain="my-cool-project",
+                locale_path=locale_path
+            )
+            print(_("I will be translated"))
 
     Note:
         Once loaded, the language translations are cached for the duration of the
