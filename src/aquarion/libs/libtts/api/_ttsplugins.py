@@ -50,16 +50,23 @@ else:
     #       not support documenting module-level variables. :(  At least not in v8.2.3.
 
     def tts_hookimpl(**kwargs: Any) -> Callable[[], ITTSPlugin | None]:  # type: ignore  # noqa: ANN401, PGH003  # pragma: no cover
-        """Decorate a function to mark it as a TTS plugin registration hook.
+        """Decorate a function with this to mark it as a TTS plugin registration hook.
 
         This is a decorator.
 
-        The decorated function is expected to return an :class:`ITTSPlugin` or
-        :obj:`None` if no plugin is to be registered.  E.g. Missing dependencies,
-        incompatible hardware, etc.
+        The decorated function is expected to accept no arguments and to return an
+        :class:`ITTSPlugin`, or :obj:`None` if no plugin is to be registered.  E.g.
+        Missing dependencies, incompatible hardware, etc.
 
-        For more detailed usage options, see the
-        `Pluggy package <https://pluggy.readthedocs.io/en/stable/#implementations>`__.
+        For more detailed usage options, see the `Pluggy`_ package.
+
+        Args:
+            kwargs: Any keyword arguments supported by `Pluggy`_.
+
+        Returns:
+            The decorated function, but marked as a TTS plugin registration hook.
+
+        .. _Pluggy: https://pluggy.readthedocs.io/en/stable/#implementations
 
         """
 
