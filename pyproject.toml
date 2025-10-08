@@ -429,6 +429,8 @@ filterwarnings = [
 logot_capturer = "logot.loguru.LoguruCapturer"
 xfail_strict = true
 
+### codespell ###
+
 [tool.codespell]
 builtin = ["clear", "rare", "usage", "names"]
 check-filenames = true
@@ -437,6 +439,8 @@ ignore-words = ["project-words.txt"]
 quiet-level = 0
 skip = ["__pycache__", "uv.lock", "*.po"]
 write-changes = true
+
+### commitizen ###
 
 [tool.commitizen]
 major_version_zero = true
