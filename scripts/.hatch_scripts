@@ -136,7 +136,7 @@ def babel_extract [input_dir: string, output_file: string]: nothing -> string {
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #"
     (
-        pybabel extract -o $output_file --project $project --version $version
+        pybabel extract --no-wrap -o $output_file --project $project --version $version
         --header-comment $header --copyright-holder $"($author_name) <($author_email)>"
         --msgid-bugs-address $author_email -c "Translator:" --ignore-dirs ".*"
         $input_dir
@@ -149,7 +149,7 @@ def babel_init [
     domain: string,
     locale: string
 ]: nothing -> string {
-    pybabel init -i $input_file -d $output_dir -D $domain -l $locale
+    pybabel init --no-wrap -i $input_file -d $output_dir -D $domain -l $locale
 }
 
 def babel_update [
@@ -160,9 +160,9 @@ def babel_update [
 ]: nothing -> string {
     mut extra = ""
     if $headers { $extra = "--update-header-comment" }
-    pybabel update -i $input_file -d $output_dir -D $domain --previous $extra
+    pybabel update --no-wrap -i $input_file -d $output_dir -D $domain --previous $extra
 }
 
 def babel_compile [domain: string, locale_dir: string]: nothing -> string {
-    pybabel compile -D $domain -d $locale_dir --statistics
+    pybabel compile --no-wrap -D $domain -d $locale_dir --statistics
 }
