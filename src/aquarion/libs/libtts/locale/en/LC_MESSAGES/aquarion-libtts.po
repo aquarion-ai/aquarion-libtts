@@ -1,10 +1,8 @@
-# SPDX-FileCopyrightText: 2025-present Krys Lawrence
-# <aquarion.5.krystopher@spamgourmet.org>
+# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
 # SPDX-License-Identifier: AGPL-3.0-only
 #
 # English translations for aquarion-libtts.
-# Copyright (C) 2025-present Krys Lawrence
-# <aquarion.5.krystopher@spamgourmet.org>
+# Copyright (C) 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
 # This file is distributed under the same license as the aquarion-libtts
 # project.
 # Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>, 2025.
@@ -12,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aquarion-libtts 0.0.1\n"
 "Report-Msgid-Bugs-To: aquarion.5.krystopher@spamgourmet.org\n"
-"POT-Creation-Date: 2025-09-10 22:00-0400\n"
+"POT-Creation-Date: 2025-10-07 22:03-0400\n"
 "PO-Revision-Date: 2025-06-07 15:31-0400\n"
 "Last-Translator: Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>\n"
 "Language: en\n"
@@ -30,90 +28,72 @@ msgstr ""
 msgid "I am not translated"
 msgstr "I am translated in to en"
 
-#: src/aquarion/libs/libtts/_kokoro/_plugin.py:62
+#: src/aquarion/libs/libtts/kokoro/_plugin.py:62
 msgid "Kokoro"
 msgstr "Kokoro"
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:150
+#: src/aquarion/libs/libtts/kokoro/_settings.py:150
 msgid "Locale"
 msgstr "Locale"
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:151
+#: src/aquarion/libs/libtts/kokoro/_settings.py:151
 msgid "The regional or international locale setting."
 msgstr "The regional or international locale setting."
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:155
+#: src/aquarion/libs/libtts/kokoro/_settings.py:155
 msgid "Voice"
 msgstr "Voice"
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:156
+#: src/aquarion/libs/libtts/kokoro/_settings.py:156
 msgid "The voice used by the text-to-speech system."
 msgstr "The voice used by the text-to-speech system."
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:160
+#: src/aquarion/libs/libtts/kokoro/_settings.py:160
 msgid "Speed"
 msgstr "Speed"
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:161
+#: src/aquarion/libs/libtts/kokoro/_settings.py:161
 msgid "The speaking speed of the text-to-speech system."
 msgstr "The speaking speed of the text-to-speech system."
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:165
+#: src/aquarion/libs/libtts/kokoro/_settings.py:165
 msgid "Compute Device"
 msgstr "Compute Device"
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:167
+#: src/aquarion/libs/libtts/kokoro/_settings.py:167
 msgid "The device used for running the TTS system (e.g., cpu or cuda)."
 msgstr "The device used for running the TTS system (e.g., cpu or cuda)."
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:172
+#: src/aquarion/libs/libtts/kokoro/_settings.py:172
 msgid "Repository ID"
 msgstr "Repository ID"
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:173
+#: src/aquarion/libs/libtts/kokoro/_settings.py:173
 msgid "The identifier or path of the Kokoro TTS Git repository."
 msgstr "The identifier or path of the Kokoro TTS Git repository."
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:177
+#: src/aquarion/libs/libtts/kokoro/_settings.py:177
 msgid "Model File Path"
 msgstr "Model File Path"
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:179
-msgid ""
-"The file path to the Kokoro TTS model file.  Required only for offline or"
-" air-gapped use; otherwise, files are downloaded and cached "
-"automatically."
-msgstr ""
-"The file path to the Kokoro TTS model file.  Required only for offline or"
-" air-gapped use; otherwise, files are downloaded and cached "
-"automatically."
+#: src/aquarion/libs/libtts/kokoro/_settings.py:179
+msgid "The file path to the Kokoro TTS model file.  Required only for offline or air-gapped use; otherwise, files are downloaded and cached automatically."
+msgstr "The file path to the Kokoro TTS model file.  Required only for offline or air-gapped use; otherwise, files are downloaded and cached automatically."
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:185
+#: src/aquarion/libs/libtts/kokoro/_settings.py:185
 msgid "Configuration File Path"
 msgstr "Configuration File Path"
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:187
-msgid ""
-"The file path to the Kokoro TTS configuration file.  Required only for "
-"offline or air-gapped use; otherwise, files are downloaded and cached "
-"automatically."
-msgstr ""
-"The file path to the Kokoro TTS configuration file.  Required only for "
-"offline or air-gapped use; otherwise, files are downloaded and cached "
-"automatically."
+#: src/aquarion/libs/libtts/kokoro/_settings.py:187
+msgid "The file path to the Kokoro TTS configuration file.  Required only for offline or air-gapped use; otherwise, files are downloaded and cached automatically."
+msgstr "The file path to the Kokoro TTS configuration file.  Required only for offline or air-gapped use; otherwise, files are downloaded and cached automatically."
 
 # | msgid "Model File Path"
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:193
+#: src/aquarion/libs/libtts/kokoro/_settings.py:193
 #, fuzzy
 msgid "Voice File Path"
 msgstr "Model File Path"
 
-#: src/aquarion/libs/libtts/_kokoro/_settings.py:195
-msgid ""
-"The file path to the Kokoro TTS voice file.  Required only for offline or"
-" air-gapped use; otherwise, files are downloaded and cached "
-"automatically."
-msgstr ""
-"The file path to the Kokoro TTS voice file.  Required only for offline or"
-" air-gapped use; otherwise, files are downloaded and cached "
-"automatically."
+#: src/aquarion/libs/libtts/kokoro/_settings.py:195
+msgid "The file path to the Kokoro TTS voice file.  Required only for offline or air-gapped use; otherwise, files are downloaded and cached automatically."
+msgstr "The file path to the Kokoro TTS voice file.  Required only for offline or air-gapped use; otherwise, files are downloaded and cached automatically."
