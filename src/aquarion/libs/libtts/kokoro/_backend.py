@@ -24,8 +24,8 @@ from typing import TYPE_CHECKING, Final
 from kokoro import KModel, KPipeline
 from loguru import logger
 
-from aquarion.libs.libtts._kokoro._settings import KokoroSettings
 from aquarion.libs.libtts.api import ITTSSettings, TTSAudioSpec
+from aquarion.libs.libtts.kokoro._settings import KokoroSettings
 
 if TYPE_CHECKING:
     from numpy import float32, int16

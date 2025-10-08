@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-"""Unit tests for _kokoro._settings module."""
+"""Unit tests for kokoro._settings module."""
 
 from collections.abc import Mapping
 from pathlib import Path
@@ -24,16 +24,16 @@ from typing import Final, cast
 import pytest
 from logot import Logot, logged
 
-from aquarion.libs.libtts._kokoro._settings import (
-    KokoroDeviceNames,
-    KokoroLocales,
-    KokoroSettings,
-    KokoroVoices,
-)
 from aquarion.libs.libtts.api import (
     ITTSSettings,
     JSONSerializableTypes,
     TTSSettingsSpecEntry,
+)
+from aquarion.libs.libtts.kokoro._settings import (
+    KokoroDeviceNames,
+    KokoroLocales,
+    KokoroSettings,
+    KokoroVoices,
 )
 from tests.unit.kokoro.conftest import (
     INVALID_SETTINGS_CASES,

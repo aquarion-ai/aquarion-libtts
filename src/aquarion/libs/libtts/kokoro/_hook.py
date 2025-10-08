@@ -37,7 +37,7 @@ def register_tts_plugin() -> ITTSPlugin | None:
     except ModuleNotFoundError:
         logger.debug("Skipping Kokoro TTS plugin because of a missing dependency.")
         return None
-    from aquarion.libs.libtts._kokoro._plugin import KokoroPlugin  # noqa: PLC0415
+    from aquarion.libs.libtts.kokoro._plugin import KokoroPlugin  # noqa: PLC0415
 
     logger.debug("Registering Kokoro TTS plugin.")
     return KokoroPlugin()

@@ -22,8 +22,6 @@ from collections.abc import Mapping
 
 from loguru import logger
 
-from aquarion.libs.libtts._kokoro._backend import KokoroBackend
-from aquarion.libs.libtts._kokoro._settings import KokoroSettings
 from aquarion.libs.libtts._utils import load_internal_language
 from aquarion.libs.libtts.api import (
     ITTSBackend,
@@ -32,6 +30,8 @@ from aquarion.libs.libtts.api import (
     TTSSettingsSpecEntry,
     TTSSettingsSpecEntryTypes,
 )
+from aquarion.libs.libtts.kokoro._backend import KokoroBackend
+from aquarion.libs.libtts.kokoro._settings import KokoroSettings
 
 
 class KokoroPlugin:

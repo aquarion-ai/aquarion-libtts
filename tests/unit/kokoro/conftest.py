@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-"""Shared fixtures and code _kokoro package tests."""
+"""Shared fixtures and code kokoro package tests."""
 
 from typing import Final, TypedDict, cast
 

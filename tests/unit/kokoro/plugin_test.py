@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-"""Unit tests for _kokoro._plugin module."""
+"""Unit tests for kokoro._plugin module."""
 
 from collections.abc import Mapping
 from typing import Final, cast
@@ -23,8 +23,6 @@ from typing import Final, cast
 import pytest
 from logot import Logot, logged
 
-from aquarion.libs.libtts._kokoro._plugin import KokoroPlugin
-from aquarion.libs.libtts._kokoro._settings import KokoroSettings
 from aquarion.libs.libtts.api import (
     ITTSBackend,
     ITTSPlugin,
@@ -32,6 +30,8 @@ from aquarion.libs.libtts.api import (
     JSONSerializableTypes,
     TTSSettingsSpecEntry,
 )
+from aquarion.libs.libtts.kokoro._plugin import KokoroPlugin
+from aquarion.libs.libtts.kokoro._settings import KokoroSettings
 from tests.unit.api.ttssettings_test import AnotherTTSSettings
 from tests.unit.kokoro.conftest import (
     INVALID_SETTINGS_CASES,

@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-"""Unit tests for _kokoro._hook module."""
+"""Unit tests for kokoro._hook module."""
 
 import sys
 from collections.abc import Generator
@@ -26,9 +26,9 @@ from unittest.mock import patch
 import pytest
 from logot import Logot, logged
 
-from aquarion.libs.libtts._kokoro._hook import register_tts_plugin
-from aquarion.libs.libtts._kokoro._plugin import KokoroPlugin
 from aquarion.libs.libtts.api import tts_hookimpl
+from aquarion.libs.libtts.kokoro._hook import register_tts_plugin
+from aquarion.libs.libtts.kokoro._plugin import KokoroPlugin
 
 KOKORO_DEPENDENCIES: Final = ["torch", "kokoro"]
 

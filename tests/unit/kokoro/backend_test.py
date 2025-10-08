@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-"""Unit tests for _kokoro._backend module."""
+"""Unit tests for kokoro._backend module."""
 
 from os import environ
 from pathlib import Path
@@ -27,13 +27,13 @@ from kokoro.pipeline import KPipeline
 from logot import Logot, logged
 from pytest_mock import MockerFixture
 
-from aquarion.libs.libtts._kokoro._backend import _TEXT_IN_LOG_MAX_LEN, KokoroBackend
-from aquarion.libs.libtts._kokoro._settings import KokoroSettings, KokoroVoices
 from aquarion.libs.libtts.api import (
     ITTSBackend,
     ITTSSettings,
     TTSAudioSpec,
 )
+from aquarion.libs.libtts.kokoro._backend import _TEXT_IN_LOG_MAX_LEN, KokoroBackend
+from aquarion.libs.libtts.kokoro._settings import KokoroSettings, KokoroVoices
 from tests.unit.api.ttssettings_test import AnotherTTSSettings
 from tests.unit.kokoro.conftest import SettingsDict
 
@@ -84,7 +84,7 @@ def test_kokorobackend_should_use_local_model_path_when_given(
     real_settings_path_args: SettingsDict, mocker: MockerFixture
 ) -> None:
     expected = Path(cast("str", real_settings_path_args["model_path"]))
-    mock_kmodel = mocker.patch("aquarion.libs.libtts._kokoro._backend.KModel")
+    mock_kmodel = mocker.patch("aquarion.libs.libtts.kokoro._backend.KModel")
     backend = KokoroBackend(KokoroSettings(model_path=expected))
     backend.start()
     assert mock_kmodel.call_count == 1
@@ -95,7 +95,7 @@ def test_kokorobackend_should_use_local_config_path_when_given(
     real_settings_path_args: SettingsDict, mocker: MockerFixture
 ) -> None:
     expected = Path(cast("str", real_settings_path_args["config_path"]))
-    mock_kmodel = mocker.patch("aquarion.libs.libtts._kokoro._backend.KModel")
+    mock_kmodel = mocker.patch("aquarion.libs.libtts.kokoro._backend.KModel")
     backend = KokoroBackend(KokoroSettings(config_path=expected))
     backend.start()
     assert mock_kmodel.call_count == 1
@@ -106,7 +106,7 @@ def test_kokorobackend_should_use_local_voice_path_when_given(
     real_settings_path_args: SettingsDict, mocker: MockerFixture
 ) -> None:
     expected = Path(cast("str", real_settings_path_args["voice_path"]))
-    mock_kpipeline = mocker.patch("aquarion.libs.libtts._kokoro._backend.KPipeline")
+    mock_kpipeline = mocker.patch("aquarion.libs.libtts.kokoro._backend.KPipeline")
     backend = KokoroBackend(KokoroSettings(voice_path=expected))
     backend.start()
     assert mock_kpipeline.return_value.load_voice.call_count == 1  # type:ignore[misc]
