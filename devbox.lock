@@ -18,12 +18,12 @@
       }
     },
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
-      "last_modified": "2025-09-13T06:53:53Z",
-      "resolved": "github:NixOS/nixpkgs/6d7ec06d6868ac6d94c371458fc2391ded9ff13d?lastModified=1757746433&narHash=sha256-fEvTiU4s9lWgW7mYEU%2F1QUPirgkn%2BodUBTaindgiziY%3D"
+      "last_modified": "2025-10-11T06:31:15Z",
+      "resolved": "github:NixOS/nixpkgs/362791944032cb532aabbeed7887a441496d5e6e?lastModified=1760164275&narHash=sha256-gKl2Gtro%2FLNf8P%2B4L3S2RsZ0G390ccd5MyXYrTdMCFE%3D"
     },
     "markdownlint-cli2@0.18.1": {
-      "last_modified": "2025-07-28T17:09:23Z",
-      "resolved": "github:NixOS/nixpkgs/648f70160c03151bc2121d179291337ad6bc564b#markdownlint-cli2",
+      "last_modified": "2025-09-18T16:33:27Z",
+      "resolved": "github:NixOS/nixpkgs/f4b140d5b253f5e2a1ff4e5506edbf8267724bde#markdownlint-cli2",
       "source": "devbox-search",
       "version": "0.18.1",
       "systems": {
@@ -31,47 +31,47 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/rad4wkhzynh5b54q96z823jc8z267b6z-markdownlint-cli2-0.18.1",
+              "path": "/nix/store/d3sqdqvxcb5vswz0k0i1xf3f4qyh08pq-markdownlint-cli2-0.18.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/rad4wkhzynh5b54q96z823jc8z267b6z-markdownlint-cli2-0.18.1"
+          "store_path": "/nix/store/d3sqdqvxcb5vswz0k0i1xf3f4qyh08pq-markdownlint-cli2-0.18.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/i55p3yw0lcg6q98igb302nsydi6c54mk-markdownlint-cli2-0.18.1",
+              "path": "/nix/store/fak4rqjlz73a7i17slsp62yzp2v0fc65-markdownlint-cli2-0.18.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/i55p3yw0lcg6q98igb302nsydi6c54mk-markdownlint-cli2-0.18.1"
+          "store_path": "/nix/store/fak4rqjlz73a7i17slsp62yzp2v0fc65-markdownlint-cli2-0.18.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/rrh4258zxzbam316wa6wwg3vimillvp3-markdownlint-cli2-0.18.1",
+              "path": "/nix/store/19qlmh0w83f9zcwazv3h8hr717jr4kfn-markdownlint-cli2-0.18.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/rrh4258zxzbam316wa6wwg3vimillvp3-markdownlint-cli2-0.18.1"
+          "store_path": "/nix/store/19qlmh0w83f9zcwazv3h8hr717jr4kfn-markdownlint-cli2-0.18.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/b9mmdi9pw8h2q0ygyr7cx573zcc3mdxa-markdownlint-cli2-0.18.1",
+              "path": "/nix/store/6kxfprs5snd4qd6p3s8nri94i7aghbd7-markdownlint-cli2-0.18.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/b9mmdi9pw8h2q0ygyr7cx573zcc3mdxa-markdownlint-cli2-0.18.1"
+          "store_path": "/nix/store/6kxfprs5snd4qd6p3s8nri94i7aghbd7-markdownlint-cli2-0.18.1"
         }
       }
     },
     "nushell@0.106.1": {
-      "last_modified": "2025-07-31T04:07:16Z",
-      "resolved": "github:NixOS/nixpkgs/8679b16e11becd487b45d568358ddf9d5640d860#nushell",
+      "last_modified": "2025-09-18T16:33:27Z",
+      "resolved": "github:NixOS/nixpkgs/f4b140d5b253f5e2a1ff4e5506edbf8267724bde#nushell",
       "source": "devbox-search",
       "version": "0.106.1",
       "systems": {
@@ -79,41 +79,41 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/vs83xcd5w2fp4zbiph6cv2pbdck8q5xr-nushell-0.106.1",
+              "path": "/nix/store/b2s37l8wvp66jgk2v35bzqd64sngm2wg-nushell-0.106.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/vs83xcd5w2fp4zbiph6cv2pbdck8q5xr-nushell-0.106.1"
+          "store_path": "/nix/store/b2s37l8wvp66jgk2v35bzqd64sngm2wg-nushell-0.106.1"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/cq6x30n4i319wxzjxa9smz64i8hr6q0w-nushell-0.106.1",
+              "path": "/nix/store/lbmj19psdibypl9ydarygy2xjh4jgfa3-nushell-0.106.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/cq6x30n4i319wxzjxa9smz64i8hr6q0w-nushell-0.106.1"
+          "store_path": "/nix/store/lbmj19psdibypl9ydarygy2xjh4jgfa3-nushell-0.106.1"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/jqy13fjyrih2x9jfp0hcd2f47c7pfys1-nushell-0.106.1",
+              "path": "/nix/store/3ssawg0rxz7bxcsvh2x3yjp4i7db906d-nushell-0.106.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/jqy13fjyrih2x9jfp0hcd2f47c7pfys1-nushell-0.106.1"
+          "store_path": "/nix/store/3ssawg0rxz7bxcsvh2x3yjp4i7db906d-nushell-0.106.1"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/pikr2lds8w3shnsq0l1f7aamlmvsi0i3-nushell-0.106.1",
+              "path": "/nix/store/7pn92hjbp0c3jn4p0jvbjisddvx9y6fp-nushell-0.106.1",
               "default": true
             }
           ],
-          "store_path": "/nix/store/pikr2lds8w3shnsq0l1f7aamlmvsi0i3-nushell-0.106.1"
+          "store_path": "/nix/store/7pn92hjbp0c3jn4p0jvbjisddvx9y6fp-nushell-0.106.1"
         }
       }
     },
