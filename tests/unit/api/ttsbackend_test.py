@@ -30,6 +30,7 @@ import pytest
 from aquarion.libs.libtts.api._ttsbackend import (
     ITTSBackend,
     TTSAudioSpec,
+    TTSSampleByteOrders,
     TTSSampleTypes,
 )
 from aquarion.libs.libtts.api._ttssettings import ITTSSettings
@@ -123,7 +124,7 @@ class DummyTTSBackend(DummyTTSSettingsHolder):
             sample_rate=24000,
             sample_type=TTSSampleTypes.SIGNED_INT,
             sample_width=16,
-            byte_order="little-endian",
+            byte_order=TTSSampleByteOrders.LITTLE_ENDIAN,
             num_channels=1,
         )
 

@@ -26,7 +26,7 @@ from kokoro import KModel, KPipeline
 from loguru import logger
 
 from aquarion.libs.libtts.api import ITTSSettings, TTSAudioSpec
-from aquarion.libs.libtts.api._ttsbackend import TTSSampleTypes
+from aquarion.libs.libtts.api._ttsbackend import TTSSampleByteOrders, TTSSampleTypes
 from aquarion.libs.libtts.kokoro.settings import KokoroSettings
 
 if TYPE_CHECKING:
@@ -62,7 +62,7 @@ class KokoroBackend:
             sample_rate=24000,
             sample_type=TTSSampleTypes.SIGNED_INT,
             sample_width=16,
-            byte_order="little-endian",
+            byte_order=TTSSampleByteOrders.LITTLE_ENDIAN,
             num_channels=1,
         )
 

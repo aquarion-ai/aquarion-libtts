@@ -46,6 +46,33 @@ class TTSSampleTypes(StrEnum):
     FLOAT = "f"
 
 
+class TTSSampleByteOrders(StrEnum):
+    """The byte order for multi-byte audio samples.
+
+    The string values of these types match
+    `FFmpeg's format descriptions <https://trac.ffmpeg.org/wiki/audio%20types>`__.
+
+    """
+
+    #: Big endian byte order
+    #:
+    #: This means the most significant byte is stored first, then the least significant
+    #: byte after that.
+    #:
+    BIG_ENDIAN = "be"
+    #: Little endian byte order
+    #:
+    #: This means the least significant byte is stored first, then the most significant
+    #: byte after that.
+    #:
+    LITTLE_ENDIAN = "le"
+    #: Not Applicable
+    #:
+    #: This should only be used for 8-bit (i.e. single byte) samples.
+    #:
+    NOT_APPLICABLE = ""
+
+
 @dataclass(kw_only=True, frozen=True, slots=True)
 class TTSAudioSpec:
     """Audio metadata about the audio format that an :class:`ITTSBackend` returns.
@@ -58,15 +85,12 @@ class TTSAudioSpec:
     format: str
     #: E.g 8000, 24000, 48000, etc.
     sample_rate: int
-    #: E.g. signed int, unsigned int or float.
+    #: E.g. Signed Integer, Unsigned Integer or Floating Point.
     sample_type: TTSSampleTypes
     #: E.g. 8 for 8-bit, 12 for 12-bit, 16 for 16-bit, etc.
     sample_width: int
-    #: E.g. "Little-Endian", "LE", "big-endian", "be", etc.
-    #:
-    #: **Note:** There is no standard for this but Ffmpeg uses ``be`` and ``le`` so
-    #: maybe it is worth sticking with those.
-    byte_order: str
+    #: E.g. Little Endian or Big Endian.
+    byte_order: TTSSampleByteOrders
     #: E.g. 1 for mono, 2 for stereo, etc.
     num_channels: int
 

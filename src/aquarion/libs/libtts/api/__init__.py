@@ -50,6 +50,7 @@ from aquarion.libs.libtts.api._i18n import (
 from aquarion.libs.libtts.api._ttsbackend import (
     ITTSBackend,
     TTSAudioSpec,
+    TTSSampleByteOrders,
     TTSSampleTypes,
 )
 from aquarion.libs.libtts.api._ttsplugins import (
@@ -76,6 +77,7 @@ __all__ = [
     "JSONSerializableTypes",
     "TTSAudioSpec",
     "TTSPluginRegistry",
+    "TTSSampleByteOrders",
     "TTSSampleTypes",
     "TTSSettingsSpecEntry",
     "TTSSettingsSpecEntryTypes",
