@@ -38,6 +38,7 @@ from aquarion.libs.libtts.kokoro.settings import (
     KokoroVoices,
 )
 from tests.unit.kokoro.conftest import (
+    EXPECTED_SETTING_DESCRIPTIONS,
     INVALID_SETTINGS_CASES,
     SETTINGS_ARGS,
     SettingsDict,
@@ -278,38 +279,6 @@ def test_kokorosettings_get_setting_display_name_should_return_the_display_name(
 ## _get_setting_description tests
 
 
-SETTING_DESCRIPTIONS: Final = dict(
-    zip(
-        SETTINGS_ARGS,
-        [
-            "The regional or international locale setting.",  # locale
-            "The voice used by the text-to-speech system.",  # voice
-            "The speaking speed of the text-to-speech system.",  # speed
-            "The device used for running the TTS system (e.g., cpu or cuda).",  # device
-            (
-                "The identifier or path of the Kokoro TTS HuggingFace repository."
-            ),  # repo_id
-            (
-                "The file path to the Kokoro TTS model file.  Required only for offline"
-                " or air-gapped use; otherwise, files are downloaded and cached "
-                "automatically."
-            ),  # model_path
-            (
-                "The file path to the Kokoro TTS configuration file.  Required only for"
-                " offline or air-gapped use; otherwise, files are downloaded and cached"
-                " automatically."
-            ),  # config_path
-            (
-                "The file path to the Kokoro TTS voice file.  Required only for offline"
-                " or air-gapped use; otherwise, files are downloaded and cached "
-                "automatically."
-            ),  # voice_path
-        ],
-        strict=True,
-    )
-)
-
-
 def test_kokorosettings_get_setting_description_should_accept_a_setting_name() -> None:
     KokoroSettings._get_setting_description("locale")  # noqa: SLF001
 
@@ -325,7 +294,7 @@ def test_kokorosettings_get_setting_description_should_require_a_setting_name(
 def test_kokorosettings_get_setting_description_should_return_the_description(
     setting: str,
 ) -> None:
-    expected = SETTING_DESCRIPTIONS[setting]
+    expected = EXPECTED_SETTING_DESCRIPTIONS[setting]["en"]
     assert KokoroSettings._get_setting_description(setting) == expected  # noqa: SLF001
 
 

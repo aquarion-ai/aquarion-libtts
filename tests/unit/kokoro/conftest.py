@@ -69,6 +69,83 @@ INVALID_SETTINGS_CASES: Final = [
 ]
 
 
+EXPECTED_SETTING_DESCRIPTIONS = {
+    "locale": {
+        "en": "The regional or international locale setting.",
+        "fr": "Le paramètre régional ou la norme locale internationale.",
+    },
+    "voice": {
+        "en": "The voice used by the text-to-speech system.",
+        "fr": "La voix utilisée par le système de synthèse vocale.",
+    },
+    "speed": {
+        "en": "The speaking speed of the text-to-speech system.",
+        "fr": "La vitesse de parole du système de synthèse vocale.",
+    },
+    "device": {
+        "en": "The device used for running the TTS system (e.g., cpu or cuda).",
+        "fr": (
+            "Le périphérique utilisé pour exécuter le système de synthèse vocale"
+            " (ex. : cpu ou cuda)."
+        ),
+    },
+    "repo_id": {
+        "en": "The identifier or path of the Kokoro TTS HuggingFace repository.",
+        "fr": "L'identifiant ou le chemin du dépôt HuggingFace de Kokoro SSV.",
+    },
+    "model_path": {
+        "en": (
+            "The file path to the Kokoro TTS model file.  Required only for offline or "
+            "air-gapped use; otherwise, files are downloaded and cached automatically."
+        ),
+        "fr": (
+            "Le chemin du fichier modèle utilisé par Kokoro pour la synthèse vocale.  "
+            "Nécessaire uniquement pour une utilisation hors ligne ou en environment "
+            "isolé ; sinon, les fichiers sont téléchargés et "
+            "mis en cache "
+            "automatiquement."
+        ),
+    },
+    "config_path": {
+        "en": (
+            "The file path to the Kokoro TTS configuration file.  Required only for "
+            "offline or air-gapped use; otherwise, files are downloaded and cached "
+            "automatically."
+        ),
+        "fr": (
+            "Le chemin du fichier de configuration utilisé par Kokoro pour la synthèse "
+            "vocale.  Nécessaire uniquement pour une utilisation hors ligne ou en "
+            "environment isolé ; sinon, les fichiers sont téléchargés et "
+            "mis en cache"
+            " automatiquement."
+        ),
+    },
+    "voice_path": {
+        "en": (
+            "The file path to the Kokoro TTS voice file.  Required only for offline or "
+            "air-gapped use; otherwise, files are downloaded and cached automatically."
+        ),
+        "fr": (
+            "Le chemin du fichier vocal utilisé par Kokoro pour la synthèse vocale.  "
+            "Nécessaire uniquement pour une utilisation hors ligne ou en environment "
+            "isolé ; sinon, les fichiers sont téléchargés et "
+            "mis en cache "
+            "automatiquement."
+        ),
+    },
+}
+for setting_name in EXPECTED_SETTING_DESCRIPTIONS:  # noqa: PLC0206
+    for locale in ("en_CA", "en_US", "en_GB"):
+        EXPECTED_SETTING_DESCRIPTIONS[setting_name][locale] = (
+            EXPECTED_SETTING_DESCRIPTIONS[setting_name]["en"]
+        )
+for setting_name in EXPECTED_SETTING_DESCRIPTIONS:  # noqa: PLC0206
+    for locale in ("fr_CA", "fr_FR"):
+        EXPECTED_SETTING_DESCRIPTIONS[setting_name][locale] = (
+            EXPECTED_SETTING_DESCRIPTIONS[setting_name]["fr"]
+        )
+
+
 @pytest.fixture(scope="session")
 def real_settings_path_args(
     tmp_path_factory: pytest.TempPathFactory,
