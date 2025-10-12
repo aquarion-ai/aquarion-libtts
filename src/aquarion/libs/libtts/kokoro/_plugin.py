@@ -31,7 +31,7 @@ from aquarion.libs.libtts.api import (
     TTSSettingsSpecEntryTypes,
 )
 from aquarion.libs.libtts.kokoro._backend import KokoroBackend
-from aquarion.libs.libtts.kokoro._settings import KokoroSettings
+from aquarion.libs.libtts.kokoro.settings import KokoroSettings
 
 
 class KokoroPlugin:

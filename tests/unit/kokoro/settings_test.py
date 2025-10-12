@@ -29,7 +29,7 @@ from aquarion.libs.libtts.api import (
     JSONSerializableTypes,
     TTSSettingsSpecEntry,
 )
-from aquarion.libs.libtts.kokoro._settings import (
+from aquarion.libs.libtts.kokoro.settings import (
     KokoroDeviceNames,
     KokoroLocales,
     KokoroSettings,

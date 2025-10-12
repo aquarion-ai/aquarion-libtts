@@ -31,7 +31,7 @@ from aquarion.libs.libtts.api import (
     TTSSettingsSpecEntry,
 )
 from aquarion.libs.libtts.kokoro._plugin import KokoroPlugin
-from aquarion.libs.libtts.kokoro._settings import KokoroSettings
+from aquarion.libs.libtts.kokoro.settings import KokoroSettings
 from tests.unit.api.ttssettings_test import AnotherTTSSettings
 from tests.unit.kokoro.conftest import (
     INVALID_SETTINGS_CASES,

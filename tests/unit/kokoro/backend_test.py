@@ -33,7 +33,7 @@ from aquarion.libs.libtts.api import (
     TTSAudioSpec,
 )
 from aquarion.libs.libtts.kokoro._backend import _TEXT_IN_LOG_MAX_LEN, KokoroBackend
-from aquarion.libs.libtts.kokoro._settings import KokoroSettings, KokoroVoices
+from aquarion.libs.libtts.kokoro.settings import KokoroSettings, KokoroVoices
 from tests.unit.api.ttssettings_test import AnotherTTSSettings
 from tests.unit.kokoro.conftest import SettingsDict
 

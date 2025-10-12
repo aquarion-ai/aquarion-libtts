@@ -83,7 +83,7 @@ kokoro = [
 ]
 
 [project.entry-points.'aquarion-libtts']
-kokoro_v1 = "aquarion.libs.libtts.kokoro"
+kokoro_v1 = "aquarion.libs.libtts.kokoro._hook"
 
 ### UV ###
 

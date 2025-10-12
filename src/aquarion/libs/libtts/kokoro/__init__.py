@@ -18,4 +18,16 @@
 
 """Kokoro TTS backend package."""
 
-from aquarion.libs.libtts.kokoro._hook import register_tts_plugin  # noqa: F401
+from aquarion.libs.libtts.kokoro.settings import (
+    KokoroDeviceNames,
+    KokoroLocales,
+    KokoroSettings,
+    KokoroVoices,
+)
+
+__all__ = [
+    "KokoroDeviceNames",
+    "KokoroLocales",
+    "KokoroSettings",
+    "KokoroVoices",
+]
