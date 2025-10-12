@@ -113,7 +113,7 @@ This project follows the following standard practices:
 - `hatch build` is how the source and wheel distributions are made.
 
 - The `check` command has several sub-commands to help you while developing.  Check it
-  out. :smile_cat:
+  out. 😺
 
 - The `lang` command is used to manage localization message catalogues, i.e. translation
   files.  It's good to check it out as well.
