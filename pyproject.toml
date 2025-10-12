@@ -117,7 +117,7 @@ hatch-test = [
   "pytest~=8.4.2", # Hatch test default inclusion
 ]
 hatch-uv = [
-  "uv~=0.8.2",
+  "uv~=0.8.14",
 ]
 types = [
   "logot~=1.5.1",
