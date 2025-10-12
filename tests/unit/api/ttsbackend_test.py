@@ -27,7 +27,11 @@ from typing import TYPE_CHECKING, Final
 
 import pytest
 
-from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, TTSAudioSpec
+from aquarion.libs.libtts.api._ttsbackend import (
+    ITTSBackend,
+    TTSAudioSpec,
+    TTSSampleTypes,
+)
 from aquarion.libs.libtts.api._ttssettings import ITTSSettings
 from tests.unit.api.ttssettings_test import (
     AnotherTTSSettings,
@@ -43,6 +47,7 @@ type TTSAudioSpecTypes = bytes | str | int
 AUDIO_SPEC_REQUIRED_ARGS: Final = {
     "format": "WAV",
     "sample_rate": 24000,
+    "sample_type": "s",
     "sample_width": 16,
     "byte_order": "little-endian",
     "num_channels": 1,
@@ -116,6 +121,7 @@ class DummyTTSBackend(DummyTTSSettingsHolder):
         return TTSAudioSpec(
             format="Linear PCM",
             sample_rate=24000,
+            sample_type=TTSSampleTypes.SIGNED_INT,
             sample_width=16,
             byte_order="little-endian",
             num_channels=1,

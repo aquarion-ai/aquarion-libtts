@@ -47,7 +47,11 @@ from aquarion.libs.libtts.api._i18n import (
     HashableTraversable,
     load_language,
 )
-from aquarion.libs.libtts.api._ttsbackend import ITTSBackend, TTSAudioSpec
+from aquarion.libs.libtts.api._ttsbackend import (
+    ITTSBackend,
+    TTSAudioSpec,
+    TTSSampleTypes,
+)
 from aquarion.libs.libtts.api._ttsplugins import (
     ITTSPlugin,
     TTSPluginRegistry,
@@ -72,6 +76,7 @@ __all__ = [
     "JSONSerializableTypes",
     "TTSAudioSpec",
     "TTSPluginRegistry",
+    "TTSSampleTypes",
     "TTSSettingsSpecEntry",
     "TTSSettingsSpecEntryTypes",
     "TTSSettingsSpecType",

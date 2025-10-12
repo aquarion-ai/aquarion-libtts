@@ -21,12 +21,29 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import StrEnum
 from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 from aquarion.libs.libtts.api._ttssettings import ITTSSettingsHolder
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
+
+
+class TTSSampleTypes(StrEnum):
+    """The data type of a single audio sample.
+
+    The string values of these types match
+    `FFmpeg's format descriptions <https://trac.ffmpeg.org/wiki/audio%20types>`__.
+
+    """
+
+    #: Signed integer samples. (I.e. positive and negative numbers allowed.)
+    SIGNED_INT = "s"
+    #: Unsigned integer samples. (I.e. only positive numbers, but wider sample space.)
+    UNSIGNED_INT = "u"
+    #: Floating point samples.
+    FLOAT = "f"
 
 
 @dataclass(kw_only=True, frozen=True, slots=True)
@@ -41,6 +58,8 @@ class TTSAudioSpec:
     format: str
     #: E.g 8000, 24000, 48000, etc.
     sample_rate: int
+    #: E.g. signed int, unsigned int or float.
+    sample_type: TTSSampleTypes
     #: E.g. 8 for 8-bit, 12 for 12-bit, 16 for 16-bit, etc.
     sample_width: int
     #: E.g. "Little-Endian", "LE", "big-endian", "be", etc.
