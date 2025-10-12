@@ -69,8 +69,8 @@ msgid "Repository ID"
 msgstr "Repository ID"
 
 #: src/aquarion/libs/libtts/kokoro/_settings.py:173
-msgid "The identifier or path of the Kokoro TTS Git repository."
-msgstr "The identifier or path of the Kokoro TTS Git repository."
+msgid "The identifier or path of the Kokoro TTS HuggingFace repository."
+msgstr "The identifier or path of the Kokoro TTS HuggingFace repository."
 
 #: src/aquarion/libs/libtts/kokoro/_settings.py:177
 msgid "Model File Path"

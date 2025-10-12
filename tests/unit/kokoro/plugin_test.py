@@ -367,8 +367,8 @@ EXPECTED_SETTING_DESCRIPTIONS = {
         ),
     },
     "repo_id": {
-        "en": "The identifier or path of the Kokoro TTS Git repository.",
-        "fr": "L'identifiant ou le chemin du dépôt Git de Kokoro SSV.",
+        "en": "The identifier or path of the Kokoro TTS HuggingFace repository.",
+        "fr": "L'identifiant ou le chemin du dépôt HuggingFace de Kokoro SSV.",
     },
     "model_path": {
         "en": (

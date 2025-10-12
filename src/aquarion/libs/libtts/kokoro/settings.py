@@ -224,7 +224,9 @@ class KokoroSettings(BaseModel):  # type:ignore [explicit-any]
     repo_id: str = "hexgrad/Kokoro-82M"
     _repo_id_spec = TTSSettingsSpecEntry(type=str)
     _repo_id_display_name = _("Repository ID")
-    _repo_id_description = _("The identifier or path of the Kokoro TTS Git repository.")
+    _repo_id_description = _(
+        "The identifier or path of the Kokoro TTS HuggingFace repository."
+    )
 
     #: Offline mode local file path to the Kokoro TTS model file.
     #:

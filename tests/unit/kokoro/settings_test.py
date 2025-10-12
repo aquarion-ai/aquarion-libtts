@@ -284,7 +284,9 @@ SETTING_DESCRIPTIONS: Final = dict(
             "The voice used by the text-to-speech system.",  # voice
             "The speaking speed of the text-to-speech system.",  # speed
             "The device used for running the TTS system (e.g., cpu or cuda).",  # device
-            "The identifier or path of the Kokoro TTS Git repository.",  # repo_id
+            (
+                "The identifier or path of the Kokoro TTS HuggingFace repository."
+            ),  # repo_id
             (
                 "The file path to the Kokoro TTS model file.  Required only for offline"
                 " or air-gapped use; otherwise, files are downloaded and cached "
