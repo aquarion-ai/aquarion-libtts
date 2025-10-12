@@ -90,7 +90,7 @@ kokoro_v1 = "aquarion.libs.libtts.kokoro._hook"
 [dependency-groups]
 accept = [
   "bsdiff4~=1.2.6",
-  "coverage[toml]~=7.10.6",
+  "coverage[toml]~=7.10.7",
   "radish-bdd~=0.18.2",
 ]
 babel = [
@@ -106,7 +106,7 @@ hatch-static-analysis = [
 ]
 hatch-test = [
   "coverage-enable-subprocess==1.0", # Hatch test default inclusion
-  "coverage[toml]~=7.10.6", # Hatch test default inclusion
+  "coverage[toml]~=7.10.7", # Hatch test default inclusion
   "logot~=1.5.1",
   "loguru~=0.7.3",
   "pytest-mock~=3.15.0", # Hatch test default inclusion
