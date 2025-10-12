@@ -1,0 +1,6 @@
+vulnerabilities:
+  - id: CVE-2025-8869
+    expired_at: 2026-04-12
+    statement: >-
+      According to the CVE, Python>=3.12 is not affected. This project's minimum
+      Python version is 3.12.

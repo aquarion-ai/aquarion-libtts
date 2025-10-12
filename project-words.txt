@@ -50,6 +50,7 @@ hookspecs
 htmlcov
 huggingface
 Identifiant
+ignorefile
 iniconfig
 internationale
 intersphinx

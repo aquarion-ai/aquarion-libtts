@@ -189,8 +189,12 @@ def "main sec vuln" []: nothing -> string {
     let project_root = (git rev-parse --show-toplevel | str trim)
     let trivy_cache_path = ($project_root | path join ".cache" "trivy")
     let report_path = ($trivy_cache_path | path join "report.json")
+    let ignorefile_path = ($project_root | path join ".trivyignore.yaml")
     mkdir $trivy_cache_path
-    trivy fs . --scanners vuln --include-dev-deps -f json -o $report_path
+    (
+        trivy fs . --scanners vuln --include-dev-deps -f json -o $report_path
+        --ignorefile $ignorefile_path
+    )
     trivy convert --scanners vuln $report_path
     (
         # --format template without a template silences output.
