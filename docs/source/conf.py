@@ -62,7 +62,6 @@ autosummary_generate_overwrite = True
 
 autodoc_default_options = {
     "members": True,
-    "inherited-members": True,
     "show-inheritance": True,
     "class-doc-from": "both",
     "undoc-members": True,
@@ -98,4 +97,5 @@ myst_heading_anchors = 2
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3.12", None),
     "babel": ("https://babel.pocoo.org/en/stable/", None),
+    "pydantic": ("https://docs.pydantic.dev/2.11/", None),
 }
