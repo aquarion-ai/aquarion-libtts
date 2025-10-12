@@ -164,5 +164,5 @@ def babel_update [
 }
 
 def babel_compile [domain: string, locale_dir: string]: nothing -> string {
-    pybabel compile --no-wrap -D $domain -d $locale_dir --statistics
+    pybabel compile -D $domain -d $locale_dir --statistics
 }
