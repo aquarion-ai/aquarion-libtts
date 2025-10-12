@@ -17,6 +17,8 @@
 
 """Kokoro TTS hook implementation."""
 
+from __future__ import annotations
+
 from loguru import logger
 
 from aquarion.libs.libtts.api import ITTSPlugin, tts_hookimpl

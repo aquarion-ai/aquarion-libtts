@@ -18,6 +18,8 @@
 
 """Unit tests for api._i18n."""
 
+from __future__ import annotations
+
 from gettext import NullTranslations
 from importlib.resources import files
 from pathlib import Path

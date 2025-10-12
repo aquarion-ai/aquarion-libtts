@@ -17,6 +17,8 @@
 
 """Unit tests for kokoro._settings module."""
 
+from __future__ import annotations
+
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Final, cast

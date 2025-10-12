@@ -20,7 +20,10 @@
 
 These tests serve mostly to document the expectations of all ITTSSettings
 implementations.
+
 """
+
+from __future__ import annotations
 
 from dataclasses import FrozenInstanceError
 from typing import Final, TypedDict

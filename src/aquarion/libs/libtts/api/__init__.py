@@ -40,6 +40,8 @@ Example:
 
 """
 
+from __future__ import annotations
+
 from aquarion.libs.libtts.api._i18n import (
     HashablePathLike,
     HashableTraversable,

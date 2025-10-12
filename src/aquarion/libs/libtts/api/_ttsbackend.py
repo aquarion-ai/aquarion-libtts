@@ -18,11 +18,15 @@
 
 """TTSBackend protocol."""
 
-from collections.abc import Iterator
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 from aquarion.libs.libtts.api._ttssettings import ITTSSettingsHolder
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 @dataclass(kw_only=True, frozen=True, slots=True)

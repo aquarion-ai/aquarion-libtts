@@ -17,6 +17,8 @@
 
 """Unit tests for the .api._ttsplugins module."""
 
+from __future__ import annotations
+
 import importlib
 from collections.abc import Mapping
 from types import MappingProxyType

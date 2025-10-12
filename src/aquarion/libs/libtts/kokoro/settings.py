@@ -18,6 +18,8 @@
 
 """Kokoro TTS settings implementation."""
 
+from __future__ import annotations
+
 from enum import StrEnum, auto
 from types import MappingProxyType
 from typing import Annotated, Any, Final, Self, cast

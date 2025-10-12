@@ -18,5 +18,7 @@
 
 """Provides package metadata at runtime."""
 
+from __future__ import annotations
+
 __name__ = "aquarion-libtts"
 __version__ = "0.0.1"

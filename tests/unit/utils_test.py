@@ -17,6 +17,8 @@
 
 """Unit tests for the _utils module."""
 
+from __future__ import annotations
+
 from gettext import NullTranslations
 
 import pytest

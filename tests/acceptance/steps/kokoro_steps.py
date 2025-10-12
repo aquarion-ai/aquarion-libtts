@@ -17,14 +17,18 @@
 
 """Kokoro TTS BDD steps."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Final
+from typing import TYPE_CHECKING, Final
 from unittest import mock
 
 import torch
 from bsdiff4 import diff
 from radish import then, when
-from radish.stepmodel import Step
+
+if TYPE_CHECKING:
+    from radish.stepmodel import Step
 
 MIN_GPU_MEMORY_ALLOCATION: Final = 300_000_000  # bytes
 MAX_GPU_RESIDUAL_MEMORY: Final = 10_000_000  # bytes

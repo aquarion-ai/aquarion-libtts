@@ -17,15 +17,16 @@
 
 """Unit tests for kokoro._backend module."""
 
+from __future__ import annotations
+
 from os import environ
 from pathlib import Path
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 import pytest
 import torch
 from kokoro.pipeline import KPipeline
 from logot import Logot, logged
-from pytest_mock import MockerFixture
 
 from aquarion.libs.libtts.api import (
     ITTSBackend,
@@ -35,7 +36,11 @@ from aquarion.libs.libtts.api import (
 from aquarion.libs.libtts.kokoro._backend import _TEXT_IN_LOG_MAX_LEN, KokoroBackend
 from aquarion.libs.libtts.kokoro.settings import KokoroSettings, KokoroVoices
 from tests.unit.api.ttssettings_test import AnotherTTSSettings
-from tests.unit.kokoro.conftest import SettingsDict
+
+if TYPE_CHECKING:
+    from pytest_mock import MockerFixture
+
+    from tests.unit.kokoro.conftest import SettingsDict
 
 
 @pytest.fixture(autouse=True)

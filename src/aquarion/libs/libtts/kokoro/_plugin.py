@@ -18,20 +18,26 @@
 
 """Kokoro TTS plugin implementation."""
 
-from collections.abc import Mapping
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from loguru import logger
 
 from aquarion.libs.libtts._utils import load_internal_language
-from aquarion.libs.libtts.api import (
-    ITTSBackend,
-    ITTSSettings,
-    JSONSerializableTypes,
-    TTSSettingsSpecEntry,
-    TTSSettingsSpecEntryTypes,
-)
 from aquarion.libs.libtts.kokoro._backend import KokoroBackend
 from aquarion.libs.libtts.kokoro.settings import KokoroSettings
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
+
+    from aquarion.libs.libtts.api import (
+        ITTSBackend,
+        ITTSSettings,
+        JSONSerializableTypes,
+        TTSSettingsSpecEntry,
+        TTSSettingsSpecEntryTypes,
+    )
 
 
 class KokoroPlugin:

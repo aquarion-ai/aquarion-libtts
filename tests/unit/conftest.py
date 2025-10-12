@@ -17,6 +17,8 @@
 
 """PyTest Configuration for all tests."""
 
+from __future__ import annotations
+
 import pytest
 from loguru import logger
 

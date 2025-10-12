@@ -21,8 +21,9 @@
 These tests serve mostly to document the expectations of all TTSBackend implementations.
 """
 
-from collections.abc import Iterator
-from typing import Final
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Final
 
 import pytest
 
@@ -33,6 +34,9 @@ from tests.unit.api.ttssettings_test import (
     DummyTTSSettings,
     DummyTTSSettingsHolder,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 type TTSAudioSpecTypes = bytes | str | int
 

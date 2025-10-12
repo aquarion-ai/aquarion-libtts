@@ -17,10 +17,11 @@
 
 """Unit tests for kokoro._hook module."""
 
+from __future__ import annotations
+
 import sys
-from collections.abc import Generator
 from contextlib import contextmanager
-from typing import Final
+from typing import TYPE_CHECKING, Final
 from unittest.mock import patch
 
 import pytest
@@ -29,6 +30,9 @@ from logot import Logot, logged
 from aquarion.libs.libtts.api import tts_hookimpl
 from aquarion.libs.libtts.kokoro._hook import register_tts_plugin
 from aquarion.libs.libtts.kokoro._plugin import KokoroPlugin
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
 
 KOKORO_DEPENDENCIES: Final = ["torch", "kokoro"]
 

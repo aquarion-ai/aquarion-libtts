@@ -18,7 +18,8 @@
 
 """Kokoro TTS backend implementation."""
 
-from collections.abc import Iterator
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Final
 
 from kokoro import KModel, KPipeline
@@ -28,6 +29,8 @@ from aquarion.libs.libtts.api import ITTSSettings, TTSAudioSpec
 from aquarion.libs.libtts.kokoro.settings import KokoroSettings
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from numpy import float32, int16
     from numpy.typing import NDArray
 

@@ -18,6 +18,8 @@
 
 """Aquarion AI Text To Speech TTS backend library."""
 
+from __future__ import annotations
+
 from loguru import logger
 
 # Silence all libtts logging by default.  We are a library, not an application.

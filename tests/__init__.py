@@ -17,3 +17,5 @@
 
 
 """Tests for libtts."""
+
+from __future__ import annotations

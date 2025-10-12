@@ -17,6 +17,8 @@
 
 """Shared fixtures and code kokoro package tests."""
 
+from __future__ import annotations
+
 from typing import Final, TypedDict, cast
 
 import pytest

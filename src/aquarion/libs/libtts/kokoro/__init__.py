@@ -18,6 +18,8 @@
 
 """Kokoro TTS backend package."""
 
+from __future__ import annotations
+
 from aquarion.libs.libtts.kokoro.settings import (
     KokoroDeviceNames,
     KokoroLocales,

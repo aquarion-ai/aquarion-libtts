@@ -18,6 +18,8 @@
 
 """Utility functions for aquarion-libtts."""
 
+from __future__ import annotations
+
 from functools import partial
 from importlib.resources import files
 from typing import Final, cast

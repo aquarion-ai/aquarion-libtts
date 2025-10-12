@@ -18,6 +18,8 @@
 
 """Utilities to help with internationalization and localization."""
 
+from __future__ import annotations
+
 from collections.abc import Callable, Hashable
 from functools import cache
 from gettext import NullTranslations, translation

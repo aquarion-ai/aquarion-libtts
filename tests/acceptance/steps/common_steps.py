@@ -17,15 +17,20 @@
 
 """Common shared BDD steps."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 from unittest import mock
 from warnings import filterwarnings
 
 from radish import after, before, given, then, when
-from radish.feature import Feature
-from radish.scenario import Scenario
-from radish.stepmodel import Step
 
 from aquarion.libs.libtts.api import TTSPluginRegistry
+
+if TYPE_CHECKING:
+    from radish.feature import Feature
+    from radish.scenario import Scenario
+    from radish.stepmodel import Step
 
 
 @before.each_feature

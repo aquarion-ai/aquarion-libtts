@@ -17,6 +17,8 @@
 
 """API BDD steps."""
 
+from __future__ import annotations
+
 import builtins
 import json
 import pathlib
@@ -28,9 +30,11 @@ from types import NoneType, UnionType
 from typing import Annotated, Any, Final, Optional, get_args, get_origin
 
 from radish import then, when
-from radish.stepmodel import Step
 
-from aquarion.libs.libtts.api import TTSSettingsSpecEntryTypes, TTSSettingsSpecType
+if typing.TYPE_CHECKING:
+    from radish.stepmodel import Step
+
+    from aquarion.libs.libtts.api import TTSSettingsSpecEntryTypes, TTSSettingsSpecType
 
 MIN_AUDIO_LEN: Final = 100000  # bytes
 

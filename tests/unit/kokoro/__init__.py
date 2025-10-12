@@ -17,3 +17,5 @@
 
 
 """Unit tests for the Kokoro TTS backend."""
+
+from __future__ import annotations

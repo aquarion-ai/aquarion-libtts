@@ -17,3 +17,5 @@
 
 
 """Test for aquarion-libtts public interfaces."""
+
+from __future__ import annotations
