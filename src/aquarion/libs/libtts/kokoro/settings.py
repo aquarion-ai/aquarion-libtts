@@ -183,12 +183,12 @@ class KokoroSettings(BaseModel):  # type:ignore [explicit-any]
     #:
     #: Speech can be sped up or slowed down with this setting.
     #:
-    #: ``speed`` is must be between ``0.1`` and ``1.0``, inclusive.
+    #: ``speed`` is must be between ``0.1`` and ``2.0``, inclusive.
     #:
     #: :default: ``1.0``, i.e. normal speed.
     #:
-    speed: Annotated[float, Field(ge=0.1, le=1.0)] = 1.0
-    _speed_spec = TTSSettingsSpecEntry(type=float, min=0.1, max=1.0)
+    speed: Annotated[float, Field(ge=0.1, le=2.0)] = 1.0
+    _speed_spec = TTSSettingsSpecEntry(type=float, min=0.1, max=2.0)
     _speed_display_name = _("Speed")
     _speed_description = _("The speaking speed of the text-to-speech system.")
 

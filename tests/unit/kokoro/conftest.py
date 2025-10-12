@@ -61,7 +61,7 @@ INVALID_SETTINGS_CASES: Final = [
     ("voice", "ff_siwis", "Invalid voice for the locale: en_CA"),
     ("speed", -1, "Input should be greater than or equal to 0.1"),
     ("speed", 0, "Input should be greater than or equal to 0.1"),
-    ("speed", 1.1, "less than or equal to 1"),
+    ("speed", 2.1, "less than or equal to 2"),
     ("device", "bad_device", "Input should be 'cpu'"),
     ("model_path", "bad/exist", "Path does not point to a file"),
     ("config_path", "bad/exist", "Path does not point to a file"),
