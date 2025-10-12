@@ -102,7 +102,7 @@ docs = [
   "sphinx>=8.2.3",
 ]
 hatch-static-analysis = [
-  "ruff~=0.13.0",
+  "ruff~=0.14.0",
 ]
 hatch-test = [
   "coverage-enable-subprocess==1.0", # Hatch test default inclusion
