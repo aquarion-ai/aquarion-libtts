@@ -51,13 +51,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install devbox # Has it's own cache
-        uses: jetify-com/devbox-install-action@v0.13.0
+        uses: jetify-com/devbox-install-action@v0.14.0
         with:
           enable-cache: "true"
           devbox-version: "0.16.0"
 
       - name: Cache uv Python
-        uses: actions/cache@v4
+        uses: actions/cache@v4.3.0
         with:
           key: uv-python-${{ hashFiles('devbox.json') }}
           restore-keys: uv-python
@@ -65,7 +65,7 @@ jobs:
             ~/.local/share/uv/python
 
       - name: Cache dependencies, venvs and Hugging Face data
-        uses: actions/cache@v4
+        uses: actions/cache@v4.3.0
         with:
           key: dependencies-venvs-hf_data-${{ hashFiles('uv.lock') }}
           restore-keys: dependencies-venvs-hf_data
@@ -76,14 +76,14 @@ jobs:
             ~/.cache/huggingface
 
       # - name: Cache Hatch Pythons
-      #   uses: actions/cache@v4
+      #   uses: actions/cache@v4.3.0
       #   with:
       #       key: hatch-pythons-${{ hashFiles('pyproject.toml') }}
       #       restore-keys: hatch-pythons
       #       path: ~/.local/share/hatch/pythons
 
       - name: Cache .cache and Trivy DB
-        uses: actions/cache@v4
+        uses: actions/cache@v4.3.0
         with:
           key: .cache-trivy-${{ github.run_id }}
           restore-keys: .cache-trivy
@@ -92,7 +92,7 @@ jobs:
             ~/.cache/trivy
 
       - name: Cache pre-commit hooks
-        uses: actions/cache@v4
+        uses: actions/cache@v4.3.0
         with:
           key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: pre-commit
