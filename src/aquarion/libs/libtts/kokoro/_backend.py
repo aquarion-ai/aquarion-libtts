@@ -108,7 +108,11 @@ class KokoroBackend:
             raise RuntimeError(message)
         # Type narrowing for the type checker.
         assert isinstance(self._pipeline, KPipeline)  # noqa: S101
-        log_text = text if len(text) < _TEXT_IN_LOG_MAX_LEN else f"{text[:100]}..."
+        log_text = (
+            text
+            if len(text) < _TEXT_IN_LOG_MAX_LEN
+            else f"{text[:_TEXT_IN_LOG_MAX_LEN]}..."
+        )
         logger.debug("Kokoro TTS backend converting text: {}", log_text)
         for result in self._pipeline(text, self._settings.voice, self._settings.speed):
             if result.audio is None:
