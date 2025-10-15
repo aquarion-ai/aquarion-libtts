@@ -188,14 +188,14 @@ def _(step: Step, format: str, sample_rate: int) -> None:  # noqa: A002
 
 @then("all setting attributes should be included in the specification")
 def _(step: Step) -> None:
-    for setting_name in type(step.context.settings).model_fields:
+    for setting_name in step.context.settings.__dataclass_fields__:
         assert setting_name in step.context.spec, f"{setting_name} not in specification"
 
 
 @then("all setting specification types should be correct")
 def _(step: Step) -> None:
     spec = step.context.spec
-    for setting_name, field in type(step.context.settings).model_fields.items():
+    for setting_name, field in step.context.settings.__pydantic_fields__.items():
         assert_settings_spec_types(setting_name, spec, field.annotation)
 
 

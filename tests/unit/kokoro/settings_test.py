@@ -63,9 +63,7 @@ def test_kokorosettings_should_only_accept_keyword_arguments(
 ) -> None:
     arguments = SETTINGS_ARGS.copy()
     arguments.update(real_settings_path_args)
-    with pytest.raises(
-        TypeError, match=r"takes 1 positional argument but .* were given"
-    ):
+    with pytest.raises(ValueError, match=r"Unexpected positional argument"):
         KokoroSettings(*arguments.values())
 
 
@@ -95,13 +93,13 @@ def test_kokorosettings_should_have_expected_attributes(attr: str) -> None:
 
 
 def test_kokorosettings_should_not_allow_extra_arguments() -> None:
-    with pytest.raises(ValueError, match="Extra inputs are not permitted"):
+    with pytest.raises(ValueError, match="Unexpected keyword argument"):
         KokoroSettings(extra_argument="value")  # type:ignore[call-arg]
 
 
 def test_kokorosettings_should_not_allow_extra_attributes() -> None:
     settings = KokoroSettings()
-    with pytest.raises(ValueError, match='object has no field "extra_attribute"'):
+    with pytest.raises(AttributeError, match="has no attribute 'extra_attribute'"):
         settings.extra_attribute = "value"  # type:ignore[attr-defined]
 
 

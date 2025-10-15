@@ -22,19 +22,20 @@ from __future__ import annotations
 
 from enum import StrEnum, auto
 from types import MappingProxyType
-from typing import Annotated, Any, Final, Self, cast
+from typing import Annotated, Final, Self, cast
 
 from babel import Locale, UnknownLocaleError
 from kokoro.pipeline import ALIASES
 from loguru import logger
 from pydantic import (
-    BaseModel,
     BeforeValidator,
     ConfigDict,
     Field,
     FilePath,
+    TypeAdapter,
     model_validator,
 )
+from pydantic.dataclasses import dataclass
 
 from aquarion.libs.libtts._utils import fake_gettext as _
 from aquarion.libs.libtts.api import (
@@ -135,7 +136,19 @@ def _enum_strs(enum: type[StrEnum]) -> frozenset[str]:
     return frozenset(str(entry) for entry in enum)
 
 
-class KokoroSettings(BaseModel):  # type:ignore [explicit-any]
+@dataclass(
+    # NOTE: We have to use the frozen parameter in ConfigDict, not the frozen parameter
+    #       for dataclass() here.  They each "freeze" in a different way and the
+    #       dataclass() way breaks mypy type equivalency with ITTSSettings.
+    config=ConfigDict(
+        revalidate_instances="always",
+        extra="forbid",
+        validate_default=True,
+    ),
+    kw_only=True,
+    slots=True,
+)
+class KokoroSettings:
     """Kokoro TTS backend settings.
 
     If `voice_path` is not `None`, then the voice attribute is ignored.
@@ -144,11 +157,6 @@ class KokoroSettings(BaseModel):  # type:ignore [explicit-any]
     `model_path`, `config_path` and `voice_path`.
 
     """
-
-    #: Disregard.  Internal implementation detail.
-    model_config = ConfigDict(
-        revalidate_instances="always", extra="forbid", validate_default=True
-    )
 
     #: Used to help specify which language to speak.
     #:
@@ -284,10 +292,6 @@ class KokoroSettings(BaseModel):  # type:ignore [explicit-any]
         "air-gapped use; otherwise, files are downloaded and cached automatically."
     )
 
-    def model_post_init(self, context: Any) -> None:  # type:ignore [explicit-any]  # noqa: ANN401
-        """Disregard.  Internal implementation detail."""
-        super().model_post_init(context)  # type:ignore [misc]
-
     @property
     def lang_code(self) -> str:
         """The Kokoro TTS language code for the current locale.
@@ -328,7 +332,8 @@ class KokoroSettings(BaseModel):  # type:ignore [explicit-any]
 
         """
         settings_dict = cast(
-            "dict[str, JSONSerializableTypes]", self.model_dump(mode="json")
+            "dict[str, JSONSerializableTypes]",
+            TypeAdapter(self.__class__).dump_python(self, mode="json"),
         )
         logger.debug(f"KokoroSettings dictionary created: {settings_dict!s}")
         return settings_dict
@@ -356,23 +361,20 @@ class KokoroSettings(BaseModel):  # type:ignore [explicit-any]
         This way all Pydantic-specific code is kept together.
         """
         spec: dict[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]] = {}
-        for setting in cls.model_fields:
-            # .get_default() is part of Pydantic magic and is needed to get the original
-            # spec entry as declared on the settings class.
-            spec[setting] = getattr(cls, f"_{setting}_spec").get_default()  # type:ignore[misc]
+        for setting in cls.__dataclass_fields__:  # type:ignore[misc]
+            spec[setting] = cast(
+                "TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]",
+                getattr(cls, f"_{setting}_spec"),
+            )
         # MappingProxyType makes the dict read-only.
         return MappingProxyType(spec)
 
     @classmethod
     def _get_setting_display_name(cls, setting_name: str) -> str:
         """Return the default display name for the given setting."""
-        # .get_default() is part of Pydantic magic and is needed to get the original
-        # spec entry as declared on the settings class.
-        return str(getattr(cls, f"_{setting_name}_display_name").get_default())  # type:ignore[misc]
+        return cast("str", getattr(cls, f"_{setting_name}_display_name"))
 
     @classmethod
     def _get_setting_description(cls, setting_name: str) -> str:
         """Return the default description for the given setting."""
-        # .get_default() is part of Pydantic magic and is needed to get the original
-        # spec entry as declared on the settings class.
-        return str(getattr(cls, f"_{setting_name}_description").get_default())  # type:ignore[misc]
+        return cast("str", getattr(cls, f"_{setting_name}_description"))

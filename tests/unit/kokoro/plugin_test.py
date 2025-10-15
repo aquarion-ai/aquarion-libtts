@@ -133,7 +133,8 @@ def test_kokoroplugin_make_settings_should_use_default_values_when_no_values_giv
     settings = plugin.make_settings()
     assert isinstance(settings, KokoroSettings)  # For the type checker
     assert (
-        getattr(settings, attribute) == KokoroSettings.model_fields[attribute].default  # type:ignore[misc]
+        getattr(settings, attribute)  # type:ignore[misc]
+        == KokoroSettings.__dataclass_fields__[attribute].default  # type:ignore[misc]
     )
 
 
@@ -163,7 +164,7 @@ def test_kokoroplugin_make_settings_should_raise_an_error_if_an_invalid_key_give
     # Force line wrap in Ruff.
 ) -> None:
     plugin = KokoroPlugin()
-    with pytest.raises(ValueError, match="Extra inputs are not permitted"):
+    with pytest.raises(ValueError, match="Unexpected keyword argument"):
         plugin.make_settings(from_dict={"invalid": None})
 
 
