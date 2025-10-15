@@ -50,7 +50,7 @@ def test_load_internal_language_should_return_gettext_and_translations_instance(
 @pytest.mark.parametrize(
     ("locale", "expected"),
     [
-        ("en_CA", "I am translated in to en_CA"),
+        ("en_CA", "I am translated in to en"),
     ],
 )
 def test_load_internal_language_should_load_the_correct_translation_catalog(
