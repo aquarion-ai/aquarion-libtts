@@ -58,7 +58,7 @@ INVALID_SETTINGS_CASES: Final = [
     ("locale", "ja", "Unsupported locale"),
     ("locale", "zh", "Unsupported locale"),
     ("voice", "xf_not_exist", "Input should be 'af_heart'"),
-    ("voice", "ff_siwis", "Invalid voice for the locale: en_CA"),
+    ("voice", "ff_siwis", "Invalid voice for the locale: en_US"),
     ("speed", -1, "Input should be greater than or equal to 0.1"),
     ("speed", 0, "Input should be greater than or equal to 0.1"),
     ("speed", 2.1, "less than or equal to 2"),

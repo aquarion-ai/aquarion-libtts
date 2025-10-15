@@ -22,7 +22,7 @@ from __future__ import annotations
 
 from enum import StrEnum, auto
 from types import MappingProxyType
-from typing import Final, Self, cast
+from typing import Self, cast
 
 from babel import Locale, UnknownLocaleError
 from kokoro.pipeline import ALIASES
@@ -45,11 +45,6 @@ from aquarion.libs.libtts.api import (
     TTSSettingsSpecType,
 )
 
-_VOICE_LOCALE_ALIASES: Final = {
-    "en_CA": "en_US",
-    "fr_CA": "fr_FR",
-}
-
 
 class KokoroLocales(StrEnum):
     """Voice locales supported by this backend.
@@ -59,14 +54,10 @@ class KokoroLocales(StrEnum):
 
     # NOTE: Cannot use auto() here since that makes all values lower case.
 
-    #: Canadian English (alias for ``en_US``)
-    en_CA = "en_CA"  # noqa: N815
     #: American English (works with voices prefixed with ``af_`` or ``am_``)
     en_US = "en_US"  # noqa: N815
     #: British English (works with voices prefixed with ``bf_`` or ``bm_``)
     en_GB = "en_GB"  # noqa: N815
-    #: Canadian French (alias for ``fr_FR``)
-    fr_CA = "fr_CA"  # noqa: N815
     #: French (works with voices prefixed with ``ff_``` or ``fm_``)
     fr_FR = "fr_FR"  # noqa: N815
 
@@ -148,9 +139,9 @@ class KokoroSettings:
     #: :class:`~aquarion.libs.libtts.api.ITTSSettings` interface, the valid / supported
     #: options for it are defined in :class:`KokoroLocales`.
     #:
-    #: :default: :attr:`KokoroLocales.en_CA`
+    #: :default: :attr:`KokoroLocales.en_US`
     #:
-    locale: str = "en_CA"
+    locale: str = "en_US"
     _locale_spec = TTSSettingsSpecEntry(
         type=str, min=2, values=_enum_strs(KokoroLocales)
     )
@@ -289,12 +280,7 @@ class KokoroSettings:
         This is not a settings, it is a derived property used by the Kokoro backend.
 
         """
-        voice_locale = (
-            _VOICE_LOCALE_ALIASES.get(self.locale, self.locale)
-            .lower()
-            .replace("_", "-")
-        )
-        return ALIASES[voice_locale]
+        return ALIASES[self.locale.lower().replace("_", "-")]
 
     def to_dict(self) -> dict[str, JSONSerializableTypes]:
         """Export all settings as a dictionary of only JSON-serializable types.
@@ -307,7 +293,7 @@ class KokoroSettings:
             .. code:: JSON
 
                 {
-                    "locale": "en_CA",
+                    "locale": "en_US",
                     "voice": "af_heart",
                     "speed": 1.0,
                     "device": "cuda",

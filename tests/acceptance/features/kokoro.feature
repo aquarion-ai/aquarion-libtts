@@ -37,9 +37,9 @@ Feature: Kokoro TTS
 
         Examples:
             | locale | voice    |
-            | en_CA  | af_heart |
+            | en_US  | af_heart |
             | en_GB  | bf_emma  |
-            | fr_CA  | ff_siwis |
+            | fr_FR  | ff_siwis |
 
     Scenario: Changing the Speed
         When I make settings with 'speed' set to '1.0'

@@ -115,10 +115,8 @@ def test_kokorosettings_should_be_immutable(attr: str) -> None:
     zip(
         KokoroLocales,
         [
-            "af_heart",  # en_CA
             "af_heart",  # en_US
             "bf_emma",  # en_GB,
-            "ff_siwis",  # fr_CA,
             "ff_siwis",  # fr_FR,
         ],
         strict=True,
@@ -135,16 +133,16 @@ def test_kokorosettings_should_accept_supported_locales(
     ("locale", "voice"),
     zip(
         [
-            "en_CA",  # af_heart
+            "en_US",  # af_heart
             "en_US",  # af_bella
-            "en_CA",  # af_nicole
+            "en_US",  # af_nicole
             "en_US",  # am_fenrir
-            "en_CA",  # am_michael
+            "en_US",  # am_michael
             "en_US",  # am_puck
             "en_GB",  # bf_emma
             "en_GB",  # bm_fable
             "en_GB",  # bm_george
-            "fr_CA",  # ff_siwis
+            "fr_FR",  # ff_siwis
         ],
         KokoroVoices,
         strict=True,
