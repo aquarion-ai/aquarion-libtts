@@ -116,6 +116,13 @@ class ITTSSettingsHolder(Protocol):
         Returns:
             The current settings in use.
 
+        Note:
+            The reason the settings are not just direct attributes is because they are
+            to be treated as an all-or-nothing collection.  I.e. individual settings
+            attributes should not be individually modified directly on an
+            :class:`ITTSSettingsHolder`, but rather the whole settings object should be
+            replaced with a new one.
+
         """
 
     def update_settings(self, new_settings: ITTSSettings) -> None:
@@ -128,6 +135,13 @@ class ITTSSettingsHolder(Protocol):
             TypeError: Implementations of this interface should check that they are only
                 getting the correct concrete settings class and raise an exception if
                 any other kind of :class:`ITTSSettings` is given.
+
+        Note:
+            The reason the settings are not just direct attributes is because they are
+            to be treated as an all-or-nothing collection.  I.e. individual settings
+            attributes should not be individually modified directly on an
+            :class:`ITTSSettingsHolder`, but rather the whole settings object should be
+            replaced with a new one.
 
         """
 
