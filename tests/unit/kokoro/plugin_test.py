@@ -134,7 +134,7 @@ def test_kokoroplugin_make_settings_should_use_default_values_when_no_values_giv
     assert isinstance(settings, KokoroSettings)  # For the type checker
     assert (
         getattr(settings, attribute)  # type:ignore[misc]
-        == KokoroSettings.__dataclass_fields__[attribute].default  # type:ignore[misc]
+        == settings.__pydantic_fields__[attribute].default  # type:ignore[attr-defined,misc]
     )
 
 

@@ -22,17 +22,17 @@ from __future__ import annotations
 
 from enum import StrEnum, auto
 from types import MappingProxyType
-from typing import Annotated, Final, Self, cast
+from typing import Final, Self, cast
 
 from babel import Locale, UnknownLocaleError
 from kokoro.pipeline import ALIASES
 from loguru import logger
 from pydantic import (
-    BeforeValidator,
     ConfigDict,
     Field,
     FilePath,
     TypeAdapter,
+    field_validator,
     model_validator,
 )
 from pydantic.dataclasses import dataclass
@@ -112,25 +112,6 @@ class KokoroDeviceNames(StrEnum):
     cuda = auto()
 
 
-def _validate_locale(locale: str) -> str:
-    """Validate the locale value."""
-    separator = "_" if "_" in locale else "-"
-    try:
-        valid_locale = Locale.parse(locale, sep=separator)
-    except (ValueError, UnknownLocaleError, TypeError) as e:
-        message = f"Invalid locale: {locale}"
-        raise ValueError(message) from e
-    # Locale will strip out variants and modifiers automatically, so we do not need
-    # to handle those.
-    valid_locale.script = None  # Kokoro does not support scripts either.
-    try:
-        supported_locale = KokoroLocales[str(valid_locale)]
-    except KeyError as e:
-        message = f"Unsupported locale: {locale}"
-        raise ValueError(message) from e
-    return str(supported_locale)
-
-
 def _enum_strs(enum: type[StrEnum]) -> frozenset[str]:
     """Return a frozen set of enumeration strings."""
     return frozenset(str(entry) for entry in enum)
@@ -167,7 +148,7 @@ class KokoroSettings:
     #:
     #: :default: :attr:`KokoroLocales.en_CA`
     #:
-    locale: Annotated[str, BeforeValidator(_validate_locale)] = "en_CA"
+    locale: str = "en_CA"
     _locale_spec = TTSSettingsSpecEntry(
         type=str, min=2, values=_enum_strs(KokoroLocales)
     )
@@ -196,7 +177,7 @@ class KokoroSettings:
     #:
     #: :default: ``1.0``, i.e. normal speed.
     #:
-    speed: Annotated[float, Field(ge=0.1, le=2.0)] = 1.0
+    speed: float = Field(default=1.0, ge=0.1, le=2.0)
     _speed_spec = TTSSettingsSpecEntry(type=float, min=0.1, max=2.0)
     _speed_display_name = _("Speed")
     _speed_description = _("The speaking speed of the text-to-speech system.")
@@ -338,6 +319,26 @@ class KokoroSettings:
         )
         logger.debug(f"KokoroSettings dictionary created: {settings_dict!s}")
         return settings_dict
+
+    @field_validator("locale", mode="before")
+    @classmethod
+    def _validate_locale(cls, locale: str) -> str:
+        """Validate the locale value."""
+        separator = "_" if "_" in locale else "-"
+        try:
+            valid_locale = Locale.parse(locale, sep=separator)
+        except (ValueError, UnknownLocaleError, TypeError) as e:
+            message = f"Invalid locale: {locale}"
+            raise ValueError(message) from e
+        # Locale will strip out variants and modifiers automatically, so we do not need
+        # to handle those.
+        valid_locale.script = None  # Kokoro does not support scripts either.
+        try:
+            supported_locale = KokoroLocales[str(valid_locale)]
+        except KeyError as e:
+            message = f"Unsupported locale: {locale}"
+            raise ValueError(message) from e
+        return str(supported_locale)
 
     @model_validator(mode="after")
     def _validate_voice(self) -> Self:
