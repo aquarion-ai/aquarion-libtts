@@ -51,6 +51,7 @@ def test_load_internal_language_should_return_gettext_and_translations_instance(
     ("locale", "expected"),
     [
         ("en_CA", "I am translated in to en"),
+        ("fr_CA", "Je suis traduit en fr"),
     ],
 )
 def test_load_internal_language_should_load_the_correct_translation_catalog(
