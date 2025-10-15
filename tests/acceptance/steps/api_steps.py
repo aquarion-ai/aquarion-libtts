@@ -109,6 +109,11 @@ def _(step: Step, setting_name: str, locale: str) -> None:
     )
 
 
+@when("I get the supported locales")
+def _(step: Step) -> None:
+    step.context.supported_locales = step.context.plugin.get_supported_locales()
+
+
 ### THENs ###
 
 
@@ -204,6 +209,11 @@ def _(step: Step, description: str) -> None:
     assert step.context.description.startswith(description), (
         f"{step.context.description} does not match {description}"
     )
+
+
+@then("I see that {locale:w} is included")
+def _(step: Step, locale: str) -> None:
+    assert locale in step.context.supported_locales
 
 
 ### Utility Functions ###

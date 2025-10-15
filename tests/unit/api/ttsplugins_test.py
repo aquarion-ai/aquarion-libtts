@@ -20,7 +20,8 @@
 from __future__ import annotations
 
 import importlib
-from collections.abc import Mapping
+from collections.abc import Mapping, MutableSet
+from collections.abc import Set as AbstractSet
 from types import MappingProxyType
 from typing import Final, Never, cast
 
@@ -60,6 +61,7 @@ DUMMY_ATTR1_DISPLAY_NAME_DEFAULT: Final = "I am attr1's default display name"
 DUMMY_ATTR1_DESCRIPTION_EN_CA: Final = "I am attr1's description"
 DUMMY_ATTR1_DESCRIPTION_FR_CA: Final = "Je suis la description de attr1"
 DUMMY_ATTR1_DESCRIPTION_DEFAULT: Final = "I am attr1's default description"
+DUMMY_SUPPORTED_LOCALES: Final = frozenset({"en_CA", "fr_CA"})
 
 
 class DummyTTSPlugin:
@@ -129,6 +131,9 @@ class DummyTTSPlugin:
         if locale == "fr_CA":
             return DUMMY_ATTR1_DESCRIPTION_FR_CA
         return DUMMY_ATTR1_DESCRIPTION_DEFAULT
+
+    def get_supported_locales(self) -> AbstractSet[str]:
+        return DUMMY_SUPPORTED_LOCALES
 
 
 def test_ittsplugin_should_conform_to_its_protocol() -> None:
@@ -387,6 +392,24 @@ def test_ittsplugin_get_setting_description_should_return_a_fallback_if_locale_u
     plugin = DummyTTSPlugin()
     description = plugin.get_setting_description("attr1", "ja")
     assert description == DUMMY_ATTR1_DESCRIPTION_DEFAULT
+
+
+## .get_supported_locales tests
+
+
+def test_ittsplugin_get_supported_locales_should_return_the_supported_locales() -> None:
+    plugin = DummyTTSPlugin()
+    locales = plugin.get_supported_locales()
+    assert locales == DUMMY_SUPPORTED_LOCALES
+
+
+def test_ittsplugin_get_supported_locales_should_return_an_immutable_set() -> None:
+    plugin = DummyTTSPlugin()
+    locales = plugin.get_supported_locales()
+    assert isinstance(locales, AbstractSet)
+    assert not isinstance(locales, MutableSet)
+    with pytest.raises(AttributeError, match="object has no attribute 'add'"):
+        locales.add("de_DE")  # type: ignore[attr-defined]
 
 
 ### TTSPluginRegistry Tests ###

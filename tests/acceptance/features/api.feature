@@ -175,3 +175,14 @@ Feature: TTS Library Interface
             | kokoro_v1 | voice        | fr     | "La voix utilisée par le système de synthèse vocale."                                      |
             | kokoro_v1 | device       | fr     | "Le périphérique utilisé pour exécuter le système de synthèse vocale (ex. : cpu ou cuda)." |
             | kokoro_v1 | model_path   | fr     | "Le chemin du fichier modèle utilisé par Kokoro pour la synthèse vocale."                  |
+
+    Scenario Outline: Get a plugin's supported locales
+        Given I am using the <plugin_id> plugin
+        When I get the supported locales
+        Then I see that <locale> is included
+
+        Examples:
+            | plugin_id | locale |
+            | kokoro_v1 | en_US  |
+            | kokoro_v1 | en_GB  |
+            | kokoro_v1 | fr_FR  |

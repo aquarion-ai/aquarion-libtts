@@ -19,7 +19,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, MutableSet
+from collections.abc import Set as AbstractSet
 from typing import Final, cast
 
 import pytest
@@ -33,7 +34,7 @@ from aquarion.libs.libtts.api import (
     TTSSettingsSpecEntry,
 )
 from aquarion.libs.libtts.kokoro._plugin import KokoroPlugin
-from aquarion.libs.libtts.kokoro.settings import KokoroSettings
+from aquarion.libs.libtts.kokoro.settings import KokoroLocales, KokoroSettings
 from tests.unit.api.ttssettings_test import AnotherTTSSettings
 from tests.unit.kokoro.conftest import (
     EXPECTED_SETTING_DESCRIPTIONS,
@@ -395,3 +396,24 @@ def test_kokoroplugin_get_setting_description_should_return_fallback_if_locale_u
     plugin = KokoroPlugin()
     description = plugin.get_setting_description(setting_name, "ja")
     assert description == expected
+
+
+## .get_supported_locales tests
+
+
+def test_kokoroplugin_get_supported_locales_should_return_the_supported_locales() -> (
+    None
+):
+    expected = frozenset(str(locale) for locale in KokoroLocales)
+    plugin = KokoroPlugin()
+    locales = plugin.get_supported_locales()
+    assert locales == expected
+
+
+def test_kokoroplugin_get_supported_locales_should_return_an_immutable_set() -> None:
+    plugin = KokoroPlugin()
+    locales = plugin.get_supported_locales()
+    assert isinstance(locales, AbstractSet)
+    assert not isinstance(locales, MutableSet)
+    with pytest.raises(AttributeError, match="object has no attribute 'add'"):
+        locales.add("de_DE")  # type: ignore[attr-defined]

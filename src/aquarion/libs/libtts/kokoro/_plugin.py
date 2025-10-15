@@ -26,10 +26,11 @@ from loguru import logger
 
 from aquarion.libs.libtts._utils import load_internal_language
 from aquarion.libs.libtts.kokoro._backend import KokoroBackend
-from aquarion.libs.libtts.kokoro.settings import KokoroSettings
+from aquarion.libs.libtts.kokoro.settings import KokoroLocales, KokoroSettings
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
+    from collections.abc import Set as AbstractSet
 
     from aquarion.libs.libtts.api import (
         ITTSBackend,
@@ -145,3 +146,33 @@ class KokoroPlugin:
         """
         _, _t = load_internal_language(locale)
         return _(KokoroSettings._get_setting_description(setting_name))  # noqa: SLF001
+
+    def get_supported_locales(self) -> AbstractSet[str]:
+        """Return the set of locales supported by the TTS backend for speaking.
+
+        This should also be the locales that the plugin supports for display names,
+        setting names, setting descriptions, etc.
+
+        Locales can be in either POSIX-compliant (i.e. using underscores) or
+        CLDR-compliant (i.e. using hyphens) formats, and client applications are
+        expected to support both.
+
+        Returns:
+            An *immutable* set of locale strings.
+
+        Example:
+            .. code:: python
+
+            frozenset({"fr_CA", "ca-ES-valencia", "zh-Hant"})
+
+        Note:
+            The set of locales should as be specific as is directly supported and should
+            *not* include broader / more general or approximate catch-all locales unless
+            they are also explicitly supported, or nothing more specific is supported.
+            I.e. ``en_CA`` is good, ``en`` is bad, unless ``en`` is as specific as the
+            TTS backend supports.  Or if ``ca-ES-valencia`` is supported, then that is
+            preferred over ``ca-ES``.  ... In short, be as precise and honest as you
+            can.
+
+        """
+        return frozenset(str(locale) for locale in KokoroLocales)
