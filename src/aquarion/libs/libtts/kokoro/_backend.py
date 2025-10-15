@@ -53,9 +53,12 @@ class KokoroBackend:
 
     @property
     def audio_spec(self) -> TTSAudioSpec:
-        """Return metadata about the speech audio format.
+        """Metadata about the speech audio format.
 
         E.g. Mono 16-bit little-endian linear PCM audio at 24KHz.
+
+        This should be read-only.
+
         """
         return TTSAudioSpec(
             format="Linear PCM",
@@ -68,25 +71,48 @@ class KokoroBackend:
 
     @property
     def is_started(self) -> bool:
-        """Return True if TTS backend is started / running, False otherwise.
+        """True if TTS backend is started, False otherwise.
 
-        The reason this is a property and not just an attribute is because it should be
-        read-only.
+        This should be read-only.
+
         """
         return self._pipeline is not None
 
     def get_settings(self) -> KokoroSettings:
-        """Return the current settings in use.
+        """Return the current setting in use.
 
-        The reason the settings are not just a direct attribute is because they are to
-        be treated as all-or-nothing collection.  I.e. individual settings attributes
-        should not be individually modified directly, but rather the whole settings
-        object should be replaced with a new one.
+        Returns:
+            The current settings in use.
+
+        Note:
+            The reason the settings are not just direct attributes is because they are
+            to be treated as an all-or-nothing collection.  I.e. individual settings
+            attributes should not be individually modified directly on an
+            :class:`ITTSSettingsHolder`, but rather the whole settings object should be
+            replaced with a new one.
+
         """
         return self._settings
 
     def update_settings(self, new_settings: ITTSSettings) -> None:
-        """Update to the new given settings."""
+        """Update to the new given settings.
+
+        Args:
+            new_settings: The new complete set of settings to start using immediately.
+
+        Raises:
+            TypeError: Implementations of this interface should check that they are only
+                getting the correct concrete settings class and raise an exception if
+                any other kind of :class:`ITTSSettings` is given.
+
+        Note:
+            The reason the settings are not just direct attributes is because they are
+            to be treated as an all-or-nothing collection.  I.e. individual settings
+            attributes should not be individually modified directly on an
+            :class:`ITTSSettingsHolder`, but rather the whole settings object should be
+            replaced with a new one.
+
+        """
         if not isinstance(new_settings, KokoroSettings):
             message = f"Incorrect settings type: [{type(new_settings)}]"
             raise TypeError(message)
@@ -99,9 +125,15 @@ class KokoroBackend:
         logger.debug("Kokoro TTS backend settings updated.")
 
     def convert(self, text: str) -> Iterator[bytes]:
-        """Return speech audio for the given text as one or more chunks of bytes.
+        """Return speech audio for the given text as one or more binary chunks.
 
-        The audio data must be in the same format as specified in .audio_spec.
+        Args:
+            text: The text to convert in to speech.
+
+        Returns:
+            An :class:`~collections.abc.Iterator` of chunks of audio in the format
+            specified by :attr:`audio_spec`.
+
         """
         if not self.is_started:
             message = "Backend is not started"
@@ -122,7 +154,12 @@ class KokoroBackend:
             yield audio_int_array.tobytes()
 
     def start(self) -> None:
-        """Start the TTS backend."""
+        """Start the TTS backend.
+
+        If the backend is already started, this method should be idempotent and do
+        nothing.
+
+        """
         if self.is_started:
             return
         logger.debug("Starting Kokoro TTS backend...")
@@ -157,6 +194,11 @@ class KokoroBackend:
         logger.debug("Kokoro TTS backend started.")
 
     def stop(self) -> None:
-        """Stop the TTS backend."""
+        """Stop the TTS backend.
+
+        If the backend is already started, this method should be idempotent and do
+        nothing.
+
+        """
         self._pipeline = None
         logger.debug("Kokoro TTS backend stopped.")

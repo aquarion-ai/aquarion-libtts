@@ -46,24 +46,45 @@ class KokoroPlugin:
 
     @property
     def id(self) -> str:
-        """Unique identifier for the plugin.
+        """A unique identifier for the plugin.
 
-        The id must be unique across all Aquarion libtts plugins.
+        The id must be unique across all Aquarion libtts plugins.  Also, it is
+        recommended to include at least a major version number as a suffix so that
+        multiple versions / implementations of a plugin can be installed and supported
+        simultaneously.  E.g. for backwards compatibility.
+
+        This should be read-only.
+
+        Example:
+            kokoro_v1
+
         """
         return "kokoro_v1"
 
     def get_display_name(self, locale: str) -> str:
-        """Return a display name for the plugin appropriate for the given locale.
+        """Return the display name for the plugin, appropriate for the given locale.
 
-        The locale should be a POSIX-compliant locale string like `en_CA`, `zh-Hant`,
-        `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be as general as `fr` or
-        as specific as `language_territory_script_variant@modifier`.
+        A display name is one that is human-friendly as opposed to any kind of unique
+        key that code would care about.
 
-        Plugins are expected to to do their best to accommodate the given locale, but
-        can fall back to more a general language variant.  E.g. from `en_CA` to `en`.
+        Args:
+            locale:
+                The locale should be a POSIX-compliant (i.e. using underscores) or
+                CLDR-compliant (i.e. using hyphens) locale string like ``en_CA``,
+                ``zh-Hant``, ``ca-ES-valencia``, or even ``de_DE.UTF-8@euro``.  It can
+                be as general as ``fr`` or as specific as
+                ``language_territory_script_variant@modifier``.
 
-        If the given locale is not supported at all, then the plugin is expected to
-        return a display name in it's default language.
+                Plugins are expected to to do their best to accommodate the given
+                locale, but can fall back to more a general language variant.  E.g. from
+                ``en_CA`` to ``en``.
+
+        Returns:
+            The display name of the plugin in a language appropriate for the given
+            locale.  If the given locale is not supported at all, then the plugin is
+            expected to return a display name in it's default language, or English if
+            that is preferred.
+
         """
         _, _t = load_internal_language(locale)
         return _("Kokoro")
@@ -71,16 +92,27 @@ class KokoroPlugin:
     def make_settings(
         self, from_dict: Mapping[str, JSONSerializableTypes] | None = None
     ) -> ITTSSettings:
-        """Return an object that conforms to the ITTSSettings protocol.
+        """Create and return an appropriate settings object for the TTS backend.
 
-        If `from_dict` is not None, then the given values should be used to initialize
-        the settings.
+        This is a factory method.
 
-        If `from_dict` is None, then default values for all settings should be used.
+        Args:
+            from_dict:
+                If it is not None, then the given values should be used to initialize
+                the settings.
 
-        This function is expected to validate it's inputs.  If any setting is invalid
-        for the concrete implementation of ITTSSettings that the factory will create,
-        then a KeyError, ValueError or TypeError (or subclass thereof) should be raised.
+                If it is None, then default values for all settings should be used.
+
+        Returns:
+            An instance of a compatible :class:`ITTSSettings` implementation with all
+            settings values valid for immediate use.
+
+        Raises:
+            KeyError, ValueError or TypeError: This function is expected to validate
+                it's inputs.  If any setting is invalid for the concrete implementation
+                of :class:`ITTSSettings` that the factory will create, then an exception
+                should be raised.
+
         """
         if from_dict is None:
             from_dict = {}
@@ -90,13 +122,23 @@ class KokoroPlugin:
         return settings
 
     def make_backend(self, settings: ITTSSettings) -> ITTSBackend:
-        """Return an object that conforms to the ITTSBackend protocol.
+        """Create and return a TTS backend instance.
 
-        Custom or default settings must be provided to configure the TTS backend.
+        This is a factory method.
 
-        Implementations of this interface should check that they are only getting the
-        correct concrete settings class and raise TypeError if any other kind of
-        concrete ITTSSettings is given.
+        Args:
+            settings: Custom or default settings must be provided to configure the TTS
+                backend.
+
+        Returns:
+            A configured and ready to use TTS backend.
+
+        Raises:
+            TypeError: Implementations of this interface must check that they are
+                getting their own :class:`ITTSSettings` implementation and should raise
+                an exception if any other plugin's :class:`ITTSSettings` is given
+                instead.
+
         """
         backend = KokoroBackend(settings)
         logger.debug("Created new KokoroBackend.")
@@ -107,42 +149,77 @@ class KokoroPlugin:
     ) -> Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]]:
         """Return a specification that describes all the backend's settings.
 
-        Returns an immutable mapping of from setting key/attribute to
-        TTSSettingsSpecEntry instances.
+        Returns:
+            An immutable mapping of from setting attribute name to
+            :class:`TTSSettingsSpecEntry` instances.
 
-        Implementations should probably return a MappingProxyType to achieve the
-        immutability.
+            Implementations should probably return a :class:`MappingProxyType` to
+            achieve the immutability.
+
         """
         return KokoroSettings._make_spec()  # noqa: SLF001
 
     def get_setting_display_name(self, setting_name: str, locale: str) -> str:
-        """Return the given setting's display name appropriate for the given locale.
+        """Return the given setting's display name, appropriate for the given locale.
 
-        The locale should be a POSIX-compliant locale string like `en_CA`, `zh-Hant`,
-        `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be as general as `fr` or
-        as specific as `language_territory_script_variant@modifier`.
+        A display name is one that is human-friendly as opposed to any kind of unique
+        key that code would care about.
 
-        Plugins are expected to to do their best to accommodate the given locale, but
-        can fall back to more a general language variant.  E.g. from `en_CA` to `en`.
+        Args:
+            setting_name: The name of the setting as returned from
+                :meth:`get_settings_spec` mapping keys.
+            locale:
+                The locale should be a POSIX-compliant (i.e. using underscores) or
+                CLDR-compliant (i.e. using hyphens) locale string like ``en_CA``,
+                ``zh-Hant``, ``ca-ES-valencia``, or even ``de_DE.UTF-8@euro``.  It can
+                be as general as ``fr`` or as specific as
+                ``language_territory_script_variant@modifier``.
 
-        If the given locale is not supported at all, then the plugin is expected to
-        return a display name in it's default language.
+                Plugins are expected to to do their best to accommodate the given
+                locale, but can fall back to more a general language variant.  E.g. from
+                ``en_CA`` to ``en``.
+
+        Returns:
+            The display name of the setting in a language appropriate for the given
+            locale.  If the given locale is not supported at all, then the plugin is
+            expected to return a display name in it's default language, or English if
+            that is preferred.
+
+        Raises:
+            KeyError or AttributeError: If the given setting name is not a recognized
+                setting.
+
         """
         _, _t = load_internal_language(locale)
         return _(KokoroSettings._get_setting_display_name(setting_name))  # noqa: SLF001
 
     def get_setting_description(self, setting_name: str, locale: str) -> str:
-        """Return the given setting's description appropriate for the given locale.
+        """Return the given setting's description, appropriate for the given locale.
 
-        The locale should be a POSIX-compliant or standard format locale string like
-        `en_CA`, `zh-Hant`, `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be as
-        general as `fr` or as specific as `language_territory_script_variant@modifier`.
+        Args:
+            setting_name: The name of the setting as returned from
+                :meth:`get_settings_spec` mapping keys.
+            locale:
+                The locale should be a POSIX-compliant (i.e. using underscores) or
+                CLDR-compliant (i.e. using hyphens) locale string like ``en_CA``,
+                ``zh-Hant``, ``ca-ES-valencia``, or even ``de_DE.UTF-8@euro``.  It can
+                be as general as ``fr`` or as specific as
+                ``language_territory_script_variant@modifier``.
 
-        Plugins are expected to to do their best to accommodate the given locale, but
-        can fall back to more a general language variant.  E.g. from `en_CA` to `en`.
+                Plugins are expected to to do their best to accommodate the given
+                locale, but can fall back to more a general language variant.  E.g. from
+                ``en_CA`` to ``en``.
 
-        If the given locale is not supported at all, then the plugin is expected to
-        return a description in it's default language.
+        Returns:
+            The display name of the setting in a language appropriate for the given
+            locale.  If the given locale is not supported at all, then the plugin is
+            expected to return a display name in it's default language, or English if
+            that is preferred.
+
+        Raises:
+            KeyError or AttributeError: If the given setting name is not a recognized
+                setting.
+
         """
         _, _t = load_internal_language(locale)
         return _(KokoroSettings._get_setting_description(setting_name))  # noqa: SLF001
