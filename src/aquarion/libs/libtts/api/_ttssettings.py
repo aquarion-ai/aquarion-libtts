@@ -43,7 +43,8 @@ class ITTSSettings(Protocol):  # noqa: PLW1641
     for the specific :class:`ITTSBackend` implementation they go with.
 
     **Note:** There is no expectation that ITTSSettings implementations be immutable or
-    hashable, but it's probably a good idea.
+    hashable, but it's probably a good idea since changes to settings should be done by
+    calling :meth:`ITTSPlugin.make_settings` with a changed settings dictionary.
 
     Example:
         .. code:: python
