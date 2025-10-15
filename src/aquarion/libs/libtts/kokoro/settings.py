@@ -142,8 +142,11 @@ class KokoroSettings:
     #: Used to help specify which language to speak.
     #:
     #: ``locale`` influences pronunciation, inflections, etc. of the specified voice and
-    #: must be one of the locales supported by this backend.  See
-    #: :class:`KokoroLocales` for valid options.
+    #: must be one of the locales supported by this backend.
+    #:
+    #: While ``locale`` must be a string to conform with the
+    #: :class:`~aquarion.libs.libtts.api.ITTSSettings` interface, the valid / supported
+    #: options for it are defined in :class:`KokoroLocales`.
     #:
     #: :default: :attr:`KokoroLocales.en_CA`
     #:
