@@ -144,6 +144,7 @@ def _enum_strs(enum: type[StrEnum]) -> frozenset[str]:
         revalidate_instances="always",
         extra="forbid",
         validate_default=True,
+        frozen=True,
     ),
     kw_only=True,
     slots=True,

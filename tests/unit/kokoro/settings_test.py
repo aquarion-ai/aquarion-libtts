@@ -99,8 +99,15 @@ def test_kokorosettings_should_not_allow_extra_arguments() -> None:
 
 def test_kokorosettings_should_not_allow_extra_attributes() -> None:
     settings = KokoroSettings()
-    with pytest.raises(AttributeError, match="has no attribute 'extra_attribute'"):
+    with pytest.raises(TypeError, match="obj must be an instance or subtype of type"):
         settings.extra_attribute = "value"  # type:ignore[attr-defined]
+
+
+@pytest.mark.parametrize(("attr"), SETTINGS_ARGS)
+def test_kokorosettings_should_be_immutable(attr: str) -> None:
+    settings = KokoroSettings()
+    with pytest.raises(AttributeError, match=f"cannot assign to field '{attr}'"):
+        setattr(settings, attr, getattr(settings, attr))  # type:ignore[misc]
 
 
 @pytest.mark.parametrize(
