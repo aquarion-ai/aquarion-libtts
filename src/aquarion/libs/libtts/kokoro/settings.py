@@ -133,10 +133,9 @@ def _enum_strs(enum: type[StrEnum]) -> frozenset[str]:
 class KokoroSettings:
     """Kokoro TTS backend settings.
 
-    If `voice_path` is not `None`, then the voice attribute is ignored.
-
-    To work in an offline or air-gapped environment, you must provides local paths for
-    `model_path`, `config_path` and `voice_path`.
+    Note:
+        To work in an offline or air-gapped environment, you must provides local paths
+        for :attr:`model_path`, :attr:`config_path` and :attr:`voice_path`.
 
     """
 
@@ -260,6 +259,9 @@ class KokoroSettings:
     #:
     #: This is only required for offline or air-gapped use; otherwise, files are
     #: downloaded and cached automatically.
+    #:
+    #: If ``voice_path`` is not :obj:`None`, then the :attr:`voice`` attribute is
+    #: ignored.
     #:
     #: :default: :obj:`None`
     #:
