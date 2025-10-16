@@ -37,8 +37,3 @@ def "main build" []: nothing -> string {
 def "main build html" []: nothing -> string {
     hatch run docs:build-html
 }
-
-# Regenerate the docs/requirements.txt file.
-def "main requirements" []: nothing -> string {
-    hatch run docs:requirements
-}

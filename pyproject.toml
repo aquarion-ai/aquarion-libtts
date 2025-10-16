@@ -297,9 +297,6 @@ type = "uvenv"
 build-html = """
     sphinx-build -M html ./docs/source ./docs/build --fresh-env --fail-on-warning
 """
-requirements = """
-    pip-compile --strip-extras --generate-hashes --reuse-hashes ./docs/requirements.in
-"""
 
 ### Coverage ###
 
