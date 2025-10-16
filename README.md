@@ -40,6 +40,7 @@ Experiment in creating a scalable local AI voice chat bot.
 [![Acceptance Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/justkrys/079b402971d82c07d05c74f37c57b088/raw/aquarion-ai_aquarion-libtts__main__accept.json)](https://github.com/aquarion-ai/aquarion-libtts/actions)
 [![Total Vulnerabilities](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/justkrys/079b402971d82c07d05c74f37c57b088/raw/aquarion-ai_aquarion-libtts__main__sec_total.json)](https://github.com/aquarion-ai/aquarion-libtts/actions)
 [![Highest Vulnerability Severity](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/justkrys/079b402971d82c07d05c74f37c57b088/raw/aquarion-ai_aquarion-libtts__main__sec_highest.json)](https://github.com/aquarion-ai/aquarion-libtts/actions)
+[![Docs build](https://app.readthedocs.org/projects/aquarion-libtts/badge/?version=latest)](https://aquarion-libtts.readthedocs.io/en/latest/)
 
 [![GitHub Open Issues](https://img.shields.io/github/issues/aquarion-ai/aquarion-libtts)](https://github.com/aquarion-ai/aquarion-libtts/issues)
 [![GitHub Closed Issues](https://img.shields.io/github/issues-closed/aquarion-ai/aquarion-libtts)](https://github.com/aquarion-ai/aquarion-libtts/issues)
@@ -83,15 +84,22 @@ For high-level documentation on the overall Aquarion AI project, see the
 This project contains the library of Text To Speech (TTS) backend components for
 Aquarion AI.
 
+For documentation for this specific project, see
+[aquarion-libtts documentation](https://aquarion-libtts.readthedocs.io/en/latest/).
+
 <!-- include_end_1 -->
 
 ## Installation
 
-See the [Getting Started](.) **TODO** section of the documentation.
+See the
+[Getting Started](https://aquarion-libtts.readthedocs.io/en/latest/getting_started.html)
+section of the documentation.
 
 ## Usage
 
-See the [Getting Started](.) **TODO** section of the documentation.
+See the
+[Getting Started](https://aquarion-libtts.readthedocs.io/en/latest/getting_started.html)
+section of the documentation.
 
 ## Support
 
@@ -110,7 +118,8 @@ updates or maintenance or longevity.  Caveat Emptor.
 ## Contributing
 
 If, despite the disclaimer above, you still want to try to contribute, then see the
-[Contributing](.) **TODO** section of the documentation.
+[Contributing](https://aquarion-libtts.readthedocs.io/en/latest/contributing.html)
+section of the documentation.
 
 <!-- include_start_2 -->
 
