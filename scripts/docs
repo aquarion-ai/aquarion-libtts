@@ -19,9 +19,9 @@
 
 ### Default commands
 
-# Commands to more easily work with I18N / L10N translation.
+# Commands to generate and manage the documentation.
 def main []: nothing -> string {
-    help main
+    main build
 }
 
 ### Grouped tasks
