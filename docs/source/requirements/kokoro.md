@@ -1,27 +1,17 @@
 # Kokoro TTS Requirements
 
 % SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
-% SPDX-License-Identifier: AGPL-3.0-only
+% SPDX-License-Identifier: CC-BY-SA-4.0
 
-% Part of the aquarion-libtts library of the Aquarion AI project.
-% Copyright (C) 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
-
-% This program is free software: you can redistribute it and/or modify it under the
-% terms of the GNU Affero General Public License as published by the Free Software
-% Foundation, version 3.
-
-% This program is distributed in the hope that it will be useful, but WITHOUT ANY
-% WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-% PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-% You should have received a copy of the GNU Affero General Public License along with
-% this program. If not, see <https://www.gnu.org/licenses/>.
+% aquarion-libtts documentation © 2025-present by Krys Lawrence is licensed under
+% Creative Commons Attribution-ShareAlike 4.0 International. To view a copy of this
+% license, visit <https://creativecommons.org/licenses/by-sa/4.0/>
 
 The following are the
 [BDD](https://en.wikipedia.org/wiki/Behavior-driven_development)-style requirements for
 aquarion-libtts's [Kokoro TTS](https://huggingface.co/hexgrad/Kokoro-82M) backend.
 
 ```{literalinclude} ../../../tests/acceptance/features/kokoro.feature
-:lines: 3-
+:lines: 7-
 :language: gherkin
 ```
