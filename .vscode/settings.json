@@ -32,7 +32,8 @@
         "accept",
         "vscode",
         "api",
-        "kokoro"
+        "kokoro",
+        "docs"
     ],
     "cucumberautocomplete.strictGherkinCompletion": true,
     "cucumberautocomplete.strictGherkinValidation": true,
