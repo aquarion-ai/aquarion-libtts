@@ -184,6 +184,7 @@ uvenv
 vars
 venv
 venvs
+VIRTUALENV
 Vitesse
 vocale
 Voix

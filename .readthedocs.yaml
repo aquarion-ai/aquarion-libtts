@@ -24,17 +24,19 @@ build:
   os: ubuntu-24.04
   tools:
     python: "3.12"
+  jobs:
+    pre_create_environment:
+      - asdf plugin add uv
+      - asdf install uv 0.8.14
+      - asdf global uv 0.8.14
+    create_environment:
+      - uv venv "${READTHEDOCS_VIRTUALENV_PATH}"
+    install:
+      - >
+        UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv sync --frozen
+        --group docs --extra kokoro --extra cpu
 
 sphinx:
   builder: html
   configuration: docs/source/conf.py
   fail_on_warning: true
-
-python:
-  install:
-    - requirements: docs/requirements.txt
-    - method: pip
-      path: .
-      extra_requirements:
-        - kokoro
-        - cpu
