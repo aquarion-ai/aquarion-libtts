@@ -162,9 +162,9 @@ accept = [
 ]
 babel = [{ name = "babel", specifier = "~=2.17.0" }]
 docs = [
-    { name = "myst-parser", specifier = ">=4.0.1" },
-    { name = "sphinx", specifier = ">=8.2.3" },
-    { name = "sphinx-rtd-theme", specifier = ">=3.0.2" },
+    { name = "myst-parser", specifier = "~=4.0.1" },
+    { name = "sphinx", specifier = "~=8.2.3" },
+    { name = "sphinx-rtd-theme", specifier = "~=3.0.2" },
 ]
 hatch-static-analysis = [{ name = "ruff", specifier = "~=0.14.0" }]
 hatch-test = [
