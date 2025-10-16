@@ -100,10 +100,8 @@ def test_kokoroplugin_get_display_name_should_require_the_locale_argument() -> N
 @pytest.mark.parametrize(
     ("locale", "expected"),
     [
-        ("en_CA", "Kokoro"),
         ("en_US", "Kokoro"),
         ("en_GB", "Kokoro"),
-        ("fr_CA", "Kokoro"),
         ("fr_FR", "Kokoro"),
     ],
 )
@@ -284,12 +282,12 @@ EXPECTED_SETTING_DISPLAY_NAMES = {
     },
 }
 for setting_name in EXPECTED_SETTING_DISPLAY_NAMES:  # noqa: PLC0206
-    for locale in ("en_CA", "en_US", "en_GB"):
+    for locale in ("en_US", "en_GB"):
         EXPECTED_SETTING_DISPLAY_NAMES[setting_name][locale] = (
             EXPECTED_SETTING_DISPLAY_NAMES[setting_name]["en"]
         )
 for setting_name in EXPECTED_SETTING_DISPLAY_NAMES:  # noqa: PLC0206
-    for locale in ("fr_CA", "fr_FR"):
+    for locale in ("fr_FR",):
         EXPECTED_SETTING_DISPLAY_NAMES[setting_name][locale] = (
             EXPECTED_SETTING_DISPLAY_NAMES[setting_name]["fr"]
         )
@@ -332,7 +330,7 @@ def test_kokoroplugin_get_setting_display_name_should_return_correct_name_for_lo
 @pytest.mark.parametrize(
     ("setting_name", "expected"),
     [
-        (setting, info["en_CA"])
+        (setting, info["en_US"])
         for setting, info in EXPECTED_SETTING_DISPLAY_NAMES.items()
     ],
 )
@@ -392,7 +390,7 @@ def test_kokoroplugin_get_setting_description_should_return_correct_value_for_lo
 def test_kokoroplugin_get_setting_description_should_return_fallback_if_locale_unknown(
     setting_name: str,
 ) -> None:
-    expected = EXPECTED_SETTING_DESCRIPTIONS[setting_name]["en_CA"]
+    expected = EXPECTED_SETTING_DESCRIPTIONS[setting_name]["en_US"]
     plugin = KokoroPlugin()
     description = plugin.get_setting_description(setting_name, "ja")
     assert description == expected

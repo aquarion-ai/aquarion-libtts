@@ -135,12 +135,12 @@ EXPECTED_SETTING_DESCRIPTIONS = {
     },
 }
 for setting_name in EXPECTED_SETTING_DESCRIPTIONS:  # noqa: PLC0206
-    for locale in ("en_CA", "en_US", "en_GB"):
+    for locale in ("en_US", "en_GB"):
         EXPECTED_SETTING_DESCRIPTIONS[setting_name][locale] = (
             EXPECTED_SETTING_DESCRIPTIONS[setting_name]["en"]
         )
 for setting_name in EXPECTED_SETTING_DESCRIPTIONS:  # noqa: PLC0206
-    for locale in ("fr_CA", "fr_FR"):
+    for locale in ("fr_FR",):
         EXPECTED_SETTING_DESCRIPTIONS[setting_name][locale] = (
             EXPECTED_SETTING_DESCRIPTIONS[setting_name]["fr"]
         )

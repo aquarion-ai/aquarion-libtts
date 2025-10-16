@@ -64,11 +64,9 @@ Feature: TTS Library Interface
         Examples:
             # Note: display_name must be in quotes
             | plugin_id | locale | display_name |
-            | kokoro_v1 | en_CA  | "Kokoro"     |
             | kokoro_v1 | en_US  | "Kokoro"     |
             | kokoro_v1 | en_GB  | "Kokoro"     |
             | kokoro_v1 | en     | "Kokoro"     |
-            | kokoro_v1 | fr_CA  | "Kokoro"     |
             | kokoro_v1 | fr_FR  | "Kokoro"     |
             | kokoro_v1 | fr     | "Kokoro"     |
 
