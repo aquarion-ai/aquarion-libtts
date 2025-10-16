@@ -78,6 +78,7 @@ labeled
 libtts
 ligne
 linters
+literalinclude
 logot
 loguru
 master

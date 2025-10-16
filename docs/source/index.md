@@ -23,6 +23,7 @@
 :hidden:
 
 getting_started.md
+requirements/index.md
 api/index.md
 plugins.md
 contributing.md
