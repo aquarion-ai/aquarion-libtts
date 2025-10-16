@@ -57,6 +57,9 @@ This project follows the following standard practices:
 - [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
   for comments and docstrings.
 
+- [Behaviour Driven Development](https://en.wikipedia.org/wiki/Behavior-driven_development)
+  for acceptance tests.
+
 ## Developer Installation
 
 1. Update NVIDIA drivers. \
@@ -74,6 +77,7 @@ This project follows the following standard practices:
    init
    check push
    hatch build
+   docs build
    check --help
    lang --help
    ```
@@ -112,6 +116,8 @@ This project follows the following standard practices:
 
 - `hatch build` is how the source and wheel distributions are made.
 
+- `docs build` is how to generate the documentation.
+
 - The `check` command has several sub-commands to help you while developing.  Check it
   out. 😺
 
@@ -138,13 +144,16 @@ This section is an attempt clarify which tool is used for which common task.
 | Lint code                                 | The `check` script (Hatch, Ruff)         |
 | Type check code                           | The `check` script (Hatch, mypy)         |
 | Run tests                                 | The `check` script (Hatch, pytest)       |
-| Run acceptance tests                      | The `check` script (Hatch, radish)       |
+| Run acceptance tests                      | The `check` script (Hatch, radish-bdd)   |
 | Run code coverage checks                  | The `check` script (Hatch, coverage)     |
 | Run pre-commit hooks manually             | The `check` script (pre-commit)          |
 | Enter the default virtual environment     | Hatch                                    |
 | Commit changes from the terminal          | Commitizen _(use `cz c`)_                |
 | Report on last code coverage run          | The `report` script (coverage)           |
 | Update version on a release               | Hatch                                    |
+| Build distribution artifacts              | Hatch                                    |
+| Add / update language translations        | The `lang` script (Hatch, babel)         |
+| Generate the documentation                | The `docs` script (Hatch, Sphinx)        |
 | Pin project dependency versions           | uv                                       |
 | Pin development dependency versions       | uv                                       |
 | Format Markdown                           | pre-commit (markdownlint-cli2)           |
