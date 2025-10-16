@@ -26,3 +26,4 @@ formatter:
   max_line_length: 79
   trim_trailing_whitespace: true
   eof_newline: true
+  scan_folded_as_literal: true
