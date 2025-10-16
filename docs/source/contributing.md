@@ -56,7 +56,7 @@ This project follows the following standard practices:
    _Currently testing against version 570._
 
 1. Install [Devbox](https://www.jetify.com/docs/devbox/installing_devbox/). \
-   _Currently testing against version 0.14.2._
+   _Currently testing against version 0.16.0._
 
 1. Clone this repository.
 
