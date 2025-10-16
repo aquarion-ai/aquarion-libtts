@@ -98,6 +98,7 @@ babel = [
 ]
 docs = [
   "myst-parser~=4.0.1",
+  "pip-tools>=7.5.1", # Used for the requirements.txt used by readthedocs.
   "sphinx-rtd-theme~=3.0.2",
   "sphinx~=8.2.3",
 ]
