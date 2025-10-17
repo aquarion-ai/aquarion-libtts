@@ -105,13 +105,12 @@ section of the documentation.
 
 ### Disclaimer
 
-While this project is FOSS and you are welcome to use it (if it ever becomes something
-usable), know that I am making this for myself. So do not expect any kind of support or
-updates or maintenance or longevity.  Caveat Emptor.
+While this project is FOSS and you are welcome to use it, know that I am making this for
+myself. So do not expect any kind of support or updates or maintenance or longevity.
+*Caveat Emptor*.
 
 ## Roadmap
 
-- More documentation.
 - Integrate in to the larger Aquarion AI project.
 - Add more TTS backends.
 
@@ -141,4 +140,5 @@ Aquarion AI and aquarion-libtts was created by Krys Lawrence.
 
 ## Project Status
 
-Very early alpha.  Still in development.
+This project is in the Alpha stage of development.  Early days, lots of bugs and
+anything change.

@@ -26,19 +26,23 @@ authors = [
   {name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org"},
 ]
 classifiers = [
-  "Development Status :: 2 - Pre-Alpha",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: Implementation :: CPython",
+  "Development Status :: 3 - Alpha",
+  "Environment :: GPU :: NVIDIA CUDA :: 12",
+  "Environment :: Plugins",
   "Framework :: Hatch",
+  "Framework :: Pydantic :: 2",
   "Framework :: Pytest",
+  "Framework :: Sphinx",
+  "Intended Audience :: Developers",
   "License :: OSI Approved :: GNU Affero General Public License v3",
   "Natural Language :: English",
+  "Natural Language :: French",
   "Operating System :: POSIX :: Linux",
-  "Topic :: Multimedia :: Sound/Audio",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
   "Topic :: Multimedia :: Sound/Audio :: Speech",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
-  "Topic :: Text Processing",
+  "Topic :: Software Development :: Libraries :: Python Modules",
   "Topic :: Text Processing :: Linguistic",
   "Typing :: Typed",
 ]
@@ -57,8 +61,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 
 [project.urls]
-Changelog = "https://github.com/aquarion-ai/aquarion-libtts/blob/main/CHANGELOG.md"
-Documentation = "https://github.com/aquarion-ai/aquarion-docs"
+Changelog = "https://aquarion-libtts.readthedocs.io/en/latest/changelog.html"
+Documentation = "https://aquarion-libtts.readthedocs.io/en/latest/"
 #Download = ""
 Homepage = "https://github.com/aquarion-ai"
 Issues = "https://github.com/aquarion-ai/aquarion-libtts/issues"
