@@ -47,7 +47,7 @@ def "main all" []: nothing -> string {
 def "main commit" []: nothing -> string {
     common
     main pre
-    main test
+    main test --all
 }
 
 # Run all code checks that should pass before pushing.
@@ -63,7 +63,7 @@ def "main commit" []: nothing -> string {
 def "main push" []: nothing -> string {
     common
     main pre all
-    main test cover
+    main test cover --all
     main accept cover
     main sec
     main licences
