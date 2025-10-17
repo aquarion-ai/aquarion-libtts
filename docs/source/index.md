@@ -13,11 +13,11 @@
 :hidden:
 
 getting_started.md
-requirements/index.md
+changelog.md
 api/index.md
 plugins.md
 contributing.md
-changelog.md
+requirements/index.md
 
 ```
 
