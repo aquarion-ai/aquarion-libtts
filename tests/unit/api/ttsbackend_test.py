@@ -99,7 +99,7 @@ def test_ttsaudiospec_attributes_should_be_immutable(
 def test_ttsaudiospec_should_not_accept_additional_attributes() -> None:
     speech_data = TTSAudioSpec(**AUDIO_SPEC_REQUIRED_ARGS)  # type:ignore[arg-type]
     # This exception message is really cryptic and unhelpful.  But the effect works.
-    with pytest.raises(TypeError, match="must be an instance or subtype of type"):
+    with pytest.raises(TypeError, match="an instance or subtype of type"):
         speech_data.new_custom_attribute = "new value"  # type:ignore[attr-defined]
 
 

@@ -236,7 +236,7 @@ features = ["kokoro", "cpu"]
 type = "uvenv"
 
 [[tool.hatch.envs.hatch-test.matrix]]
-python = ["3.12"]
+python = ["3.12", "3.13"]
 
 # Env: types
 

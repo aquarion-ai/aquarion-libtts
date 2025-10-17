@@ -99,7 +99,8 @@ def test_kokorosettings_should_not_allow_extra_arguments() -> None:
 
 def test_kokorosettings_should_not_allow_extra_attributes() -> None:
     settings = KokoroSettings()
-    with pytest.raises(TypeError, match="obj must be an instance or subtype of type"):
+    # This exception message is really cryptic and unhelpful.  But the effect works.
+    with pytest.raises(TypeError, match="an instance or subtype of type"):
         settings.extra_attribute = "value"  # type:ignore[attr-defined]
 
 
