@@ -29,8 +29,8 @@ contributing.md
 
 - [Aquarion AI on GitHub](https://github.com/aquarion-ai)
 - [aquarion-libtts on GitHub](https://github.com/aquarion-ai/aquarion-libtts)
+- [Latest aquarion-libtts documentation on Read the Docs](https://aquarion-libtts.readthedocs.io/en/latest/)
 %- [aquarion-libtts on PyPI](https://pypi.org)
-%- [aquarion-libtts Documentation](https://readthedocs.org)
 
 ```{include} ../../README.md
 :start-after: <!-- include_start_2 -->
