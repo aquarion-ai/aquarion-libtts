@@ -41,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.12"]
+        python-version: ["3.12", "3.13"]
 
     steps:
       # - name: Free Disk Space (Ubuntu)
@@ -64,23 +64,18 @@ jobs:
           path: |
             ~/.local/share/uv/python
 
-      - name: Cache dependencies, venvs and Hugging Face data
+      - name: Cache dependencies, venvs, Hatch Pythons and Hugging Face data
         uses: actions/cache@v4.3.0
         with:
-          key: dependencies-venvs-hf_data-${{ hashFiles('uv.lock') }}
-          restore-keys: dependencies-venvs-hf_data
+          key: deps-venvs-hatch_pys-hf_data-${{ hashFiles('pyproject.toml', 'uv.lock')
+            }}
+          restore-keys: deps-venvs-hatch_pys-hf_data
+          # Hatch Pythons are included in hatch/env thanks to uvenv.
           path: |
             ~/.cache/uv
             ~/.cache/pip
             ~/.local/share/hatch/env
             ~/.cache/huggingface
-
-      # - name: Cache Hatch Pythons
-      #   uses: actions/cache@v4.3.0
-      #   with:
-      #       key: hatch-pythons-${{ hashFiles('pyproject.toml') }}
-      #       restore-keys: hatch-pythons
-      #       path: ~/.local/share/hatch/pythons
 
       - name: Cache .cache and Trivy DB
         uses: actions/cache@v4.3.0
