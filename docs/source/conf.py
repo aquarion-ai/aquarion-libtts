@@ -1,4 +1,6 @@
-# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>  # noqa: INP001
+# noqa: INP001
+
+# SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
 # SPDX-License-Identifier: AGPL-3.0-only
 
 # Part of the aquarion-libtts library of the Aquarion AI project.
