@@ -202,6 +202,7 @@ scheme = "semver"
 validate-bump = true
 
 [tool.hatch.build.targets.wheel]
+artifacts = ["*.mo"]
 packages = ["src/aquarion"]
 
 # Env: default
