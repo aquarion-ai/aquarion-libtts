@@ -38,10 +38,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.12", "3.13"]
 
     steps:
       # - name: Free Disk Space (Ubuntu)
@@ -106,8 +102,8 @@ jobs:
       - name: Check lint
         run: devbox run check lint
 
-      - name: Run tests on ${{ matrix.python-version }}
-        run: devbox run check test cover -py ${{ matrix.python-version }}
+      - name: Run tests on all supported Python versions
+        run: devbox run check test cover --all
 
       - name: Run acceptance tests
         run: devbox run check accept cover --ci
