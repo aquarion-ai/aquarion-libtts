@@ -20,7 +20,6 @@
 
 from __future__ import annotations
 
-import time
 from gettext import NullTranslations
 from importlib.resources import files
 from pathlib import Path
@@ -158,11 +157,13 @@ def test_load_language_should_log_the_actual_loaded_language(
 def test_load_language_should_log_when_no_translations_are_found(logot: Logot) -> None:
     _, _t = load_language("bas_CM", "test", TEST_LOCALE_PATH)
     # Attempting to work around an intermittent bug where this test occasionally does
-    # not pass and I don't know why.
-    time.sleep(0.5)
+    # not pass and I don't know why.  This is why the two logged lines are in separate
+    # asserts.
     logot.assert_logged(
         logged.debug("Attempting to load translations for locale: bas_CM")
-        >> logged.debug("No translations found for locale bas_CM, using defaults")
+    )
+    logot.assert_logged(
+        logged.debug("No translations found for locale bas_CM, using defaults")
     )
 
 
