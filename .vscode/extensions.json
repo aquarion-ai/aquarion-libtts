@@ -11,7 +11,9 @@
         "redhat.vscode-yaml",
         "editorconfig.editorconfig",
         "be5invis.toml",
-        "github.vscode-github-actions",
-        "alexkrechik.cucumberautocomplete"
+        "alexkrechik.cucumberautocomplete",
+        "tamasfe.even-better-toml",
+        "chrisjsewell.myst-tml-syntax",
+        "ms-python.vscode-python-envs"
     ]
 }

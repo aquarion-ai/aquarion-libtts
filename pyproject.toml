@@ -22,36 +22,30 @@ build-backend = "hatchling.build"
 requires = ["hatchling~=1.27.0", "hatch-semver~=2.0.2"]
 
 [project]
-authors = [
-  {name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org"},
-]
+authors = [{ name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org" }]
 classifiers = [
-  "Development Status :: 3 - Alpha",
-  "Environment :: GPU :: NVIDIA CUDA :: 12",
-  "Environment :: Plugins",
-  "Framework :: Hatch",
-  "Framework :: Pydantic :: 2",
-  "Framework :: Pytest",
-  "Framework :: Sphinx",
-  "Intended Audience :: Developers",
-  "License :: OSI Approved :: GNU Affero General Public License v3",
-  "Natural Language :: English",
-  "Natural Language :: French",
-  "Operating System :: POSIX :: Linux",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Topic :: Multimedia :: Sound/Audio :: Speech",
-  "Topic :: Scientific/Engineering :: Artificial Intelligence",
-  "Topic :: Software Development :: Libraries :: Python Modules",
-  "Topic :: Text Processing :: Linguistic",
-  "Typing :: Typed",
+    "Development Status :: 3 - Alpha",
+    "Environment :: GPU :: NVIDIA CUDA :: 12",
+    "Environment :: Plugins",
+    "Framework :: Hatch",
+    "Framework :: Pydantic :: 2",
+    "Framework :: Pytest",
+    "Framework :: Sphinx",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Natural Language :: English",
+    "Natural Language :: French",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Linguistic",
+    "Typing :: Typed",
 ]
-dependencies = [
-  "babel~=2.17.0",
-  "loguru~=0.7.3",
-  "pluggy~=1.6.0",
-]
+dependencies = ["babel~=2.17.0", "loguru~=0.7.3", "pluggy~=1.6.0"]
 description = 'Text To Speech (TTS) beckend library for Aquarion AI'
 dynamic = ["version"]
 keywords = ["aquarion", "ai", "tts", "speech"]
@@ -70,21 +64,15 @@ Issues = "https://github.com/aquarion-ai/aquarion-libtts/issues"
 Source = "https://github.com/aquarion-ai/aquarion-libtts"
 
 [project.optional-dependencies]
-cpu = [
-  "torch~=2.8.0",
-]
-cu128 = [
-  "torch~=2.8.0",
-]
-cu129 = [
-  "torch~=2.8.0",
-]
+cpu = ["torch~=2.8.0"]
+cu128 = ["torch~=2.8.0"]
+cu129 = ["torch~=2.8.0"]
 kokoro = [
-  "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl#sha256=sha256:1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85",
-  "kokoro~=0.9.4",
-  "pip~=25.2.0",
-  "pydantic~=2.12.0",
-  "torch~=2.8.0",
+    "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl#sha256=sha256:1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85",
+    "kokoro~=0.9.4",
+    "pip~=25.2.0",
+    "pydantic~=2.12.0",
+    "torch~=2.8.0",
 ]
 
 [project.entry-points.'aquarion-libtts']
@@ -93,85 +81,65 @@ kokoro_v1 = "aquarion.libs.libtts.kokoro._hook"
 ### UV ###
 
 [dependency-groups]
-accept = [
-  "bsdiff4~=1.2.6",
-  "coverage[toml]~=7.10.7",
-  "radish-bdd~=0.18.2",
-]
-babel = [
-  "babel~=2.17.0",
-]
-docs = [
-  "myst-parser~=4.0.1",
-  "sphinx-rtd-theme~=3.0.2",
-  "sphinx~=8.2.3",
-]
-hatch-static-analysis = [
-  "ruff~=0.14.0",
-]
+accept = ["bsdiff4~=1.2.6", "coverage[toml]~=7.10.7", "radish-bdd~=0.18.2"]
+babel = ["babel~=2.17.0"]
+docs = ["myst-parser~=4.0.1", "sphinx-rtd-theme~=3.0.2", "sphinx~=8.2.3"]
+hatch-static-analysis = ["ruff~=0.14.0"]
 hatch-test = [
-  "coverage-enable-subprocess==1.0", # Hatch test default inclusion
-  "coverage[toml]~=7.10.7", # Hatch test default inclusion
-  "logot~=1.5.1",
-  "loguru~=0.7.3",
-  "pytest-mock~=3.15.1", # Hatch test default inclusion
-  "pytest-randomly~=3.16.0,<4.0.0", # Hatch test default inclusion
-  "pytest-rerunfailures~=16.1.0", # Hatch test default inclusion
-  "pytest-socket~=0.7.0",
-  "pytest-xdist[psutil]~=3.8.0", # Hatch test default inclusion
-  "pytest~=8.4.2", # Hatch test default inclusion
+    "coverage-enable-subprocess==1.0", # Hatch test default inclusion
+    "coverage[toml]~=7.10.7",          # Hatch test default inclusion
+    "logot~=1.5.1",
+    "loguru~=0.7.3",
+    "pytest-mock~=3.15.1",             # Hatch test default inclusion
+    "pytest-randomly~=3.16.0,<4.0.0",  # Hatch test default inclusion
+    "pytest-rerunfailures~=16.1.0",    # Hatch test default inclusion
+    "pytest-socket~=0.7.0",
+    "pytest-xdist[psutil]~=3.8.0",     # Hatch test default inclusion
+    "pytest~=8.4.2",                   # Hatch test default inclusion
 ]
-hatch-uv = [
-  "uv~=0.8.14",
-]
+hatch-uv = ["uv~=0.8.14"]
 types = [
-  "logot~=1.5.1",
-  "loguru~=0.7.3",
-  "mypy~=1.18.2",
-  "pandas_stubs~=2.3.2", # PyTorch & Kokoro TTS stub
-  "pytest-mock~=3.15.1",
-  "pytest~=8.4.2",
-  "scipy-stubs~=1.16.2", # PyTorch & Kokoro TTS stub, I think
-  "types-colorama~=0.4.15", # mypy type stub
-  "types-pexpect~=4.9.0", # mypy type stub
-  "types-Pygments~=2.19.0", # mypy type stub
-  "types-PySocks~=1.7.1", # mypy type stub
-  "types-setuptools~=80.9.0", # mypy type stub
-  "types_beautifulsoup4~=4.12.0", # PyTorch & Kokoro TTS stub
-  "types_defusedxml~=0.7.0", # PyTorch & Kokoro TTS stub
-  "types_html5lib~=1.1.11", # PyTorch & Kokoro TTS stub
-  "types_networkx~=3.5.0", # PyTorch & Kokoro TTS stub
-  "types_openpyxl~=3.1.5", # numpy mypy plugin stub
-  "types_protobuf~=6.32.1", # PyTorch & Kokoro TTS stub
-  "types_psutil~=7.0.0", # PyTorch & Kokoro TTS stub
-  "types_python_dateutil~=2.9.0", # numpy mypy plugin stub
-  "types_pytz~=2025.2.0", # PyTorch & Kokoro TTS stub
-  "types_pywin32~=311.0.0", # PyTorch & Kokoro TTS stub
-  "types_pyyaml~=6.0.12", # PyTorch & Kokoro TTS stub
-  "types_regex~=2025.9.18", # PyTorch & Kokoro TTS stub
-  "types_requests~=2.32.4", # PyTorch & Kokoro TTS stub
-  "types_simplejson~=3.20.0", # PyTorch & Kokoro TTS stub
-  "types_tabulate~=0.9.0", # PyTorch & Kokoro TTS stub
-  "types_tensorflow~=2.18.0", # PyTorch & Kokoro TTS stub
-  "types_tqdm~=4.67.0", # PyTorch & Kokoro TTS stub
-  "types_xlrd~=2.0.0", # mypy type stub
+    "logot~=1.5.1",
+    "loguru~=0.7.3",
+    "mypy~=1.18.2",
+    "pandas_stubs~=2.3.2",          # PyTorch & Kokoro TTS stub
+    "pytest-mock~=3.15.1",
+    "pytest~=8.4.2",
+    "scipy-stubs~=1.16.2",          # PyTorch & Kokoro TTS stub, I think
+    "types-colorama~=0.4.15",       # mypy type stub
+    "types-pexpect~=4.9.0",         # mypy type stub
+    "types-Pygments~=2.19.0",       # mypy type stub
+    "types-PySocks~=1.7.1",         # mypy type stub
+    "types-setuptools~=80.9.0",     # mypy type stub
+    "types_beautifulsoup4~=4.12.0", # PyTorch & Kokoro TTS stub
+    "types_defusedxml~=0.7.0",      # PyTorch & Kokoro TTS stub
+    "types_html5lib~=1.1.11",       # PyTorch & Kokoro TTS stub
+    "types_networkx~=3.5.0",        # PyTorch & Kokoro TTS stub
+    "types_openpyxl~=3.1.5",        # numpy mypy plugin stub
+    "types_protobuf~=6.32.1",       # PyTorch & Kokoro TTS stub
+    "types_psutil~=7.0.0",          # PyTorch & Kokoro TTS stub
+    "types_python_dateutil~=2.9.0", # numpy mypy plugin stub
+    "types_pytz~=2025.2.0",         # PyTorch & Kokoro TTS stub
+    "types_pywin32~=311.0.0",       # PyTorch & Kokoro TTS stub
+    "types_pyyaml~=6.0.12",         # PyTorch & Kokoro TTS stub
+    "types_regex~=2025.9.18",       # PyTorch & Kokoro TTS stub
+    "types_requests~=2.32.4",       # PyTorch & Kokoro TTS stub
+    "types_simplejson~=3.20.0",     # PyTorch & Kokoro TTS stub
+    "types_tabulate~=0.9.0",        # PyTorch & Kokoro TTS stub
+    "types_tensorflow~=2.18.0",     # PyTorch & Kokoro TTS stub
+    "types_tqdm~=4.67.0",           # PyTorch & Kokoro TTS stub
+    "types_xlrd~=2.0.0",            # mypy type stub
 ]
 
 [tool.uv]
-conflicts = [
-  [
-    {extra = "cpu"},
-    {extra = "cu128"},
-    {extra = "cu129"},
-  ],
-]
+conflicts = [[{ extra = "cpu" }, { extra = "cu128" }, { extra = "cu129" }]]
 
 [tool.uv.sources]
-aquarion-libtts = {workspace = true}
+aquarion-libtts = { workspace = true }
 torch = [
-  {index = "pytorch-cpu", extra = "cpu"},
-  {index = "pytorch-cu128", extra = "cu128"},
-  {index = "pytorch-cu129", extra = "cu129"},
+    { index = "pytorch-cpu", extra = "cpu" },
+    { index = "pytorch-cu128", extra = "cu128" },
+    { index = "pytorch-cu129", extra = "cu129" },
 ]
 
 [[tool.uv.index]]
@@ -192,9 +160,7 @@ url = "https://download.pytorch.org/whl/cu129"
 ### Hatch ###
 
 [tool.hatch.env]
-requires = [
-  "hatch-uvenv~=0.4.0",
-]
+requires = ["hatch-uvenv~=0.4.0"]
 
 [tool.hatch.version]
 path = "src/aquarion/libs/libtts/__about__.py"
@@ -279,7 +245,7 @@ cover = ".hatch_scripts accept cover --ci {args}"
 # Env: babel
 
 [tool.hatch.envs.babel]
-features = [] # Prevent inheriting from default
+features = []      # Prevent inheriting from default
 groups = ["babel"]
 type = "uvenv"
 
@@ -323,7 +289,7 @@ show_missing = true
 
 [tool.ruff]
 cache-dir = ".cache/ruff"
-line-length = 88 # Sticking with Black's standard for now instead of ruff's 120.
+line-length = 88          # Sticking with Black's standard for now instead of ruff's 120.
 
 [tool.ruff.format]
 docstring-code-format = true
@@ -331,37 +297,37 @@ docstring-code-format = true
 
 [tool.ruff.lint]
 ignore = [
-  #   "D211",
-  #   "D212",
-  #   "W191",
-  #   "E111",
-  #   "E114",
-  #   "E117",
-  #   "D206",
-  #   "D300",
-  #   "Q000",
-  #   "Q001",
-  #   "Q002",
-  #   "Q003",
-  #   "COM819",
-  "D203",
-  "D213",
-  "COM812",
+    #   "D211",
+    #   "D212",
+    #   "W191",
+    #   "E111",
+    #   "E114",
+    #   "E117",
+    #   "D206",
+    #   "D300",
+    #   "Q000",
+    #   "Q001",
+    #   "Q002",
+    #   "Q003",
+    #   "COM819",
+    "D203",
+    "D213",
+    "COM812",
 ]
 select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
 "**/steps/*" = ["INP001", "D103", "S"]
 "**/tests/**/*" = [
-  "PLC1901",
-  "PLR2004",
-  "PLR6301",
-  "S",
-  "TID252",
-  "D102",
-  "D103",
-  "D105",
-  "D107",
+    "PLC1901",
+    "PLR2004",
+    "PLR6301",
+    "S",
+    "TID252",
+    "D102",
+    "D103",
+    "D105",
+    "D107",
 ]
 
 [tool.ruff.lint.flake8-tidy-imports]
@@ -428,11 +394,11 @@ addopts = "--strict-markers --disable-socket"
 cache_dir = ".cache/pytest"
 empty_parameter_set_mark = "xfail"
 filterwarnings = [
-  # Kokoro TTS warnings 0.9.4
-  "ignore::DeprecationWarning:spacy.*",
-  "ignore::DeprecationWarning:weasel.*",
-  "ignore::UserWarning:torch.*",
-  "ignore::FutureWarning:torch.*",
+    # Kokoro TTS warnings 0.9.4
+    "ignore::DeprecationWarning:spacy.*",
+    "ignore::DeprecationWarning:weasel.*",
+    "ignore::UserWarning:torch.*",
+    "ignore::FutureWarning:torch.*",
 ]
 logot_capturer = "logot.loguru.LoguruCapturer"
 xfail_strict = true
