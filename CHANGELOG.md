@@ -30,7 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Nothing yet.
+- Fixed the broken `en-core-web-sm` dependency when installing from the wheel
+  distribution package.
 
 ### Changed
 
