@@ -131,7 +131,7 @@ Aquarion AI and aquarion-libtts was created by Krys Lawrence.
 - `aquarion-libtts` is © 2025-present by Krys Lawrence.
 
 - `aquarion-libtts` code is licensed under the terms of the
-  [AGPL-3.0-only](https://spdx.org/licenses/AGPL-3.0-only.html) licence.
+  [AGPL-3.0-only](https://www.gnu.org/licenses/agpl-3.0.en.html#license-text) licence.
 
 - `aquarion-libtts` documentation is licensed under the terms of the
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) licence.
