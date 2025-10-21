@@ -46,7 +46,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = ["babel~=2.17.0", "loguru~=0.7.3", "pluggy~=1.6.0"]
-description = 'Text To Speech (TTS) beckend library for Aquarion AI'
+description = "Text To Speech (TTS) beckend library for Aquarion AI"
 dynamic = ["version"]
 keywords = ["aquarion", "ai", "tts", "speech"]
 license = "AGPL-3.0-only"
@@ -75,7 +75,7 @@ kokoro = [
     "torch~=2.8.0",
 ]
 
-[project.entry-points.'aquarion-libtts']
+[project.entry-points."aquarion-libtts"]
 kokoro_v1 = "aquarion.libs.libtts.kokoro._hook"
 
 ### UV ###
