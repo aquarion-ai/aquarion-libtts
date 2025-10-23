@@ -79,6 +79,7 @@ docs = [
     { name = "mkdocs-link-marker" },
     { name = "mkdocs-macros-plugin" },
     { name = "mkdocs-material", extra = ["imaging"] },
+    { name = "mkdocs-spellcheck", extra = ["codespell"] },
     { name = "mkdocstrings-python" },
 ]
 hatch-static-analysis = [
@@ -161,6 +162,7 @@ docs = [
     { name = "mkdocs-link-marker", specifier = ">=0.2.0" },
     { name = "mkdocs-macros-plugin", specifier = ">=1.4.0" },
     { name = "mkdocs-material", extras = ["imaging"], specifier = ">=9.6.22" },
+    { name = "mkdocs-spellcheck", extras = ["codespell"], specifier = ">=1.1.2" },
     { name = "mkdocstrings-python", specifier = ">=1.18.2" },
 ]
 hatch-static-analysis = [{ name = "ruff", specifier = "~=0.14.0" }]
@@ -471,6 +473,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/05/bc/d7345595a4467144b9e0b32e5eda9e4633ea6e4982262b0696935adb2229/cloudpathlib-0.22.0.tar.gz", hash = "sha256:6c0cb0ceab4f66a3a05a84055f9318fb8316cae5e096819f3f8e4be64feab6e9", size = 52304, upload-time = "2025-08-30T05:20:04.6Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/72/e8e53d8232e801e040f4b557ff3a453cecbb630d53ae107bd5e66a206bb9/cloudpathlib-0.22.0-py3-none-any.whl", hash = "sha256:2fdfaf5c4f85810ae8374d336d04dee371914d0e41a984695ae67308d7a5a009", size = 61520, upload-time = "2025-08-30T05:20:03.232Z" },
+]
+
+[[package]]
+name = "codespell"
+version = "2.4.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/15/e0/709453393c0ea77d007d907dd436b3ee262e28b30995ea1aa36c6ffbccaf/codespell-2.4.1.tar.gz", hash = "sha256:299fcdcb09d23e81e35a671bbe746d5ad7e8385972e65dbb833a2eaac33c01e5", size = 344740, upload-time = "2025-01-28T18:52:39.411Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/20/01/b394922252051e97aab231d416c86da3d8a6d781eeadcdca1082867de64e/codespell-2.4.1-py3-none-any.whl", hash = "sha256:3dadafa67df7e4a3dbf51e0d7315061b80d265f9552ebd699b3dd6834b47e425", size = 344501, upload-time = "2025-01-28T18:52:37.057Z" },
 ]
 
 [[package]]
@@ -1262,6 +1273,23 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/79/9b/9b4c96d6593b2a541e1cb8b34899a6d021d208bb357042823d4d2cabdbe7/mkdocs_material_extensions-1.3.1.tar.gz", hash = "sha256:10c9511cea88f568257f960358a467d12b970e1f7b2c0e5fb2bb48cab1928443", size = 11847, upload-time = "2023-11-22T19:09:45.208Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5b/54/662a4743aa81d9582ee9339d4ffa3c8fd40a4965e033d77b9da9774d3960/mkdocs_material_extensions-1.3.1-py3-none-any.whl", hash = "sha256:adff8b62700b25cb77b53358dad940f3ef973dd6db797907c49e3c2ef3ab4e31", size = 8728, upload-time = "2023-11-22T19:09:43.465Z" },
+]
+
+[[package]]
+name = "mkdocs-spellcheck"
+version = "1.1.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mkdocs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/79/28/3f52d27adf3e352099388608bccfac84b30e886ca6f7b0cb01d2eb4ef5ae/mkdocs_spellcheck-1.1.2.tar.gz", hash = "sha256:66ff4a3b82b9399dbeacdf5516698406fbdcb5b654b64fec584b185514181c79", size = 33719, upload-time = "2025-08-05T12:03:15.292Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/17/db/8c957ebe8caa2d58f0df985e2ed10dd0d9d096fb6ca2eedb32f2228c66c3/mkdocs_spellcheck-1.1.2-py3-none-any.whl", hash = "sha256:947644eb2b9b8c06740d7f693838edca1fa195b198c455337648977c9a86f039", size = 13643, upload-time = "2025-08-05T12:03:13.828Z" },
+]
+
+[package.optional-dependencies]
+codespell = [
+    { name = "codespell" },
 ]
 
 [[package]]

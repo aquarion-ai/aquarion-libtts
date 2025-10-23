@@ -88,6 +88,7 @@ docs = [
     "mkdocs-link-marker>=0.2.0",
     "mkdocs-macros-plugin>=1.4.0",
     "mkdocs-material[imaging]>=9.6.22",
+    "mkdocs-spellcheck[codespell]>=1.1.2",
     "mkdocs>=1.6.1",
     "mkdocstrings-python>=1.18.2",
 ]
