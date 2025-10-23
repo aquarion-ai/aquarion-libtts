@@ -35,3 +35,6 @@ build:
       - >-
         UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv sync --frozen
         --group docs --extra kokoro --extra cpu
+
+mkdocs:
+  configuration: docs/mkdocs.yml

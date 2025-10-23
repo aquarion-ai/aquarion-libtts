@@ -19,7 +19,7 @@ site_name: aquarion-libtts
 site_description: Text To Speech (TTS) beckend library for Aquarion AI
 site_author: Krys Lawrence
 copyright: © 2025-present by Krys Lawrence
-site_url: https://aquarion-libtts.readthedocs.io/
+site_url: !ENV READTHEDOCS_CANONICAL_URL
 repo_url: https://github.com/aquarion-ai/aquarion-libtts
 
 docs_dir: source
@@ -83,6 +83,7 @@ plugins:
 
 theme:
   name: material
+  custom_dir: overrides
   features:
     - search.suggest
     - search.highlight
@@ -93,7 +94,6 @@ theme:
     - content.code.copy
     - navigation.footer
     - navigation.indexes
-
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
@@ -153,3 +153,6 @@ extra:
       link: https://github.com/aquarion-ai/aquarion-libtts
       # - icon: fontawesome/brands/python
       #   link: https://pypi.org/project/aquarion-libtts
+
+extra_javascript:
+  - javascript/readthedocs.js
