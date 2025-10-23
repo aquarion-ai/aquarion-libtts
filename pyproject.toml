@@ -83,7 +83,17 @@ kokoro_v1 = "aquarion.libs.libtts.kokoro._hook"
 [dependency-groups]
 accept = ["bsdiff4~=1.2.6", "coverage[toml]~=7.10.7", "radish-bdd~=0.18.2"]
 babel = ["babel~=2.17.0"]
-docs = ["myst-parser~=4.0.1", "sphinx-rtd-theme~=3.0.2", "sphinx~=8.2.3"]
+docs = [
+    "mkdocs-api-autonav>=0.4.0",
+    "mkdocs-link-marker>=0.2.0",
+    "mkdocs-macros-plugin>=1.4.0",
+    "mkdocs-material[imaging]>=9.6.22",
+    "mkdocs>=1.6.1",
+    "mkdocstrings-python>=1.18.2",
+    "myst-parser~=4.0.1",
+    "sphinx-rtd-theme~=3.0.2",
+    "sphinx~=8.2.3",
+]
 hatch-static-analysis = ["ruff~=0.14.0"]
 hatch-test = [
     "coverage-enable-subprocess==1.0", # Hatch test default inclusion
