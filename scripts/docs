@@ -21,19 +21,19 @@
 
 # Commands to generate and manage the documentation.
 def main []: nothing -> string {
-    main build
+    main serve
 }
 
 ### Grouped tasks
 
-# Build the API docs in all relevant formats.
-def "main build" []: nothing -> string {
-    main build html
-}
-
 ### Individual tasks
 
-# Build the HTML API docs.
-def "main build html" []: nothing -> string {
-    hatch run docs:build-html
+# Serve the HTML docs.
+def "main serve" []: nothing -> string {
+    hatch run docs:serve
+}
+
+# Build the HTML docs.
+def "main build" []: nothing -> string {
+    hatch run docs:build
 }
