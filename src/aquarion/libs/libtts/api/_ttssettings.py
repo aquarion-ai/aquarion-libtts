@@ -184,8 +184,8 @@ class TTSSettingsSpecEntry[T: TTSSettingsSpecEntryTypes]:
     Since [ITTSSettings][aquarion.libs.libtts.api.ITTSSettings] can contain custom TTS
     backend specific setting attributes, there is a need for a way to describe those
     setting attributes in a standardized way so that settings UIs can be constructed
-    dynamically in applications that use *aquarion-libtts*.  Instances of this class, in a
-    dictionary, for example, can provide a specification for how to render settings
+    dynamically in applications that use *aquarion-libtts*.  Instances of this class, in
+    a dictionary, for example, can provide a specification for how to render settings
     fields in a UI.
 
     Example:
