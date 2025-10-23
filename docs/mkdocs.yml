@@ -42,6 +42,14 @@ plugins:
       on_undefined: strict
   - social
   - link-marker
+  - api-autonav:
+      modules: [../src/aquarion]
+  - spellcheck:
+      backends:
+        - codespell:
+            dictionaries: [clear, rare, code, usage]
+      known_words: ../../project-words.txt
+      ignore_code: no
   - mkdocstrings:
       default_handler: python
       enable_inventory: true
@@ -77,9 +85,6 @@ plugins:
             - https://docs.python.org/3/objects.inv
             - https://babel.pocoo.org/en/stable/objects.inv
             - https://pluggy.readthedocs.io/en/stable/objects.inv
-
-  - api-autonav:
-      modules: [../src/aquarion]
 
 theme:
   name: material

@@ -209,5 +209,5 @@ So, in summary:
 1. Client software optionally can re-configure your backend with new a settings object
    as created by your plugin.
 
-That's it.  By following this pattern, various diverse TTS systems can be implemented,
+That is it.  By following this pattern, various diverse TTS systems can be implemented,
 installed and used in various client software designs.
