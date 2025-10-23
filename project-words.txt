@@ -59,7 +59,6 @@ ignorefile
 iniconfig
 inlinehilite
 internationale
-intersphinx
 ionide
 ipynb
 ipython
