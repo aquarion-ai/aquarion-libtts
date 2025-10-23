@@ -44,10 +44,9 @@ This project follows the following standard practices:
 
 - [Ruff](https://docs.astral.sh/ruff/) for Python code style.
 
-- [MyST-style Markdown](https://myst-parser.readthedocs.io/) for project documentation.
-
-- [reStructuredText](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#restructuredtext-primer)
-  for comments, docstrings and generated API documentation.
+- [Markdown](https://commonmark.org/) for docstrings and generated API documentation.
+    - _(with enhancements for use with [mkdocs](https://www.mkdocs.org/) and various
+      plugins.)_
 
 - [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
   for comments and docstrings.
@@ -148,7 +147,7 @@ This section is an attempt clarify which tool is used for which common task.
 | Update version on a release               | Hatch                                    |
 | Build distribution artifacts              | Hatch                                    |
 | Add / update language translations        | The `lang` script (Hatch, babel)         |
-| Generate the documentation                | The `docs` script (Hatch, Sphinx)        |
+| Generate the documentation                | The `docs` script (Hatch, Mkdocs)        |
 | Pin project dependency versions           | uv                                       |
 | Pin development dependency versions       | uv                                       |
 | Format Markdown                           | pre-commit (markdownlint-cli2)           |
