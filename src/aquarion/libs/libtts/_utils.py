@@ -16,7 +16,7 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-"""Utility functions for aquarion-libtts."""
+"""Utility functions for *aquarion-libtts*."""
 
 from __future__ import annotations
 

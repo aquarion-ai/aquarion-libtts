@@ -16,7 +16,12 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-"""Aquarion AI Text To Speech TTS backend library."""
+"""Aquarion AI Text To Speech TTS backend library.
+
+All interaction with this package should generally be done through the public
+[api][aquarion.libs.libtts.api] sub-package.
+
+"""
 
 from __future__ import annotations
 

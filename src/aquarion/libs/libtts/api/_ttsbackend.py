@@ -33,85 +33,95 @@ if TYPE_CHECKING:
 class TTSSampleTypes(StrEnum):
     """The data type of a single audio sample.
 
-    The string values of these types match
-    `FFmpeg's format descriptions <https://trac.ffmpeg.org/wiki/audio%20types>`__.
+    Note:
+        The string values of these types match
+        [FFmpeg's format descriptions](https://trac.ffmpeg.org/wiki/audio%20types), in
+        case that is ever useful.
 
     """
 
-    #: Signed integer samples. (I.e. positive and negative numbers allowed.)
     SIGNED_INT = "s"
-    #: Unsigned integer samples. (I.e. only positive numbers, but wider sample space.)
+    """Signed integer samples. (I.e. positive and negative numbers allowed.)"""
+
     UNSIGNED_INT = "u"
-    #: Floating point samples.
+    """Unsigned integer samples. (I.e. only positive numbers, but with more values.)"""
+
     FLOAT = "f"
+    """Floating point samples."""
 
 
 class TTSSampleByteOrders(StrEnum):
     """The byte order for multi-byte audio samples.
 
-    The string values of these types match
-    `FFmpeg's format descriptions <https://trac.ffmpeg.org/wiki/audio%20types>`__.
+    Note:
+        The string values of these types match
+        [FFmpeg's format descriptions](https://trac.ffmpeg.org/wiki/audio%20types), in
+        case that is ever useful.
 
     """
 
-    #: Big endian byte order
-    #:
-    #: This means the most significant byte is stored first, then the least significant
-    #: byte after that.
-    #:
     BIG_ENDIAN = "be"
-    #: Little endian byte order
-    #:
-    #: This means the least significant byte is stored first, then the most significant
-    #: byte after that.
-    #:
+    """The most significant byte is stored first, then the least significant byte."""
+
     LITTLE_ENDIAN = "le"
-    #: Not Applicable
-    #:
-    #: This should only be used for 8-bit (i.e. single byte) samples.
-    #:
+    """The least significant byte is stored first, then the most significant byte."""
+
     NOT_APPLICABLE = ""
+    """This should only be used for 8-bit (i.e. single byte) samples."""
 
 
 @dataclass(kw_only=True, frozen=True, slots=True)
 class TTSAudioSpec:
-    """Audio metadata about the audio format that an :class:`ITTSBackend` returns.
+    """Metadata about an audio format.
 
-    **Note:** Instances of this class are immutable once created.
+    This describes the audio format that an
+    [ITTSBackend][aquarion.libs.libtts.api.ITTSBackend] returns.
+
+    Note:
+        Instances of this class are immutable once created.
 
     """
 
-    #: E.g. "Linear PCM", "WAV", "MP3", etc.
     format: str
-    #: E.g 8000, 24000, 48000, etc.
+    """E.g. "Linear PCM", "WAV", "MP3", etc."""
+
     sample_rate: int
-    #: E.g. Signed Integer, Unsigned Integer or Floating Point.
+    """E.g 8000, 24000, 48000, etc."""
+
     sample_type: TTSSampleTypes
-    #: E.g. 8 for 8-bit, 12 for 12-bit, 16 for 16-bit, etc.
+    """E.g. Signed Integer, Unsigned Integer or Floating Point."""
+
     sample_width: int
-    #: E.g. Little Endian or Big Endian.
+    """E.g. 8 for 8-bit, 12 for 12-bit, 16 for 16-bit, etc."""
+
     byte_order: TTSSampleByteOrders
-    #: E.g. 1 for mono, 2 for stereo, etc.
+    """E.g. Little Endian or Big Endian."""
+
     num_channels: int
+    """E.g. 1 for mono, 2 for stereo, etc."""
 
 
 @runtime_checkable
 class ITTSBackend(ITTSSettingsHolder, Protocol):
     """Common interface for all TTS backends.
 
-    An ITTSBackend is responsible for converting text in to speech audio stream chunks.
-    To do this, it should first be started with :meth:`start`, then :meth:`convert`
-    can be used to do any number of conversions, and finally it should be shut down with
-    :meth:`stop` when no longer needed.
+    An `ITTSBackend`  is responsible for converting text in to a stream of speech audio
+    chunks.  To do this, it should first be started with the
+    [start][aquarion.libs.libtts.api.ITTSBackend.start] method, then the
+    [convert][aquarion.libs.libtts.api.ITTSBackend.convert] method can be used to do any
+    number of text to speech conversions, and finally it should be shut down with the
+    [stop][aquarion.libs.libtts.api.ITTSBackend.stop] method when no longer needed.
 
-    An ITTSBackend is also responsible for reporting the kind of audio that it produces
-    (e.g. raw PCM, WAVE, MP3, OGG, VP8, stereo, mono, 8-bit, 16-bit, etc.).  This is
-    reported via the :attr:`audio_spec` attribute.
+    An `ITTSBackend` is also responsible for reporting the kind of audio that it
+    produces (e.g. raw PCM, WAVE, MP3, OGG, VP8, stereo, mono, 8-bit, 16-bit, etc.).
+    This is reported via the
+    [audio_spec][aquarion.libs.libtts.api.ITTSBackend.audio_spec] attribute.
 
-    Lastly, since each ITTSBackend is also an :class:`ITTSSettingsHolder`, then it must
+    Lastly, since each `ITTSBackend` is also an
+    [ITTSSettingsHolder][aquarion.libs.libtts.api.ITTSSettingsHolder], then it must
     also accept configuration settings.  These are commonly provided at instantiation,
-    but that is not strictly required to conform to the :class:`ITTSSettingsHolder`
-    protocol.
+    but that is not strictly required to conform to the
+    [ITTSSettingsHolder][aquarion.libs.libtts.api.ITTSSettingsHolder] protocol.
 
     """
 
@@ -121,15 +131,24 @@ class ITTSBackend(ITTSSettingsHolder, Protocol):
 
         E.g. Mono 16-bit little-endian linear PCM audio at 24KHz.
 
-        This should be read-only.
+        Returns:
+            The audio output format emitted by the
+                [convert][aquarion.libs.libtts.api.ITTSBackend.convert] method.
+
+        Note:
+            This should be a read-only property.
 
         """
 
     @property
     def is_started(self) -> bool:
-        """True if TTS backend is started, False otherwise.
+        """Whether or not the backend already started.
 
-        This should be read-only.
+        Returns:
+            [True][] if the backend is started, [False][] otherwise.
+
+        Note:
+            This should be a read-only property.
 
         """
 
@@ -140,23 +159,26 @@ class ITTSBackend(ITTSSettingsHolder, Protocol):
             text: The text to convert in to speech.
 
         Returns:
-            An :class:`~collections.abc.Iterator` of chunks of audio in the format
-            specified by :attr:`audio_spec`.
+            An [Iterator][collections.abc.Iterator] of chunks of audio in the format
+                specified by
+                [audio_spec][aquarion.libs.libtts.api.ITTSBackend.audio_spec].
 
         """
 
     def start(self) -> None:
         """Start the TTS backend.
 
-        If the backend is already started, this method should be idempotent and do
-        nothing.
+        Note:
+            If the backend is already started, this method should be idempotent and do
+            nothing.
 
         """
 
     def stop(self) -> None:
         """Stop the TTS backend.
 
-        If the backend is already started, this method should be idempotent and do
-        nothing.
+        Note:
+            If the backend is already started, this method should be idempotent and do
+            nothing.
 
         """

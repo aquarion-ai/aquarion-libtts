@@ -30,9 +30,6 @@ from os import PathLike
 from babel import Locale
 from loguru import logger
 
-type GettextFuncType = Callable[[str], str]
-type LoadLanguageReturnType = tuple[GettextFuncType, NullTranslations]
-
 
 class HashablePathLike(Hashable, PathLike[str]):
     """PathLikes are hashable, but this makes it explicit for the type checker."""
@@ -45,24 +42,24 @@ class HashableTraversable(Hashable, Traversable):
 @cache  # type:ignore[misc]
 def load_language(
     locale: str, domain: str, locale_path: HashablePathLike | HashableTraversable | str
-) -> LoadLanguageReturnType:
-    """Return a :mod:`gettext` ``_()`` function and a ``*Translations`` instance.
+) -> tuple[Callable[[str], str], NullTranslations]:
+    """Return a [gettext][] `_()`  function and a `*Translations` instance.
 
     Args:
         locale:
-            The desired locale to find and load.  E.g. ``en_CA`` or `fr``, etc.
+            The desired locale to find and load.  E.g. `en_CA` or `fr`, etc.
 
-            ``locale`` must be parsable by the `Babel`_ package and will be normalized
-            by it as well.
+            `locale` must be parsable by the [Babel](https://babel.pocoo.org) package
+            and will be normalized by it as well.
 
-            ``locale`` is generally expected to be in POSIX format (i.e. using
+            `locale` is generally expected to be in POSIX format (i.e. using
             underscores) but CLDR format (i.e. using hyphens) is also supported and will
             be converted to POSIX format automatically for the purpose of finding
             translation catalogues.
 
             If an exact match on locale cannot be found, less specific fallback locales
-            well be used instead.  E.g. if ``kk_Cyrl_KZ`` is not found, then ``kk_Cyrl``
-            will be tried, and then just ``kk``.
+            well be used instead.  E.g. if `kk_Cyrl_KZ` is not found, then `kk_Cyrl`
+            will be tried, and then just `kk`.
 
             If no matching locale is found, then the gettext methods will just return
             the hard coded strings from the source file.
@@ -70,64 +67,58 @@ def load_language(
         domain:
             A name unique to your app / project.  This domain name becomes the file
             name of your message catalogues and templates.  For example you you could
-            your project's name or your root package's name.  E.g. ``my-cool-project``.
+            your project's name or your root package's name.  E.g. `my-cool-project`.
 
-            .. note::
-                Do not use ``aquarion-libtts`` as your domain name.  That is reserved
-                for this project.
+            **Attention:**  *Do not use `aquarion-libtts` as your domain name.  That is
+            reserved for this project.*
 
         locale_path:
             The base path where your language files can be found.  This can be
-            a regular path (as a :class:`str` or a :class:`~pathlib.Path`) or this
-            could be some path inside your own Python package, retrieved with the help
-            of :func:`importlib.resources.files`, for example.
+            a regular path (as a [str][] or a [pathlib.Path][]) or this could be some
+            path inside your own Python package, retrieved with the help of
+            [importlib.resources.files][], for example.
 
-            .. note::
-                It is recommended that third-party :doc:`TTS plugins <../plugins>` keep
-                their translation files inside their package (i.e. wheel) by using
-                :func:`importlib.resources.files` to access a locale directory.
+            **Note:** It is recommended that third-party
+            [TTS plugins](../../../../../plugins.md) keep their translation files inside
+            their package (i.e. wheel) by using [importlib.resources.files][]  to access
+            a locale directory.
 
     Returns:
-        A :class:`tuple` of (a :meth:`~gettext.GNUTranslations.gettext` callable, a
-        :class:`~gettext.GNUTranslations` instance).
+        A [tuple][] of a [gettext][] callable and an instance of a
+            [NullTranslations][gettext.NullTranslations] sub-class (e.g.
+            [GNUTranslations][gettext.GNUTranslations]).
 
-        The ``gettext`` callable is provided for easy use of the more common action.
+            The `gettext` callable is provided for easy use of the more common action.
 
-        The ``*Translations`` instance provides access to all the other, less common
-        translation capabilities one might need, e.g. ``ngettext``, ``pgettext``, etc.
+            The `*Translations` instance provides access to all the other, less common
+            translation capabilities one might need, e.g. `ngettext`, `pgettext`, etc.
 
-        .. attention::
-            It is common practice to name the ``gettext`` callable ``_``, so that
-            extracting and retrieving translated messages is as easy is ``_("text to be
-            translated")``.  In fact, if you use `Babel`_ this will be expected by
-            default for translatable strings to be found.
+            **Attention:** *It is common practice to name the `gettext` callable `_` so
+            that extracting and retrieving translated messages is as easy as
+            `_("text to be translated")`.  In fact, if you use
+            [Babel](https://babel.pocoo.org) this will be expected by default for
+            translatable strings to be found.*
 
     Raises:
         various: If an invalid locale is given various possible exceptions can be
-            raised.  See Babel package's :external+babel:meth:`babel.core.Locale.parse`
-            for details..
+            raised.  See [Babel](https://babel.pocoo.org)  package's
+            [babel.core.Locale.parse][] for details.
 
     Example:
-        .. code:: python
+        ```python linenums="1"
+        from importlib.resources import files
+        from typing import cast
 
-            from importlib.resources import files
-            from typing import cast
+        from aquarion.libs.libtts.api import HashableTraversable
 
-            from aquarion.libs.libtts.api import HashableTraversable
-
-            locale_path = cast(HashableTraversable, files(__name__) / "locale")
-            _, t = load_language(
-                "fr_CA",
-                domain="my-cool-project",
-                locale_path=locale_path
-            )
-            print(_("I will be translated"))
+        locale_path = cast(HashableTraversable, files(__name__) / "locale")
+        _, t = load_language("fr_CA", domain="my-cool-project", locale_path=locale_path)
+        print(_("I will be translated"))
+        ```
 
     Note:
         Once loaded, the language translations are cached for the duration of the
         process.
-
-    .. _Babel: https://babel.pocoo.org/
 
     """
     logger.debug(f"Attempting to load translations for locale: {locale}")

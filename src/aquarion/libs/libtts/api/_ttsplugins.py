@@ -16,11 +16,10 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-"""Plugin system for aquarion-libtts plugins."""
+"""Plugin system for *aquarion-libtts* plugins."""
 
 from __future__ import annotations
 
-import os
 import sys
 from typing import TYPE_CHECKING, Any, Never, Protocol, runtime_checkable
 
@@ -37,54 +36,52 @@ if TYPE_CHECKING:
     from aquarion.libs.libtts.api._ttssettings import (
         ITTSSettings,
         JSONSerializableTypes,
-        TTSSettingsSpecEntry,
-        TTSSettingsSpecEntryTypes,
+        TTSSettingsSpecType,
     )
 
 _tts_hookspec = HookspecMarker(distribution_name)
+tts_hookimpl = HookimplMarker(_tts_hookspec.project_name)
 
-
-if os.getenv("SPHINX_BUILD") != "1":
-    tts_hookimpl = HookimplMarker(_tts_hookspec.project_name)
-else:
-    # NOTE: This is here to work around the fact the Sphinx's autosummary extension does
-    #       not support documenting module-level variables. :(  At least not in v8.2.3.
+# NOTE: This is here only to provide a better presentation in the API docs.
+#       mkdocstrings-python parses the AST instead of importing the module, so it finds
+#       this definition even if it is not actually defined at import time.
+if False:
 
     def tts_hookimpl(**kwargs: Any) -> Callable[[], ITTSPlugin | None]:  # type: ignore  # noqa: ANN401, PGH003  # pragma: no cover
-        """Decorate a function with this to mark it as a TTS plugin registration hook.
+        """Decorate a function to mark it as a TTS plugin registration hook.
 
         This is a decorator.
 
         The decorated function is expected to accept no arguments and to return an
-        :class:`ITTSPlugin`, or :obj:`None` if no plugin is to be registered.  E.g.
-        Missing dependencies, incompatible hardware, etc.
+        [ITTSPlugin][aquarion.libs.libtts.api.ITTSPlugin], or [None][] if no plugin is
+        to be registered.  E.g. Missing dependencies, incompatible hardware, etc.
 
-        For more detailed usage options, see the `Pluggy`_ package.
+        For more detailed usage options, see the
+        [Pluggy](https://pluggy.readthedocs.io/en/stable/#implementations) package.
 
         Args:
-            kwargs: Any keyword arguments supported by `Pluggy`_.
+            kwargs: Any keyword arguments supported by
+                [Pluggy](https://pluggy.readthedocs.io/en/stable/#implementations).
 
         Returns:
             The decorated function, but marked as a TTS plugin registration hook.
 
         Example:
-            .. code:: python
+            ```python linenums="1"
+            @tts_hookimpl
+            def register_my_tts_plugin() -> ITTSPlugin | None:
+                # NOTE: It is important that we do not import our plugin class or
+                #       related packages at module import time.
+                #       This hook needs to be able to run even when our required
+                #       dependencies, etc. are not installed.
+                try:
+                    import dependency
+                except ModuleNotFoundError:
+                    return None
+                from package.plugin import MyTTSPlugin
 
-                @tts_hookimpl
-                def register_my_tts_plugin() -> ITTSPlugin | None:
-                    # NOTE: It is important that we do not import our plugin class or
-                    #       related packages at module import time.
-                    #       This hook needs to be able to run even when our required
-                    #       dependencies, etc. are not installed.
-                    try:
-                        import dependency
-                    except ModuleNotFoundError:
-                        return None
-                    from package.plugin import MyTTSPlugin
-
-                    return MyTTSPlugin()
-
-            .. _Pluggy: https://pluggy.readthedocs.io/en/stable/#implementations
+                return MyTTSPlugin()
+            ```
 
         """
 
@@ -97,15 +94,19 @@ class ITTSPlugin(Protocol):
     def id(self) -> str:
         """A unique identifier for the plugin.
 
-        The id must be unique across all Aquarion libtts plugins.  Also, it is
+        The ID must be unique across all *aquarion-libtts* plugins.  Also, it is
         recommended to include at least a major version number as a suffix so that
         multiple versions / implementations of a plugin can be installed and supported
         simultaneously.  E.g. for backwards compatibility.
 
-        This should be read-only.
+        Returns:
+            The unique identifier for the plugin.
 
         Example:
-            kokoro_v1
+            `kokoro_v1`
+
+        Note:
+            This should be a read-only property.
 
         """
 
@@ -118,20 +119,20 @@ class ITTSPlugin(Protocol):
         Args:
             locale:
                 The locale should be a POSIX-compliant (i.e. using underscores) or
-                CLDR-compliant (i.e. using hyphens) locale string like ``en_CA``,
-                ``zh-Hant``, ``ca-ES-valencia``, or even ``de_DE.UTF-8@euro``.  It can
-                be as general as ``fr`` or as specific as
-                ``language_territory_script_variant@modifier``.
+                CLDR-compliant (i.e. using hyphens) locale string like `en_CA`,
+                `zh-Hant`, `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be as
+                general as `fr` or as specific as
+                `language_territory_script_variant@modifier`.
 
                 Plugins are expected to to do their best to accommodate the given
-                locale, but can fall back to more a general language variant.  E.g. from
-                ``en_CA`` to ``en``.
+                locale, but can fall back to a more general language variant if that is
+                all it supports.  E.g. from `en_CA` to just `en`.
 
         Returns:
             The display name of the plugin in a language appropriate for the given
-            locale.  If the given locale is not supported at all, then the plugin is
-            expected to return a display name in it's default language, or English if
-            that is preferred.
+                locale.  If the given locale is not supported at all, then the plugin is
+                expected to return a display name in it's default language, or English
+                if that is preferred.
 
         """
 
@@ -145,20 +146,24 @@ class ITTSPlugin(Protocol):
 
         Args:
             from_dict:
-                If it is not None, then the given values should be used to initialize
-                the settings.
+                If it is not [None][], then the given values should be used to
+                initialize the settings.
 
-                If it is None, then default values for all settings should be used.
+                If it is [None][], then default values for all settings should be used.
+
+        Note:
+            If `from_dict` is provided, then each setting value in it is expected to be
+            validated by this method.
 
         Returns:
-            An instance of a compatible :class:`ITTSSettings` implementation with all
-            settings values valid for immediate use.
+            A compatible settings instance with all settings values valid for immediate
+                use.
 
         Raises:
-            KeyError, ValueError or TypeError: This function is expected to validate
-                it's inputs.  If any setting is invalid for the concrete implementation
-                of :class:`ITTSSettings` that the factory will create, then an exception
-                should be raised.
+            KeyError, ValueError or TypeError: If any setting value is invalid for the
+                concrete implementation of
+                [ITTSSettings][aquarion.libs.libtts.api.ITTSSettings] that this
+                factory will create, then an exception should be raised.
 
         """
 
@@ -169,30 +174,33 @@ class ITTSPlugin(Protocol):
 
         Args:
             settings: Custom or default settings must be provided to configure the TTS
-                backend.
+                backend.  See
+                [make_settings][aquarion.libs.libtts.api.ITTSPlugin.make_settings] for
+                details.
 
         Returns:
-            A configured and ready to use TTS backend.
+            A configured TTS backend, ready to use.
 
         Raises:
             TypeError: Implementations of this interface must check that they are
-                getting their own :class:`ITTSSettings` implementation and should raise
-                an exception if any other plugin's :class:`ITTSSettings` is given
-                instead.
+                getting their own [ITTSSettings][aquarion.libs.libtts.api.ITTSSettings]
+                implementation and should raise an exception if any other plugin's
+                settings object is given instead.
 
         """
 
     def get_settings_spec(
         self,
-    ) -> Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]]:
+    ) -> TTSSettingsSpecType:
         """Return a specification that describes all the backend's settings.
 
         Returns:
             An immutable mapping of from setting attribute name to
-            :class:`TTSSettingsSpecEntry` instances.
+                [TTSSettingsSpecEntry][aquarion.libs.libtts.api.TTSSettingsSpecEntry]
+                instances.
 
-            Implementations should probably return a :class:`MappingProxyType` to
-            achieve the immutability.
+                Implementations should probably return a [types.MappingProxyType][] to
+                achieve the immutability.
 
         """
 
@@ -204,23 +212,24 @@ class ITTSPlugin(Protocol):
 
         Args:
             setting_name: The name of the setting as returned from
-                :meth:`get_settings_spec` mapping keys.
+                [get_settings_spec][aquarion.libs.libtts.api.ITTSPlugin.get_settings_spec]
+                mapping keys.
             locale:
                 The locale should be a POSIX-compliant (i.e. using underscores) or
-                CLDR-compliant (i.e. using hyphens) locale string like ``en_CA``,
-                ``zh-Hant``, ``ca-ES-valencia``, or even ``de_DE.UTF-8@euro``.  It can
-                be as general as ``fr`` or as specific as
-                ``language_territory_script_variant@modifier``.
+                CLDR-compliant (i.e. using hyphens) locale string like `en_CA`,
+                `zh-Hant`, `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be as
+                general as `fr` or as specific as
+                `language_territory_script_variant@modifier`.
 
                 Plugins are expected to to do their best to accommodate the given
-                locale, but can fall back to more a general language variant.  E.g. from
-                ``en_CA`` to ``en``.
+                locale, but can fall back to a more general language variant if that is
+                all it supports.  E.g. from `en_CA` to just `en`.
 
         Returns:
             The display name of the setting in a language appropriate for the given
-            locale.  If the given locale is not supported at all, then the plugin is
-            expected to return a display name in it's default language, or English if
-            that is preferred.
+                locale.  If the given locale is not supported at all, then the plugin is
+                expected to return a display name in it's default language, or English
+                if that is preferred.
 
         Raises:
             KeyError or AttributeError: If the given setting name is not a recognized
@@ -233,23 +242,24 @@ class ITTSPlugin(Protocol):
 
         Args:
             setting_name: The name of the setting as returned from
-                :meth:`get_settings_spec` mapping keys.
+                [get_settings_spec][aquarion.libs.libtts.api.ITTSPlugin.get_settings_spec]
+                mapping keys.
             locale:
                 The locale should be a POSIX-compliant (i.e. using underscores) or
-                CLDR-compliant (i.e. using hyphens) locale string like ``en_CA``,
-                ``zh-Hant``, ``ca-ES-valencia``, or even ``de_DE.UTF-8@euro``.  It can
-                be as general as ``fr`` or as specific as
-                ``language_territory_script_variant@modifier``.
+                CLDR-compliant (i.e. using hyphens) locale string like `en_CA`,
+                `zh-Hant`, `ca-ES-valencia`, or even `de_DE.UTF-8@euro`.  It can be as
+                general as `fr` or as specific as
+                `language_territory_script_variant@modifier`.
 
                 Plugins are expected to to do their best to accommodate the given
-                locale, but can fall back to more a general language variant.  E.g. from
-                ``en_CA`` to ``en``.
+                locale, but can fall back to a more general language variant if that is
+                all it supports.  E.g. from `en_CA` to just `en`.
 
         Returns:
-            The display name of the setting in a language appropriate for the given
-            locale.  If the given locale is not supported at all, then the plugin is
-            expected to return a display name in it's default language, or English if
-            that is preferred.
+            The description of the setting in a language appropriate for the given
+                locale.  If the given locale is not supported at all, then the plugin is
+                expected to return a description in it's default language, or English if
+                that is preferred.
 
         Raises:
             KeyError or AttributeError: If the given setting name is not a recognized
@@ -258,7 +268,7 @@ class ITTSPlugin(Protocol):
         """
 
     def get_supported_locales(self) -> AbstractSet[str]:
-        """Return the set of locales supported by the TTS backend for speaking.
+        """Return the set of speech locales supported by the TTS backend.
 
         This should also be the locales that the plugin supports for display names,
         setting names, setting descriptions, etc.
@@ -271,28 +281,28 @@ class ITTSPlugin(Protocol):
             An *immutable* set of locale strings.
 
         Example:
-            .. code:: python
-
-                frozenset({"fr_CA", "ca-ES-valencia", "zh-Hant"})
+            ```python
+            frozenset({"fr_CA", "ca-ES-valencia", "zh-Hant"})
+            ```
 
         Note:
             The set of locales should as be specific as is directly supported and should
             *not* include broader / more general or approximate catch-all locales unless
             they are also explicitly supported, or nothing more specific is supported.
-            I.e. ``en_CA`` is good, ``en`` is bad, unless ``en`` is as specific as the
-            TTS backend supports.  Or if ``ca-ES-valencia`` is supported, then that is
-            preferred over ``ca-ES``.  ... In short, be as precise and honest as you
-            can.
+            I.e. `en_CA` is good, `en` is bad, unless `en` is the most specific the TTS
+            backend supports.  Or, if `ca-ES-valencia` is supported, then that is
+            preferred over `ca-ES`.  ... In short, be as precise and honest as you can.
 
         """
 
 
 class TTSPluginRegistry:
-    """Registry of all aquarion-libtts backend plugins.
+    """Registry of all *aquarion-libtts* backend plugins.
 
     TTS backends and everything related to them are created / accessed through
-    :class:`ITTSPlugin` instances.  The plugin registry is responsible for finding,
-    loading, listing, enabling, disabling and giving access to those plugins.
+    [ITTSPlugin][aquarion.libs.libtts.api.ITTSPlugin] instances.  The plugin registry is
+    responsible for finding, loading, listing, enabling, disabling and giving access to
+    those plugins.
 
     """
 
@@ -301,38 +311,42 @@ class TTSPluginRegistry:
         self._enabled_plugins: set[str] = set()
 
     def load_plugins(self, *, validate: bool = True) -> None:
-        """Load all aquarion-libtts backend plugins.
+        """Load all *aquarion-libtts* backend plugins.
 
         Plugins are discovered by searching for
-        `pyproject.toml entry points <https://packaging.python.org/en/latest/specifications/pyproject-toml/#entry-points>`__
+        [pyproject.toml entry points](https://packaging.python.org/en/latest/specifications/pyproject-toml/#entry-points)
         named `aquarion-libtts`, then searching those entry points for hook functions
-        decorated with :deco:`tts_hookimpl`, and finally calling those hook functions.
-        The plugins returned by those hook functions are then stored in the plugin
-        registry and made accessible.
+        decorated with [tts_hookimpl][aquarion.libs.libtts.api.tts_hookimpl], and
+        finally calling those hook functions.  The plugins returned by those hook
+        functions are then stored in the plugin registry and made accessible.
 
         Note:
-            All plugins are disabled by default.  Use :meth:`enable` to enable a plugin.
+            All plugins are disabled by default.  Use the
+            [enable][aquarion.libs.libtts.api.TTSPluginRegistry.enable] method to enable
+            a plugin.
 
         Args:
-            validate: If :obj:`True` (the default), then an exception is raised if any
-                hook functions do not conform to expected hook specification.
+            validate: If [True][], then an exception is raised if any hook functions do
+                not conform to the expected hook specification.
+
+                If [False][], then this check is bypassed.
 
         Raises:
-            PluginValidationError: If ``validate`` is True and a hook function does not
-                conform to the expected specification.
+            pluggy.PluginValidationError: If `validate` is [True][] and a hook function
+                does not conform to the expected specification.
 
         Examples:
-            .. code:: toml
+            ```toml title="pyproject.toml"
+            [project.entry-points.'aquarion-libtts']
+            my_plugin_v1 = "package.hook"
+            ```
 
-                [project.entry-points.'aquarion-libtts']
-                my_plugin_v1 = "package.hook"
-
-            .. code:: python
-
-                @tts_hookimpl
-                def register_my_tts_plugin() -> ITTSPlugin | None:
-                    from package.plugin import MyTTSPlugin
-                    return MyTTSPlugin()
+            ```python title="myhookmodule.py"
+            @tts_hookimpl
+            def register_my_tts_plugin() -> ITTSPlugin | None:
+                from package.plugin import MyTTSPlugin
+                return MyTTSPlugin()
+            ```
 
         """
         logger.debug(f"Loading TTS plugins for {_tts_hookspec.project_name}...")
@@ -362,13 +376,15 @@ class TTSPluginRegistry:
         By default, only enabled plugins are listed.
 
         Args:
-            only_disabled: If this is :obj:`True`, then only the *disabled* plugins are
-                listed.
-            list_all: If this is :obj:`True`, then *all* plugins are listed, regardless
-                of their enabled/disabled status.
+            only_disabled: If [True][], then only the *disabled* plugins are listed.
+            list_all: If [True][], then *all* plugins are listed, regardless of their
+                enabled / disabled status.
+
+        Returns:
+            The set of plugin IDs.
 
         Raises:
-            ValueError: If both arguments are :obj:`True`.
+            ValueError: If both arguments are [True][].
 
         """
         if only_disabled and list_all:
@@ -383,11 +399,14 @@ class TTSPluginRegistry:
             return set(self._plugins)
         return {id_ for id_ in self._plugins if self.is_enabled(id_)}
 
-    def get_plugin(self, id_: str) -> ITTSPlugin:  # noqa: D417
+    def get_plugin(self, id_: str) -> ITTSPlugin:
         """Return the plugin the for the given ID.
 
         Args:
-            `id_`: The ID of the desired already loaded plugin.  E.g. ``kokoro_v1``.
+            id_: The ID of the desired, already loaded, plugin.  E.g. `kokoro_v1`.
+
+        Returns:
+            The requested plugin object.
 
         Raises:
             ValueError: If the given ID does not match any registered plugin.
@@ -399,25 +418,25 @@ class TTSPluginRegistry:
             self._raise_plugin_not_found(id_)
 
     def is_enabled(self, plugin_id: str) -> bool:
-        """Return :obj:`True` if the plugin is enabled, :obj:`False` otherwise.
+        """Return whether or not the requested plugin is enabled.
 
         Args:
-            plugin_id: The ID of the plugin in question.
+            plugin_id: The ID of the plugin to check.
 
         Returns:
-            :obj:`True` if the plugin is enabled, :obj:`False` otherwise.
+            [True][] if the plugin is enabled, [False][] otherwise.
 
         """
         return plugin_id in self._enabled_plugins
 
     def enable(self, plugin_id: str) -> None:
-        """Enable a TTS plugin for inclusion in :meth:`list_plugin_ids`.
+        """Enable a TTS plugin for inclusion in enabled plugins list.
 
         The idea behind enabled vs disabled plugins is that it allows one to manage
         which plugins are listed / displayed to a user, independently of all the plugins
         that are installed / loaded.  I.e. It allows for filtering which plugins one
         wants exposed and which should be kept hidden.  E.g. Some plugins could be not
-        supported by your application, even thought they got installed with some other
+        supported by your application, even though they got installed with some other
         dependency.
 
         Args:
@@ -433,7 +452,7 @@ class TTSPluginRegistry:
         logger.debug(f"Enabled TTS plugin: {plugin_id}")
 
     def disable(self, plugin_id: str) -> None:
-        """Disable a TTS plugin for inclusion in :meth:`list_plugin_ids`.
+        """Disable a TTS plugin for exclusion in in enabled plugins list.
 
         Args:
             plugin_id: The ID of the desired plugin.
