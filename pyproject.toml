@@ -30,7 +30,7 @@ classifiers = [
     "Framework :: Hatch",
     "Framework :: Pydantic :: 2",
     "Framework :: Pytest",
-    "Framework :: Sphinx",
+    "Framework :: MkDocs",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: GNU Affero General Public License v3",
     "Natural Language :: English",
@@ -90,9 +90,6 @@ docs = [
     "mkdocs-material[imaging]>=9.6.22",
     "mkdocs>=1.6.1",
     "mkdocstrings-python>=1.18.2",
-    "myst-parser~=4.0.1",
-    "sphinx-rtd-theme~=3.0.2",
-    "sphinx~=8.2.3",
 ]
 hatch-static-analysis = ["ruff~=0.14.0"]
 hatch-test = [
