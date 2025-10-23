@@ -151,5 +151,5 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/aquarion-ai/aquarion-libtts
-    # - icon: fontawesome/brands/python
-    #   link: https://pypi.org/project/aquarion-libtts
+      # - icon: fontawesome/brands/python
+      #   link: https://pypi.org/project/aquarion-libtts
