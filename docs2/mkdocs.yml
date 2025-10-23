@@ -1,0 +1,138 @@
+site_name: aquarion-libtts
+site_description: Text To Speech (TTS) beckend library for Aquarion AI
+site_author: Krys Lawrence
+copyright: © 2025-present by Krys Lawrence
+site_url: https://aquarion-libtts.readthedocs.io/
+repo_url: https://github.com/aquarion-ai/aquarion-libtts
+
+docs_dir: source
+strict: true
+
+nav:
+  - Home: index.md
+  - getting_started.md
+  - changelog.md
+  - API Reference
+  - plugins.md
+  - contributing.md
+  - Requirements:
+      - requirements/api.md
+      - requirements/kokoro.md
+
+plugins:
+  - search
+  - macros:
+      on_undefined: strict
+  - social
+  - link-marker
+  - mkdocstrings:
+      default_handler: python
+      enable_inventory: true
+      handlers:
+        python:
+          paths: [../src]
+          options:
+            filters: ["!^_"]
+            show_source: false
+            ## Recommended by mkdocstrings-python
+            docstring_options:
+              ignore_init_summary: true
+            docstring_section_style: list
+            signature_crossrefs: true
+            unwrap_annotated: true
+            inherited_members: true
+            summary: true
+            heading_level: 1
+            parameter_headings: true
+            type_parameter_headings: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            line_length: 88
+            merge_init_into_class: true
+            separate_signature: true
+            show_signature_annotations: true
+            show_signature_type_parameters: true
+            show_bases: true
+            ## End of recommendations
+          inventories:
+            - https://docs.python.org/3/objects.inv
+            - https://babel.pocoo.org/en/stable/objects.inv
+            - https://pluggy.readthedocs.io/en/stable/objects.inv
+
+  - api-autonav:
+      modules: [../src/aquarion]
+
+theme:
+  name: material
+  features:
+    - search.suggest
+    - search.highlight
+    - navigation.instant
+    - navigation.tracking
+    - toc.follow
+    - navigation.top
+    - content.code.copy
+    - navigation.footer
+    - navigation.indexes
+
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+markdown_extensions:
+  - smarty
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+  - pymdownx.smartsymbols
+  - admonition
+  - pymdownx.details
+  - def_list
+  - pymdownx.escapeall:
+      hardbreak: true
+  - pymdownx.snippets:
+      base_path: [".."]
+      check_paths: true
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
+
+watch:
+  - main.py
+  - ../src
+  - ../README.md
+  - ../CHANGELOG.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/aquarion-ai/aquarion-libtts
+    # - icon: fontawesome/brands/python
+    #   link: https://pypi.org/project/aquarion-libtts
