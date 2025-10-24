@@ -45,7 +45,7 @@ from aquarion.libs.libtts.api import (
     TTSSettingsSpecType,
 )
 
-__all__ = ["KokoroDeviceNames", "KokoroLocales", "KokoroSettings", "KokoroVoices"]
+__all__ = ["KokoroDeviceTypes", "KokoroLocales", "KokoroSettings", "KokoroVoices"]
 
 
 class KokoroLocales(StrEnum):
@@ -105,10 +105,10 @@ class KokoroVoices(StrEnum):
     """French female voice, grade B- quality."""
 
 
-class KokoroDeviceNames(StrEnum):
-    """Kokoro TTS device names supported by this backend.
+class KokoroDeviceTypes(StrEnum):
+    """Kokoro TTS device types supported by this backend.
 
-    I.e. [PyTorch device names](https://docs.pytorch.org/docs/stable/tensor_attributes.html#torch.device).
+    I.e. [PyTorch device types](https://docs.pytorch.org/docs/stable/tensor_attributes.html#torch.device).
 
     """
 
@@ -195,13 +195,13 @@ class KokoroSettings:
     _speed_display_name = _("Speed")
     _speed_description = _("The speaking speed of the text-to-speech system.")
 
-    device: KokoroDeviceNames | None = None
+    device: KokoroDeviceTypes | None = None
     """The compute device to use to generate the speech.
 
     I.e. to use the GPU or only the CPU.
 
     `device` must be selected from
-    [KokoroDeviceNames][aquarion.libs.libtts.kokoro.settings.KokoroDeviceNames] or be
+    [KokoroDeviceTypes][aquarion.libs.libtts.kokoro.settings.KokoroDeviceTypes] or be
     [None][].  If it set to [None][], then a GPU will be used if present, with the CPU
     as the fallback option.
 
@@ -211,7 +211,7 @@ class KokoroSettings:
         way. (E.g. environment variables, etc.)
 
     """
-    _device_spec = TTSSettingsSpecEntry(type=str, values=_enum_strs(KokoroDeviceNames))
+    _device_spec = TTSSettingsSpecEntry(type=str, values=_enum_strs(KokoroDeviceTypes))
     _device_display_name = _("Compute Device")
     _device_description = _(
         "The device used for running the TTS system (e.g., cpu or cuda)."

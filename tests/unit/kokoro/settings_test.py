@@ -32,7 +32,7 @@ from aquarion.libs.libtts.api import (
     TTSSettingsSpecEntry,
 )
 from aquarion.libs.libtts.kokoro.settings import (
-    KokoroDeviceNames,
+    KokoroDeviceTypes,
     KokoroLocales,
     KokoroSettings,
     KokoroVoices,
@@ -162,8 +162,8 @@ def test_kokorosettings_should_coerce_voice_strings_to_enum_on_instantiation() -
 
 def test_kokorosettings_should_coerce_device_strings_to_enum_on_instantiation() -> None:
     settings = KokoroSettings(device="cpu")  # type:ignore[arg-type]
-    assert settings.device == KokoroDeviceNames.cpu
-    assert isinstance(settings.device, KokoroDeviceNames)
+    assert settings.device == KokoroDeviceTypes.cpu
+    assert isinstance(settings.device, KokoroDeviceTypes)
 
 
 @pytest.mark.parametrize(
@@ -205,14 +205,14 @@ def test_kokorosettings_to_dict_should_return_voice_as_a_string() -> None:
 
 
 def test_kokorosettings_to_dict_should_return_device_as_a_string() -> None:
-    settings = KokoroSettings(device=KokoroDeviceNames.cuda)
+    settings = KokoroSettings(device=KokoroDeviceTypes.cuda)
     settings_dict = cast("SettingsDict", settings.to_dict())
     assert isinstance(settings_dict["device"], str)
     assert settings_dict["device"] == "cuda"
 
 
 def test_kokorosettings_to_dict_should_log_dictionary_creation(logot: Logot) -> None:
-    settings = KokoroSettings(device=KokoroDeviceNames.cuda)
+    settings = KokoroSettings(device=KokoroDeviceTypes.cuda)
     settings_dict = cast("SettingsDict", settings.to_dict())
     logot.assert_logged(
         logged.debug(f"KokoroSettings dictionary created: {settings_dict!s}")
