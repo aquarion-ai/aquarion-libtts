@@ -16,27 +16,27 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-"""Public API for aquarion-libtts.
+"""Public API for *aquarion-libtts*.
 
-All interaction with aquarion-libtts is generally expected to go through this API
+All interaction with *aquarion-libtts* is generally expected to go through this API
 package.
 
 Example:
-    .. code:: python
-
-        registry = TTSPluginRegistry()
-        registry.load_plugins()
-        registry.enable("kokoro_v1")
-        plugin = registry.get_plugin("kokoro_v1")
-        settings = plugin.make_settings()
-        backend = plugin.make_backend(settings)
-        try:
-            backend.start()
-            audio_chunks = []
-            for audio_chunk in :
-                audio_chunks.append(audio_chunk)
-        finally:
-            backend.stop()
+    ```python linenums="1"
+    registry = TTSPluginRegistry()
+    registry.load_plugins()
+    registry.enable("kokoro_v1")
+    plugin = registry.get_plugin("kokoro_v1")
+    settings = plugin.make_settings()
+    backend = plugin.make_backend(settings)
+    try:
+        backend.start()
+        audio_chunks = []
+        for audio_chunk in :
+            audio_chunks.append(audio_chunk)
+    finally:
+        backend.stop()
+    ```
 
 """
 

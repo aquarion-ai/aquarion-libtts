@@ -33,6 +33,24 @@ type JSONSerializableTypes = (
     | Sequence[JSONSerializableTypes]
     | Mapping[str, JSONSerializableTypes]
 )
+"""Basic Python types that are easily serializable to JSON."""
+
+
+type TTSSettingsSpecEntryTypes = str | int | float
+"""Valid types for a settings spec entry.
+
+[TTSSettingsSpecEntry][aquarion.libs.libtts.api.TTSSettingsSpecEntry] types must be one
+of these types.
+
+"""
+
+type TTSSettingsSpecType = Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]]
+"""The type of the TTS settings spec mapping.
+
+[ITTSPlugin.make_spec][aquarion.libs.libtts.api.ITTSPlugin.get_settings_spec] returns
+this.
+
+"""
 
 
 @runtime_checkable
@@ -40,48 +58,56 @@ class ITTSSettings(Protocol):  # noqa: PLW1641
     """Common interface for all TTS backend settings.
 
     Implementations of this interface are expected to add their own setting attributes
-    for the specific :class:`ITTSBackend` implementation they go with.
+    for the specific [ITTSBackend][aquarion.libs.libtts.api.ITTSBackend] implementation
+    they go with.
 
-    **Note:** There is no expectation that ITTSSettings implementations be immutable or
-    hashable, but it's probably a good idea since changes to settings should be done by
-    calling :meth:`ITTSPlugin.make_settings` with a changed settings dictionary.
+    Note:
+        There is no expectation that ITTSSettings implementations be immutable or
+        hashable, but it's probably a good idea since changes to settings should be done
+        by calling the
+        [ITTSPlugin.make_settings][aquarion.libs.libtts.api.ITTSPlugin.make_settings]
+        method with a changed settings dictionary.
 
     Example:
-        .. code:: python
+        ```python linenums="1"
+        class MySettings:
+            locale: str = "en"
+            voice: str = "bella"
+            speed: float = 1.0
+            api_key: str
+            cache_path: Path
 
-            class MySettings:
-                locale: str = "en"
-                voice: str = "bella"
-                speed: float = 1.0
-                api_key: str
-                cache_path: Path
+            def __eq__(self, other: object) -> bool:
+                # Your implementation here
 
-                def __eq__(self, other: object) -> bool:
-                    # Your implementation here
-
-                def to_dict(self) -> dict[str, JSONSerializableTypes]:
-                    # Your implementation here
-
-    .. automethod:: __eq__
+            def to_dict(self) -> dict[str, JSONSerializableTypes]:
+                # Your implementation here
+        ```
 
     """
 
-    #: The locale should be a POSIX-compliant (i.e. using underscores) or CLDR-compliant
-    #: (i.e. using hyphens) locale string like ``en_CA``, ``zh-Hant``,
-    #: ``ca-ES-valencia``, or even ``de_DE.UTF-8@euro``.  It can be as general as ``fr``
-    #: or as specific as ``language_territory_script_variant@modifier``.
     locale: str
+    """The locale for spoken audio language.
+
+    The locale should be a POSIX-compliant (i.e. using underscores) or CLDR-compliant
+    (i.e. using hyphens) locale string like `en_CA`, `zh-Hant`, `ca-ES-valencia`, or
+    even `de_DE.UTF-8@euro`.  It can be as general as `fr` or as specific as
+    `language_territory_script_variant@modifier`.
+
+    """
 
     def __eq__(self, other: object) -> bool:
-        """Return True if all settings values match, False otherwise.
+        """Check if two settings objects are equal.
 
         Args:
-            other: The other :class:`ITTSSettings` instance to compare against.
+            other: The other [ITTSSettings][aquarion.libs.libtts.api.ITTSSettings]
+                instance to compare against (or any other Python object).
 
         Returns:
-            :obj:`True` if ``other`` is an instance of the same concrete implementation
-            of :class:`ITTSSettings` and all the settings values are the same.  False
-            otherwise.
+            [True][] if `other` is an instance of the same concrete settings class *and*
+                all the settings values are the same.
+
+                [False][] otherwise.
 
         """
 
@@ -90,25 +116,29 @@ class ITTSSettings(Protocol):  # noqa: PLW1641
 
         Returns:
             A dictionary where the keys are the setting names and the values are the
-            setting values converted as necessary to simple base JSON-compatible types.
+                setting values converted as necessary to simple base JSON-compatible
+                types.
 
         Example:
-            .. code:: JSON
-
-                {
-                    "locale": "en",
-                    "voice": "bella",
-                    "speed": 1.0,
-                    "api_key": "Your API key here",
-                    "cache_path": "Cache path converted to a basic string"
-                }
+            ```json
+            {
+                "locale": "en",
+                "voice": "bella",
+                "speed": 1.0,
+                "api_key": "Your API key here",
+                "cache_path": "Cache path converted to a basic string"
+            }
+            ```
+            &nbsp;
 
         """
+        # Note: &nbsp; is included above because there seems to be a bug in ruff fmt
+        #       when a JSON code block is at the end of a docstring.  (v0.14.0)
 
 
 @runtime_checkable
 class ITTSSettingsHolder(Protocol):
-    """Common interface for objects that accept and contain :class:`ITTSSettings`."""
+    """Common interface for objects that accept and contain settings."""
 
     def get_settings(self) -> ITTSSettings:
         """Return the current setting in use.
@@ -120,8 +150,8 @@ class ITTSSettingsHolder(Protocol):
             The reason the settings are not just direct attributes is because they are
             to be treated as an all-or-nothing collection.  I.e. individual settings
             attributes should not be individually modified directly on an
-            :class:`ITTSSettingsHolder`, but rather the whole settings object should be
-            replaced with a new one.
+            [ITTSSettingsHolder][aquarion.libs.libtts.api.ITTSSettingsHolder], but
+            rather the whole settings object should be replaced with a new one.
 
         """
 
@@ -134,94 +164,98 @@ class ITTSSettingsHolder(Protocol):
         Raises:
             TypeError: Implementations of this interface should check that they are only
                 getting the correct concrete settings class and raise an exception if
-                any other kind of :class:`ITTSSettings` is given.
+                any other kind of [ITTSSettings][aquarion.libs.libtts.api.ITTSSettings]
+                is given.
 
         Note:
             The reason the settings are not just direct attributes is because they are
             to be treated as an all-or-nothing collection.  I.e. individual settings
             attributes should not be individually modified directly on an
-            :class:`ITTSSettingsHolder`, but rather the whole settings object should be
-            replaced with a new one.
+            [ITTSSettingsHolder][aquarion.libs.libtts.api.ITTSSettingsHolder], but
+            rather the whole settings object should be replaced with a new one.
 
         """
 
 
-type TTSSettingsSpecEntryTypes = str | int | float
-type TTSSettingsSpecType = Mapping[str, TTSSettingsSpecEntry[TTSSettingsSpecEntryTypes]]
-
-
 @dataclass(frozen=True, kw_only=True)
 class TTSSettingsSpecEntry[T: TTSSettingsSpecEntryTypes]:
-    """An specification entry describing one setting in an ITTSSettings object.
+    """An specification entry describing one setting of a settings object.
 
-    Since :class:`ITTSSettings` can contain custom TTS backend specific setting
-    attributes, there is a need for a way to describe those setting attributes in a
-    standardized way so that settings UIs can be constructed dynamically in applications
-    that use aquarion-libtts.  Instances of this class, in a dictionary, for example,
-    can provide a specification for how to render settings fields in a UI.
-
-    Instances of this class are immutable once created.
+    Since [ITTSSettings][aquarion.libs.libtts.api.ITTSSettings] can contain custom TTS
+    backend specific setting attributes, there is a need for a way to describe those
+    setting attributes in a standardized way so that settings UIs can be constructed
+    dynamically in applications that use *aquarion-libtts*.  Instances of this class, in
+    a dictionary, for example, can provide a specification for how to render settings
+    fields in a UI.
 
     Example:
-        .. code:: python
+        ```python
+        spec = {
+            "locale": TTSSettingSpecEntry(
+                type=str, min=2, values=frozenset("en", "fr")
+            ),
+            "voice": TTSSettingSpecEntry(type=str),
+            "speed": TTSSettingSpecEntry(type=float, min=0.1, max=1.0),
+            "api_key": TTSSettingSpecEntry(type=str),
+            "cache_path": TTSSettingSpecEntry(type=str),
+        }
+        ```
 
-            spec = {
-                "locale": TTSSettingSpecEntry(
-                    type=str,
-                    min=2,
-                    values=frozenset("en", "fr")
-                ),
-                "voice": TTSSettingSpecEntry(type=str),
-                "speed": TTSSettingSpecEntry(type=float, min=0.1, max=1.0),
-                "api_key": TTSSettingSpecEntry(type=str),
-                "cache_path": TTSSettingSpecEntry(type=str),
-            }
+        With the example above, one could imagine a UI with multiple text box fields.
+        `locale` could be a dropdown or a set of radio buttons, there could be
+        validation for valid ranges, `speed` could have up and down arrow buttons to
+        increase and decrease the value, and / or react to a mouse's scroll wheel, etc.
 
-    With the example above, one could imagine a UI with multiple text box fields.
-    ``locale`` could be a dropdown or a set of radio buttons.  There could be validation
-    for valid ranges.  ``speed`` could have up and down arrow buttons to increase and
-    decrease the value, and / or react to a mouse's scroll wheel.  Etc.
+    Note:
+        Instances of this class are immutable once created, as are all the attribute
+        values as well.
 
     """
 
-    #: The type of setting it is.
-    #:
-    #: This is required.
-    #:
-    #: Currently supported types: :class:`str`, :class:`int` and :class:`float` only.
-    #:
-    #: This should be set to the actual type class, **not** a string name of a type.
-    #:
-    #: Also, only Python basic types should be used.  I.e. **not** classes like
-    #: :class:`~pathlib.Path` or :class:`~decimal.Decimal`, etc.
-    #:
     type: type[T]
+    """The type of setting it is.
 
-    #: The minimum allowed value or minimum allowed length.
-    #:
-    #: This is optional.
-    #:
-    #: For strings this is the minimum allowed length of the string.
-    #:
-    #: For numeric types, this is the minimum allowed value.
-    #:
+    This is required.
+
+    Valid types are defined in
+    [TTSSettingsSpecEntryTypes][aquarion.libs.libtts.api.TTSSettingsSpecEntryTypes].
+
+    Notes:
+        - This should be set to the actual type class, **not** a string name of a type.
+
+        - Also, only Python basic types should be used.  I.e. **not** classes like
+          [pathlib.Path][] or [decimal.Decimal][], etc.
+
+    """
+
     min: int | float | None = None
+    """The minimum allowed value or minimum allowed length.
 
-    #: The maximum allowed value or maximum allowed length.
-    #:
-    #: This is optional.
-    #:
-    #: For strings this is the maximum allowed length of the string.
-    #:
-    #: For numeric types, this is the maximum allowed value.
-    #:
+    This is optional.
+
+    For strings this is the minimum allowed length of the string.
+
+    For numeric types, this is the lowest allowed value.
+
+    """
+
     max: int | float | None = None
+    """The maximum allowed value or maximum allowed length.
 
-    #: The set of specific allowed values.
-    #:
-    #: This is optional.
-    #:
-    #: Some fields might only accept a restricted set of specific valid values.  Think
-    #: enumerations.  Acceptable values can be specified with this attribute.
-    #:
+    This is optional.
+
+    For strings this is the maximum allowed length of the string.
+
+    For numeric types, this is the highest allowed value.
+
+    """
+
     values: frozenset[T] | None = None
+    """The set of specific allowed values.
+
+    This is optional.
+
+    Some fields might only accept a restricted set of specific valid values.  Think
+    enumerations.  Acceptable values can be specified with this attribute.
+
+    """

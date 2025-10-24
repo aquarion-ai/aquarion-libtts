@@ -1,17 +1,21 @@
 # Contributing
 
-% SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
-% SPDX-License-Identifier: CC-BY-SA-4.0
+<!--
+    SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+    SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 
-% aquarion-libtts documentation © 2025-present by Krys Lawrence is licensed under
-% Creative Commons Attribution-ShareAlike 4.0 International. To view a copy of this
-% license, visit <https://creativecommons.org/licenses/by-sa/4.0/>
+<!--
+    aquarion-libtts documentation © 2025-present by Krys Lawrence is licensed under
+    Creative Commons Attribution-ShareAlike 4.0 International. To view a copy of this
+    license, visit <https://creativecommons.org/licenses/by-sa/4.0/>
+-->
 
 ## Disclaimer
 
-While this project is FOSS and you are welcome to use it (if it ever becomes something
-usable), know that I am making this for myself. So do not expect any kind of support or
-updates or maintenance or longevity.  Caveat Emptor.
+--8<--
+README.md:disclaimer
+--8<--
 
 With that said, if you still want to try contributing, then nothing is stopping you.
 And to that end (and for my future self), here is documented some helpful info on how
@@ -24,10 +28,11 @@ This project follows the following standard practices:
 - [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) for
   commit messages.
 
-  - If using VS Code, then the
-    [Conventional Commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
-    extension is recommended.
-  - _If committing from the terminal, use `cz c` instead of `git commit`._
+    - If using VS Code, then the
+      [Conventional Commits](https://marketplace.visualstudio.com/items?itemName=vivaxy.vscode-conventional-commits)
+      extension is recommended.
+
+    - _If committing from the terminal, use `cz c` instead of `git commit`._
 
 - [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) for versioning.
 
@@ -39,10 +44,9 @@ This project follows the following standard practices:
 
 - [Ruff](https://docs.astral.sh/ruff/) for Python code style.
 
-- [MyST-style Markdown](https://myst-parser.readthedocs.io/) for project documentation.
-
-- [reStructuredText](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#restructuredtext-primer)
-  for comments, docstrings and generated API documentation.
+- [Markdown](https://commonmark.org/) for docstrings and generated API documentation.
+    - _(with enhancements for use with [mkdocs](https://www.mkdocs.org/) and various
+      plugins.)_
 
 - [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
   for comments and docstrings.
@@ -62,7 +66,7 @@ This project follows the following standard practices:
 
 1. Run:
 
-   ```console
+   ```sh linenums="1"
    devbox shell
    init
    check push
@@ -143,7 +147,7 @@ This section is an attempt clarify which tool is used for which common task.
 | Update version on a release               | Hatch                                    |
 | Build distribution artifacts              | Hatch                                    |
 | Add / update language translations        | The `lang` script (Hatch, babel)         |
-| Generate the documentation                | The `docs` script (Hatch, Sphinx)        |
+| Generate the documentation                | The `docs` script (Hatch, Mkdocs)        |
 | Pin project dependency versions           | uv                                       |
 | Pin development dependency versions       | uv                                       |
 | Format Markdown                           | pre-commit (markdownlint-cli2)           |

@@ -1,3 +1,5 @@
+# noqa: INP001
+
 # SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
 # SPDX-License-Identifier: AGPL-3.0-only
 
@@ -15,26 +17,18 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-# Read the Docs configuration file
-# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+"""mkdocs-macros-plugin macros."""
 
-version: 2
+from __future__ import annotations
 
-build:
-  os: ubuntu-24.04
-  tools:
-    python: "3.12"
-  jobs:
-    pre_create_environment:
-      - asdf plugin add uv
-      - asdf install uv 0.8.14
-      - asdf global uv 0.8.14
-    create_environment:
-      - uv venv "${READTHEDOCS_VIRTUALENV_PATH}"
-    install:
-      - >-
-        UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv sync --frozen
-        --group docs --extra kokoro --extra cpu
+from typing import TYPE_CHECKING
 
-mkdocs:
-  configuration: docs/mkdocs.yml
+from aquarion.libs.libtts.__about__ import __version__
+
+if TYPE_CHECKING:
+    from mkdocs_macros import MacrosPlugin
+
+
+def define_env(env: MacrosPlugin) -> None:
+    """Define variables and macros available in the templates."""
+    env.variables.version = __version__

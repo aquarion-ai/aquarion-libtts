@@ -30,7 +30,7 @@ classifiers = [
     "Framework :: Hatch",
     "Framework :: Pydantic :: 2",
     "Framework :: Pytest",
-    "Framework :: Sphinx",
+    "Framework :: MkDocs",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: GNU Affero General Public License v3",
     "Natural Language :: English",
@@ -46,7 +46,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = ["babel~=2.17.0", "loguru~=0.7.3", "pluggy~=1.6.0"]
-description = 'Text To Speech (TTS) beckend library for Aquarion AI'
+description = "Text To Speech (TTS) beckend library for Aquarion AI"
 dynamic = ["version"]
 keywords = ["aquarion", "ai", "tts", "speech"]
 license = "AGPL-3.0-only"
@@ -75,7 +75,7 @@ kokoro = [
     "torch~=2.8.0",
 ]
 
-[project.entry-points.'aquarion-libtts']
+[project.entry-points."aquarion-libtts"]
 kokoro_v1 = "aquarion.libs.libtts.kokoro._hook"
 
 ### UV ###
@@ -83,7 +83,15 @@ kokoro_v1 = "aquarion.libs.libtts.kokoro._hook"
 [dependency-groups]
 accept = ["bsdiff4~=1.2.6", "coverage[toml]~=7.10.7", "radish-bdd~=0.18.2"]
 babel = ["babel~=2.17.0"]
-docs = ["myst-parser~=4.0.1", "sphinx-rtd-theme~=3.0.2", "sphinx~=8.2.3"]
+docs = [
+    "mkdocs-api-autonav>=0.4.0",
+    "mkdocs-link-marker>=0.2.0",
+    "mkdocs-macros-plugin>=1.4.0",
+    "mkdocs-material[imaging]>=9.6.22",
+    "mkdocs-spellcheck[codespell]>=1.1.2",
+    "mkdocs>=1.6.1",
+    "mkdocstrings-python>=1.18.2",
+]
 hatch-static-analysis = ["ruff~=0.14.0"]
 hatch-test = [
     "coverage-enable-subprocess==1.0", # Hatch test default inclusion
@@ -267,9 +275,8 @@ groups = ["docs"]
 type = "uvenv"
 
 [tool.hatch.envs.docs.scripts]
-build-html = """
-    sphinx-build -M html ./docs/source ./docs/build --fresh-env --fail-on-warning
-"""
+serve = "cd docs && mkdocs serve && cd -"
+build = "cd docs && mkdocs build && cd -"
 
 ### Coverage ###
 

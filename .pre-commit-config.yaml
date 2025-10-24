@@ -40,7 +40,6 @@ repos:
       - id: check-ast
       - id: check-builtin-literals
         args: [--no-allow-dict-kwargs]
-      - id: check-docstring-first
       - id: check-executables-have-shebangs
       - id: check-json
       - id: check-merge-conflict
@@ -48,6 +47,7 @@ repos:
       - id: check-toml
       - id: check-vcs-permalinks
       - id: check-yaml
+        args: [--unsafe]
       - id: debug-statements
       - id: detect-private-key
       - id: end-of-file-fixer

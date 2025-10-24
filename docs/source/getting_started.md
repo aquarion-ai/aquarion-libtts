@@ -1,15 +1,21 @@
+<!-- markdownlint-disable MD052 -->
+
 # Getting Started
 
-% SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
-% SPDX-License-Identifier: CC-BY-SA-4.0
+<!--
+    SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
+    SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 
-% aquarion-libtts documentation © 2025-present by Krys Lawrence is licensed under
-% Creative Commons Attribution-ShareAlike 4.0 International. To view a copy of this
-% license, visit <https://creativecommons.org/licenses/by-sa/4.0/>
+<!--
+    aquarion-libtts documentation © 2025-present by Krys Lawrence is licensed under
+    Creative Commons Attribution-ShareAlike 4.0 International. To view a copy of this
+    license, visit <https://creativecommons.org/licenses/by-sa/4.0/>
+-->
 
 ## Installation
 
-aquarion-libtts comes in several different flavours, depending on your needs.  These
+*aquarion-libtts* comes in several different flavours, depending on your needs.  These
 variations are handled by specifying extras when installing.
 
 First, there are extras for supporting various GPU platforms:
@@ -45,22 +51,15 @@ pip install aquarion-libtts[cpu,kokoro]
 
 ## Built-In TTS Plugins
 
-aquarion-libtts provides (or will provide) built-in support for several TTS backends.
+*aquarion-libtts* provides (or will provide) built-in support for several TTS backends.
 They are accessed through the same plugin API as any third-party TTS backend you might
 also use.
 
 The following TTS backends currently have built-in support:
 
-:::{list-table}
-:header-rows: 1
-
-- - Plugin ID
-  - TTS Backend
-
-- - `kokoro_v1`
-  - [Kokoro TTS](https://huggingface.co/hexgrad/Kokoro-82M)
-
-:::
+| Plugin ID   | TTS Backend                                             |
+| ----------- | ------------------------------------------------------- |
+| `kokoro_v1` | [Kokoro TTS](https://huggingface.co/hexgrad/Kokoro-82M) |
 
 ## Basic Usage
 
@@ -157,7 +156,7 @@ access external APIs.  It could also download other resources it might need.
 When converting text to speech, the results are provided in chunks of audio via an
 iterator.  This better supports streaming and real-time applications.  E.g:
 
-```python
+```python linenums="1"
 import wave
 
 with wave.open("play_me.wav", "wb") as wave_file:
@@ -210,9 +209,9 @@ In addition to the above core functionality, more is provided:
   check for whether or not it is currently started.
 
 To learn more about these extra capabilities, please see the
-<project:api/index.md>.
+[API Reference][aquarion.libs.libtts.api] documentation.
 
 ## Creating Your Own TTS Backends
 
-To learn about creating plugins for your own TTS backend for this project, see
-<project:plugins.md>.
+To learn about creating plugins for your own TTS backend for this project, the see
+[plugins](plugins.md) documentation.

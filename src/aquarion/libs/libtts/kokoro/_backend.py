@@ -57,7 +57,12 @@ class KokoroBackend:
 
         E.g. Mono 16-bit little-endian linear PCM audio at 24KHz.
 
-        This should be read-only.
+        Returns:
+            The audio output format emitted by the
+                [convert][aquarion.libs.libtts.api.ITTSBackend.convert] method.
+
+        Note:
+            This should be a read-only property.
 
         """
         return TTSAudioSpec(
@@ -71,9 +76,13 @@ class KokoroBackend:
 
     @property
     def is_started(self) -> bool:
-        """True if TTS backend is started, False otherwise.
+        """Whether or not the backend already started.
 
-        This should be read-only.
+        Returns:
+            [True][] if the backend is started, [False][] otherwise.
+
+        Note:
+            This should be a read-only property.
 
         """
         return self._pipeline is not None
@@ -88,8 +97,8 @@ class KokoroBackend:
             The reason the settings are not just direct attributes is because they are
             to be treated as an all-or-nothing collection.  I.e. individual settings
             attributes should not be individually modified directly on an
-            :class:`ITTSSettingsHolder`, but rather the whole settings object should be
-            replaced with a new one.
+            [ITTSSettingsHolder][aquarion.libs.libtts.api.ITTSSettingsHolder], but
+            rather the whole settings object should be replaced with a new one.
 
         """
         return self._settings
@@ -103,14 +112,15 @@ class KokoroBackend:
         Raises:
             TypeError: Implementations of this interface should check that they are only
                 getting the correct concrete settings class and raise an exception if
-                any other kind of :class:`ITTSSettings` is given.
+                any other kind of [ITTSSettings][aquarion.libs.libtts.api.ITTSSettings]
+                is given.
 
         Note:
             The reason the settings are not just direct attributes is because they are
             to be treated as an all-or-nothing collection.  I.e. individual settings
             attributes should not be individually modified directly on an
-            :class:`ITTSSettingsHolder`, but rather the whole settings object should be
-            replaced with a new one.
+            [ITTSSettingsHolder][aquarion.libs.libtts.api.ITTSSettingsHolder], but
+            rather the whole settings object should be replaced with a new one.
 
         """
         if not isinstance(new_settings, KokoroSettings):
@@ -131,8 +141,9 @@ class KokoroBackend:
             text: The text to convert in to speech.
 
         Returns:
-            An :class:`~collections.abc.Iterator` of chunks of audio in the format
-            specified by :attr:`audio_spec`.
+            An [Iterator][collections.abc.Iterator] of chunks of audio in the format
+                specified by
+                [audio_spec][aquarion.libs.libtts.api.ITTSBackend.audio_spec].
 
         """
         if not self.is_started:
@@ -156,8 +167,9 @@ class KokoroBackend:
     def start(self) -> None:
         """Start the TTS backend.
 
-        If the backend is already started, this method should be idempotent and do
-        nothing.
+        Note:
+            If the backend is already started, this method should be idempotent and do
+            nothing.
 
         """
         if self.is_started:
@@ -196,8 +208,9 @@ class KokoroBackend:
     def stop(self) -> None:
         """Stop the TTS backend.
 
-        If the backend is already started, this method should be idempotent and do
-        nothing.
+        Note:
+            If the backend is already started, this method should be idempotent and do
+            nothing.
 
         """
         self._pipeline = None

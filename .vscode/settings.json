@@ -52,5 +52,8 @@
     "ruff.path": [
         "hatch run hatch-static-analysis:ruff"
     ],
+    "yaml.customTags": [
+        "!ENV sequence"
+    ],
     "yaml.format.printWidth": 88
 }

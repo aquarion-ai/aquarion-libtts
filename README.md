@@ -63,7 +63,7 @@ Experiment in creating a scalable local AI voice chat bot.
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 
-<!-- include_start_1 -->
+<!-- --8<-- [start:description] -->
 
 ## Description
 
@@ -72,22 +72,22 @@ Experiment in creating a scalable local AI voice chat bot.
 The overall goal of the Aquarion AI project is to create an LLM-based voice chat bot /
 assistant, but to build it in such a way that is can be scaled down to a single desktop
 app, and all the way up to a distributed multi-server, horizontally scalable system.
-Also, desired is a taking head / avatar who's mouth moves with the speech.  Lastly, it
-should all run locally / offline, even in an air gapped environment.  Oh, and it should
+Also, desired is a taking head / avatar whose mouth moves with the speech.  Lastly, it
+should all run locally / offline, even in an air-gapped environment.  Oh, and it should
 be modular enough to support multiple alternate STT, LLM and TTS models/engines/options.
 
 For high-level documentation on the overall Aquarion AI project, see the
 [aquarion-docs](https://github.com/aquarion-ai/aquarion-docs) project.
 
-### About aquarion-libtts
+### About *aquarion-libtts*
 
 This project contains the library of Text To Speech (TTS) backend components for
 Aquarion AI.
 
 For documentation for this specific project, see
-[aquarion-libtts documentation](https://aquarion-libtts.readthedocs.io/en/latest/).
+[*aquarion-libtts* documentation](https://aquarion-libtts.readthedocs.io/en/latest/).
 
-<!-- include_end_1 -->
+<!-- --8<-- [end:description] -->
 
 ## Installation
 
@@ -103,11 +103,15 @@ section of the documentation.
 
 ## Support
 
+<!-- --8<-- [start:disclaimer] -->
+
 ### Disclaimer
 
 While this project is FOSS and you are welcome to use it, know that I am making this for
 myself. So do not expect any kind of support or updates or maintenance or longevity.
 *Caveat Emptor*.
+
+<!-- --8<-- [end:disclaimer] -->
 
 ## Roadmap
 
@@ -120,23 +124,23 @@ If, despite the disclaimer above, you still want to try to contribute, then see 
 [Contributing](https://aquarion-libtts.readthedocs.io/en/latest/contributing.html)
 section of the documentation.
 
-<!-- include_start_2 -->
+<!-- --8<-- [start:legal] -->
 
 ## Authors and Acknowledgements
 
-Aquarion AI and aquarion-libtts was created by Krys Lawrence.
+Aquarion AI and *aquarion-libtts* was created by Krys Lawrence.
 
 ## Copyright and Licence
 
 - `aquarion-libtts` is © 2025-present by Krys Lawrence.
 
 - `aquarion-libtts` code is licensed under the terms of the
-  [AGPL-3.0-only](https://spdx.org/licenses/AGPL-3.0-only.html) licence.
+  [AGPL-3.0-only](https://www.gnu.org/licenses/agpl-3.0.en.html#license-text) licence.
 
 - `aquarion-libtts` documentation is licensed under the terms of the
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) licence.
 
-<!-- include_end_2 -->
+<!-- --8<-- [end:legal] -->
 
 ## Project Status
 
