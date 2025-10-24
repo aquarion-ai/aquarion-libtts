@@ -193,13 +193,13 @@ def "main sec vuln" []: nothing -> string {
     mkdir $trivy_cache_path
     (
         trivy fs . --scanners vuln --include-dev-deps -f json -o $report_path
-        --ignorefile $ignorefile_path
+        --ignorefile $ignorefile_path --show-suppressed
     )
-    trivy convert --scanners vuln $report_path
+    trivy convert --scanners vuln $report_path --show-suppressed
     (
         # --format template without a template silences output.
         trivy fs . --scanners vuln --include-dev-deps --severity HIGH,CRITICAL
-        --exit-code 1 --quiet --format template
+        --exit-code 1 --quiet --format template --show-suppressed
     )
 }
 
