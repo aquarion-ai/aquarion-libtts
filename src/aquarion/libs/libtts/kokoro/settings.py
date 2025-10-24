@@ -45,6 +45,8 @@ from aquarion.libs.libtts.api import (
     TTSSettingsSpecType,
 )
 
+__all__ = ["KokoroDeviceNames", "KokoroLocales", "KokoroSettings", "KokoroVoices"]
+
 
 class KokoroLocales(StrEnum):
     """Voice locales supported by this backend.

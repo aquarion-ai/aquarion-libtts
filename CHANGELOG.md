@@ -30,8 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixed the broken `en-core-web-sm` dependency when installing from the wheel
-  distribution package.
+- Nothing yet.
 
 ### Changed
 
@@ -44,6 +43,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Nothing yet.
+
+----
+
+## 0.1.1 - 2025-10-23
+
+### Fixed
+
+- Fixed `en-core-web-sm` dependency failure when trying to pip install aquarion-libtts.
+- Fixed `TTSPluginRegistry.load_plugins` not working without the `kokoro` extra.
 
 ----
 
