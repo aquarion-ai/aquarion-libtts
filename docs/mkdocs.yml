@@ -137,7 +137,6 @@ markdown_extensions:
   - pymdownx.escapeall:
       hardbreak: true
   - pymdownx.snippets:
-      base_path: [".."]
       check_paths: true
 
 validation:

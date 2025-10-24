@@ -275,8 +275,8 @@ groups = ["docs"]
 type = "uvenv"
 
 [tool.hatch.envs.docs.scripts]
-serve = "cd docs && mkdocs serve && cd -"
-build = "cd docs && mkdocs build && cd -"
+serve = "mkdocs serve -f docs/mkdocs.yml"
+build = "mkdocs build -f docs/mkdocs.yml"
 
 ### Coverage ###
 
