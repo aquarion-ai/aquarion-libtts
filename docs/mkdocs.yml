@@ -19,7 +19,7 @@ site_name: aquarion-libtts
 site_description: Text To Speech (TTS) beckend library for Aquarion AI
 site_author: Krys Lawrence
 copyright: © 2025-present by Krys Lawrence
-site_url: !ENV READTHEDOCS_CANONICAL_URL
+site_url: !ENV [READTHEDOCS_CANONICAL_URL, "https://aquarion-libtts.readthedocs.io/en/latest/"]
 repo_url: https://github.com/aquarion-ai/aquarion-libtts
 
 docs_dir: source
