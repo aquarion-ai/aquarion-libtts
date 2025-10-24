@@ -30,7 +30,8 @@
         "vscode",
         "api",
         "kokoro",
-        "docs"
+        "docs",
+        "security"
     ],
     "cucumberautocomplete.strictGherkinCompletion": true,
     "cucumberautocomplete.strictGherkinValidation": true,
