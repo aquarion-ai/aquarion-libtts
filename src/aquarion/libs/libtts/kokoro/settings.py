@@ -142,9 +142,11 @@ class KokoroSettings:
 
     Note:
         To work in an offline or air-gapped environment, you must provides local paths
-        for [model_path][aquarion.libs.libtts.kokoro.KokoroSettings.model_path],
-        [config_path][aquarion.libs.libtts.kokoro.KokoroSettings.config_path] and
-        [voice_path][aquarion.libs.libtts.kokoro.KokoroSettings.config_path].
+        for
+        [model_path][aquarion.libs.libtts.kokoro.settings.KokoroSettings.model_path],
+        [config_path][aquarion.libs.libtts.kokoro.settings.KokoroSettings.config_path]
+        and
+        [voice_path][aquarion.libs.libtts.kokoro.settings.KokoroSettings.config_path].
 
     """
 
@@ -157,7 +159,7 @@ class KokoroSettings:
     While `locale` must be a string to conform with the
     [ITTSSettings][aquarion.libs.libtts.api.ITTSSettings] interface, the valid /
     supported options for it are defined in
-    [KokoroLocales][aquarion.libs.libtts.kokoro.KokoroLocales].
+    [KokoroLocales][aquarion.libs.libtts.kokoro.settings.KokoroLocales].
 
     """
     _locale_spec = TTSSettingsSpecEntry(
@@ -171,10 +173,10 @@ class KokoroSettings:
 
     Voices are either male or female and are optimized for specific languages /
     dialects.  `voice` must be selected from
-    [KokoroVoices][aquarion.libs.libtts.kokoro.KokoroVoices].
+    [KokoroVoices][aquarion.libs.libtts.kokoro.settings.KokoroVoices].
 
     For best results, use a voice that is optimized for the specified
-    [locale][aquarion.libs.libtts.kokoro.KokoroSettings.locale].
+    [locale][aquarion.libs.libtts.kokoro.settings.KokoroSettings.locale].
 
     """
     _voice_spec = TTSSettingsSpecEntry(type=str, values=_enum_strs(KokoroVoices))
@@ -199,9 +201,9 @@ class KokoroSettings:
     I.e. to use the GPU or only the CPU.
 
     `device` must be selected from
-    [KokoroDeviceNames][aquarion.libs.libtts.kokoro.KokoroDeviceNames] or be [None][].
-    If it set to [None][], then a GPU will be used if present, with the CPU as the
-    fallback option.
+    [KokoroDeviceNames][aquarion.libs.libtts.kokoro.settings.KokoroDeviceNames] or be
+    [None][].  If it set to [None][], then a GPU will be used if present, with the CPU
+    as the fallback option.
 
     Note:
         Kokoro TTS does not currently support integer GPU numbers, so if you
@@ -279,7 +281,8 @@ class KokoroSettings:
     downloaded and cached automatically.
 
     If `voice_path` is provided, then the
-    [voice][aquarion.libs.libtts.kokoro.KokoroSettings.voice] attribute is ignored.
+    [voice][aquarion.libs.libtts.kokoro.settings.KokoroSettings.voice] attribute is
+    ignored.
 
     Example:
         `~/my_kokoro_tts_downloads/voices/af_heart.pt`
