@@ -37,4 +37,4 @@ build:
         --group docs --extra kokoro --extra cpu
 
 mkdocs:
-  configuration: docs/mkdocs.yml
+  configuration: mkdocs.yml
