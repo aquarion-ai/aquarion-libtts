@@ -129,13 +129,22 @@ Feature: TTS Library Interface
 
     Scenario Outline: Get a backend's audio specification
         Given I am using the <plugin_id> plugin
+        And I have the following expected audio specification
+            """
+            mime_type: <mime_type>
+            sample_rate: <sample_rate>
+            sample_type: <sample_type>
+            sample_width: <sample_width>
+            byte_order: <byte_order>
+            num_channels: <num_channels>
+            """
         When I make the default settings for the backend
         And I make the backend using the settings
-        Then the audio specification should include <format> and <sample_rate>
+        Then the backend's audio specification should what is expected
 
         Examples:
-            | plugin_id | format     | sample_rate |
-            | kokoro_v1 | Linear PCM | 24000       |
+            | plugin_id | mime_type                       | sample_rate | sample_type | sample_width | byte_order | num_channels |
+            | kokoro_v1 | audio/L16;rate=24000;channels=1 | 24000       | s           | 16           | be         | 1            |
 
     Scenario Outline: Get a backend's settings specification
         Given I am using the <plugin_id> plugin

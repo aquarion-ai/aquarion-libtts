@@ -159,18 +159,19 @@ iterator.  This better supports streaming and real-time applications.  E.g:
 ```python linenums="1"
 import wave
 
-with wave.open("play_me.wav", "wb") as wave_file:
-    wave_file.setnchannels(backend.audio_spec.num_channels)
-    wave_file.setsampwidth(backend.audio_spec.sample_width // 8)
-    wave_file.setframerate(backend.audio_spec.sample_rate)
-    for audio_chunk in backend.convert(
-        "Hi there from aquarion-libtts.  This is the kokoro backend."
-    ):
-        wave_file.writeframes(audio_chunk)
+--8<--
+examples/kokoro_example.py:convert
+--8<--
 ```
 
 As you can see, the TTS backend also provides information about the returned audio
 format in it's `.audio_spec` attribute.
+
+!!! note
+    The Kokoro TTS backend outputs it's audio in big endian byte order to conform with
+    the [RFC 4856 `audio/L16`](https://www.rfc-editor.org/rfc/rfc4856#section-2.1.15)
+    MIME type.  Wave files require little endian byte order, however, so in the example
+    above a byte swapping step is required.
 
 ### Step 9: Stop the Backend
 

@@ -56,6 +56,7 @@ print("Starting...")  # noqa: T201
 try:
     backend.start()
 
+    # --8<-- [start:convert]
     with wave.open("play_me.wav", "wb") as wave_file:
         wave_file.setnchannels(backend.audio_spec.num_channels)
         wave_file.setsampwidth(backend.audio_spec.sample_width // 8)
@@ -63,7 +64,12 @@ try:
         for audio_chunk in backend.convert(
             "Hi there from aquarion-libtts.  This is the kokoro backend."
         ):
-            wave_file.writeframes(audio_chunk)
+            # Convert to little endian byte order
+            audio_chunk_le = b"".join(
+                audio_chunk[i : i + 2][::-1] for i in range(0, len(audio_chunk), 2)
+            )
+            wave_file.writeframes(audio_chunk_le)
+    # --8<-- [end:convert]
 
 finally:
     backend.stop()

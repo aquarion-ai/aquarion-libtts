@@ -29,7 +29,8 @@ from pathlib import Path
 from types import NoneType, UnionType
 from typing import Annotated, Any, Final, Optional, get_args, get_origin
 
-from radish import then, when
+from radish import given, then, when
+from yaml import Loader, load
 
 if typing.TYPE_CHECKING:
     from radish.stepmodel import Step
@@ -40,6 +41,11 @@ MIN_AUDIO_LEN: Final = 100000  # bytes
 
 
 ### GIVENs ###
+
+
+@given("I have the following expected audio specification")
+def _(step: Step) -> None:
+    step.context.expected_audio_spec = load(step.text, Loader=Loader)
 
 
 ### WHENs ###
@@ -185,10 +191,15 @@ def _(step: Step) -> None:
     assert imported_settings == step.context.settings
 
 
-@then("the audio specification should include {format} and {sample_rate:d}")
-def _(step: Step, format: str, sample_rate: int) -> None:  # noqa: A002
-    assert step.context.backend.audio_spec.format == format
-    assert step.context.backend.audio_spec.sample_rate == sample_rate
+@then("the backend's audio specification should what is expected")
+def _(step: Step) -> None:
+    audio_spec = step.context.backend.audio_spec
+    for key, expected in step.context.expected_audio_spec.items():
+        value_str = str(getattr(audio_spec, key))
+        expected_str = str(expected)
+        assert value_str == expected_str, (
+            f"{key} is {value_str}, expected {expected_str}"
+        )
 
 
 @then("all setting attributes should be included in the specification")

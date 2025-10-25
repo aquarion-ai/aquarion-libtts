@@ -55,22 +55,24 @@ class KokoroBackend:
     def audio_spec(self) -> TTSAudioSpec:
         """Metadata about the speech audio format.
 
-        E.g. Mono 16-bit little-endian linear PCM audio at 24KHz.
+        The audio output format emitted by the
+        [convert][aquarion.libs.libtts.api.ITTSBackend.convert] method.
 
         Returns:
-            The audio output format emitted by the
-                [convert][aquarion.libs.libtts.api.ITTSBackend.convert] method.
+            Mono 16-bit big-endian linear PCM audio at 24KHz.  This conforms to the
+                [RFC4856](https://www.rfc-editor.org/rfc/rfc4856#section-2.1.15)
+                `audio/L16` MIME type.
 
         Note:
             This should be a read-only property.
 
         """
         return TTSAudioSpec(
-            format="Linear PCM",
+            mime_type="audio/L16;rate=24000;channels=1",
             sample_rate=24000,
             sample_type=TTSSampleTypes.SIGNED_INT,
             sample_width=16,
-            byte_order=TTSSampleByteOrders.LITTLE_ENDIAN,
+            byte_order=TTSSampleByteOrders.BIG_ENDIAN,
             num_channels=1,
         )
 
@@ -162,6 +164,16 @@ class KokoroBackend:
                 continue
             audio_array: NDArray[float32] = result.audio.numpy()
             audio_int_array: NDArray[int16] = (audio_array * 32767).astype("int16")
+            # Convert to big endian byte order for audio/L16 compliance.
+            # Assumptions:
+            #   1. numpy is using native byte order (or explicitly little endian).
+            #   2. The system's byte order is little endian.
+            #   3. All common modern systems use little endian byte order.
+            # If this every becomes an issue, file a bug report.
+            audio_int_array.byteswap(inplace=True)
+            audio_int_array = audio_int_array.view(
+                audio_int_array.dtype.newbyteorder(">")  # ">" means big-endian
+            )
             yield audio_int_array.tobytes()
 
     def start(self) -> None:

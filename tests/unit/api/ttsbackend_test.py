@@ -46,11 +46,11 @@ if TYPE_CHECKING:
 type TTSAudioSpecTypes = bytes | str | int
 
 AUDIO_SPEC_REQUIRED_ARGS: Final = {
-    "format": "WAV",
+    "mime_type": "audio/L16",
     "sample_rate": 24000,
     "sample_type": "s",
     "sample_width": 16,
-    "byte_order": "little-endian",
+    "byte_order": "big-endian",
     "num_channels": 1,
 }
 
@@ -120,11 +120,11 @@ class DummyTTSBackend(DummyTTSSettingsHolder):
     @property
     def audio_spec(self) -> TTSAudioSpec:
         return TTSAudioSpec(
-            format="Linear PCM",
+            mime_type="audio/L16",
             sample_rate=24000,
             sample_type=TTSSampleTypes.SIGNED_INT,
             sample_width=16,
-            byte_order=TTSSampleByteOrders.LITTLE_ENDIAN,
+            byte_order=TTSSampleByteOrders.BIG_ENDIAN,
             num_channels=1,
         )
 

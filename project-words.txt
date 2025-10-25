@@ -11,6 +11,7 @@ autouse
 beautifulsoup
 beckend
 bsdiff
+byteswap
 calcul
 celerybeat
 Chemin
@@ -47,6 +48,7 @@ fichiers
 filterwarnings
 fontawesome
 Generis
+GHSA
 GITMOJI
 hardbreak
 hexgrad
@@ -98,6 +100,7 @@ myhookmodule
 mypy
 myst
 networkx
+newbyteorder
 noncommercially
 norme
 nosetests

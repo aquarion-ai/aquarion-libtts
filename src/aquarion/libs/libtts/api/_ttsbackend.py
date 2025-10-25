@@ -49,6 +49,9 @@ class TTSSampleTypes(StrEnum):
     FLOAT = "f"
     """Floating point samples."""
 
+    NOT_APPLICABLE = ""
+    """This should only be used for compressed or variable bit streams."""
+
 
 class TTSSampleByteOrders(StrEnum):
     """The byte order for multi-byte audio samples.
@@ -82,8 +85,14 @@ class TTSAudioSpec:
 
     """
 
-    format: str
-    """E.g. "Linear PCM", "WAV", "MP3", etc."""
+    mime_type: str
+    """E.g. "audio/L16", "audio/webm", "audio/mpeg", etc.
+
+    Note:
+        Probably raw Linear PCM audio is preferred so that client applications can do
+        with it what they want, but any format is allowed.
+
+    """
 
     sample_rate: int
     """E.g 8000, 24000, 48000, etc."""
@@ -129,7 +138,8 @@ class ITTSBackend(ITTSSettingsHolder, Protocol):
     def audio_spec(self) -> TTSAudioSpec:
         """Metadata about the speech audio format.
 
-        E.g. Mono 16-bit little-endian linear PCM audio at 24KHz.
+        E.g. Mono 16-bit big endian linear PCM audio at 24KHz with a MIME type of
+        `audio/L16`.
 
         Returns:
             The audio output format emitted by the

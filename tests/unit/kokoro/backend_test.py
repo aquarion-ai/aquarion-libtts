@@ -42,6 +42,12 @@ if TYPE_CHECKING:
 
     from tests.unit.kokoro.conftest import SettingsDict
 
+EXPECTED_AUDIO_SPEC = (
+    "TTSAudioSpec(mime_type='audio/L16;rate=24000;channels=1', sample_rate=24000,"
+    " sample_type=<TTSSampleTypes.SIGNED_INT: 's'>, sample_width=16,"
+    " byte_order=<TTSSampleByteOrders.BIG_ENDIAN: 'be'>, num_channels=1)"
+)
+
 
 @pytest.fixture(autouse=True)
 def mock_kpipeline(mocker: MockerFixture) -> None:
@@ -133,7 +139,7 @@ def test_kokorobackend_convert_should_log_its_action(logot: Logot) -> None:
     text = "some text"
     backend = KokoroBackend(KokoroSettings())
     backend.start()
-    b"".join(list(backend.convert(text)))
+    list(backend.convert(text))
     logot.assert_logged(logged.debug(f"Kokoro TTS backend converting text: {text}"))
 
 
@@ -142,7 +148,7 @@ def test_kokorobackend_convert_should_truncate_long_text_in_log(logot: Logot) ->
     expected = f"{long_text[:_TEXT_IN_LOG_MAX_LEN]}..."
     backend = KokoroBackend(KokoroSettings())
     backend.start()
-    b"".join(list(backend.convert(long_text)))
+    list(backend.convert(long_text))
     logot.assert_logged(logged.debug(f"Kokoro TTS backend converting text: {expected}"))
 
 
@@ -254,6 +260,11 @@ def test_kokorobackend_should_have_an_audio_spec_property() -> None:
 def test_kokorobackend_audio_spec_should_return_a_ttsaudiospec_instance() -> None:
     backend = KokoroBackend(KokoroSettings())
     assert isinstance(backend.audio_spec, TTSAudioSpec)
+
+
+def test_kokorobackend_audio_spec_should_indicate_audio_l16_format() -> None:
+    backend = KokoroBackend(KokoroSettings())
+    assert str(backend.audio_spec) == EXPECTED_AUDIO_SPEC
 
 
 ## .convert() tests

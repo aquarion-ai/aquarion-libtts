@@ -138,6 +138,7 @@ markdown_extensions:
       hardbreak: true
   - pymdownx.snippets:
       check_paths: true
+      dedent_subsections: true
 
 validation:
   omitted_files: warn
