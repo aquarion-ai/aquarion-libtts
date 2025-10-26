@@ -155,8 +155,8 @@ def test_load_language_should_log_the_actual_loaded_language(
 
 
 def test_load_language_should_log_when_no_translations_are_found(logot: Logot) -> None:
-    _, _t = load_language("bas_CM", "test", TEST_LOCALE_PATH)
     load_language.cache_clear()
+    _, _t = load_language("bas_CM", "test", TEST_LOCALE_PATH)
     logot.assert_logged(
         logged.debug("Attempting to load translations for locale: bas_CM")
         >> logged.debug("No translations found for locale bas_CM, using defaults")
