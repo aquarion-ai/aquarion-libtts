@@ -22,8 +22,7 @@
 # This removes all cashes, builds artifacts, virtual environments, local Python
 # versions, etc.
 #
-# To restore the environment, follow the developer installation instructions in
-# README.md.
+# To restore the environment, follow the developer installation instructions.
 def main [
     --caches (-c)  # Also clean all caches
     --devbox (-d)  # Also remove the devbox shell
@@ -121,6 +120,10 @@ def remove_local_cache []: nothing -> nothing {
 def remove_local_builds []: nothing -> nothing {
     print "Removing local builds"
     rm -rf dist
+    rm -rf docs/site
+    for dir in (glob **/__pycache__) {
+        rm -rf $dir
+    }
 }
 
 def remove_generated_translation_files []: nothing -> nothing {
