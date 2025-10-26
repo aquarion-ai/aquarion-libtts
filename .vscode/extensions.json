@@ -13,7 +13,6 @@
         "be5invis.toml",
         "alexkrechik.cucumberautocomplete",
         "tamasfe.even-better-toml",
-        "chrisjsewell.myst-tml-syntax",
         "ms-python.vscode-python-envs"
     ]
 }
