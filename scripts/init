@@ -44,5 +44,4 @@ def "main" []: nothing -> string {
     lang compile
     nix-store --optimize
     nix-collect-garbage -d
-    pre-commit gc
 }

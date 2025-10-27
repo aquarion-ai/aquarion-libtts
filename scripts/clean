@@ -143,6 +143,7 @@ def remove_devbox_shell []: nothing -> nothing {
 def remove_pre-commit_tools []: nothing -> nothing {
     print "Removing pre-commit tools"
     pre-commit clean
+    pre-commit gc
 }
 
 
