@@ -9,7 +9,6 @@ autonav
 autosummary
 autouse
 beautifulsoup
-beckend
 bsdiff
 byteswap
 calcul
