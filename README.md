@@ -129,7 +129,7 @@ section of the documentation.
 
 ## Authors and Acknowledgements
 
-Aquarion AI and *aquarion-libtts* was created by Krys Lawrence.
+Aquarion AI and *aquarion-libtts* were created by Krys Lawrence.
 
 ## Copyright and Licence
 
