@@ -19,7 +19,7 @@ README.md:description
 
 - [Aquarion AI on GitHub](https://github.com/aquarion-ai)
 - [*aquarion-libtts* on GitHub](https://github.com/aquarion-ai/aquarion-libtts)
-- [*aquarion-libtts* documentation on Read the Docs](https://*aquarion-libtts*.readthedocs.io/)
+- [*aquarion-libtts* documentation on Read the Docs](https://aquarion-libtts.readthedocs.io/)
 <!-- - [*aquarion-libtts* on PyPI](https://pypi.org) -->
 
 --8<--

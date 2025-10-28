@@ -153,7 +153,7 @@ This section is an attempt clarify which tool is used for which common task.
 | Format Markdown                           | pre-commit (markdownlint-cli2)           |
 | Format YAML                               | pre-commit (yamlfmt)                     |
 | Format JSON                               | pre-commit (pretty-format-json)          |
-| Spell checking                            | pre-commit (codespell)                   |
+| Spell checking                            | pre-commit (codespell), `docs` (Mkdocs)  |
 | Manage translations                       | The `lang` script (Hatch, Babel)         |
 | Remove all venvs, tools, caches, etc.     | The `clean` script                       |
 | Run CI pipeline                           | Github Actions (using the scripts above) |
