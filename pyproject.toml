@@ -81,6 +81,10 @@ kokoro_v1 = "aquarion.libs.libtts.kokoro._hook"
 accept = ["bsdiff4~=1.2.6", "coverage[toml]~=7.10.7", "radish-bdd~=0.18.2"]
 babel = ["babel~=2.17.0"]
 docs = [
+    # Workaround for bug:
+    # https://github.com/squidfunk/mkdocs-material/issues/8478
+    # Revisit in the future when it is resolved.
+    "click==8.2.1",
     "mkdocs-api-autonav>=0.4.0",
     "mkdocs-link-marker>=0.2.0",
     "mkdocs-macros-plugin>=1.4.0",

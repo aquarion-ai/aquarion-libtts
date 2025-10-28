@@ -74,6 +74,7 @@ babel = [
     { name = "babel" },
 ]
 docs = [
+    { name = "click" },
     { name = "mkdocs" },
     { name = "mkdocs-api-autonav" },
     { name = "mkdocs-link-marker" },
@@ -157,6 +158,7 @@ accept = [
 ]
 babel = [{ name = "babel", specifier = "~=2.17.0" }]
 docs = [
+    { name = "click", specifier = "==8.2.1" },
     { name = "mkdocs", specifier = ">=1.6.1" },
     { name = "mkdocs-api-autonav", specifier = ">=0.4.0" },
     { name = "mkdocs-link-marker", specifier = ">=0.2.0" },
