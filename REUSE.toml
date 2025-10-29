@@ -46,3 +46,8 @@ path = "**/*.mo"
 SPDX-FileCopyrightText = "2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>"
 SPDX-License-Identifier = "AGPL-3.0-only"
 path = "tests/acceptance/steps/*.pcm"
+
+[[annotations]]
+SPDX-FileCopyrightText = "Copyright © 2010-2025 Freepik Company S.L."
+SPDX-License-Identifier = "LicenseRef-Freepik"
+path = "docs/source/assets/logo.png"

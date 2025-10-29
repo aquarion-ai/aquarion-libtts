@@ -417,6 +417,7 @@ xfail_strict = true
 builtin = ["clear", "rare", "usage", "names"]
 check-filenames = true
 check-hidden = false
+exclude-file = ["LICENSES/LicenseRef-Freepik.txt"]
 ignore-words = ["project-words.txt"]
 quiet-level = 0
 skip = ["__pycache__", "uv.lock", "*.po"]
