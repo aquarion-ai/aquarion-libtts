@@ -1,6 +1,5 @@
-<!-- markdownlint-disable MD052 -->
-
 # Getting Started
+<!-- markdownlint-disable MD052 -->
 
 <!--
     SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
