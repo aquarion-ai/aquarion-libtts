@@ -41,7 +41,8 @@ plugins:
   - macros:
       on_undefined: strict
   - social
-  - link-marker
+  - open-in-new-tab:
+      add_icon: true
   - api-autonav:
       modules: [../src/aquarion]
   - spellcheck:

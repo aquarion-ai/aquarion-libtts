@@ -86,9 +86,9 @@ docs = [
     # Revisit in the future when it is resolved.
     "click==8.2.1",
     "mkdocs-api-autonav>=0.4.0",
-    "mkdocs-link-marker>=0.2.0",
     "mkdocs-macros-plugin>=1.4.0",
     "mkdocs-material[imaging]>=9.6.22",
+    "mkdocs-open-in-new-tab>=1.0.8",
     "mkdocs-spellcheck[codespell]>=1.1.2",
     "mkdocs>=1.6.1",
     "mkdocstrings-python>=1.18.2",
