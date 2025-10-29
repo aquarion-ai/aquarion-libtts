@@ -21,6 +21,7 @@ site_author: Krys Lawrence
 copyright: © 2025-present by Krys Lawrence
 site_url: !ENV [READTHEDOCS_CANONICAL_URL, "https://aquarion-libtts.readthedocs.io/en/latest/"]
 repo_url: https://github.com/aquarion-ai/aquarion-libtts
+repo_name: aquarion-ai/aquarion-libtts
 
 docs_dir: source
 strict: true
@@ -101,6 +102,8 @@ theme:
     - content.code.copy
     - navigation.footer
     - navigation.indexes
+    - navigation.instant.progress
+    - navigation.expand
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
