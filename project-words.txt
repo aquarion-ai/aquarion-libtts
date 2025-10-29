@@ -46,6 +46,7 @@ fichier
 fichiers
 filterwarnings
 fontawesome
+Freepik
 Generis
 GHSA
 GITMOJI
