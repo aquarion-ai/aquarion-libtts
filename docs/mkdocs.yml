@@ -35,6 +35,7 @@ nav:
   - Requirements:
       - requirements/api.md
       - requirements/kokoro.md
+  - Aquarion AI Documentation: https://aquarion-docs.readthedocs.io
 
 plugins:
   - search
