@@ -27,3 +27,8 @@ vulnerabilities:
       Risk is low, uv is only a dev dependency and aquarion-libtts itself is not
       affected.  Further, as soon as uv v0.9.5 is available via Devbox, we can upgrade
       to address this.
+  - id: GHSA-pqhf-p39g-3x64
+    expired_at: 2025-11-29
+    statement: >-
+      uv is only a dev dependency and aquarion-libtts itself is not affected.  Further,
+      as soon as uv v0.9.6 is available via Devbox, we can upgrade to address this.
