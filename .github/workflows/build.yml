@@ -38,7 +38,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-24.04
-
+    outputs:
+      test_total: ${{ steps.report.outputs.test_total }}
+      accept_total: ${{ steps.report.outputs.accept_total }}
+      sec_total: ${{ steps.report.outputs.sec_total }}
+      sec_highest: ${{ steps.report.outputs.sec_highest }}
+      sec_error: ${{ steps.report.outputs.sec_error }}
     steps:
       # - name: Free Disk Space (Ubuntu)
       #   uses: jlumbroso/free-disk-space@v1.3.1
@@ -115,22 +120,36 @@ jobs:
         run: devbox run check licences
 
       - name: Create Actions report
+        id: report
         run: |
           export TEST_TOTAL=$(devbox run report coverage test --total --ci)
           export ACCEPT_TOTAL=$(devbox run report coverage accept --total --ci)
           export SEC_TOTAL=$(devbox run report sec total)
           export SEC_HIGHEST=$(devbox run report sec highest)
           [[ "$SEC_HIGHEST" == "HIGH" || "$SEC_HIGHEST" == "CRITICAL" ]] && export SEC_ERROR=true || export SEC_ERROR=false
-          echo "test_total=$TEST_TOTAL" >> $GITHUB_ENV
-          echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_ENV
-          echo "sec_total=$SEC_TOTAL" >> $GITHUB_ENV
-          echo "sec_highest=$SEC_HIGHEST" >> $GITHUB_ENV
-          echo "sec_error=$SEC_ERROR" >> $GITHUB_ENV
+
+          echo "test_total=$TEST_TOTAL" >> $GITHUB_OUTPUT
+          echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_OUTPUT
+          echo "sec_total=$SEC_TOTAL" >> $GITHUB_OUTPUT
+          echo "sec_highest=$SEC_HIGHEST" >> $GITHUB_OUTPUT
+          echo "sec_error=$SEC_ERROR" >> $GITHUB_OUTPUT
+
           echo "### Total test coverage: ${TEST_TOTAL}%" >> $GITHUB_STEP_SUMMARY
           echo "### Total acceptance test coverage: ${ACCEPT_TOTAL}%" >> $GITHUB_STEP_SUMMARY
           echo "### Total vulnerabilities: ${SEC_TOTAL}" >> $GITHUB_STEP_SUMMARY
           echo "### Highest vulnerability severity level: ${SEC_HIGHEST}" >> $GITHUB_STEP_SUMMARY
 
+  badges:
+    runs-on: ubuntu-24.04
+    needs: test
+    if: ${{ github.event_name  == 'push' }}
+    env:
+      test_total: ${{ needs.test.outputs.test_total }}
+      accept_total: ${{ needs.test.outputs.accept_total }}
+      sec_total: ${{ needs.test.outputs.sec_total }}
+      sec_highest: ${{ needs.test.outputs.sec_highest }}
+      sec_error: ${{ needs.test.outputs.sec_error }}
+    steps:
       - name: Get repo name
         run: echo "repo_name=${{ github.repository }}" | sed "s/\//_/" >> $GITHUB_ENV
 
