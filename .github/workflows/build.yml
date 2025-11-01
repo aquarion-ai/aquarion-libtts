@@ -112,6 +112,12 @@ jobs:
       - name: Run licence checks
         run: devbox run check licences
 
+      - name: List dependency licences
+        run: devbox run report licences
+
+      - name: Summarize dependency licences
+        run: devbox run report licences --summary
+
       - name: Create Actions report
         id: report
         run: |
