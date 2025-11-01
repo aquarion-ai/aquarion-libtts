@@ -290,7 +290,7 @@ groups = ["licences"]
 type = "uvenv"
 
 [tool.hatch.envs.licences.scripts]
-report="pip-licenses {args}"
+report = "pip-licenses {args}"
 
 ### Coverage ###
 
