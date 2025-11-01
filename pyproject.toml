@@ -280,6 +280,18 @@ type = "uvenv"
 serve = "mkdocs serve -f docs/mkdocs.yml"
 build = "mkdocs build -f docs/mkdocs.yml"
 
+# Env: licences
+
+[tool.hatch.envs.licences]
+# This should include all plugins in order to make a complete licence list.
+# Not including CUDA or other GPU-specific dependencies since that is user's choice.
+features = ["cpu", "kokoro"]
+groups = ["licences"]
+type = "uvenv"
+
+[tool.hatch.envs.licences.scripts]
+report="pip-licenses {args}"
+
 ### Coverage ###
 
 [tool.coverage.run]

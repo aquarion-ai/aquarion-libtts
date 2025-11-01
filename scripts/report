@@ -87,3 +87,10 @@ def "main sec total" []: nothing -> string {
     let report_path = ($project_root | path join ".cache" "trivy" "report.json")
     trivy convert $report_path --format template --template $"@($template_path)" --quiet
 }
+
+# List all dependency licences, not including any development dependencies.
+def --wrapped "main licences" [
+    ...rest: string # Extra arguments for pip-licenses
+]: nothing -> nothing {
+    hatch run licences:report ...$rest
+}
