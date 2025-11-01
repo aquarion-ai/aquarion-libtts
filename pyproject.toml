@@ -139,6 +139,7 @@ types = [
     "types_tqdm~=4.67.0",           # PyTorch & Kokoro TTS stub
     "types_xlrd~=2.0.0",            # mypy type stub
 ]
+licences = ["pip-licenses>=5.5.0"]
 
 [tool.uv]
 conflicts = [[{ extra = "cpu" }, { extra = "cu128" }, { extra = "cu129" }]]
