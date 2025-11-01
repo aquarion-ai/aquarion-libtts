@@ -1,4 +1,4 @@
-# Aquarion AI - Text To Speech (TTS) Library {{ version }} Documentation
+# Aquarion AI - Text To Speech (TTS) Library v{{ version }} Documentation
 
 <!--
     SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
