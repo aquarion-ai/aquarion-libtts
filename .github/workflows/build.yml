@@ -112,6 +112,9 @@ jobs:
       - name: Run licence checks
         run: devbox run check licences
 
+      - name: Run SBOM check
+        run: devbox run check sbom
+
       - name: List dependency licences
         run: devbox run report licences
 
