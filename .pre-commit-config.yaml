@@ -51,6 +51,7 @@ repos:
       - id: debug-statements
       - id: detect-private-key
       - id: end-of-file-fixer
+        exclude: "^sbom.cdx.json$"
       - id: file-contents-sorter
         args: [--ignore-case]
         files: project-words.txt
@@ -62,6 +63,7 @@ repos:
         exclude: '_steps\.py'
       - id: pretty-format-json
         args: [--autofix, --indent, "4"]
+        exclude: "^sbom.cdx.json$"
       - id: trailing-whitespace
 
   - repo: https://github.com/pre-commit/pygrep-hooks
