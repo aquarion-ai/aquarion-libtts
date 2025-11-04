@@ -44,6 +44,10 @@ def "main" []: nothing -> string {
         uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
         $"pip-licenses~=($env.AQ_PIP_LICENSES_MINIMUM_VERSION)"
     )
+    (
+        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
+        $"cyclonedx-bom~=($env.AQ_CYCLONEDX_BOM_MINIMUM_VERSION)"
+    )
     lang extract
     lang compile
     nix-store --optimize

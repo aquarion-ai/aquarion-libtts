@@ -24,6 +24,7 @@ compatiblelicenses
 creativecommons
 crossrefs
 CUDA
+cyclonedx
 cython
 dateutil
 defenses

@@ -3,6 +3,7 @@
     "description": "Set up base environment and non-Python dev tools for aquarion-libtts.",
     "env": {
         "AQ_COMMITIZEN_MINIMUM_VERSION": "4.9.1",
+        "AQ_CYCLONEDX_BOM_MINIMUM_VERSION": "7.2.1",
         "AQ_CZ_CONVENTIONAL_GITMOJI_MINIMUM_VERSION": "0.7.0",
         "AQ_HATCH_MINIMUM_VERSION": "1.14.2",
         "AQ_PIP_LICENSES_MINIMUM_VERSION": "5.5.0",
