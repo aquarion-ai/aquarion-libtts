@@ -92,5 +92,6 @@ def "main sec total" []: nothing -> string {
 def --wrapped "main licences" [
     ...rest: string # Extra arguments for pip-licenses
 ]: nothing -> nothing {
-    hatch run licences:report ...$rest
+    let sbom_env = (hatch env find sbom)
+    pip-licenses --python $"($sbom_env)/bin/python" ...$rest
 }

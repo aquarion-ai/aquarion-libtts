@@ -139,7 +139,6 @@ types = [
     "types_tqdm~=4.67.0",           # PyTorch & Kokoro TTS stub
     "types_xlrd~=2.0.0",            # mypy type stub
 ]
-licences = ["pip-licenses>=5.5.0"]
 
 [tool.uv]
 conflicts = [[{ extra = "cpu" }, { extra = "cu128" }, { extra = "cu129" }]]
@@ -280,17 +279,16 @@ type = "uvenv"
 serve = "mkdocs serve -f docs/mkdocs.yml"
 build = "mkdocs build -f docs/mkdocs.yml"
 
-# Env: licences
+# Env: sbom
 
-[tool.hatch.envs.licences]
+# This is a clean basic environment, with no dev tools, used for building the SBOM and
+# displaying licensing information.
+
+[tool.hatch.envs.sbom]
 # This should include all plugins in order to make a complete licence list.
 # Not including CUDA or other GPU-specific dependencies since that is user's choice.
 features = ["cpu", "kokoro"]
-groups = ["licences"]
 type = "uvenv"
-
-[tool.hatch.envs.licences.scripts]
-report = "pip-licenses {args}"
 
 ### Coverage ###
 
