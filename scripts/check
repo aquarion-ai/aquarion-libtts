@@ -67,6 +67,7 @@ def "main push" []: nothing -> string {
     main accept cover
     main sec
     main licences
+    main sbom
 }
 
 # Run all security checks.
@@ -136,6 +137,13 @@ def --wrapped "main licences" [
     ...rest: string # Extra arguments for pre-commit
 ]: nothing -> string {
     reuse lint
+}
+
+# Regenerate the SBOM
+def "main sbom" []: nothing -> string {
+    let temp_bom = $"($nu.temp-path)/aquarion-libtts.sbom.json"
+    sbom $temp_bom
+    diff -q sbom.cdx.json $temp_bom
 }
 
 ### Individual testing tasks
