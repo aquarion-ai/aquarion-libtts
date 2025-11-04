@@ -18,6 +18,8 @@
 
 # (Re-)Generate the SBOM
 def "main" [output_file: string = "sbom.cdx.json"]: nothing -> nothing {
+    # Ensure the sbom environment exists.
+    hatch run sbom:echo
     let sbom_env = (hatch env find sbom)
     (
         cyclonedx-py environment --pyproject pyproject.toml --mc-type library
