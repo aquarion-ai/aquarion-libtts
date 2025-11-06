@@ -710,34 +710,6 @@
       "version": "0.6.2"
     },
     {
-      "bom-ref": "en_core_web_sm==3.8.0",
-      "description": "English pipeline optimized for CPU. Components: tok2vec, tagger, parser, senter, ner, attribute_ruler, lemmatizer.",
-      "externalReferences": [
-        {
-          "comment": "PackageSource: Archive",
-          "type": "distribution",
-          "url": "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl"
-        },
-        {
-          "comment": "from packaging metadata: Home-page",
-          "type": "website",
-          "url": "https://explosion.ai"
-        }
-      ],
-      "licenses": [
-        {
-          "license": {
-            "acknowledgement": "declared",
-            "id": "MIT"
-          }
-        }
-      ],
-      "name": "en_core_web_sm",
-      "purl": "pkg:pypi/en-core-web-sm@3.8.0?download_url=https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
-      "type": "library",
-      "version": "3.8.0"
-    },
-    {
       "bom-ref": "espeakng-loader==0.2.4",
       "description": "A Python package that provides shared library loader for eSpeak NG",
       "name": "espeakng-loader",
@@ -2914,9 +2886,6 @@
       "ref": "docopt==0.6.2"
     },
     {
-      "ref": "en_core_web_sm==3.8.0"
-    },
-    {
       "ref": "espeakng-loader==0.2.4"
     },
     {
@@ -3155,7 +3124,6 @@
     {
       "dependsOn": [
         "babel==2.17.0",
-        "en_core_web_sm==3.8.0",
         "kokoro==0.9.4",
         "loguru==0.7.3",
         "pip==25.2",
