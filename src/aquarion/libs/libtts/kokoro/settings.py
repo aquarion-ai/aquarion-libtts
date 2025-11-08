@@ -146,7 +146,7 @@ class KokoroSettings:
         [model_path][aquarion.libs.libtts.kokoro.settings.KokoroSettings.model_path],
         [config_path][aquarion.libs.libtts.kokoro.settings.KokoroSettings.config_path]
         and
-        [voice_path][aquarion.libs.libtts.kokoro.settings.KokoroSettings.config_path].
+        [voice_path][aquarion.libs.libtts.kokoro.settings.KokoroSettings.voice_path].
 
     """
 
