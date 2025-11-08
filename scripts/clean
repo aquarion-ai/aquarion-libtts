@@ -66,47 +66,15 @@ def remove_hatch_envs []: nothing -> nothing {
 }
 
 def remove_hatch_pythons []: nothing -> nothing {
-    let pythons = (
-        hatch python show --ascii
-        | split row 'Available'
-        | get 0
-        | lines
-        | find -n '|'
-        | split column '|'
-        | skip 1
-        | each {$in.column2 | str trim}
-    )
-    for python in ($pythons) {
-        print $"Removing hatch python: ($python)"
-        hatch python remove ($python)
-    }
+    print (hatch python remove all)
 }
 
 def remove_uv_tools []: nothing -> nothing {
-    let tools = (
-        uv tool list
-        | lines
-        | find -n -v -r '^-'
-        | split column ' '
-        | each {$in.column1 | str trim}
-    )
-    for tool in ($tools) {
-        print $"Removing uv tool: ($tool)"
-        uv tool uninstall $tool
-    }
+    print (uv tool uninstall --all)
 }
 
 def remove_uv_pythons []: nothing -> nothing {
-    let pythons = (
-        uv python list --only-installed
-        | detect columns -n
-        | find '/uv/'
-        | each {$in.column0 | str trim}
-    )
-    for python in ($pythons) {
-        print $"Removing uv python: ($python)"
-        uv python uninstall $python
-    }
+    print (uv python uninstall --all)
 }
 
 def remove_uv_cache []: nothing -> nothing {
