@@ -22,9 +22,7 @@ build-backend = "hatchling.build"
 requires = ["hatchling~=1.27.0", "hatch-semver~=2.0.2"]
 
 [project]
-authors = [
-    { name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org" },
-]
+authors = [{ name = "Krys Lawrence", email = "aquarion.5.krystopher@spamgourmet.org" }]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: GPU :: NVIDIA CUDA :: 12",
@@ -57,7 +55,7 @@ requires-python = ">=3.12"
 [project.urls]
 Changelog = "https://aquarion-libtts.readthedocs.io/en/latest/changelog.html"
 Documentation = "https://aquarion-libtts.readthedocs.io/en/latest/"
-#Download = ""
+Download = "https://pypi.org/project/aquarion-libtts/"
 Homepage = "https://github.com/aquarion-ai"
 Issues = "https://github.com/aquarion-ai/aquarion-libtts/issues"
 Source = "https://github.com/aquarion-ai/aquarion-libtts"
