@@ -13,27 +13,20 @@
 
 Experiment in creating a scalable local AI voice chat bot.
 
+## Badges
+
 [![Static Badge](https://img.shields.io/badge/Part_of-Aquarion_AI-blue)](https://github.com/aquarion-ai)
+[![PyPI - License](https://img.shields.io/pypi/l/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 [![Docs Licence](https://img.shields.io/badge/docs_licence-CC_BY_SA_4.0-red)](https://creativecommons.org/licenses/by-sa/4.0/)
 [![REUSE status](https://api.reuse.software/badge/github.com/aquarion-ai/aquarion-libtts)](https://api.reuse.software/info/github.com/aquarion-ai/aquarion-libtts)
-<!-- markdownlint-disable MD013 -->
-<!--
-[![PyPI - License](https://img.shields.io/pypi/l/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
--->
-<!-- markdownlint-enable MD013 -->
 
-<!-- markdownlint-disable MD013 -->
-<!--
-[![PyPI - Version](https://img.shields.io/pypi/v/aquarion-libtts.svg)](https://pypi.org/project/aquarion-libtts)
+[![PyPI - Version](https://img.shields.io/pypi/v/aquarion-libtts?label=version)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/aquarion-libtts.svg)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Implementation](https://img.shields.io/pypi/implementation/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Types](https://img.shields.io/pypi/types/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
-[![PyPI - Wheel](https://img.shields.io/pypi/wheel/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Format](https://img.shields.io/pypi/format/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Status](https://img.shields.io/pypi/status/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
--->
-<!-- markdownlint-enable MD013 -->
 
 [![build](https://github.com/aquarion-ai/aquarion-libtts/actions/workflows/build.yml/badge.svg)](https://github.com/aquarion-ai/aquarion-libtts/actions/workflows/build.yml)
 [![Test Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/justkrys/079b402971d82c07d05c74f37c57b088/raw/aquarion-ai_aquarion-libtts__main__test.json)](https://github.com/aquarion-ai/aquarion-libtts/actions)
