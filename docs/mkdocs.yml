@@ -33,9 +33,9 @@ nav:
   - API Reference
   - plugins.md
   - contributing.md
-  - Requirements:
-      - requirements/api.md
-      - requirements/kokoro.md
+  - Acceptance Criteria:
+      - acceptance/api.md
+      - acceptance/kokoro.md
   - Aquarion AI Documentation: https://aquarion-docs.readthedocs.io
 
 plugins:

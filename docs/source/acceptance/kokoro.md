@@ -1,4 +1,4 @@
-# Kokoro TTS Requirements
+# Kokoro TTS Acceptance Criteria
 
 <!--
     SPDX-FileCopyrightText: 2025-present Krys Lawrence <aquarion.5.krystopher@spamgourmet.org>
@@ -11,9 +11,11 @@
     license, visit <https://creativecommons.org/licenses/by-sa/4.0/>
 -->
 
-The *aquarion-libtts* project documents it's requirements using
-[Behaviour Driven Development](https://en.wikipedia.org/wiki/Behavior-driven_development)
-(BDD) and automated acceptance tests.  The following are the BDD-style requirements for
+The *aquarion-libtts* project documents it's acceptance criteria (a.k.a. requirements)
+using [Behaviour Driven Development](https://en.wikipedia.org/wiki/Behavior-driven_development)
+(BDD), also known as
+[Acceptance Test-Driven Development](https://en.wikipedia.org/wiki/Acceptance_test-driven_development/)
+(ATDD), and automated acceptance tests.  The following are the acceptance criteria for
 *aquarion-libtts*'s [Kokoro TTS](https://huggingface.co/hexgrad/Kokoro-82M) backend.
 
 ```gherkin
