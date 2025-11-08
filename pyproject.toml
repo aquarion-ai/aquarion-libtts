@@ -61,9 +61,10 @@ Issues = "https://github.com/aquarion-ai/aquarion-libtts/issues"
 Source = "https://github.com/aquarion-ai/aquarion-libtts"
 
 [project.optional-dependencies]
-cpu = ["torch~=2.8.0"]
-cu128 = ["torch~=2.8.0"]
-cu129 = ["torch~=2.8.0"]
+# For internal use only
+cpu_internal = ["torch~=2.8.0"]
+cuda_internal = ["torch~=2.8.0"]
+# Plugins
 kokoro = ["kokoro~=0.9.4", "pip~=25.2.0", "pydantic~=2.12.0", "torch~=2.8.0"]
 
 [project.entry-points."aquarion-libtts"]
@@ -135,14 +136,13 @@ types = [
 ]
 
 [tool.uv]
-conflicts = [[{ extra = "cpu" }, { extra = "cu128" }, { extra = "cu129" }]]
+conflicts = [[{ extra = "cpu_internal" }, { extra = "cuda_internal" }]]
 
 [tool.uv.sources]
 aquarion-libtts = { workspace = true }
 torch = [
-    { index = "pytorch-cpu", extra = "cpu" },
-    { index = "pytorch-cu128", extra = "cu128" },
-    { index = "pytorch-cu129", extra = "cu129" },
+    { index = "pytorch-cpu", extra = "cpu_internal" },
+    { index = "pytorch-cuda", extra = "cuda_internal" },
 ]
 
 [[tool.uv.index]]
@@ -152,13 +152,9 @@ url = "https://download.pytorch.org/whl/cpu"
 
 [[tool.uv.index]]
 explicit = true
-name = "pytorch-cu128"
-url = "https://download.pytorch.org/whl/cu128"
-
-[[tool.uv.index]]
-explicit = true
-name = "pytorch-cu129"
-url = "https://download.pytorch.org/whl/cu129"
+name = "pytorch-cuda"
+# PyTorch publishes their CUDA build as the default on PyPI.
+url = "https://pypi.org/simple"
 
 ### Hatch ###
 
@@ -180,7 +176,7 @@ allow-direct-references = true
 # Env: default
 
 [tool.hatch.envs.default]
-features = ["kokoro", "cu129"]
+features = ["cuda_internal", "kokoro"]
 type = "uvenv"
 
 # Env: hatch-uv
@@ -205,7 +201,7 @@ groups = ["hatch-test"]
 # parallel = true
 # We do not want to *always* randomize.
 # randomize = true
-features = ["kokoro", "cpu"]
+features = ["cpu_internal", "kokoro"]
 type = "uvenv"
 
 [[tool.hatch.envs.hatch-test.matrix]]
@@ -214,7 +210,7 @@ python = ["3.12", "3.13"]
 # Env: types
 
 [tool.hatch.envs.types]
-features = ["kokoro", "cpu"]
+features = ["cpu_internal", "kokoro"]
 groups = ["types"]
 type = "uvenv"
 
@@ -226,7 +222,7 @@ check = """
 # Env: accept
 
 [tool.hatch.envs.accept]
-features = ["kokoro", "cu129"]
+features = ["cuda_internal", "kokoro"]
 groups = ["accept"]
 type = "uvenv"
 
@@ -238,7 +234,7 @@ wip = ".hatch_scripts accept wip {args}"
 # Env: accept-ci
 
 [tool.hatch.envs.accept-ci]
-features = ["kokoro", "cpu"]
+features = ["cpu_internal", "kokoro"]
 groups = ["accept"]
 type = "uvenv"
 
@@ -265,7 +261,7 @@ update-tests = ".hatch_scripts babel update tests {args}"
 # Env: docs
 
 [tool.hatch.envs.docs]
-features = ["kokoro", "cpu"]
+features = ["cpu_internal", "kokoro"]
 groups = ["docs"]
 type = "uvenv"
 
@@ -280,8 +276,8 @@ build = "mkdocs build -f docs/mkdocs.yml"
 
 [tool.hatch.envs.sbom]
 # This should include all plugins in order to make a complete licence list.
-# Not including CUDA or other GPU-specific dependencies since that is user's choice.
-features = ["cpu", "kokoro"]
+# Not including CUDA or other cuda_internal-specific dependencies since that is user's choice.
+features = ["cpu_internal", "kokoro"]
 type = "uvenv"
 
 ### Coverage ###

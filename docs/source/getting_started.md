@@ -15,16 +15,12 @@
 ## Installation
 
 *aquarion-libtts* comes in several different flavours, depending on your needs.  These
-variations are handled by specifying extras when installing.
+variations are handled by specifying
+[extras](https://packaging.python.org/en/latest/specifications/dependency-specifiers/#extras)
+when installing.
 
-First, there are extras for supporting various GPU platforms:
-
-- `cpu`: Include PyTorch, but only support CPU and not any GPUs.
-- `cu128`: Include PyTorch with CUDA 12.8 support for Nvidia GPUs.
-- `cu129`: Include PyTorch with CUDA 12.9 support for Nvidia GPUs.
-
-Second, each built-in TTS backend has it's own extra so that only the dependencies of
-the TTS plugins you want to use will be included:
+Each built-in TTS backend has it's own extra so that only the dependencies of the TTS
+plugins you want to use will be included:
 
 - `kokoro`: Include the required dependencies for Kokoro TTS.
 
@@ -35,18 +31,21 @@ backends, you can run something like:
 pip install aquarion-libtts
 ```
 
-However, in order to use at least one TTS backend, you will probably want to include
-some extras like this, for example:
+This can be useful if you only want to use your own or a 3rd-party plugin.
+
+However, in order to use at least one built-in TTS backend, you will probably want to
+include some extras like this, for example:
 
 ```sh
-pip install aquarion-libtts[cu129,kokoro]
+pip install aquarion-libtts[kokoro]
 ```
 
-Or:
-
-```sh
-pip install aquarion-libtts[cpu,kokoro]
-```
+!!! note
+    Several TTS plugins are expected to use PyTorch and PyTorch defaults to an Nvidia
+    CUDA compatible version in PyPI.  If you want to only use the CPU, or use a
+    different (compatible) GPU ecosystem, then you will need to override PyTorch's
+    installation.  See the [PyTorch Documentation](https://pytorch.org/get-started/locally/)
+    for details on how to do that.
 
 ## Built-In TTS Plugins
 
@@ -56,9 +55,9 @@ also use.
 
 The following TTS backends currently have built-in support:
 
-| Plugin ID   | TTS Backend                                             |
-| ----------- | ------------------------------------------------------- |
-| `kokoro_v1` | [Kokoro TTS](https://huggingface.co/hexgrad/Kokoro-82M) |
+| Plugin ID   | TTS Backend                                             | Compatibility |
+| ----------- | ------------------------------------------------------- | ------------- |
+| `kokoro_v1` | [Kokoro TTS](https://huggingface.co/hexgrad/Kokoro-82M) | CPU, CUDA     |
 
 ## Basic Usage
 

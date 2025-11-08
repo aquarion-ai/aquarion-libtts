@@ -31,8 +31,8 @@ def register_tts_plugin() -> ITTSPlugin | None:
     #       import time.
     #       This hook needs to be able to run even when Kokoro and PyTorch, etc. are not
     #       installed.
-    #       I.e. if the [kokoro] & [cu128] extras are not installed, we just skip
-    #       registering the KokoroPlugin.
+    #       I.e. if the [kokoro] extras is not installed, we just skip registering the
+    #       KokoroPlugin.
     try:
         import kokoro  # noqa: F401, PLC0415
         import torch  # noqa: F401, PLC0415

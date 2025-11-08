@@ -53,7 +53,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- Nothing yet.
+- Removed references to the `cpu`, `cu128` and `cu129` extras as they do not influence
+  installation dependencies outside of the aquarion-libtts development environment.
+  I.e. they are/were internal use only.
 
 ----
 
