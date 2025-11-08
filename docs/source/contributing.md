@@ -36,11 +36,13 @@ This project follows the following standard practices:
 
 - [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html) for versioning.
 
-- [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) for the changelog.
+- [Test-driven development](https://en.wikipedia.org/wiki/Test-driven_development)
+  (TDD), specifically _test-first_ TDD.
 
-- [Make a README](https://www.makeareadme.com/) for the README
-
-- [REUSE SOFTWARE](https://reuse.software/) for licence and copyright information.
+- [Behaviour Driven Development](https://en.wikipedia.org/wiki/Behavior-driven_development)
+  (BDD). also known as
+  [Acceptance Test-Driven Development](https://en.wikipedia.org/wiki/Acceptance_test-driven_development/)
+  (ATDD) for acceptance tests.
 
 - [Ruff](https://docs.astral.sh/ruff/) for Python code style.
 
@@ -51,8 +53,11 @@ This project follows the following standard practices:
 - [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
   for comments and docstrings.
 
-- [Behaviour Driven Development](https://en.wikipedia.org/wiki/Behavior-driven_development)
-  for acceptance tests.
+- [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) for the changelog.
+
+- [Make a README](https://www.makeareadme.com/) for the README
+
+- [REUSE SOFTWARE](https://reuse.software/) for licence and copyright information.
 
 ## Developer Installation
 
