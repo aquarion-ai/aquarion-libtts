@@ -40,8 +40,14 @@
     "editor.rulers": [
         88
     ],
+    "evenBetterToml.formatter.allowedBlankLines": 1,
+    "evenBetterToml.formatter.arrayAutoCollapse": true,
+    "evenBetterToml.formatter.arrayAutoExpand": true,
     "evenBetterToml.formatter.arrayTrailingComma": true,
     "evenBetterToml.formatter.columnWidth": 88,
+    "evenBetterToml.formatter.reorderArrays": true,
+    "evenBetterToml.formatter.reorderInlineTables": true,
+    "evenBetterToml.formatter.reorderKeys": true,
     "evenBetterToml.formatter.trailingNewline": true,
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": false,
