@@ -64,10 +64,10 @@ def "main push" []: nothing -> string {
     common
     main pre all
     main test cover --all
-    main accept cover
     main sec
     main licences
     main sbom
+    main accept cover
 }
 
 # Run all security checks.
