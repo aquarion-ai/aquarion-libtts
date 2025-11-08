@@ -17,6 +17,11 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
+let babel_src_code_path = "src/aquarion/libs/libtts"
+let babel_src_locale_base = $"($babel_src_code_path)/locale"
+let babel_test_code_path = "tests/unit/api"
+let babel_test_locale_base = $"($babel_test_code_path)/locale"
+
 ### Default commands
 
 # Commands to more easily work with I18N / L10N translation.
@@ -51,44 +56,100 @@ def "main compile" []: nothing -> string {
 
 # Extract strings from relevant source files and generate PO templates.
 def "main extract src" []: nothing -> string {
-    hatch run babel:extract-src
+    let domain = (hatch project metadata name)
+    babel_extract $babel_src_code_path $"($babel_src_locale_base)/($domain).pot"
 }
 
 # Extract strings from relevant test files and generate PO templates.
 def "main extract tests" []: nothing -> string {
-    hatch run babel:extract-tests
+    babel_extract $babel_test_code_path $"($babel_test_locale_base)/test.pot"
 }
 
 # Initialize a new source locale.
 def "main init src" [locale: string]: nothing -> string {
-    hatch run babel:init-src $locale
+    let domain = (hatch project metadata name)
+    (
+        babel_init $"($babel_src_locale_base)/($domain).pot"
+        $babel_src_locale_base $domain $locale
+    )
 }
 
 # Initialize a new test locale.
 def "main init tests" [locale: string]: nothing -> string {
-    hatch run babel:init-tests $locale
+    babel_init $"($babel_test_locale_base)/test.pot" $babel_test_locale_base test $locale
 }
 
 # Update source PO message catalogues based on their appropriate PO templates.
 def "main update src" [--headers (-h)]: nothing -> string {
-    mut extra = ""
-    if $headers { $extra = "--headers" }
-    hatch run babel:update-src $extra
+    let domain = (hatch project metadata name)
+    (
+        babel_update $headers $"($babel_src_locale_base)/($domain).pot"
+        $babel_src_locale_base $domain
+    )
 }
 
 # Update test PO message catalogues based on their appropriate PO templates.
 def "main update tests" [--headers (-h)]: nothing -> string {
-    mut extra = ""
-    if $headers { $extra = "--headers" }
-    hatch run babel:update-tests $extra
+    (
+        babel_update $headers $"($babel_test_locale_base)/test.pot"
+        $babel_test_locale_base test
+    )
 }
 
 # Compile source PO message catalogues in to their binary MO formats.
 def "main compile src" []: nothing -> string {
-    hatch run babel:compile-src
+    let domain = (hatch project metadata name)
+    babel_compile $domain $babel_src_locale_base
 }
 
 # Compile test PO message catalogues in to their binary MO formats.
 def "main compile tests" []: nothing -> string {
-    hatch run babel:compile-tests
+    babel_compile test $babel_test_locale_base
+}
+
+### Internal internal commands :)
+
+def babel_extract [input_dir: string, output_file: string]: nothing -> string {
+    let project = (hatch project metadata name)
+    let version = (hatch version)
+    let author_name = (hatch project metadata authors | from json | get 0.name)
+    let author_email = (hatch project metadata authors | from json | get 0.email)
+    let header = $"# SPDX-FileCopyrightText: 2025-present ($author_name) <($author_email)>
+# SPDX-License-Identifier: AGPL-3.0-only
+#
+# Translations template for PROJECT.
+# Copyright \(C) 2025-present ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#"
+    (
+        pybabel extract --no-wrap -o $output_file --project $project --version $version
+        --header-comment $header --copyright-holder $"($author_name) <($author_email)>"
+        --msgid-bugs-address $author_email -c "Translator:" --ignore-dirs ".*"
+        $input_dir
+    )
+}
+
+def babel_init [
+    input_file: string,
+    output_dir: string,
+    domain: string,
+    locale: string
+]: nothing -> string {
+    pybabel init --no-wrap -i $input_file -d $output_dir -D $domain -l $locale
+}
+
+def babel_update [
+    headers: bool,
+    input_file: string,
+    output_dir: string,
+    domain: string
+]: nothing -> string {
+    mut extra = ""
+    if $headers { $extra = "--update-header-comment" }
+    pybabel update --no-wrap -i $input_file -d $output_dir -D $domain --previous $extra
+}
+
+def babel_compile [domain: string, locale_dir: string]: nothing -> string {
+    pybabel compile -D $domain -d $locale_dir --statistics
 }

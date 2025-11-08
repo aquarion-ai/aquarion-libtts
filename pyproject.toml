@@ -74,7 +74,6 @@ kokoro_v1 = "aquarion.libs.libtts.kokoro._hook"
 
 [dependency-groups]
 accept = ["bsdiff4~=1.2.6", "coverage[toml]~=7.10.7", "radish-bdd~=0.18.2"]
-babel = ["babel~=2.17.0"]
 docs = [
     # Workaround for bug:
     # https://github.com/squidfunk/mkdocs-material/issues/8478
@@ -240,23 +239,6 @@ type = "uvenv"
 
 [tool.hatch.envs.accept-ci.scripts]
 cover = ".hatch_scripts accept cover --ci {args}"
-
-# Env: babel
-
-[tool.hatch.envs.babel]
-features = []      # Prevent inheriting from default
-groups = ["babel"]
-type = "uvenv"
-
-[tool.hatch.envs.babel.scripts]
-compile-src = ".hatch_scripts babel compile src"
-compile-tests = ".hatch_scripts babel compile tests"
-extract-src = ".hatch_scripts babel extract src"
-extract-tests = ".hatch_scripts babel extract tests"
-init-src = ".hatch_scripts babel init src {args}"
-init-tests = ".hatch_scripts babel init tests {args}"
-update-src = ".hatch_scripts babel update src {args}"
-update-tests = ".hatch_scripts babel update tests {args}"
 
 # Env: docs
 
