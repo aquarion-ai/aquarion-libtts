@@ -103,9 +103,6 @@ jobs:
       - name: Run tests on all supported Python versions
         run: devbox run check test cover --all
 
-      - name: Run acceptance tests
-        run: devbox run check accept cover --ci
-
       - name: Run security checks
         run: devbox run check sec
 
@@ -114,6 +111,9 @@ jobs:
 
       - name: Run SBOM check
         run: devbox run check sbom
+
+      - name: Run acceptance tests
+        run: devbox run check accept cover --ci
 
       - name: List dependency licences
         run: devbox run report licences
