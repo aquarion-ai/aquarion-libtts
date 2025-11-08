@@ -64,6 +64,7 @@ def "main push" []: nothing -> string {
     common
     main pre all
     main test cover --all
+    main docs
     main sec
     main licences
     main sbom
@@ -144,6 +145,12 @@ def "main sbom" []: nothing -> string {
     let temp_bom = $"($nu.temp-path)/aquarion-libtts.sbom.json"
     sbom $temp_bom
     diff -q sbom.cdx.json $temp_bom
+}
+
+# Run documentation building check
+def "main docs" []: nothing -> string {
+    # docs build return non-zero exit code if there is any problem.
+    docs build
 }
 
 ### Individual testing tasks
