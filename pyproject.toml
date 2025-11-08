@@ -101,6 +101,12 @@ hatch-test = [
     "pytest~=8.4.2",                   # Hatch test default inclusion
 ]
 hatch-uv = ["uv~=0.8.14"]
+spacy = [
+    # Normally one would run the command "spacy download en-core-web-sm", but by
+    # including in a dependency group, we can both control the exact version we use in
+    # dev and have the dependency included in security checks and the SBOM.
+    "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl#sha256=sha256:1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85",
+]
 tools = [
     "babel~=2.17.0",
     "commitizen~=4.9.1",
@@ -187,6 +193,7 @@ allow-direct-references = true
 
 [tool.hatch.envs.default]
 features = ["cuda_internal", "kokoro"]
+groups = ["spacy"]
 type = "uvenv"
 
 # Env: hatch-uv
@@ -205,14 +212,14 @@ type = "uvenv"
 # Env: hatch-test
 
 [tool.hatch.envs.hatch-test]
-groups = ["hatch-test"]
+features = ["cpu_internal", "kokoro"]
+groups = ["hatch-test", "spacy"]
+type = "uvenv"
 # Cannot use parallel and coverage at the same time.
 # https://github.com/pypa/hatch/issues/1635
 # parallel = true
 # We do not want to *always* randomize.
 # randomize = true
-features = ["cpu_internal", "kokoro"]
-type = "uvenv"
 
 [[tool.hatch.envs.hatch-test.matrix]]
 python = ["3.12", "3.13"]
@@ -221,7 +228,7 @@ python = ["3.12", "3.13"]
 
 [tool.hatch.envs.types]
 features = ["cpu_internal", "kokoro"]
-groups = ["types"]
+groups = ["spacy", "types"]
 type = "uvenv"
 
 [tool.hatch.envs.types.scripts]
@@ -233,7 +240,7 @@ check = """
 
 [tool.hatch.envs.accept]
 features = ["cuda_internal", "kokoro"]
-groups = ["accept"]
+groups = ["accept", "spacy"]
 type = "uvenv"
 
 [tool.hatch.envs.accept.scripts]
@@ -245,7 +252,7 @@ wip = ".hatch_scripts accept wip {args}"
 
 [tool.hatch.envs.accept-ci]
 features = ["cpu_internal", "kokoro"]
-groups = ["accept"]
+groups = ["accept", "spacy"]
 type = "uvenv"
 
 [tool.hatch.envs.accept-ci.scripts]
@@ -255,7 +262,7 @@ cover = ".hatch_scripts accept cover --ci {args}"
 
 [tool.hatch.envs.docs]
 features = ["cpu_internal", "kokoro"]
-groups = ["docs"]
+groups = ["docs", "spacy"]
 type = "uvenv"
 
 [tool.hatch.envs.docs.scripts]
@@ -269,8 +276,10 @@ serve = "mkdocs serve -f docs/mkdocs.yml"
 
 [tool.hatch.envs.sbom]
 # This should include all plugins in order to make a complete licence list.
-# Not including CUDA or other cuda_internal-specific dependencies since that is user's choice.
+# Not including CUDA or other cuda_internal-specific dependencies since that is user's
+# choice.
 features = ["cpu_internal", "kokoro"]
+groups = ["spacy"]
 type = "uvenv"
 
 ### Coverage ###
