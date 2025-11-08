@@ -21,39 +21,42 @@
 #
 # This installs Hatch and pre-commit in an isolated environments.
 def "main" []: nothing -> string {
-    (
-        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
-        $"hatch~=($env.AQ_HATCH_MINIMUM_VERSION)"
-        --with $"pip~=($env.AQ_PIP_MINIMUM_VERSION)"
-    )
-    (
-        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
-        $"pre-commit~=($env.AQ_PRE_COMMIT_MINIMUM_VERSION)"
-    )
+    install_tool hatch pip
+    install_tool pre-commit
+    install_tool commitizen cz-conventional-gitmoji
+    install_tool babel
+    install_tool reuse
+    install_tool pip-licenses
+    install_tool cyclonedx-bom
+
     pre-commit install --install-hooks
-    (
-        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
-        $"commitizen~=($env.AQ_COMMITIZEN_MINIMUM_VERSION)"
-        --with $"cz-conventional-gitmoji~=($env.AQ_CZ_CONVENTIONAL_GITMOJI_MINIMUM_VERSION)"
-    )
-    (
-        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
-        $"babel~=($env.AQ_BABEL_MINIMUM_VERSION)"
-    )
-    (
-        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
-        $"reuse~=($env.AQ_REUSE_MINIMUM_VERSION)"
-    )
-    (
-        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
-        $"pip-licenses~=($env.AQ_PIP_LICENSES_MINIMUM_VERSION)"
-    )
-    (
-        uv tool install -p $env.AQ_PYTHON_MINIMUM_VERSION --managed-python
-        $"cyclonedx-bom~=($env.AQ_CYCLONEDX_BOM_MINIMUM_VERSION)"
-    )
     lang extract
     lang compile
     nix-store --optimize
     nix-collect-garbage -d
+}
+
+
+### Internal commands
+
+def get_python_version []: nothing -> string {
+    open pyproject.toml | get project | get requires-python | str substring 2..
+}
+
+def get_tool_version [tool_name: string]: nothing -> string {
+    (
+        open pyproject.toml | get dependency-groups | get tools
+        | find -n -r $"^($tool_name)\\W+=" | get 0
+    )
+}
+
+def install_tool [tool_name: string, with_name?: string]: nothing -> string {
+    let python_version = (get_python_version)
+    let tool_version = (get_tool_version $tool_name)
+    mut with_options = []
+    if $with_name != null {
+        let with_version = (get_tool_version $with_name)
+        $with_options = ["--with", $with_version]
+    }
+    uv tool install -p $python_version --managed-python $tool_version ...$with_options
 }

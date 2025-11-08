@@ -101,6 +101,17 @@ hatch-test = [
     "pytest~=8.4.2",                   # Hatch test default inclusion
 ]
 hatch-uv = ["uv~=0.8.14"]
+tools = [
+    "babel~=2.17.0",
+    "commitizen~=4.9.1",
+    "cyclonedx-bom~=7.2.1",
+    "cz-conventional-gitmoji~=0.7.0",
+    "hatch~=1.14.2",
+    "pip-licenses~=5.5.0",
+    "pip~=25.2.0",
+    "pre-commit~=4.3.0",
+    "reuse~=6.1.2",
+]
 types = [
     "logot~=1.5.1",
     "loguru~=0.7.3",
