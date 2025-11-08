@@ -26,7 +26,10 @@
 def main [
     --caches (-c)  # Also clean all caches
     --devbox (-d)  # Also remove the devbox shell
+    --envs (-e)  # Only clean virtual environments
 ] : nothing -> nothing {
+    remove_hatch_envs
+    if $envs { exit }
     if $caches {
         remove_uv_cache
         remove_local_cache
@@ -35,7 +38,6 @@ def main [
     remove_local_builds
     remove_generated_translation_files
     remove_example_outputs
-    remove_hatch_envs
     remove_hatch_pythons
     remove_uv_tools
     remove_uv_pythons
