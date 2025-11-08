@@ -107,7 +107,6 @@ theme:
     - navigation.footer
     - navigation.indexes
     - navigation.instant.progress
-    - navigation.expand
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
