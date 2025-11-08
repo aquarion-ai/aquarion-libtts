@@ -29,6 +29,8 @@ strict: true
 nav:
   - Home: index.md
   - getting_started.md
+  - TTS backends:
+      - backends/kokoro.md
   - changelog.md
   - API Reference
   - plugins.md

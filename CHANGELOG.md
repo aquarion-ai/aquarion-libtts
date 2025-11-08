@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support for Python 3.13.
 - A Software Bill of Materials (SBOM) in CycloneDX format.
+- More documentation for the Kokoro backend, including how to use it in an offline /
+  air-gapped environment.
 
 ### Fixed
 

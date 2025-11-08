@@ -21,6 +21,9 @@
 
 from __future__ import annotations
 
+import re
+from pathlib import Path
+from tomllib import load
 from typing import TYPE_CHECKING
 
 from aquarion.libs.libtts.__about__ import __version__
@@ -32,3 +35,12 @@ if TYPE_CHECKING:
 def define_env(env: MacrosPlugin) -> None:
     """Define variables and macros available in the templates."""
     env.variables.version = __version__
+    env.variables.en_core_web_sm_version = get_en_core_web_sm_version()
+
+
+def get_en_core_web_sm_version() -> str:
+    """Return the currently supported version of the spaCy en_core_web_sm model."""
+    with Path("pyproject.toml").open("rb") as file:
+        data = load(file)
+    dependency = data["dependency-groups"]["spacy"][0]
+    return re.search(r"en_core_web_sm-(.+)/", dependency)[1]
