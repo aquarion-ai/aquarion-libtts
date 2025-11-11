@@ -48,6 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - *BREAKING CHANGE:* `KokoroBackend` now audio output now conforms to the `audio/L16`
   MIME type, which means it's output is now in big endian byte order instead of the
   previous little endian.
+- Development environment and scripts changed.
+    - `clean --cache` replaced with `clean --local`.
 
 ### Deprecated
 
