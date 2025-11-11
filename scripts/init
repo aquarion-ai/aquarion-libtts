@@ -30,6 +30,9 @@ def "main" []: nothing -> string {
     install_tool cyclonedx-bom
 
     pre-commit install --install-hooks
+    # This is here to get Hatch itself setup and working.
+    # Else calling lang directly fails for some reason.
+    hatch project metadata name
     lang extract
     lang compile
     nix-store --optimize
