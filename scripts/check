@@ -105,6 +105,8 @@ def --wrapped "main lint" [
 def --wrapped "main pre" [
     ...rest: string # Extra arguments for pre-commit
 ]: nothing -> any {
+    pre-commit validate-config
+    pre-commit validate-manifest
     let $temp_config = (filter_pre_commit_config "check_commit" "check_push")
     echo $temp_config
     pre-commit run -c $temp_config --all-files ...$rest
