@@ -202,27 +202,21 @@ def --wrapped "main accept wip" [
 # Check dependencies for security vulnerabilities.
 def "main sec vuln" []: nothing -> string {
     let project_root = (git rev-parse --show-toplevel | str trim)
-    let trivy_cache_path = ($project_root | path join ".cache" "trivy")
-    let report_path = ($trivy_cache_path | path join "report.json")
-    let ignorefile_path = ($project_root | path join ".trivyignore.yaml")
-    mkdir $trivy_cache_path
+    let report_path = ($project_root | path join ".local" "cache" "trivy" "report.json")
     # Report vulnerabilities
-    (
-        trivy fs . --scanners vuln --include-dev-deps -f json -o $report_path
-        --ignorefile $ignorefile_path --show-suppressed
-    )
-    trivy convert --scanners vuln $report_path --show-suppressed
+    trivy fs . --scanners vuln -f json -o $report_path
+    trivy convert --scanners vuln $report_path
     # Fail if any are HIGH or CRITICAL
     (
         # --format template without a template silences output.
-        trivy fs . --scanners vuln --include-dev-deps --severity HIGH,CRITICAL
-        --exit-code 1 --quiet --format template --show-suppressed
+        trivy fs . --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --quiet
+        --format template
     )
 }
 
 # Check for secrets that should not be shared.
 def "main sec secret" []: nothing -> string {
-    trivy fs . --scanners secret --include-dev-deps --exit-code 1
+    trivy fs . --scanners secret --exit-code 1
 }
 
 

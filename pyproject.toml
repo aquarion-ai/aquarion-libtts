@@ -286,7 +286,7 @@ type = "uvenv"
 
 [tool.coverage.run]
 branch = true
-data_file = ".cache/coverage/coverage"
+data_file = ".local/cache/coverage/coverage"
 omit = ["src/aquarion/libs/libtts/__about__.py"]
 source_pkgs = ["aquarion", "tests"]
 
@@ -299,8 +299,8 @@ show_missing = true
 ### Ruff ###
 
 [tool.ruff]
-cache-dir = ".cache/ruff"
-line-length = 88          # Sticking with Black's standard for now instead of ruff's 120.
+cache-dir = ".local/cache/ruff"
+line-length = 88                # Sticking with Black's standard for now instead of ruff's 120.
 
 [tool.ruff.format]
 docstring-code-format = true
@@ -354,7 +354,7 @@ mark-parentheses = false
 ### mypy ###
 
 [tool.mypy]
-cache_dir = ".cache/mypy"
+cache_dir = ".local/cache/mypy"
 exclude = ["tests/acceptance"]
 explicit_package_bases = true
 mypy_path = "$MYPY_CONFIG_FILE_DIR/src,$MYPY_CONFIG_FILE_DIR/typings"
@@ -402,7 +402,7 @@ strict_equality_for_none = true
 
 [tool.pytest.ini_options]
 addopts = "--strict-markers --disable-socket"
-cache_dir = ".cache/pytest"
+cache_dir = ".local/cache/pytest"
 empty_parameter_set_mark = "xfail"
 filterwarnings = [
     # Kokoro TTS warnings 0.9.4

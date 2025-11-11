@@ -65,7 +65,7 @@ def "main coverage accept" [
 # Report on last vulnerability scan results.
 def "main sec" []: nothing -> string {
     let project_root = (git rev-parse --show-toplevel | str trim)
-    let report_path = ($project_root | path join ".cache" "trivy" "report.json")
+    let report_path = ($project_root | path join ".local" "cache" "trivy" "report.json")
     trivy convert --scanners vuln $report_path
 }
 
@@ -73,7 +73,7 @@ def "main sec" []: nothing -> string {
 def "main sec highest" []: nothing -> string {
     let project_root = (git rev-parse --show-toplevel | str trim)
     let template_path = ($project_root | path join "scripts" "trivy_highest.tpl")
-    let report_path = ($project_root | path join ".cache" "trivy" "report.json")
+    let report_path = ($project_root | path join ".local" "cache" "trivy" "report.json")
     (
         trivy convert $report_path --format template --template $"@($template_path)"
         --quiet | str trim
@@ -84,7 +84,7 @@ def "main sec highest" []: nothing -> string {
 def "main sec total" []: nothing -> string {
     let project_root = (git rev-parse --show-toplevel | str trim)
     let template_path = ($project_root | path join "scripts" "trivy_total.tpl")
-    let report_path = ($project_root | path join ".cache" "trivy" "report.json")
+    let report_path = ($project_root | path join ".local" "cache" "trivy" "report.json")
     trivy convert $report_path --format template --template $"@($template_path)" --quiet
 }
 

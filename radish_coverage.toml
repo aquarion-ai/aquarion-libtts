@@ -17,7 +17,7 @@
 
 [tool.coverage.run]
 branch = true
-data_file = ".cache/radish/coverage"
+data_file = ".local/cache/radish/coverage"
 omit = ["src/aquarion/libs/libtts/__about__.py"]
 source_pkgs = ["aquarion"]
 
@@ -25,4 +25,4 @@ source_pkgs = ["aquarion"]
 #fail_under = 80
 show_missing = true
 #skip_covered = true  # Not sure if I want this.  To try later.
-exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+exclude_lines = ["if TYPE_CHECKING:", "if __name__ == .__main__.:", "no cov"]

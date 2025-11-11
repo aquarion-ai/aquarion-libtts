@@ -19,6 +19,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import TYPE_CHECKING, Final
 from unittest import mock
@@ -79,12 +80,11 @@ def _ensure_exists(root_path: Path, file_name: str) -> Path:
 
 def find_local_paths() -> dict[str, Path]:
     """Find locally cached Kokoro files that huggingface_hub previously downloaded."""
-    cache_root = (
-        Path("~/.cache/huggingface/hub/models--hexgrad--Kokoro-82M/snapshots/")
-        .expanduser()
-        .resolve()
+    cache_root = Path(os.environ["XDG_CACHE_HOME"]).expanduser().resolve()
+    snapshots_root = (
+        cache_root / "huggingface/hub/models--hexgrad--Kokoro-82M/snapshots/"
     )
-    snapshot_path = _find_newest_hf_snapshot(cache_root)
+    snapshot_path = _find_newest_hf_snapshot(snapshots_root)
     return {
         "config_path": _ensure_exists(snapshot_path, "config.json"),
         "model_path": _ensure_exists(snapshot_path, "kokoro-v1_0.pth"),

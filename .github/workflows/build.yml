@@ -50,43 +50,34 @@ jobs:
           enable-cache: "true"
           devbox-version: "0.16.0"
 
-      - name: Cache uv Python
+      - name: Restore cached Python stuff
         uses: actions/cache@v4.3.0
         with:
-          key: uv-python-${{ hashFiles('devbox.json') }}
-          restore-keys: uv-python
+          key: python-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          restore-keys: python
           path: |
-            ~/.local/share/uv/python
+            .local/cache/uv
+            .local/cache/pip
+            .local/share/uv/python
+            .local/share/hatch/env/uvenv/.pythons
+            .local/cache/huggingface
+            .local/cache/plugin/social/fonts
 
-      - name: Cache dependencies, venvs, Hatch Pythons and Hugging Face data
-        uses: actions/cache@v4.3.0
-        with:
-          key: deps-venvs-hatch_pys-hf_data-${{ hashFiles('pyproject.toml', 'uv.lock')
-            }}
-          restore-keys: deps-venvs-hatch_pys-hf_data
-          # Hatch Pythons are included in hatch/env thanks to uvenv.
-          path: |
-            ~/.cache/uv
-            ~/.cache/pip
-            ~/.local/share/hatch/env
-            ~/.cache/huggingface
-
-      - name: Cache .cache and Trivy DB
-        uses: actions/cache@v4.3.0
-        with:
-          key: .cache-trivy-${{ github.run_id }}
-          restore-keys: .cache-trivy
-          path: |
-            .cache
-            ~/.cache/trivy
-
-      - name: Cache pre-commit hooks
+      - name: Restore cached pre-commit hooks
         uses: actions/cache@v4.3.0
         with:
           key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: pre-commit
           path: |
-            ~/.cache/pre-commit
+            .local/cache/pre-commit
+
+      - name: Restore cached Trivy DB
+        uses: actions/cache@v4.3.0
+        with:
+          key: trivy-${{ github.run_id }}
+          restore-keys: trivy
+          path: |
+            .local/cache/trivy
 
       - name: Initialize environment
         run: devbox run init

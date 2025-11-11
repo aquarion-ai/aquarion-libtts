@@ -2,8 +2,12 @@
     "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.16.0/.schema/devbox.schema.json",
     "description": "Set up base environment and non-Python dev tools for aquarion-libtts.",
     "env": {
-        "PATH": "$PWD/scripts/:$PATH",
-        "UV_NO_SYNC": "true"
+        "HATCH_VERBOSE": "1",
+        "PATH": "$PWD/scripts/:$PWD/.local/bin:$PATH",
+        "UV_NO_SYNC": "true",
+        "XDG_CACHE_HOME": "$PWD/.local/cache",
+        "XDG_CONFIG_HOME": "$PWD/.local/config",
+        "XDG_DATA_HOME": "$PWD/.local/share"
     },
     "name": "Aquarion AI - aquarion-libtts dev and CI environment",
     "packages": {

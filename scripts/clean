@@ -24,29 +24,26 @@
 #
 # To restore the environment, follow the developer installation instructions.
 def main [
-    --caches (-c)  # Also clean all caches
-    --devbox (-d)  # Also remove the devbox shell
     --envs (-e)  # Only clean virtual environments
+    --local (-l)  # clean all local data, caches & configs
+    --devbox (-d)  # Also remove the devbox shell
 ] : nothing -> nothing {
     remove_hatch_envs
     if $envs { exit }
-    if $caches {
-        remove_uv_cache
-        remove_local_cache
-        remove_pre-commit_tools
-    }
     remove_local_builds
     remove_generated_translation_files
     remove_example_outputs
+    remove_generated_documentation
     remove_hatch_pythons
     remove_uv_tools
     remove_uv_pythons
+    if $local {
+        remove_local
+    }
     if $devbox {
         remove_devbox_shell
-        if $caches {
-            print "To also clean the devbox (nix) cache, exit the devbox shell and run:"
-            print "  nix-collect-garbage -d"
-        }
+        print "If you also want to clean the devbox (NIX) cache, exit the devbox shell and run:"
+        print "  nix-collect-garbage -d"
     }
 }
 
@@ -63,28 +60,6 @@ def remove_hatch_envs []: nothing -> nothing {
         print $"Removing hatch environment: ($environ)"
         hatch env remove $environ
     }
-}
-
-def remove_hatch_pythons []: nothing -> nothing {
-    print (hatch python remove all)
-}
-
-def remove_uv_tools []: nothing -> nothing {
-    print (uv tool uninstall --all)
-}
-
-def remove_uv_pythons []: nothing -> nothing {
-    print (uv python uninstall --all)
-}
-
-def remove_uv_cache []: nothing -> nothing {
-    print "Removing uv cache"
-    uv cache clean
-}
-
-def remove_local_cache []: nothing -> nothing {
-    print "Removing local cache"
-    rm -rf .cache
 }
 
 def remove_local_builds []: nothing -> nothing {
@@ -104,23 +79,38 @@ def remove_generated_translation_files []: nothing -> nothing {
     }
 }
 
-def remove_devbox_shell []: nothing -> nothing {
-    print "Removing devbox shell"
-    rm -rf .devbox
-    print $"(ansi red)ATTENTION: YOU MUST EXIT THE DEVBOX SHELL IMMEDIATELY AFTER THIS COMMAND!(ansi reset)"
-}
-
-def remove_pre-commit_tools []: nothing -> nothing {
-    print "Removing pre-commit tools"
-    pre-commit clean
-    pre-commit gc
-}
-
-
 def remove_example_outputs []: nothing -> nothing {
     let files = (ls ...(glob examples/*.wav) | each {$in.name})
     for file in ($files) {
         print $"Removing example output: ($file)"
         rm $file
     }
+}
+
+def remove_generated_documentation []: nothing -> nothing {
+    print "Removing generated documentation."
+    rm -rf docs/site
+}
+
+def remove_hatch_pythons []: nothing -> nothing {
+    print (hatch python remove all)
+}
+
+def remove_uv_tools []: nothing -> nothing {
+    print (uv tool uninstall --all)
+}
+
+def remove_uv_pythons []: nothing -> nothing {
+    print (uv python uninstall --all)
+}
+
+def remove_local []: nothing -> nothing {
+    print "Removing local data, caches & configs"
+    rm -rf .local
+}
+
+def remove_devbox_shell []: nothing -> nothing {
+    print "Removing devbox shell"
+    rm -rf .devbox
+    print $"(ansi red)ATTENTION: YOU MUST EXIT THE DEVBOX SHELL IMMEDIATELY AFTER THIS COMMAND!(ansi reset)"
 }

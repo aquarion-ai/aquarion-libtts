@@ -44,7 +44,8 @@ plugins:
   - search
   - macros:
       on_undefined: strict
-  - social
+  - social:
+      cache_dir: .local/cache/plugin/social
   - open-in-new-tab:
       add_icon: true
   - api-autonav:
