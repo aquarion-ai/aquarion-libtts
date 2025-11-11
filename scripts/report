@@ -43,9 +43,9 @@ def "main coverage test" [
     if $total { $extra = ["--format", "total"] }
     # It is easier to just use the coverage tool from the accept environment than to try
     # and figure out which matrixed hatch-test coverage tool to run.
-    # This could in principle least to a version mismatch, but the intention is to keep
+    # This could in principle lead to a version mismatch, but the intention is to keep
     # all versions of a tool the same in all environments, so it should be fine.
-    hatch run $"($environ):coverage" report ...$extra
+    hatch --quiet run $"($environ):coverage" report ...$extra
 }
 
 # Print the most recent acceptance test coverage report.
@@ -59,7 +59,10 @@ def "main coverage accept" [
     }
     mut $extra = []
     if $total { $extra = ["--format", "total"] }
-    hatch run $"($environ):coverage" report --rcfile=radish_coverage.toml ...$extra
+    (
+        hatch --quiet run $"($environ):coverage" report --rcfile=radish_coverage.toml
+        ...$extra
+    )
 }
 
 # Report on last vulnerability scan results.
