@@ -17,27 +17,30 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-# Uninstall and clean up this development environment.
+# Clean up this development environment.
 #
-# This removes all cashes, builds artifacts, virtual environments, local Python
-# versions, etc.
+# By default it just cleans up generated artifacts like build distributions, generated
+# docs, etc.
 #
-# To restore the environment, follow the developer installation instructions.
+# To restore the environment, run the "init" script.
 def main [
-    --envs (-e)  # Only clean virtual environments
-    --local (-l)  # clean all local data, caches & configs
+    --envs (-e)  # Also clean virtual environments
+    --full (-f)  # Also clean all local data, caches, configs & pre-commit hooks
     --devbox (-d)  # Also remove the devbox shell
 ] : nothing -> nothing {
-    remove_hatch_envs
-    if $envs { exit }
     remove_local_builds
     remove_generated_translation_files
     remove_example_outputs
     remove_generated_documentation
-    remove_hatch_pythons
-    remove_uv_tools
-    remove_uv_pythons
-    if $local {
+    if $envs or $full {
+        remove_hatch_envs
+    }
+    if $full {
+        # Note: The order of operations matters here.
+        remove_hatch_pythons
+        remove_pre_commit_hooks
+        remove_uv_tools
+        remove_uv_pythons
         remove_local
     }
     if $devbox {
@@ -102,6 +105,12 @@ def remove_uv_tools []: nothing -> nothing {
 
 def remove_uv_pythons []: nothing -> nothing {
     print (uv python uninstall --all)
+}
+
+def remove_pre_commit_hooks []: nothing -> nothing {
+    pre-commit uninstall
+    pre-commit clean
+    pre-commit gc
 }
 
 def remove_local []: nothing -> nothing {

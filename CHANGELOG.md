@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   MIME type, which means it's output is now in big endian byte order instead of the
   previous little endian.
 - Development environment and scripts changed.
-    - `clean --cache` replaced with `clean --local`.
+    - `clean` script behaves differently and has different parameters.
 
 ### Deprecated
 
