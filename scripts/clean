@@ -31,7 +31,6 @@ def main [
     remove_local_builds
     remove_generated_translation_files
     remove_example_outputs
-    remove_generated_documentation
     if $envs or $full {
         remove_hatch_envs
     }
@@ -51,19 +50,6 @@ def main [
 }
 
 ## Internal commands
-
-def remove_hatch_envs []: nothing -> nothing {
-    let envs = (
-        hatch env show --json --internal
-        | from json
-        | transpose name record
-        | get name
-    )
-    for environ in ($envs) {
-        print $"Removing hatch environment: ($environ)"
-        hatch env remove $environ
-    }
-}
 
 def remove_local_builds []: nothing -> nothing {
     print "Removing local builds"
@@ -90,13 +76,27 @@ def remove_example_outputs []: nothing -> nothing {
     }
 }
 
-def remove_generated_documentation []: nothing -> nothing {
-    print "Removing generated documentation."
-    rm -rf docs/site
+def remove_hatch_envs []: nothing -> nothing {
+    let envs = (
+        hatch env show --json --internal
+        | from json
+        | transpose name record
+        | get name
+    )
+    for environ in ($envs) {
+        print $"Removing hatch environment: ($environ)"
+        hatch env remove $environ
+    }
 }
 
 def remove_hatch_pythons []: nothing -> nothing {
     print (hatch python remove all)
+}
+
+def remove_pre_commit_hooks []: nothing -> nothing {
+    pre-commit uninstall
+    pre-commit clean
+    pre-commit gc
 }
 
 def remove_uv_tools []: nothing -> nothing {
@@ -105,12 +105,6 @@ def remove_uv_tools []: nothing -> nothing {
 
 def remove_uv_pythons []: nothing -> nothing {
     print (uv python uninstall --all)
-}
-
-def remove_pre_commit_hooks []: nothing -> nothing {
-    pre-commit uninstall
-    pre-commit clean
-    pre-commit gc
 }
 
 def remove_local []: nothing -> nothing {
