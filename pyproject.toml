@@ -79,13 +79,13 @@ docs = [
     # https://github.com/squidfunk/mkdocs-material/issues/8478
     # Revisit in the future when it is resolved.
     "click==8.2.1",
-    "mkdocs-api-autonav>=0.4.0",
-    "mkdocs-macros-plugin>=1.4.0",
-    "mkdocs-material[imaging]>=9.6.22",
-    "mkdocs-open-in-new-tab>=1.0.8",
-    "mkdocs-spellcheck[codespell]>=1.1.2",
-    "mkdocs>=1.6.1",
-    "mkdocstrings-python>=1.18.2",
+    "mkdocs-api-autonav~=0.4.0",
+    "mkdocs-macros-plugin~=1.4.0",
+    "mkdocs-material[imaging]~=9.6.22",
+    "mkdocs-open-in-new-tab~=1.0.8",
+    "mkdocs-spellcheck[codespell]~=1.1.2",
+    "mkdocstrings-python~=1.18.2",
+    "mkdocs~=1.6.1",
 ]
 hatch-static-analysis = ["ruff~=0.14.0"]
 hatch-test = [
@@ -185,9 +185,6 @@ validate-bump = true
 [tool.hatch.build.targets.wheel]
 artifacts = ["*.mo"]
 packages = ["src/aquarion"]
-
-[tool.hatch.metadata]
-allow-direct-references = true
 
 # Env: default
 
