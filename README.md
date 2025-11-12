@@ -137,4 +137,4 @@ Aquarion AI and *aquarion-libtts* were created by Krys Lawrence.
 ## Project Status
 
 This project is in the Alpha stage of development.  Early days, lots of bugs and
-anything change.
+anything can change.
