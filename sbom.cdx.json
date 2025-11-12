@@ -3385,7 +3385,7 @@
         {
           "comment": "from pyproject urls: Documentation",
           "type": "documentation",
-          "url": "https://aquarion-libtts.readthedocs.io/en/latest/"
+          "url": "https://aquarion-libtts.readthedocs.io"
         },
         {
           "comment": "from pyproject urls: Issues",
@@ -3400,7 +3400,7 @@
         {
           "comment": "from pyproject urls: Changelog",
           "type": "release-notes",
-          "url": "https://aquarion-libtts.readthedocs.io/en/latest/changelog.html"
+          "url": "https://aquarion-libtts.readthedocs.io/en/stable/changelog/"
         },
         {
           "comment": "from pyproject urls: Homepage",

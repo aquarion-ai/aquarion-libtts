@@ -67,7 +67,7 @@ should all run locally / offline, even in an air-gapped environment.  Oh, and it
 be modular enough to support multiple alternate STT, LLM and TTS models/engines/options.
 
 For high-level documentation on the overall Aquarion AI project, see the
-[aquarion-docs](https://github.com/aquarion-ai/aquarion-docs) project.
+[aquarion-docs](https://aquarion-docs.readthedocs.io/) project.
 
 ### About *aquarion-libtts*
 
@@ -75,20 +75,20 @@ This project contains the library of Text To Speech (TTS) backend components for
 Aquarion AI.
 
 For documentation for this specific project, see
-[*aquarion-libtts* documentation](https://aquarion-libtts.readthedocs.io/en/latest/).
+[*aquarion-libtts* documentation](https://aquarion-libtts.readthedocs.io/).
 
 <!-- --8<-- [end:description] -->
 
 ## Installation
 
 See the
-[Getting Started](https://aquarion-libtts.readthedocs.io/en/latest/getting_started.html)
+[Getting Started](https://aquarion-libtts.readthedocs.io/en/stable/getting_started/)
 section of the documentation.
 
 ## Usage
 
 See the
-[Getting Started](https://aquarion-libtts.readthedocs.io/en/latest/getting_started.html)
+[Getting Started](https://aquarion-libtts.readthedocs.io/en/stable/getting_started/)
 section of the documentation.
 
 ## Support
@@ -111,7 +111,7 @@ myself. So do not expect any kind of support or updates or maintenance or longev
 ## Contributing
 
 If, despite the disclaimer above, you still want to try to contribute, then see the
-[Contributing](https://aquarion-libtts.readthedocs.io/en/latest/contributing.html)
+[Contributing](https://aquarion-libtts.readthedocs.io/en/latest/contributing/)
 section of the documentation.
 
 <!-- --8<-- [start:legal] -->
