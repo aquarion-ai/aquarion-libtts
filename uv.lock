@@ -85,6 +85,7 @@ docs = [
     { name = "mkdocs-open-in-new-tab" },
     { name = "mkdocs-spellcheck", extra = ["codespell"] },
     { name = "mkdocstrings-python" },
+    { name = "ruff" },
 ]
 hatch-static-analysis = [
     { name = "ruff" },
@@ -180,6 +181,7 @@ docs = [
     { name = "mkdocs-open-in-new-tab", specifier = "~=1.0.8" },
     { name = "mkdocs-spellcheck", extras = ["codespell"], specifier = "~=1.1.2" },
     { name = "mkdocstrings-python", specifier = "~=1.18.2" },
+    { name = "ruff", specifier = "~=0.14.0" },
 ]
 hatch-static-analysis = [{ name = "ruff", specifier = "~=0.14.0" }]
 hatch-test = [
