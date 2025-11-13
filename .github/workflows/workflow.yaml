@@ -15,12 +15,14 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-# This workflow will install Python dependencies, run tests and lint with a variety of
-# Python versions.
+# This workflow will install Python dependencies, lint, run tests with a variety of
+# Python versions and the build and publish a distribution to (Test)PyPI.
 # For more information see:
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+# and
+# https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
 
-name: build
+name: CI/CD pipeline for aquarion-libtts
 
 on:
   push:
@@ -32,7 +34,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  test_and_build:
+    name: Test and build
     runs-on: ubuntu-24.04
     outputs:
       test_total: ${{ steps.report.outputs.test_total }}
@@ -42,7 +45,9 @@ jobs:
       sec_error: ${{ steps.report.outputs.sec_error }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5.0.0
+        with:
+          persist-credentials: false
 
       - name: Install devbox # Has it's own cache
         uses: jetify-com/devbox-install-action@v0.14.0
@@ -132,10 +137,23 @@ jobs:
           echo "### Total vulnerabilities: ${SEC_TOTAL}" >> $GITHUB_STEP_SUMMARY
           echo "### Highest vulnerability severity level: ${SEC_HIGHEST}" >> $GITHUB_STEP_SUMMARY
 
+      - name: Build distribution packages
+        run: devbox run hatch build
+
+      - name: Store distribution packages
+        uses: actions/upload-artifact@v5.0.0
+        with:
+          name: python-package-distributions
+          path: dist/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
+
   badges:
+    name: Generate badges
     runs-on: ubuntu-24.04
-    needs: test
-    if: ${{ github.event_name  == 'push' }}
+    needs: test_and_build
+    if: ${{ github.event_name == 'push' }}
     env:
       test_total: ${{ needs.test.outputs.test_total }}
       accept_total: ${{ needs.test.outputs.accept_total }}
@@ -189,3 +207,48 @@ jobs:
           label: severity
           message: ${{ env.sec_highest }}
           isError: ${{ env.sec_error }}
+
+  publish_to_test_pypi:
+    name: Publish to Test PyPI
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'push' }}
+    needs: test_and_build
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/aquarion-libtts
+    permissions:
+      id-token: write
+    steps:
+      - name: Download all the package distributions
+        uses: actions/download-artifact@v6.0.0
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Publish distribution to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1.13.0
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          print-hash: true
+
+  publish_to_pypi:
+    name: Publish to PyPI
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') }}
+    needs: test_and_build
+    environment:
+      name: pypi
+      url: https://pypi.org/p/aquarion-libtts
+    permissions:
+      id-token: write
+    steps:
+      - name: Download all the package distributions
+        uses: actions/download-artifact@v6.0.0
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Publish distribution to TestPyPI
+        uses: pypa/gh-action-pypi-publish@v1.13.0
+        with:
+          print-hash: true

@@ -132,6 +132,7 @@ pygrep
 pymdownx
 pypa
 pypackages
+pypi
 pyproject
 pyrightconfig
 pysingleton
@@ -176,6 +177,7 @@ synched
 synthèse
 système
 tensorflow
+testpypi
 tobytes
 toctree
 tomli
