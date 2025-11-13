@@ -22,7 +22,7 @@
 # and
 # https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/
 
-name: CI/CD pipeline for aquarion-libtts
+name: ci/cd
 
 on:
   push:
@@ -155,11 +155,11 @@ jobs:
     needs: test_and_build
     if: ${{ github.event_name == 'push' }}
     env:
-      test_total: ${{ needs.test.outputs.test_total }}
-      accept_total: ${{ needs.test.outputs.accept_total }}
-      sec_total: ${{ needs.test.outputs.sec_total }}
-      sec_highest: ${{ needs.test.outputs.sec_highest }}
-      sec_error: ${{ needs.test.outputs.sec_error }}
+      test_total: ${{ needs.test_and_build.outputs.test_total }}
+      accept_total: ${{ needs.test_and_build.outputs.accept_total }}
+      sec_total: ${{ needs.test_and_build.outputs.sec_total }}
+      sec_highest: ${{ needs.test_and_build.outputs.sec_highest }}
+      sec_error: ${{ needs.test_and_build.outputs.sec_error }}
     steps:
       - name: Get repo name
         run: echo "repo_name=${{ github.repository }}" | sed "s/\//_/" >> $GITHUB_ENV
