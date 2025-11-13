@@ -28,7 +28,7 @@ Experiment in creating a scalable local AI voice chat bot.
 [![PyPI - Status](https://img.shields.io/pypi/status/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/aquarion-libtts)](https://pypi.org/project/aquarion-libtts)
 
-[![build](https://github.com/aquarion-ai/aquarion-libtts/actions/workflows/build.yml/badge.svg)](https://github.com/aquarion-ai/aquarion-libtts/actions/workflows/build.yml)
+[![CI/CD](https://github.com/aquarion-ai/aquarion-libtts/actions/workflows/workflow.yaml/badge.svg)](https://github.com/aquarion-ai/aquarion-libtts/actions/workflows/workflow.yaml)
 [![Test Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/justkrys/079b402971d82c07d05c74f37c57b088/raw/aquarion-ai_aquarion-libtts__main__test.json)](https://github.com/aquarion-ai/aquarion-libtts/actions)
 [![Acceptance Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/justkrys/079b402971d82c07d05c74f37c57b088/raw/aquarion-ai_aquarion-libtts__main__accept.json)](https://github.com/aquarion-ai/aquarion-libtts/actions)
 [![Total Vulnerabilities](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/justkrys/079b402971d82c07d05c74f37c57b088/raw/aquarion-ai_aquarion-libtts__main__sec_total.json)](https://github.com/aquarion-ai/aquarion-libtts/actions)
