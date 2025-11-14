@@ -159,11 +159,74 @@ jobs:
           compression-level: 0
           retention-days: 14
 
+      - name: Store examples
+        uses: actions/upload-artifact@v5.0.0
+        with:
+          name: examples
+          path: examples/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Store uv.lock
+        uses: actions/upload-artifact@v5.0.0
+        with:
+          name: uv-lock
+          path: uv.lock
+          if-no-files-found: error
+          retention-days: 14
+
+  smoke_test:
+    name: Run smoke tests on build distribution packages
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'push' }}
+    needs: test_and_build
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - name: Download the package distributions
+        uses: actions/download-artifact@v6.0.0
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Download the examples
+        uses: actions/download-artifact@v6.0.0
+        with:
+          name: examples
+          path: examples/
+
+      - name: Download uv.lock
+        uses: actions/download-artifact@v6.0.0
+        with:
+          name: uv-lock
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          check-latest: true
+          cache: pip
+          cache-dependency-path: uv.lock
+
+      - name: Install aquarion-libtts
+        run: |
+          export AQ_WHEEL=$(ls dist/aquarion_libtts-*.whl)
+          pip install ${AQ_WHEEL}[kokoro] \
+            --extra-index-url https://download.pytorch.org/whl/cpu
+
+      - name: Run smoke tests
+        run: |
+          cd examples
+          python --version
+          python kokoro_example.py
+          test -f play_me.wav
+
   publish_to_test_pypi:
     name: Publish to Test PyPI
     runs-on: ubuntu-24.04
     if: ${{ github.event_name == 'push' }}
-    needs: test_and_build
+    needs: smoke_test
     environment:
       name: testpypi
       url: https://test.pypi.org/p/aquarion-libtts
