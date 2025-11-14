@@ -137,7 +137,17 @@ jobs:
           echo "### Total vulnerabilities: ${SEC_TOTAL}" >> $GITHUB_STEP_SUMMARY
           echo "### Highest vulnerability severity level: ${SEC_HIGHEST}" >> $GITHUB_STEP_SUMMARY
 
-      - name: Build distribution packages
+      - name: Build candidate distribution packages
+        if: ${{ github.event_name == 'push' && ! startsWith(github.ref, 'refs/tags/')
+          }}
+        run: |
+          export AQ_VERSION=$(devbox run hatch version)+$(git rev-parse --short HEAD)
+          devbox run hatch version $AQ_VERSION
+          devbox run hatch build
+
+      - name: Build release distribution packages
+        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+          }}
         run: devbox run hatch build
 
       - name: Store distribution packages
