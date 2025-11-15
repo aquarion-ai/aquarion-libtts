@@ -172,7 +172,7 @@ jobs:
           }}
         run: |
           export AQ_VERSION=$(devbox run hatch version).dev$((16#$(git rev-parse --short HEAD)))
-          echo "### Version: ${AQ_VERSION}%" >> $GITHUB_STEP_SUMMARY
+          echo "### Version: ${AQ_VERSION}" >> $GITHUB_STEP_SUMMARY
           devbox run hatch version $AQ_VERSION
           devbox run hatch build
 
@@ -181,7 +181,7 @@ jobs:
           }}
         run: |
           export AQ_VERSION=$(devbox run hatch version)
-          echo "### Version: ${AQ_VERSION}%" >> $GITHUB_STEP_SUMMARY
+          echo "### Version: ${AQ_VERSION}" >> $GITHUB_STEP_SUMMARY
           devbox run hatch build
 
       - name: Store distribution packages
@@ -286,7 +286,6 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
           print-hash: true
-          verbose: true
 
   badges:
     name: Generate badges
