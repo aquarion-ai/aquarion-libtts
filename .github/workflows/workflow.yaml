@@ -182,7 +182,7 @@ jobs:
     needs: test_and_build
     strategy:
       matrix:
-        python-version: ["3.12", "3.13"]
+        python-version: ["3.12"]
     steps:
       - name: Download the package distributions
         uses: actions/download-artifact@v6.0.0
