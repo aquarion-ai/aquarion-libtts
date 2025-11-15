@@ -110,10 +110,10 @@ jobs:
       - name: Restore cached Trivy DB
         uses: actions/cache@v4.3.0
         with:
-          key: trivy-${{ hashFiles('.local/cache/trivy/db/metadata.json') }}
+          key: trivy-${{ github.run_id }}
           restore-keys: trivy
           path: |
-            .local/cache/trivy/db
+            .local/cache/trivy
 
       - name: Initialize environment
         run: devbox run init
