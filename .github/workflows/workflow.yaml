@@ -137,6 +137,9 @@ jobs:
       - name: Run SBOM check
         run: devbox run check sbom
 
+      - name: Run documentation building check
+        run: devbox run check docs
+
       - name: Run acceptance tests
         run: devbox run check accept cover --ci
 
@@ -218,6 +221,14 @@ jobs:
       matrix:
         python-version: ["3.12"]
     steps:
+      - name: Restore cached models
+        uses: actions/cache@v4.3.0
+        with:
+          key: python-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          restore-keys: python
+          path: |
+            ~/.cache/huggingface
+
       - name: Download the package distributions
         uses: actions/download-artifact@v6.0.0
         with:
@@ -267,14 +278,6 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - name: Restore cached models
-        uses: actions/cache@v4.3.0
-        with:
-          key: python-${{ hashFiles('pyproject.toml', 'uv.lock') }}
-          restore-keys: python
-          path: |
-            ~/.cache/huggingface
-
       - name: Download all the package distributions
         uses: actions/download-artifact@v6.0.0
         with:
