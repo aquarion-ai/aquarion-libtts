@@ -264,6 +264,11 @@ jobs:
           export AQ_WHEEL=$(ls dist/aquarion_libtts-*.whl)
           pip install ${AQ_WHEEL}[kokoro] \
             --extra-index-url https://download.pytorch.org/whl/cpu
+          if [[ ! $(spacy info | grep en_core_web_sm) ]] ; then
+            spacy download en_core_web_sm
+            echo WARNING: en_core_web_sm not in CI/CD pip cache.\
+              Delete existing setup-python caches to fix this.
+          fi
 
       - name: Run smoke tests
         run: |
