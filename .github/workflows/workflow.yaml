@@ -55,18 +55,23 @@ jobs:
           enable-cache: "true"
           devbox-version: "0.16.0"
 
-      - name: Restore cached Python stuff
+      - name: Restore cached Python runtimes
         uses: actions/cache@v4.3.0
         with:
           key: python-${{ hashFiles('pyproject.toml', 'uv.lock') }}
           restore-keys: python
           path: |
-            .local/cache/uv
-            .local/cache/pip
             .local/share/uv/python
             .local/share/hatch/env/uvenv/.pythons
-            .local/cache/huggingface
-            .local/cache/plugin/social/fonts
+
+      - name: Restore cached Python dependencies
+        uses: actions/cache@v4.3.0
+        with:
+          key: dependencies-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          restore-keys: dependencies
+          path: |
+            .local/cache/uv
+            .local/cache/pip
 
       - name: Restore cached pre-commit hooks
         uses: actions/cache@v4.3.0
@@ -75,6 +80,30 @@ jobs:
           restore-keys: pre-commit
           path: |
             .local/cache/pre-commit
+
+      - name: Restore cached models
+        uses: actions/cache@v4.3.0
+        with:
+          key: models-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          restore-keys: models
+          path: |
+            .local/cache/huggingface
+
+      - name: Restore mypy's cache
+        uses: actions/cache@v4.3.0
+        with:
+          key: mypy-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: mypy
+          path: |
+            .local/cache/mypy
+
+      - name: Restore cached other stuff
+        uses: actions/cache@v4.3.0
+        with:
+          key: other-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          restore-keys: other
+          path: |
+            .local/cache/plugin/social/fonts
 
       - name: Restore cached Trivy DB
         uses: actions/cache@v4.3.0
@@ -124,7 +153,8 @@ jobs:
           export ACCEPT_TOTAL=$(devbox run report coverage accept --total --ci)
           export SEC_TOTAL=$(devbox run report sec total)
           export SEC_HIGHEST=$(devbox run report sec highest)
-          [[ "$SEC_HIGHEST" == "HIGH" || "$SEC_HIGHEST" == "CRITICAL" ]] && export SEC_ERROR=true || export SEC_ERROR=false
+          [[ "$SEC_HIGHEST" == "HIGH" || "$SEC_HIGHEST" == "CRITICAL" ]] \
+            && export SEC_ERROR=true || export SEC_ERROR=false
 
           echo "test_total=$TEST_TOTAL" >> $GITHUB_OUTPUT
           echo "accept_total=$ACCEPT_TOTAL" >> $GITHUB_OUTPUT
@@ -233,6 +263,14 @@ jobs:
     permissions:
       id-token: write
     steps:
+      - name: Restore cached models
+        uses: actions/cache@v4.3.0
+        with:
+          key: python-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          restore-keys: python
+          path: |
+            ~/.cache/huggingface
+
       - name: Download all the package distributions
         uses: actions/download-artifact@v6.0.0
         with:
