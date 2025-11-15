@@ -84,19 +84,11 @@ jobs:
       - name: Restore cached models
         uses: actions/cache@v4.3.0
         with:
-          key: models-${{ hashFiles('.local/cache/huggingface/hub/.locks/**/*.lock')
-            }}
+          # Not a great choice, but not sure what else to use for this one.
+          key: models-${{ hashFiles('uv.lock') }}
           restore-keys: models
           path: |
             .local/cache/huggingface
-
-      - name: Restore mypy's cache
-        uses: actions/cache@v4.3.0
-        with:
-          key: mypy-${{ hashFiles('.local/cache/mypy/**/CACHEDIR.TAG') }}
-          restore-keys: mypy
-          path: |
-            .local/cache/mypy
 
       - name: Restore mkdocs caches
         uses: actions/cache@v4.3.0
@@ -107,9 +99,19 @@ jobs:
             .local/cache/mkdocs
             .local/cache/plugin/social/fonts
 
+      - name: Restore mypy's cache
+        uses: actions/cache@v4.3.0
+        with:
+          # Always keep the latest version
+          key: mypy-${{ github.run_id }}
+          restore-keys: mypy
+          path: |
+            .local/cache/mypy
+
       - name: Restore cached Trivy DB
         uses: actions/cache@v4.3.0
         with:
+          # Always keep the latest version
           key: trivy-${{ github.run_id }}
           restore-keys: trivy
           path: |
@@ -223,15 +225,6 @@ jobs:
       matrix:
         python-version: ["3.12"]
     steps:
-      - name: Restore cached models
-        uses: actions/cache@v4.3.0
-        with:
-          key: models-${{ hashFiles('.local/cache/huggingface/hub/.locks/**/*.lock')
-            }}
-          restore-keys: models
-          path: |
-            .local/cache/huggingface
-
       - name: Download the package distributions
         uses: actions/download-artifact@v6.0.0
         with:
@@ -248,6 +241,15 @@ jobs:
         uses: actions/download-artifact@v6.0.0
         with:
           name: uv-lock
+
+      - name: Restore cached models
+        uses: actions/cache@v4.3.0
+        with:
+          # Not a great choice, but not sure what else to use for this one.
+          key: models-${{ hashFiles('uv.lock') }}
+          restore-keys: models
+          path: |
+            .local/cache/huggingface
 
       - name: Set up Python
         uses: actions/setup-python@v6
