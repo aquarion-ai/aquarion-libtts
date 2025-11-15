@@ -137,6 +137,7 @@ pyproject
 pyrightconfig
 pysingleton
 pytest
+PYTHONWARNINGS
 pytorch
 pytype
 pytz

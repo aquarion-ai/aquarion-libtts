@@ -24,6 +24,7 @@ def main []: nothing -> string {
 
 ## Acceptance tests
 
+$env.PYTHONWARNINGS = "ignore:invalid escape sequence:SyntaxWarning"
 let radish_common_args = [
     "-b", "tests/acceptance/steps/",
     "tests/acceptance/features/",
