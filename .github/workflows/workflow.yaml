@@ -58,7 +58,7 @@ jobs:
       - name: Restore cached Python runtimes
         uses: actions/cache@v4.3.0
         with:
-          key: python-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          key: python-${{ hashFiles('pyproject.toml') }}
           restore-keys: python
           path: |
             .local/share/uv/python
@@ -67,7 +67,7 @@ jobs:
       - name: Restore cached Python dependencies
         uses: actions/cache@v4.3.0
         with:
-          key: dependencies-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          key: dependencies-${{ hashFiles('uv.lock') }}
           restore-keys: dependencies
           path: |
             .local/cache/uv
@@ -84,7 +84,8 @@ jobs:
       - name: Restore cached models
         uses: actions/cache@v4.3.0
         with:
-          key: models-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          key: models-${{ hashFiles('.local/cache/huggingface/hub/.locks/**/*.lock')
+            }}
           restore-keys: models
           path: |
             .local/cache/huggingface
@@ -92,17 +93,18 @@ jobs:
       - name: Restore mypy's cache
         uses: actions/cache@v4.3.0
         with:
-          key: mypy-${{ hashFiles('.pre-commit-config.yaml') }}
+          key: mypy-${{ hashFiles('.local/cache/mypy/**/CACHEDIR.TAG') }}
           restore-keys: mypy
           path: |
             .local/cache/mypy
 
-      - name: Restore cached other stuff
+      - name: Restore mkdocs caches
         uses: actions/cache@v4.3.0
         with:
-          key: other-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          key: other-${{ hashFiles('docs/mkdocs.yml', 'uv.lock') }}
           restore-keys: other
           path: |
+            .local/cache/mkdocs
             .local/cache/plugin/social/fonts
 
       - name: Restore cached Trivy DB
@@ -224,10 +226,11 @@ jobs:
       - name: Restore cached models
         uses: actions/cache@v4.3.0
         with:
-          key: python-${{ hashFiles('pyproject.toml', 'uv.lock') }}
-          restore-keys: python
+          key: models-${{ hashFiles('.local/cache/huggingface/hub/.locks/**/*.lock')
+            }}
+          restore-keys: models
           path: |
-            ~/.cache/huggingface
+            .local/cache/huggingface
 
       - name: Download the package distributions
         uses: actions/download-artifact@v6.0.0

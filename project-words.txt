@@ -12,6 +12,7 @@ autouse
 beautifulsoup
 bsdiff
 byteswap
+CACHEDIR
 calcul
 celerybeat
 Chemin
