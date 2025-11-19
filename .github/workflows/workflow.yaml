@@ -303,7 +303,7 @@ jobs:
   badges:
     name: Generate badges
     runs-on: ubuntu-24.04
-    needs: publish_to_test_pypi
+    needs: [test_and_build, publish_to_test_pypi]
     if: ${{ github.event_name == 'push' }}
     env:
       test_total: ${{ needs.test_and_build.outputs.test_total }}
