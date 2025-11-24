@@ -48,6 +48,22 @@ def "main coverage test" [
     hatch --quiet run $"($environ):coverage" report ...$extra
 }
 
+# Generate XML report for the most recent test coverage.
+def "main coverage test xml" [
+    --ci, # Used in CI pipeline to avoid GPU dependence.
+]: nothing -> string {
+    mut environ = "accept"
+    if $ci {
+        $environ = "accept-ci"
+    }
+    mut $extra = []
+    # It is easier to just use the coverage tool from the accept environment than to try
+    # and figure out which matrixed hatch-test coverage tool to run.
+    # This could in principle lead to a version mismatch, but the intention is to keep
+    # all versions of a tool the same in all environments, so it should be fine.
+    hatch run $"($environ):coverage" xml -o .local/test_coverage.xml ...$extra
+}
+
 # Print the most recent acceptance test coverage report.
 def "main coverage accept" [
     --ci, # Used in CI pipeline to avoid GPU dependence.
@@ -62,6 +78,25 @@ def "main coverage accept" [
     (
         hatch --quiet run $"($environ):coverage" report --rcfile=radish_coverage.toml
         ...$extra
+    )
+}
+
+# Generate XML report for the most recent acceptance test coverage.
+def "main coverage accept xml" [
+    --ci, # Used in CI pipeline to avoid GPU dependence.
+]: nothing -> string {
+    mut environ = "accept"
+    if $ci {
+        $environ = "accept-ci"
+    }
+    mut $extra = []
+    # It is easier to just use the coverage tool from the accept environment than to try
+    # and figure out which matrixed hatch-test coverage tool to run.
+    # This could in principle lead to a version mismatch, but the intention is to keep
+    # all versions of a tool the same in all environments, so it should be fine.
+    (
+        hatch run $"($environ):coverage" xml -o .local/accept_coverage.xml
+        --rcfile=radish_coverage.toml ...$extra
     )
 }
 
