@@ -132,6 +132,9 @@ jobs:
       - name: Run tests on all supported Python versions
         run: devbox run check test cover --all
 
+      - name: Generate test coverage report
+        run: report coverage test xml
+
       - name: Run security checks
         run: devbox run check sec
 
@@ -146,6 +149,20 @@ jobs:
 
       - name: Run acceptance tests
         run: devbox run check accept cover --ci
+
+      - name: Generate acceptance coverage report
+        run: report coverage accept xml
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: aquarion-ai/aquarion-libtts
+          fail_ci_if_error: true
+          disable_telem: true
+          disable_search: true
+          files: .local/test_coverage.xml, .local/accept_coverage.xml
+          verbose: true
 
       - name: List dependency licences
         run: devbox run report licences

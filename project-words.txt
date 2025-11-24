@@ -179,6 +179,7 @@ superfences
 synched
 synthèse
 système
+telem
 tensorflow
 testpypi
 tobytes
