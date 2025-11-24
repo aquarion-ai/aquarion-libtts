@@ -22,7 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-- Nothing yet.
+- [CVE-2025-8869](https://nvd.nist.gov/vuln/detail/cve-2025-8869) addressed for
+  *aquarion-libtts* development environments.
 
 ### Added
 

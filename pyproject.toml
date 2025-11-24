@@ -65,7 +65,7 @@ Source = "https://github.com/aquarion-ai/aquarion-libtts"
 cpu_internal = ["torch~=2.8.0"]
 cuda_internal = ["torch~=2.8.0"]
 # Plugins
-kokoro = ["kokoro~=0.9.4", "pip~=25.2.0", "pydantic~=2.12.0", "torch~=2.8.0"]
+kokoro = ["kokoro~=0.9.4", "pip~=25.3.0", "pydantic~=2.12.0", "torch~=2.8.0"]
 
 [project.entry-points."aquarion-libtts"]
 kokoro_v1 = "aquarion.libs.libtts.kokoro._hook"
@@ -115,7 +115,7 @@ tools = [
     "cz-conventional-gitmoji~=0.7.0",
     "hatch~=1.14.2",
     "pip-licenses~=5.5.0",
-    "pip~=25.2.0",
+    "pip~=25.3.0",
     "pre-commit~=4.3.0",
     "reuse~=6.1.2",
 ]
