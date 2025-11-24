@@ -22,12 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-- [GHSA-w476-p2h3-79g9](https://github.com/advisories/GHSA-w476-p2h3-79g9) determined to
-  not be a vulnerability in *aquarion-libtts* itself.  Only the development environment
-  is impacted, and even there, the risk is low.  This will be fixed in the near future.
-- [GHSA-pqhf-p39g-3x64](https://github.com/advisories/GHSA-pqhf-p39g-3x64) determined to
-  not be a vulnerability in *aquarion-libtts* itself.  Only the development environment
-  is impacted.  This will be fixed in the near future.
+- Nothing yet.
 
 ### Added
 

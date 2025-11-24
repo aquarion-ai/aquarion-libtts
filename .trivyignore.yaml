@@ -21,14 +21,3 @@ vulnerabilities:
     statement: >-
       According to the CVE, Python>=3.12 is not affected. This project's minimum
       Python version is 3.12.
-  - id: GHSA-w476-p2h3-79g9
-    expired_at: 2025-11-24
-    statement: >-
-      Risk is low, uv is only a dev dependency and aquarion-libtts itself is not
-      affected.  Further, as soon as uv v0.9.5 is available via Devbox, we can upgrade
-      to address this.
-  - id: GHSA-pqhf-p39g-3x64
-    expired_at: 2025-11-29
-    statement: >-
-      uv is only a dev dependency and aquarion-libtts itself is not affected.  Further,
-      as soon as uv v0.9.6 is available via Devbox, we can upgrade to address this.

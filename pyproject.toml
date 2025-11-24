@@ -101,7 +101,7 @@ hatch-test = [
     "pytest-xdist[psutil]~=3.8.0",     # Hatch test default inclusion
     "pytest~=8.4.2",                   # Hatch test default inclusion
 ]
-hatch-uv = ["uv~=0.8.14"]
+hatch-uv = ["uv~=0.9.7"]
 spacy = [
     # Normally one would run the command "spacy download en-core-web-sm", but by
     # including in a dependency group, we can both control the exact version we use in
