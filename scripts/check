@@ -161,6 +161,7 @@ def "main docs" []: nothing -> string {
 def --wrapped "main test" [
     ...rest: string # Extra arguments for hatch test
 ]: nothing -> string {
+    $env.PYTHONDEVMODE = "1"
     hatch test ...$rest
 }
 
@@ -168,6 +169,7 @@ def --wrapped "main test" [
 def --wrapped "main test cover" [
     ...rest: string # Extra arguments for hatch test
 ]: nothing -> string {
+    $env.PYTHONDEVMODE = "1"
     hatch test --cover --randomize ...$rest
 }
 
@@ -175,6 +177,7 @@ def --wrapped "main test cover" [
 def --wrapped "main accept" [
     ...rest: string # Extra arguments for radish
 ]: nothing -> string {
+    $env.PYTHONDEVMODE = "1"
     hatch run accept:test ...$rest
 }
 
@@ -187,6 +190,7 @@ def --wrapped "main accept cover" [
     if $ci {
         $environ = "accept-ci"
     }
+    $env.PYTHONDEVMODE = "1"
     hatch run $"($environ):cover" ...$rest
 }
 
@@ -196,6 +200,7 @@ def --wrapped "main accept cover" [
 def --wrapped "main accept wip" [
     ...rest: string # Extra arguments for radish
 ]: nothing -> string {
+    $env.PYTHONDEVMODE = "1"
     hatch run accept:wip ...$rest
 }
 

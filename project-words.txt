@@ -138,6 +138,7 @@ pyproject
 pyrightconfig
 pysingleton
 pytest
+PYTHONDEVMODE
 PYTHONWARNINGS
 pytorch
 pytype
